@@ -69,6 +69,8 @@ type
       procedure SetTop(Value: Single); {$IFDEF CAN_INLINE} inline; {$ENDIF}
       procedure SetRight(Value: Single); {$IFDEF CAN_INLINE} inline; {$ENDIF}
       procedure SetBottom(Value: Single); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+      procedure SetLocked(Value: Boolean); {$IFDEF CAN_INLINE} inline; {$ENDIF}
     public
       // Public methods
       constructor Create; Override;
@@ -83,6 +85,8 @@ type
 
       function WriteToXML(): TStringList;
       procedure Hover(MouseOverEvent, MouseOutEvent: TelNodeEvent);
+
+      procedure Rotate(DeltaAngle: Single); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       // Simple Animation, for more complex animations use Elysion Animators
       procedure Animate(AnimProperty: TelAnimationProperty; Duration: Integer = 1000; Delay: Integer = 0; Transition: TelAnimationTransition = atLinear);
@@ -132,6 +136,7 @@ type
       property Click: Boolean read GetClick;
       property DblClick: Boolean read GetDblClick;
 
+      // CSS-like selectors
       property SelectorID: String read fSelectorID write fSelectorID;
       property SelectorClass: String read fSelectorClass write fSelectorClass;
 
@@ -141,7 +146,7 @@ type
       property Width: Integer read GetWidth;
       property Height: Integer read GetHeight;
 
-      property Locked: Boolean read fLocked;
+      property Locked: Boolean read fLocked write SetLocked;
 
       property Left: Single read GetLeft write SetLeft;
       property Top: Single read GetTop write SetTop;
@@ -394,6 +399,17 @@ begin
   Position.Y := parentHeight - Self.Height - Value;
 end;
 
+procedure TelNode.SetLocked(Value: Boolean);
+begin
+  if Value then Self.Lock()
+  else Self.UnLock();
+end;
+
+
+procedure TelNode.Rotate(DeltaAngle: Single);
+begin
+  fRotation.Angle := fRotation.Angle + DeltaAngle;
+end;
 
 procedure TelNode.Add(aNode: TelNode);
 begin

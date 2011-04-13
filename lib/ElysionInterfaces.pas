@@ -31,16 +31,17 @@ type
     procedure Update(dt: Double = 0.0);
   end;
 
-  INode = interface(IObject)
+  INode = interface(IEntity)
 
     procedure Move(Delta: TelVector3f); Overload;
     procedure Move(Delta: TelVector2i); Overload;
+
+    procedure Rotate(DeltaAngle: Single);
 
     procedure Animate(AnimProperty: TelAnimationProperty; Duration: Integer = 1000; Delay: Integer = 0; Transition: TelAnimationTransition = atLinear);
     function WriteToXML(): TStringList;
 
     procedure Draw;
-    procedure Update(dt: Double = 0.0);
   end;
 
   ITimer = interface(IObject)
