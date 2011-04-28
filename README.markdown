@@ -60,5 +60,4 @@ License
 Elysion is dual-licensed under the MIT and MPL license. Choose which one
 you like the most or use both if you feel like it.
 
-
-
+Be careful though: Other third-party libraries included in this package (in /lib/Dependencies) may use a different license.  
