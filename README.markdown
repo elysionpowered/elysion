@@ -36,23 +36,23 @@ Elysion is designed to be high-level with its API to be very simple and intuitiv
 Here is a chunk of code which loads a sprite, displays the sprite and randomly  
 changes its color with each click.  
 
-{
-var mySprite: TelSprite;
 
-mySprite := TelSprite.Create;
-mySprite.LoadFromFile('mySprite.png');
+	var mySprite: TelSprite;
 
-mySprite.Draw;
+	mySprite := TelSprite.Create;
+	mySprite.LoadFromFile('mySprite.png');
 
-if (mySprite.Click) then
-begin
-  Randomize;
-  mySprite.Color.R := Random(255);
-  mySprite.Color.G := Random(255);
-  mySprite.Color.B := Random(255);
-  // Alternative you could also write: mySprite.Color := makeCol(Random(255), Random(255), Random(255));
-end;
-}
+	mySprite.Draw;
+
+	if (mySprite.Click) then
+	begin
+	  Randomize;
+	  mySprite.Color.R := Random(255);
+	  mySprite.Color.G := Random(255);
+	  mySprite.Color.B := Random(255);
+	  // Alternative you could also write: mySprite.Color := makeCol(Random(255), Random(255), Random(255));
+	end;
+
 
 License
 -------
