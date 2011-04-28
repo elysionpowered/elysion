@@ -431,3 +431,23 @@
      Developer permits you to utilize portions of the Covered Code under
      Your choice of the NPL or the alternative licenses, if any, specified
      by the Initial Developer in the file described in Exhibit A.
+
+
+Software distributed under the License is distributed on an "AS IS"
+basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+License for the specific language governing rights and limitations
+under the License.
+
+For information who the copyright holder are and who contributed,
+take a look at README.markdown
+
+Alternatively, the contents of these files may be used under the terms
+of the MIT license (the  "MIT License"), in which case the
+provisions of MIT License are applicable instead of those
+above.  If you wish to allow use of your version of these file only
+under the terms of the MIT License and not to allow others to use
+your version of this file under the MPL, indicate your decision by
+deleting  the provisions above and replace them with the notice and
+other provisions required by the MIT License. If you do not delete
+the provisions above, a recipient may use your version of these files
+under either the MPL or the MIT License.

@@ -4,4 +4,35 @@ Elysion Framework
 What is this?
 -------------
 
-Elysion is a rapid prototyping framework.
+Elysion is a cross-plaform (currently supporting Windows, Linux and Mac OS X)
+framework for creating games with ease and is therefore suited for rapid prototyping.
+
+Who made this?
+-------------
+
+Elysion has been more or less regurarly in development since 2005 and has been
+created by Johannes Stein.
+
+Thanks to anyone who used (or whom I forced to use ;) ) this framework. This
+framework would not exist in its current form without those people:
+- Sven Rech (Initial Linux testing)
+- David Herzog (Early sprite lists and general a very helpful guy)
+- Jesse Klugmann
+- Christian Fuchs
+- Arthur Baude
+- Dominique Louis (He made SDL bindings for Object Pascal)
+- Sam Lantinga (The creator of SDL)
+
+Also thanks to these pieces of software which inspired me:
+- Irrlicht 3D Engine
+- Horde 3D / Horde 3D GameEngine
+- Gosu
+- Unity3D
+
+License
+-------
+Elysion is dual-licensed under the MIT and MPL license. Choose which one
+you like the most or use both if you feel like it.
+
+
+
