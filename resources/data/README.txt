@@ -1,0 +1,1 @@
+This is the place for all kinds of data for your application/game such as levels and similar stuff.
