@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+<meta name="GENERATOR" content="PasDoc 0.12.1">
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<title>ElysionBitmapFont: Class TelBitmapFont</title>
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body bgcolor="#ffffff" text="#000000" link="#0000ff" vlink="#800080" alink="#FF0000">
+<a name="TelBitmapFont"></a><h1 class="cio">Class TelBitmapFont</h1>
+<table class="sections wide_list">
+<tr>
+<td><a class="section"  href="#%40Description">Description</a></td><td><a class="section"  href="#%40Hierarchy">Hierarchy</a></td><td>Fields</td><td><a class="section"  href="#%40Methods">Methods</a></td><td><a class="section"  href="#%40Properties">Properties</a></td></tr></table>
+<a name="%40Description"></a><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a   href="ElysionBitmapFont.html">ElysionBitmapFont</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TelBitmapFont = class(TObject)</code></p>
+<h2 class="description">Description</h2>
+<a name="%40Hierarchy"></a><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TObject</li>
+<li class="thisitem">TelBitmapFont</li></ul><h2 class="overview">Overview</h2>
+<a name="%40Methods"></a><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a   href="ElysionBitmapFont.TelBitmapFont.html#Create">Create</a></b>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a   href="ElysionBitmapFont.TelBitmapFont.html#Destroy">Destroy</a></b>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionBitmapFont.TelBitmapFont.html#LoadFromFile">LoadFromFile</a></b>(Filename: String);</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionBitmapFont.TelBitmapFont.html#SetTransparency">SetTransparency</a></b>(Color: <a   href="ElysionTypes.TelColor.html">TelColor</a>); Overload;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionBitmapFont.TelBitmapFont.html#SetTransparency">SetTransparency</a></b>(Coord: <a   href="ElysionTypes.TelVector2i.html">TelVector2i</a>); Overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionBitmapFont.TelBitmapFont.html#SetAlpha">SetAlpha</a></b>(Alpha: Byte);</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a   href="ElysionBitmapFont.TelBitmapFont.html#GetAlpha">GetAlpha</a></b>: Byte;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a   href="ElysionBitmapFont.TelBitmapFont.html#GetWidth">GetWidth</a></b>(Text: String): Integer;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a   href="ElysionBitmapFont.TelBitmapFont.html#GetHeight">GetHeight</a></b>: Integer;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionBitmapFont.TelBitmapFont.html#TextOut">TextOut</a></b>(Point: <a   href="ElysionTypes.TelVector2i.html">TelVector2i</a>; Text: String; AlignV: <a   href="ElysionTypes.html#TAlignVertical">TAlignVertical</a> = avNone; AlignH: <a   href="ElysionTypes.html#TAlignHorizontal">TAlignHorizontal</a> = ahNone);</code></td>
+</tr>
+</table>
+<a name="%40Properties"></a><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionBitmapFont.TelBitmapFont.html#Alpha">Alpha</a></b>: Byte read <a   href="ElysionBitmapFont.TelBitmapFont.html#GetAlpha">GetAlpha</a> write <a   href="ElysionBitmapFont.TelBitmapFont.html#SetAlpha">SetAlpha</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionBitmapFont.TelBitmapFont.html#Height">Height</a></b>: Integer read <a   href="ElysionBitmapFont.TelBitmapFont.html#GetHeight">GetHeight</a>;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Create"></a><code>constructor <b>Create</b>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Constructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Destroy"></a><code>destructor <b>Destroy</b>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Destructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="LoadFromFile"></a><code>procedure <b>LoadFromFile</b>(Filename: String);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Load BitmapFont from filename</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="SetTransparency"></a><code>procedure <b>SetTransparency</b>(Color: <a   href="ElysionTypes.TelColor.html">TelColor</a>); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Set transparency from Color</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="SetTransparency"></a><code>procedure <b>SetTransparency</b>(Coord: <a   href="ElysionTypes.TelVector2i.html">TelVector2i</a>); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Set transparency from Coordinate</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="SetAlpha"></a><code>procedure <b>SetAlpha</b>(Alpha: Byte);</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="GetAlpha"></a><code>function <b>GetAlpha</b>: Byte;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="GetWidth"></a><code>function <b>GetWidth</b>(Text: String): Integer;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="GetHeight"></a><code>function <b>GetHeight</b>: Integer;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="TextOut"></a><code>procedure <b>TextOut</b>(Point: <a   href="ElysionTypes.TelVector2i.html">TelVector2i</a>; Text: String; AlignV: <a   href="ElysionTypes.html#TAlignVertical">TAlignVertical</a> = avNone; AlignH: <a   href="ElysionTypes.html#TAlignHorizontal">TAlignHorizontal</a> = ahNone);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Draw text at designed position</p>
+</td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Alpha"></a><code>property <b>Alpha</b>: Byte read <a   href="ElysionBitmapFont.TelBitmapFont.html#GetAlpha">GetAlpha</a> write <a   href="ElysionBitmapFont.TelBitmapFont.html#SetAlpha">SetAlpha</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Height"></a><code>property <b>Height</b>: Integer read <a   href="ElysionBitmapFont.TelBitmapFont.html#GetHeight">GetHeight</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2011-04-28 00:54:46</em>
+</span>
+</body></html>
