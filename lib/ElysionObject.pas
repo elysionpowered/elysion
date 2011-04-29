@@ -102,7 +102,7 @@ end;
 
 //end;
 
-TelModuleContainer = class(TelObject, IModuleContainer)
+TelModuleContainer = class(TelObject, IContainer)
 protected
   fDriverName: String;
 public
