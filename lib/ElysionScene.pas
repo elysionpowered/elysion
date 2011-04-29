@@ -6,7 +6,7 @@
 // Freeze Dev - http://elysion.freeze-dev.com
 //
 
-unit ElysionStage;
+unit ElysionScene;
 
 {$I Elysion.inc}
 
