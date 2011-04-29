@@ -72,9 +72,11 @@ end;
 TelSceneDirector = class(TelObject)
   private
     fList: TList;
+    
+    function GetCount(): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
   public
-    constructor Create; Overload;
-	destructor Destroy; Overload;
+    constructor Create; Override;
+	destructor Destroy; Override;
 	
 	procedure Add(aScene: TelScene); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 	
@@ -82,7 +84,7 @@ TelSceneDirector = class(TelObject)
 	procedure Initialize(); Overload;
 	procedure Initialize(Exceptions: array of Integer); Overload;
 	
-	procedure SetCurrentScene();
+	//procedure SetCurrentScene();
   published
     property Count: Integer read GetCount;
 end;
@@ -170,6 +172,42 @@ begin
   begin
     if fNodeList.Items[i] <> nil then fNodeList.Items[i].Update;
   end;
+end;
+
+
+constructor TelSceneDirector.Create();
+begin
+  inherited;
+  
+  fList := TList.Create;
+end;
+
+destructor TelSceneDirector.Destroy();
+begin
+  inherited;
+end;
+
+function TelSceneDirector.GetCount(): Integer;
+begin
+  Result := fList.Count;
+end;
+
+procedure TelSceneDirector.Add(aScene: TelScene);
+begin
+  fList.Add(aScene);
+end;
+	
+procedure TelSceneDirector.Initialize();
+var
+  i: Integer;
+begin
+  for i := 0 to fList.Count - 1 do
+    TelScene(fList.Items[i]).Initialize();
+end;
+
+procedure TelSceneDirector.Initialize(Exceptions: array of Integer);
+begin
+  // TODO: Figure that one out ;)
 end;
 
 end.
