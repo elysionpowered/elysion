@@ -18,13 +18,21 @@ then
 
   FPC_BIN=`which ppc386`
 
-  # Compiling Intel binary
-  ${FPC_BIN} @config.cfg -k-L/usr/X11R6/lib ${SRC_MAIN}
-  mv ${BIN_FOLDER}/main ${BIN_FOLDER}/main-intel
+  # Compiling Intel x86 binary
+  ${FPC_BIN} @config.cfg ${SRC_MAIN}
+  mv ${BIN_FOLDER}/main ${BIN_FOLDER}/main-intel_x86
   rm ${BIN_FOLDER}/link.res
   rm ${BIN_FOLDER}/*.o ${BIN_FOLDER}/*.ppu
   rm ${SRC_HEADER}/*.o ${SRC_HEADER}/*.ppu ${SRC_HEADER}/*.dcu ${SRC_HEADER}/*.a
   
+  FPC_BIN=`which ppcx64`
+  
+  # Compiling Intel x64 binary
+  ${FPC_BIN} @config.cfg ${SRC_MAIN}
+  mv ${BIN_FOLDER}/main ${BIN_FOLDER}/main-intel_x64
+  rm ${BIN_FOLDER}/link.res
+  rm ${BIN_FOLDER}/*.o ${BIN_FOLDER}/*.ppu
+  rm ${SRC_HEADER}/*.o ${SRC_HEADER}/*.ppu ${SRC_HEADER}/*.dcu ${SRC_HEADER}/*.a
   
   FPC_BIN=`which ppcppc`
   
@@ -35,13 +43,15 @@ then
   
   
   # Creating universal binary
-  if [ -f ${BIN_FOLDER}/main-intel ] &&  [ -f ${BIN_FOLDER}/main-ppc ]
+  if [ -f ${BIN_FOLDER}/main-intel_x86 ] &&  [ -f ${BIN_FOLDER}/main-ppc ]
   then
-    strip ${BIN_FOLDER}/main-intel
+    strip ${BIN_FOLDER}/main-intel_x86
+    strip ${BIN_FOLDER}/main-intel_x64
     strip ${BIN_FOLDER}/main-ppc
 
-    lipo -create ${BIN_FOLDER}/main-intel ${BIN_FOLDER}/main-ppc -output ${BIN_FOLDER}/${EXEC_NAME}
-    rm -rf ${BIN_FOLDER}/main-intel
+    lipo -create ${BIN_FOLDER}/main-intel_x86 ${BIN_FOLDER}/main-intel_x64 ${BIN_FOLDER}/main-ppc -output ${BIN_FOLDER}/${EXEC_NAME}
+    rm -rf ${BIN_FOLDER}/main-intel_x86
+    rm -rf ${BIN_FOLDER}/main-intel_x64
     rm -rf ${BIN_FOLDER}/main-ppc
   fi
   
@@ -79,7 +89,7 @@ then
 	        <key>CFBundleIconFile</key>\
 	        <string>logo.icns</string>\
 	        <key>CFBundleIdentifier</key>\
-	        <string>com.ponyprincessstudios</string>\
+	        <string>com.mycompanyname</string>\
 	        <key>CFBundleInfoDictionaryVersion</key>\
 	        <string>6.0</string>\
 	        <key>CFBundleName</key>\
@@ -87,7 +97,7 @@ then
 	        <key>CFBundlePackageType</key>\
 	        <string>APPL</string>\
 	        <key>CFBundleSignature</key>\
-	        <string>MRTW</string>\
+	        <string>????</string>\
 	        <key>CFBundleVersion</key>\
 	        <string>1.0</string>\
 	        <key>CSResourcesFileMapped</key>\
