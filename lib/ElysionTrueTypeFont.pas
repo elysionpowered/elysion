@@ -394,7 +394,7 @@ var
   i: Integer;
   tmpTop, tmpTop2: Single;
 begin
-  {if aText <> '' then fText := aText;
+  if aText <> '' then fText := aText;
 
   if ((fFont <> nil) and (fText <> '')) then
   begin
@@ -465,7 +465,7 @@ begin
     glDisable(GL_TEXTURE_2D);
     TextList.Free;
 
-  end;}
+  end;
 
 
 
