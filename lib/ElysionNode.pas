@@ -408,7 +408,7 @@ end;
 
 procedure TelNode.Rotate(DeltaAngle: Single);
 begin
-  fRotation.Angle := fRotation.Angle + DeltaAngle;
+  Rotation.Angle := Rotation.Angle + DeltaAngle;
 end;
 
 procedure TelNode.Add(aNode: TelNode);
