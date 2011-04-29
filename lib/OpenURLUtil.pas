@@ -13,7 +13,7 @@ interface
 uses Windows, ShellAPI, SysUtils;
 {$endif}
 {$ifdef LINUX}
-uses SysUtils;
+uses SysUtils, Unix;
 {$endif}
 {$ifdef Darwin} // LCLCarbon?
 uses MacOSAll;
@@ -73,27 +73,30 @@ var
   Helper: string;
 begin
   Result := True;
-  try 
+  
+  try
     Helper := '';
-    if fpsystem('which xdg-open') = 0 then
+    if fpSystem('which xdg-open') = 0 then
       Helper := 'xdg-open'
     else if FileExists('/etc/alternatives/x-www-browser') then
       Helper := '/etc/alternatives/x-www-browser'
-    else if fpsystem('which firefox') = 0 then
+    else if fpSystem('which firefox') = 0 then
       Helper := 'firefox'
-    else if fpsystem('which konqueror') = 0 then
+    else if fpSystem('which konqueror') = 0 then
       Helper := 'konqueror'
-    else if fpsystem('which opera') = 0 then
+    else if fpSystem('which opera') = 0 then
       Helper := 'opera'
-    else if fpsystem('which mozilla') = 0 then
+    else if fpSystem('which mozilla') = 0 then
        Helper := 'mozilla';
  
     if Helper <> '' then
-      fpSystem(Helper + ' ' + URLUtf8 + '&');
+      fpSystem(Helper + ' ' + URLUtf8 + '&')
     else
       Result := False;
+      
   except
   end;
+
 end;
 {$ENDIF}
  
