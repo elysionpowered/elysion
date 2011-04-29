@@ -1,8 +1,8 @@
 {==============================================================================}
 {                                                                              }
 {       OpenGL 4.1 - Headertranslation                                         }
-{       Version 4.1                                                            }
-{       Date : 04.03.2011                                                      }
+{       Version 4.1a                                                           }
+{       Date : 14.03.2011                                                      }
 {                                                                              }
 {       Works with :                                                           }
 {        - Delphi 3 and up                                                     }
@@ -345,7 +345,7 @@
 {                Added Extension GLX_ARB_framebuffer_sRGB                 (SX) }
 {                Added Extension GLX_ARB_create_context_robustness        (SX) }
 {                Added Extension GLX_EXT_create_context_es2_profile       (SX) }
-
+{ Version 4.1a   Fix for dglGetProcAddress with FPC and linux (def param) (SW) }
 
 
 {==============================================================================}
@@ -354,7 +354,7 @@
 { Header based on glxext.h rev 32 (2010/08/06)  (only Core/ARB/EXT)            }
 {                                                                              }
 { This is an important notice for maintaining. Dont remove it. And make sure   }
-{ to keep him up to date                                                       }
+{ to keep it up to date                                                        }
 {==============================================================================}
 
 
@@ -13201,13 +13201,13 @@ begin
 end;
 
 
-function dglGetProcAddress(ProcName: PAnsiChar; LibHandle: Pointer = nil {$IFDEF DGL_LINUX}; ForceDLSym: Boolean{$ENDIF}): Pointer;
+function dglGetProcAddress(ProcName: PAnsiChar; LibHandle: Pointer = nil {$IFDEF DGL_LINUX}; ForceDLSym: Boolean = False{$ENDIF}): Pointer;
 begin
   if LibHandle = nil then
     LibHandle := GL_LibHandle;
 
   Result :=  nil;
-   
+
   {$IFDEF DGL_WIN}
     Result := GetProcAddress(HMODULE(LibHandle), ProcName);
 
