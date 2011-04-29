@@ -70,11 +70,11 @@ type
   end;
 
   INode = interface(IEntity)
-	procedure Attach(Node: INode); Overload;
+	{procedure Attach(Node: INode); Overload;
 	procedure Attach(Nodes: array of INode); Overload;
 	
 	procedure Detach(Node: INode); Overload;
-	procedure Detach(Nodes: array of INode); Overload;
+	procedure Detach(Nodes: array of INode); Overload;}
   
     procedure Move(Delta: TelVector3f); Overload;
     procedure Move(Delta: TelVector2i); Overload;
