@@ -3,7 +3,6 @@
 // Abstract layer for games 
 //
 // (C) 2005 - 2011, Johannes Stein
-// Freeze Dev - http://elysion.freeze-dev.com
 //
 
 unit ElysionScene;
@@ -21,7 +20,6 @@ uses
 
 
 type
-// TODO: Merge TelGame and TelScene somehow
 
 TelGame = class(TelObject)
   private
@@ -58,7 +56,7 @@ TelScene = class(TelObject)
     constructor Create; Override;
     destructor Destroy; Override;
 	
-	procedure Initialize(); virtual;
+	procedure Initialize(); virtual; abstract;
 
     procedure Add(aNode: TelNode); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
