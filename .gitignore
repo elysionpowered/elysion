@@ -12,6 +12,7 @@
 *.identcache
 *.local
 *.app
+*.rst
 
 # Packages #
 ############
@@ -37,6 +38,10 @@
 .DS_Store?
 ehthumbs.db
 Thumbs.db
+
+# Additional stuff #
+####################
+bin/*.html
 
 # Excluded files #
 ##################
