@@ -8,6 +8,9 @@
 *.ppu
 *.dcu
 *.so
+*.compiled
+*.identcache
+*.local
 *.app
 
 # Packages #
@@ -34,3 +37,7 @@
 .DS_Store?
 ehthumbs.db
 Thumbs.db
+
+# Excluded files #
+##################
+!lib/MacOSX/libSDLMain.a

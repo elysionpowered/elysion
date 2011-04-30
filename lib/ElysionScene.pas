@@ -56,7 +56,7 @@ TelScene = class(TelObject)
     constructor Create; Override;
     destructor Destroy; Override;
 	
-	procedure Initialize(); virtual; abstract;
+	//procedure Initialize(); virtual; abstract;
 
     procedure Add(aNode: TelNode); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
@@ -199,8 +199,8 @@ procedure TelSceneDirector.Initialize();
 var
   i: Integer;
 begin
-  for i := 0 to fList.Count - 1 do
-    TelScene(fList.Items[i]).Initialize();
+  //for i := 0 to fList.Count - 1 do
+    //TelScene(fList.Items[i]).Initialize();
 end;
 
 procedure TelSceneDirector.Initialize(Exceptions: array of Integer);

@@ -5,13 +5,12 @@ interface
 uses
   ElysionTypes,
   ElysionApplication,
-  ElysionStage,
+  ElysionScene,
   ElysionLogger,
   ElysionColor,
   ElysionGraphics,
   ElysionTrueTypeFont,
   ElysionTimer,
-  ElysionAudio,
   ElysionInput,
   ElysionUtils,
 
@@ -22,20 +21,17 @@ uses
   uMainMenu,
   uGameScreen,
   uCredits,
-  uSettings;
+  uOptions;
 
 type
   TGame = class(TelGame)
   private
     fMainMenu: TMainMenu;
     fGameScreen: TGameScreen;
-    fCredits: TCredits;
-
+    fCredits: TCredits;    
+    fOptions: TOptions;
+    
     fLoadScreen: TelSprite;
-    fSettings: TSettings;
-    fIntroMusic: TelSound;
-    fMusic: TelMusic;
-    fIntroTimer: TelTimer;
 
     fFont: TelTrueTypeFont;
     fShowFPS, fDebug: Boolean;
@@ -47,7 +43,7 @@ type
     procedure Initialize(); Override;
 
     procedure Render(); Override;
-    procedure Update(dt: Double); Override;
+    procedure Update(dt: Double = 0.0); Override;
     procedure HandleEvents(); Override;
   published
     property Debug: Boolean read fDebug write fDebug;
@@ -59,7 +55,7 @@ type
     property MainMenu: TMainMenu read fMainMenu write fMainMenu;
     property GameScreen: TGameScreen read fGameScreen write fGameScreen;
     property Credits: TCredits read fCredits write fCredits;
-    property Settings: TSettings read fSettings write fSettings;
+    property Options: TOptions read fOptions write fOptions;
 
     property ShowFPS: Boolean read fShowFPS write fShowFPS;
   end;
@@ -95,9 +91,9 @@ begin
     else tmpFullscreen := true;
 
   // Super
-  //if ((Desktop.Width = 1024) and (Desktop.Height = 600)) then
-    //inherited Create(Desktop.Width, Desktop.Height, AppConfig.Bits, true)
-  //else
+  if ((Desktop.Width = 1024) and (Desktop.Height = 600)) then
+    inherited Create(Desktop.Width, Desktop.Height, AppConfig.Bits, true)
+  else
     inherited Create(AppConfig.Width, AppConfig.Height, AppConfig.Bits, false);
 
   fLoadScreen := TelSprite.Create;
@@ -120,31 +116,15 @@ var
   newRatio: Single;
 begin
 
-  Audio.Initialize();
+  // Initialize Audio here if you have any sound/music
+  //Audio.Initialize();
 
-  fIntroTimer := TelTimer.Create;
-  fIntroTimer.Interval := 5750;
-  fIntroTimer.Start();
-
-
-
-  if fLoadScreen.AspectRatio = ActiveWindow.AspectRatio then
-    fLoadScreen.Scale := makeV2f(ActiveWindow.Width / fLoadScreen.Width, ActiveWindow.Height / fLoadScreen.Height)
-  else begin
-    if (fLoadScreen.AspectRatio * ActiveWindow.Width) > ActiveWindow.Width then
-      fLoadScreen.Left := - (((fLoadScreen.AspectRatio * ActiveWindow.Height) - ActiveWindow.Width) / 2)
-    else
-      fLoadScreen.Left := (((fLoadScreen.AspectRatio * ActiveWindow.Height) - ActiveWindow.Width) / 2);
-
-    newRatio := ActiveWindow.Height / fLoadScreen.Height;
-    fLoadScreen.Scale := makeV2f(newRatio, newRatio);
-  end;
 
   ActiveWindow.BeginScene;
   fLoadScreen.Draw;
   ActiveWindow.EndScene;
 
-  ActiveWindow.Caption := 'Mr. Fire Takes A Walk';
+  ActiveWindow.Caption := 'My Application';
   ActiveWindow.ShowCursor();
 
 
@@ -159,35 +139,14 @@ begin
   Input.DebugInfo();
 
 
-  MainMenu := TMainMenu.Create;
-  Settings := TSettings.Create;
-
-
-  MainMenu.Background.Scale := fLoadScreen.Scale;
-  MainMenu.Background.Left := fLoadScreen.Left;
-  Settings.Background.Scale := fLoadScreen.Scale;
-  Settings.Background.Left := fLoadScreen.Left;
-
-
+  MainMenu := TMainMenu.Create();
+  Options := TOptions.Create();
   Credits := TCredits.Create();
-
-  fIntroMusic := TelSound.Create;
-  fIntroMusic.LoadFromFile(GetResSndPath + 'intro.wav');
-  if uGlobal.Music then fIntroMusic.Play();
-
-  fMusic := TelMusic.Create;
-
-  fMusic.LoadFromFile(GetResSndPath + 'music.mp3');
 
 end;
 
 procedure TGame.Render;
 begin
-  if fIntroTimer.Event then
-  begin
-    if uGlobal.Music then fMusic.Play(-1);
-    fIntroTimer.Stop();
-  end;
 
   if MainMenu.NewGameClick then
   begin
@@ -201,29 +160,24 @@ begin
   end;
 
 
-  if GameState <> gsGame then
-    ActiveWindow.ShowCursor();
-
-
   case GameState of
     gsMainMenu: MainMenu.Render();
-    gsSettings: Settings.Render;
+    gsOptions: Options.Render();
     gsIntro: ; //< As if we would need an intro? ;)
-    gsCredits: Credits.Render;
-    gsGame: GameScreen.Render;
+    gsCredits: Credits.Render();
+    gsGame: GameScreen.Render();
   end;
   
 end;
 
 procedure TGame.Update(dt: Double);
 begin
-  ActiveWindow.Caption := Format('FPS: %.2f Delta: %.5f', [ActiveWindow.FPS, ActiveWindow.DeltaTime]);
-
-  (*if ShowFPS then
+  
+  if ShowFPS then
     fFont.TextOut(makeV3f(8, 8, 0), Format('FPS: %.2f Delta: %.5f \n Mouse Abs: %d %d Rel: %d %d',
       [ActiveWindow.FPS, ActiveWindow.DeltaTime,
        Input.Mouse.Cursor.X, Input.Mouse.Cursor.Y,
-       Input.Mouse.RelCursor.X, Input.Mouse.RelCursor.Y]));*)
+       Input.Mouse.RelCursor.X, Input.Mouse.RelCursor.Y]));
 
 
   case GameState of
@@ -231,9 +185,9 @@ begin
     begin
       Credits.Update(dt);
     end;
-    gsSettings:
+    gsOptions:
     begin
-      Settings.Update(dt);
+      Options.Update(dt);
     end;
     gsMainMenu:
     begin
@@ -245,15 +199,6 @@ begin
     end;
   end;
 
-  // Update music if necessary
-  if uGlobal.Music then
-  begin
-    if (not fMusic.isPlaying) then fMusic.Play
-  end else
-  begin
-    if (fMusic.isPlaying) then fMusic.Stop
-  end;
-
 end;
 
 procedure TGame.HandleEvents();
@@ -263,9 +208,9 @@ begin
     begin
       Credits.HandleEvents;
     end;
-    gsSettings:
+    gsOptions:
     begin
-      Settings.HandleEvents;
+      Options.HandleEvents;
     end;
     gsMainMenu:
     begin

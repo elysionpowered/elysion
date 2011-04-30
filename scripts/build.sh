@@ -8,8 +8,8 @@ FPC_BIN=`which fpc`
 BIN_FOLDER="../bin"
 SRC_MAIN="main.lpr"
 LIB_FOLDER="../lib"
-EXEC_NAME="mrfire"
-APP_NAME="Mr Fire Takes A Walk"
+EXEC_NAME="myapp"
+APP_NAME="My App Title"
 
 
 cd ../source
@@ -19,7 +19,7 @@ then
   FPC_BIN=`which ppc386`
 
   # Compiling Intel x86 binary
-  ${FPC_BIN} @config.cfg ${SRC_MAIN}
+  ${FPC_BIN} @config.cfg -k"-L${LIB_FOLDER}/MacOSX -L/usr/X11R6/lib" ${SRC_MAIN}
   mv ${BIN_FOLDER}/main ${BIN_FOLDER}/main-intel_x86
   rm ${BIN_FOLDER}/link.res
   rm ${BIN_FOLDER}/*.o ${BIN_FOLDER}/*.ppu
@@ -28,7 +28,7 @@ then
   FPC_BIN=`which ppcx64`
   
   # Compiling Intel x64 binary
-  ${FPC_BIN} @config.cfg ${SRC_MAIN}
+  ${FPC_BIN} @config.cfg -k"-L${LIB_FOLDER}/MacOSX -L/usr/X11R6/lib" ${SRC_MAIN}
   mv ${BIN_FOLDER}/main ${BIN_FOLDER}/main-intel_x64
   rm ${BIN_FOLDER}/link.res
   rm ${BIN_FOLDER}/*.o ${BIN_FOLDER}/*.ppu
@@ -37,7 +37,7 @@ then
   FPC_BIN=`which ppcppc`
   
   # Compiling PowerPC binary
-  ${FPC_BIN} @config.cfg -k"-L${LIB_FOLDER}/frameworks -L/usr/X11R6/lib" ${SRC_MAIN} -XR/Developer/SDKs/MacOSX10.5.sdk/ -k-macosx_version_min -k10.5
+  ${FPC_BIN} @config.cfg -k"-L${LIB_FOLDER}/MacOSX -L/usr/X11R6/lib" ${SRC_MAIN}
   mv ${BIN_FOLDER}/main ${BIN_FOLDER}/main-ppc
   rm ${BIN_FOLDER}/*.o ${BIN_FOLDER}/*.ppu
   

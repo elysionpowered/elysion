@@ -1,3 +1,5 @@
+// GetResPath* functions will be obsolete in the near future
+
 unit uBasic;
 
 interface
@@ -34,7 +36,7 @@ const
 
 
 type
-  TGameState = (gsMainMenu, gsGame, gsInstructions, gsOptions, gsCredits);
+  TGameState = (gsMainMenu, gsGame, gsInstructions, gsIntro, gsOptions, gsCredits);
   TLanguage = (laGerman, laEnglish);
 
   TBar = record

@@ -26,13 +26,13 @@ uses
 const
   // Version information
   VER_MAJOR = 11;
-  VER_MINOR = 03;
-  VER_CODENAME = 'Bolivia'; //< Codename
+  VER_MINOR = 04;
+  VER_CODENAME = 'Caprica'; //< Codename
   VER_STABLE = true;
 
   // Other random stuff mostly regarding version information
-  VER_CODENAME_UNIVERSE = 'Fringe'; //< From which universe the codename comes from
-  VER_CODENAME_RANDOMQUOTE = 'Well, there are plenty of machines here. I can befriend a vacuum cleaner.'; //< Random quote from that universe
+  VER_CODENAME_UNIVERSE = 'Battlestar Galactica / Caprica'; //< From which universe the codename comes from
+  VER_CODENAME_RANDOMQUOTE = 'A cybernetic lifeform node. A Cylon...'; //< Random quote from that universe
 
   // So, in case you didn't get this: Each codename comes from a movie or TV show
 
@@ -640,6 +640,45 @@ HAT_LEFTDOWN = HAT_LEFT or HAT_DOWN;
 
 
 type
+
+  TKey = object
+    KeyName: String;
+	
+  end;
+
+  {$IFDEF FPC}
+  TKeyLongString = object
+  {$ELSE}
+  TKeyLongString = record
+  {$ENDIF}
+  
+  end;
+  
+  
+
+  {$IFDEF FPC}
+  TKeyString = object
+  {$ELSE}
+  TKeyString = record
+  {$ENDIF}
+    KeyName: String;
+	Value: String;
+	
+    {$IFDEF CAN_METHODS}
+	
+	{$ENDIF}
+  end;
+  
+  TKeyInt = record
+    KeyName: String;
+	Value: Integer;
+  end;
+  
+  TKeyFloat = record
+    KeyName: String;
+	Value: Single;
+  end;
+
   // Forward declaration
   PelColor = ^TelColor;
   PelVector2f = ^TelVector2f;

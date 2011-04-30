@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Package Version="3">
+    <PathDelim Value="\"/>
+    <Name Value="Elysion"/>
+    <Author Value="Johannes Stein"/>
+    <CompilerOptions>
+      <Version Value="10"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+      </SearchPaths>
+      <Parsing>
+        <SyntaxOptions>
+          <SyntaxMode Value="Delphi"/>
+        </SyntaxOptions>
+      </Parsing>
+      <CodeGeneration>
+        <SmartLinkUnit Value="True"/>
+        <Optimizations>
+          <OptimizationLevel Value="3"/>
+        </Optimizations>
+      </CodeGeneration>
+      <Other>
+        <CompilerMessages>
+          <UseMsgFile Value="True"/>
+        </CompilerMessages>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Description Value="Elysion is a cross-platform application/game framework specifically designed for rapid prototyping."/>
+    <License Value="MIT/MPL"/>
+    <Version Major="1"/>
+    <Files Count="28">
+      <Item1>
+        <Filename Value="ElysionAnimator.pas"/>
+        <UnitName Value="ElysionAnimator"/>
+      </Item1>
+      <Item2>
+        <Filename Value="ElysionApplication.pas"/>
+        <UnitName Value="ElysionApplication"/>
+      </Item2>
+      <Item3>
+        <Filename Value="ElysionAssets.pas"/>
+        <UnitName Value="ElysionAssets"/>
+      </Item3>
+      <Item4>
+        <Filename Value="ElysionAudio.pas"/>
+        <UnitName Value="ElysionAudio"/>
+      </Item4>
+      <Item5>
+        <Filename Value="ElysionBitmapFont.pas"/>
+        <UnitName Value="ElysionBitmapFont"/>
+      </Item5>
+      <Item6>
+        <Filename Value="ElysionColor.pas"/>
+        <UnitName Value="ElysionColor"/>
+      </Item6>
+      <Item7>
+        <Filename Value="ElysionContent.pas"/>
+        <UnitName Value="ElysionContent"/>
+      </Item7>
+      <Item8>
+        <Filename Value="ElysionData.pas"/>
+        <UnitName Value="ElysionData"/>
+      </Item8>
+      <Item9>
+        <Filename Value="ElysionGame.pas"/>
+        <UnitName Value="ElysionGame"/>
+      </Item9>
+      <Item10>
+        <Filename Value="ElysionGameUtils.pas"/>
+        <UnitName Value="ElysionGameUtils"/>
+      </Item10>
+      <Item11>
+        <Filename Value="ElysionGraphics.pas"/>
+        <UnitName Value="ElysionGraphics"/>
+      </Item11>
+      <Item12>
+        <Filename Value="ElysionGUI.pas"/>
+        <UnitName Value="ElysionGUI"/>
+      </Item12>
+      <Item13>
+        <Filename Value="ElysionInput.pas"/>
+        <UnitName Value="ElysionInput"/>
+      </Item13>
+      <Item14>
+        <Filename Value="ElysionInterfaces.pas"/>
+        <UnitName Value="ElysionInterfaces"/>
+      </Item14>
+      <Item15>
+        <Filename Value="ElysionLogger.pas"/>
+        <UnitName Value="ElysionLogger"/>
+      </Item15>
+      <Item16>
+        <Filename Value="ElysionMath.pas"/>
+        <UnitName Value="ElysionMath"/>
+      </Item16>
+      <Item17>
+        <Filename Value="ElysionNetwork.pas"/>
+        <UnitName Value="ElysionNetwork"/>
+      </Item17>
+      <Item18>
+        <Filename Value="ElysionNode.pas"/>
+        <UnitName Value="ElysionNode"/>
+      </Item18>
+      <Item19>
+        <Filename Value="ElysionObject.pas"/>
+        <UnitName Value="ElysionObject"/>
+      </Item19>
+      <Item20>
+        <Filename Value="ElysionScene.pas"/>
+        <UnitName Value="ElysionScene"/>
+      </Item20>
+      <Item21>
+        <Filename Value="ElysionStorage.pas"/>
+        <UnitName Value="ElysionStorage"/>
+      </Item21>
+      <Item22>
+        <Filename Value="ElysionTexture.pas"/>
+        <UnitName Value="ElysionTexture"/>
+      </Item22>
+      <Item23>
+        <Filename Value="ElysionTimer.pas"/>
+        <UnitName Value="ElysionTimer"/>
+      </Item23>
+      <Item24>
+        <Filename Value="ElysionTrueTypeFont.pas"/>
+        <UnitName Value="ElysionTrueTypeFont"/>
+      </Item24>
+      <Item25>
+        <Filename Value="ElysionTypes.pas"/>
+        <UnitName Value="ElysionTypes"/>
+      </Item25>
+      <Item26>
+        <Filename Value="ElysionUtils.pas"/>
+        <UnitName Value="ElysionUtils"/>
+      </Item26>
+      <Item27>
+        <Filename Value="OpenURLUtil.pas"/>
+        <UnitName Value="OpenURLUtil"/>
+      </Item27>
+      <Item28>
+        <Filename Value="ResourceMap.pas"/>
+        <UnitName Value="ResourceMap"/>
+      </Item28>
+    </Files>
+    <Type Value="RunAndDesignTime"/>
+    <RequiredPkgs Count="1">
+      <Item1>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item1>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>

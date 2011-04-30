@@ -29,7 +29,7 @@ type
     //function LoadTexture(Filename: String): TelTexture;
 
 
-    procedure AddSubDirectory(aName: String);
+    procedure AddPath(aName: String);
 
   published
     property RootDirectory: String read fRootDirectory write fRootDirectory;
@@ -66,7 +66,7 @@ begin
 
 end;  *)
 
-procedure TelContent.AddSubDirectory(aName: String);
+procedure TelContent.AddPath(aName: String);
 begin
 
 end;

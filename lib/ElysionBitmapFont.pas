@@ -1,4 +1,4 @@
-unit ElysionBitmapFonts;
+unit ElysionBitmapFont;
 
 interface
 
