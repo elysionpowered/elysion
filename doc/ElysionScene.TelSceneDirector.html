@@ -3,48 +3,55 @@
 <head>
 <meta name="GENERATOR" content="PasDoc 0.12.1">
 <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
-<title>ElysionAudio: Class TelSound</title>
+<title>ElysionScene: Class TelSceneDirector</title>
 <link rel="StyleSheet" type="text/css" href="pasdoc.css">
 </head>
 <body bgcolor="#ffffff" text="#000000" link="#0000ff" vlink="#800080" alink="#FF0000">
-<a name="TelSound"></a><h1 class="cio">Class TelSound</h1>
+<a name="TelSceneDirector"></a><h1 class="cio">Class TelSceneDirector</h1>
 <table class="sections wide_list">
 <tr>
-<td><a class="section"  href="#%40Description">Description</a></td><td><a class="section"  href="#%40Hierarchy">Hierarchy</a></td><td>Fields</td><td><a class="section"  href="#%40Methods">Methods</a></td><td>Properties</td></tr></table>
+<td><a class="section"  href="#%40Description">Description</a></td><td><a class="section"  href="#%40Hierarchy">Hierarchy</a></td><td>Fields</td><td><a class="section"  href="#%40Methods">Methods</a></td><td><a class="section"  href="#%40Properties">Properties</a></td></tr></table>
 <a name="%40Description"></a><h2 class="unit">Unit</h2>
 <p class="unitlink">
-<a   href="ElysionAudio.html">ElysionAudio</a></p>
+<a   href="ElysionScene.html">ElysionScene</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
-<code>type TelSound = class(<a class="normal"  href="ElysionObject.TelObject.html">TelObject</a>)</code></p>
+<code>type TelSceneDirector = class(<a class="normal"  href="ElysionObject.TelObject.html">TelObject</a>)</code></p>
 <h2 class="description">Description</h2>
 <div class="nodescription">no description available, TelObject description follows</div><p>
 * * Class: TelObject <br> * Group: Essential <br> * Description: * Basic object</p>
 <a name="%40Hierarchy"></a><h2 class="hierarchy">Hierarchy</h2>
 <ul class="hierarchy"><li class="ancestor">TInterfacedObject</li>
 <li class="ancestor"><a class="normal"  href="ElysionObject.TelObject.html">TelObject</a></li>
-<li class="thisitem">TelSound</li></ul><h2 class="overview">Overview</h2>
+<li class="thisitem">TelSceneDirector</li></ul><h2 class="overview">Overview</h2>
 <a name="%40Methods"></a><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>constructor <b><a   href="ElysionAudio.TelSound.html#Create">Create</a></b>; Override;</code></td>
+<td class="itemcode"><code>constructor <b><a   href="ElysionScene.TelSceneDirector.html#Create">Create</a></b>; Override;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>destructor <b><a   href="ElysionAudio.TelSound.html#Destroy">Destroy</a></b>; Override;</code></td>
+<td class="itemcode"><code>destructor <b><a   href="ElysionScene.TelSceneDirector.html#Destroy">Destroy</a></b>; Override;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionAudio.TelSound.html#LoadFromFile">LoadFromFile</a></b>(Filename: String);</code></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionScene.TelSceneDirector.html#Add">Add</a></b>(aScene: <a   href="ElysionScene.TelScene.html">TelScene</a>);</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionAudio.TelSound.html#Play">Play</a></b>;</code></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionScene.TelSceneDirector.html#Initialize">Initialize</a></b>(); Overload;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionAudio.TelSound.html#Stop">Stop</a></b>;</code></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionScene.TelSceneDirector.html#Initialize">Initialize</a></b>(Exceptions: array of Integer); Overload;</code></td>
+</tr>
+</table>
+<a name="%40Properties"></a><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionScene.TelSceneDirector.html#Count">Count</a></b>: Integer read GetCount;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
@@ -68,7 +75,7 @@
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="LoadFromFile"></a><code>procedure <b>LoadFromFile</b>(Filename: String);</code></td>
+<td class="itemcode"><a name="Add"></a><code>procedure <b>Add</b>(aScene: <a   href="ElysionScene.TelScene.html">TelScene</a>);</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -76,7 +83,7 @@
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Play"></a><code>procedure <b>Play</b>;</code></td>
+<td class="itemcode"><a name="Initialize"></a><code>procedure <b>Initialize</b>(); Overload;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -84,11 +91,22 @@
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Stop"></a><code>procedure <b>Stop</b>;</code></td>
+<td class="itemcode"><a name="Initialize"></a><code>procedure <b>Initialize</b>(Exceptions: array of Integer); Overload;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
 </table>
-<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2011-04-30 03:13:32</em>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Count"></a><code>property <b>Count</b>: Integer read GetCount;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+procedure SetCurrentScene();</p>
+</td></tr>
+</table>
+<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2011-04-30 03:13:33</em>
 </span>
 </body></html>

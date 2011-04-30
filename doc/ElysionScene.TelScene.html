@@ -3,71 +3,59 @@
 <head>
 <meta name="GENERATOR" content="PasDoc 0.12.1">
 <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
-<title>ElysionAudio: Class TelMusic</title>
+<title>ElysionScene: Class TelScene</title>
 <link rel="StyleSheet" type="text/css" href="pasdoc.css">
 </head>
 <body bgcolor="#ffffff" text="#000000" link="#0000ff" vlink="#800080" alink="#FF0000">
-<a name="TelMusic"></a><h1 class="cio">Class TelMusic</h1>
+<a name="TelScene"></a><h1 class="cio">Class TelScene</h1>
 <table class="sections wide_list">
 <tr>
 <td><a class="section"  href="#%40Description">Description</a></td><td><a class="section"  href="#%40Hierarchy">Hierarchy</a></td><td>Fields</td><td><a class="section"  href="#%40Methods">Methods</a></td><td><a class="section"  href="#%40Properties">Properties</a></td></tr></table>
 <a name="%40Description"></a><h2 class="unit">Unit</h2>
 <p class="unitlink">
-<a   href="ElysionAudio.html">ElysionAudio</a></p>
+<a   href="ElysionScene.html">ElysionScene</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
-<code>type TelMusic = class(<a class="normal"  href="ElysionObject.TelObject.html">TelObject</a>)</code></p>
+<code>type TelScene = class(<a class="normal"  href="ElysionObject.TelObject.html">TelObject</a>)</code></p>
 <h2 class="description">Description</h2>
 <div class="nodescription">no description available, TelObject description follows</div><p>
 * * Class: TelObject <br> * Group: Essential <br> * Description: * Basic object</p>
 <a name="%40Hierarchy"></a><h2 class="hierarchy">Hierarchy</h2>
 <ul class="hierarchy"><li class="ancestor">TInterfacedObject</li>
 <li class="ancestor"><a class="normal"  href="ElysionObject.TelObject.html">TelObject</a></li>
-<li class="thisitem">TelMusic</li></ul><h2 class="overview">Overview</h2>
+<li class="thisitem">TelScene</li></ul><h2 class="overview">Overview</h2>
 <a name="%40Methods"></a><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>constructor <b><a   href="ElysionAudio.TelMusic.html#Create">Create</a></b>(); Override;</code></td>
+<td class="itemcode"><code>constructor <b><a   href="ElysionScene.TelScene.html#Create">Create</a></b>; Override;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>destructor <b><a   href="ElysionAudio.TelMusic.html#Destroy">Destroy</a></b>(); Override;</code></td>
+<td class="itemcode"><code>destructor <b><a   href="ElysionScene.TelScene.html#Destroy">Destroy</a></b>; Override;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionAudio.TelMusic.html#SetPosition">SetPosition</a></b>(Position: Double);</code></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionScene.TelScene.html#Add">Add</a></b>(aNode: <a   href="ElysionNode.TelNode.html">TelNode</a>);</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionAudio.TelMusic.html#LoadFromFile">LoadFromFile</a></b>(Filename: String);</code></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionScene.TelScene.html#Render">Render</a></b>(); virtual;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionAudio.TelMusic.html#Play">Play</a></b>(Loop: Integer = 0);</code></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionScene.TelScene.html#Update">Update</a></b>(dt: Double); virtual;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionAudio.TelMusic.html#Pause">Pause</a></b>();</code></td>
-</tr>
-<tr class="list">
-<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionAudio.TelMusic.html#Stop">Stop</a></b>();</code></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionScene.TelScene.html#HandleEvents">HandleEvents</a></b>(); virtual; abstract;</code></td>
 </tr>
 </table>
 <a name="%40Properties"></a><h3 class="summary">Properties</h3>
 <table class="summary wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a   href="ElysionAudio.TelMusic.html#IsPlaying">IsPlaying</a></b>: Boolean read fIsPlaying;</code></td>
-</tr>
-<tr class="list2">
-<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a   href="ElysionAudio.TelMusic.html#Paused">Paused</a></b>: Boolean read fPaused;</code></td>
-</tr>
-<tr class="list">
-<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a   href="ElysionAudio.TelMusic.html#Volume">Volume</a></b>: ShortInt read FVolume write SetVolume;</code></td>
+<td class="itemcode"><code>property <b><a   href="ElysionScene.TelScene.html#Initialized">Initialized</a></b>: Boolean read fInitialized;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
@@ -75,7 +63,7 @@
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Create"></a><code>constructor <b>Create</b>(); Override;</code></td>
+<td class="itemcode"><a name="Create"></a><code>constructor <b>Create</b>; Override;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -83,7 +71,7 @@
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Destroy"></a><code>destructor <b>Destroy</b>(); Override;</code></td>
+<td class="itemcode"><a name="Destroy"></a><code>destructor <b>Destroy</b>; Override;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -91,7 +79,17 @@
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="SetPosition"></a><code>procedure <b>SetPosition</b>(Position: Double);</code></td>
+<td class="itemcode"><a name="Add"></a><code>procedure <b>Add</b>(aNode: <a   href="ElysionNode.TelNode.html">TelNode</a>);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+procedure Initialize(); virtual; abstract;</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Render"></a><code>procedure <b>Render</b>(); virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -99,7 +97,7 @@
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="LoadFromFile"></a><code>procedure <b>LoadFromFile</b>(Filename: String);</code></td>
+<td class="itemcode"><a name="Update"></a><code>procedure <b>Update</b>(dt: Double); virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -107,23 +105,7 @@
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Play"></a><code>procedure <b>Play</b>(Loop: Integer = 0);</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Pause"></a><code>procedure <b>Pause</b>();</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Stop"></a><code>procedure <b>Stop</b>();</code></td>
+<td class="itemcode"><a name="HandleEvents"></a><code>procedure <b>HandleEvents</b>(); virtual; abstract;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -132,27 +114,11 @@
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><a name="IsPlaying"></a><code>property <b>IsPlaying</b>: Boolean read fIsPlaying;</code></td>
+<td class="itemcode"><a name="Initialized"></a><code>property <b>Initialized</b>: Boolean read fInitialized;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
 </table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><a name="Paused"></a><code>property <b>Paused</b>: Boolean read fPaused;</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><a name="Volume"></a><code>property <b>Volume</b>: ShortInt read FVolume write SetVolume;</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2011-04-30 03:13:32</em>
+<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2011-04-30 03:13:33</em>
 </span>
 </body></html>

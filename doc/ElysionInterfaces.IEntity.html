@@ -26,27 +26,7 @@
 <table class="summary wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionInterfaces.IEntity.html#Attach">Attach</a></b>(Component: <a   href="ElysionInterfaces.IComponent.html">IComponent</a>); Overload;</code></td>
-</tr>
-<tr class="list2">
-<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionInterfaces.IEntity.html#Attach">Attach</a></b>(Components: array of <a   href="ElysionInterfaces.IComponent.html">IComponent</a>); Overload;</code></td>
-</tr>
-<tr class="list">
-<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionInterfaces.IEntity.html#Detach">Detach</a></b>(Component: <a   href="ElysionInterfaces.IComponent.html">IComponent</a>); Overload;</code></td>
-</tr>
-<tr class="list2">
-<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionInterfaces.IEntity.html#Detach">Detach</a></b>(Components: array of <a   href="ElysionInterfaces.IComponent.html">IComponent</a>); Overload;</code></td>
-</tr>
-<tr class="list">
-<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionInterfaces.IEntity.html#OnEnterFrame">OnEnterFrame</a></b>();</code></td>
-</tr>
-<tr class="list2">
-<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionInterfaces.IEntity.html#UpdateComponent">UpdateComponent</a></b>(Components: array of <a   href="ElysionInterfaces.IComponent.html">IComponent</a>);</code></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionInterfaces.IEntity.html#Update">Update</a></b>(dt: Double = 0.0);</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
@@ -54,51 +34,19 @@
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Attach"></a><code>procedure <b>Attach</b>(Component: <a   href="ElysionInterfaces.IComponent.html">IComponent</a>); Overload;</code></td>
+<td class="itemcode"><a name="Update"></a><code>procedure <b>Update</b>(dt: Double = 0.0);</code></td>
 </tr>
 <tr><td colspan="2">
-&nbsp;</td></tr>
+<p>
+procedure Attach(Component: IComponent); Overload; procedure Attach(Components: array of IComponent); Overload;
+
+<p>procedure Detach(Component: IComponent); Overload; procedure Detach(Components: array of IComponent); Overload;
+
+<p>procedure OnEnterFrame();
+
+<p>procedure UpdateComponent(Components: array of IComponent);</p>
+</td></tr>
 </table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Attach"></a><code>procedure <b>Attach</b>(Components: array of <a   href="ElysionInterfaces.IComponent.html">IComponent</a>); Overload;</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Detach"></a><code>procedure <b>Detach</b>(Component: <a   href="ElysionInterfaces.IComponent.html">IComponent</a>); Overload;</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Detach"></a><code>procedure <b>Detach</b>(Components: array of <a   href="ElysionInterfaces.IComponent.html">IComponent</a>); Overload;</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="OnEnterFrame"></a><code>procedure <b>OnEnterFrame</b>();</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="UpdateComponent"></a><code>procedure <b>UpdateComponent</b>(Components: array of <a   href="ElysionInterfaces.IComponent.html">IComponent</a>);</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2011-04-28 00:54:47</em>
+<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2011-04-30 03:13:33</em>
 </span>
 </body></html>
