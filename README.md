@@ -16,7 +16,7 @@ created by Johannes Stein.
 Thanks to anyone who used (or whom I forced to use ;) ) this framework. This  
 framework would not exist in its current form without those people:  
 - Sven Rech (Initial Linux testing)  
-- David Herzog (Early sprite lists and general a very helpful guy)  
+- David Herzog (Early sprite lists and in general a very helpful guy)  
 - Jesse Klugmann  
 - Christian Fuchs  
 - Arthur Baude  
