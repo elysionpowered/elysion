@@ -38,10 +38,12 @@ then
   SDL_TTF_PATH = ""
   SDL_NET_PATH = ""
   
-  if [ -f /Library/Frameworks/SDL.framework ] SDL_PATH = "/Library/Frameworks/SDL.framework"
-  if [ -f /]
-  
-  
+  if [ -f /Library/Frameworks/SDL.framework ]
+  then
+    SDL_PATH = "/Library/Frameworks/SDL.framework"
+  fi
+
+  #if [ -f /]
 
   FPC_BIN=`which ppc386`
 
