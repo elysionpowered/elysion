@@ -13,6 +13,7 @@ uses
   ElysionTexture,
   ElysionTimer,
   ElysionUtils,
+  ElysionKeyCode,
 
   SDL,
   SDLUtils,
@@ -529,7 +530,9 @@ end;
 }
 
 constructor TelWindow.Create;
-var i: Integer;
+var
+  i, tmpScreenshotCount: Integer;
+  searchResult: TSearchRec;
 begin
   inherited Create;
 
@@ -578,6 +581,7 @@ begin
   fMouseButtonDownEventList := TList.Create;
   fMouseButtonUpEventList := TList.Create;
 
+  // Reset event arrays
   for i := 0 to High(KeyUp) do
   begin
     KeyDown[i] := false;
@@ -607,6 +611,23 @@ begin
     JoyHat[i] := false;
   end;
 
+  // Check if user made some screenshots and set screenshot counter accordingly
+
+  tmpScreenshotCount := 0;
+  if FindFirst('screenshot*.png', faAnyFile, searchResult) = 0 then
+  begin
+    repeat
+      tmpScreenshotCount := tmpScreenshotCount + 1;
+    until FindNext(searchResult) <> 0;
+
+    // Must free up resources used by these successful finds
+    FindClose(searchResult);
+  end;
+
+  fScreenShotCounter := tmpScreenshotCount;
+
+
+  // Probably not needed here...
   if FHideCursor then SDL_ShowCursor(0)
                  else SDL_ShowCursor(1);
 
@@ -1023,11 +1044,12 @@ var
   rmask, gmask, bmask, amask: Uint32;
   SBits: Integer;
 begin
-  Filename := Filename + IntToString(fScreenShotCounter, true, 3);
+  // fScreenshotCounter + 1 is a trick to prevent wrting over old files
+  Filename := Filename + IntToString(fScreenShotCounter + 1, true, 3);
 
-  if UpperCase(ExtractFileExt(Filename)) <> '.BMP' then
+  if UpperCase(ExtractFileExt(Filename)) <> '.PNG' then
   begin
-    Filename := Filename + '.bmp';
+    Filename := Filename + '.png';
   end;
 
   if SDL_BYTEORDER = SDL_BIG_ENDIAN then
@@ -1053,11 +1075,16 @@ begin
   SDL_LockSurface(tmpSurface);
 
   //glReadPixels(0, 0, Self.Width, Self.Height, GL_BGR, GL_UNSIGNED_BYTE, tmpSurface^.pixels);
+
+  // By default Elysion's origin is at the top-left corner which is not the
+  // default setting of OpenGL (default setting of OpenGL: bottom-left)
+  // So we need to flip the image vertically (That's all that's happenin' here)
   glReadPixels(0, 0, Self.Width, Self.Height, GL_RGB, GL_UNSIGNED_BYTE, tmpSurface^.pixels);
+  SDL_FlipRectV(tmpSurface, PSDLRect(0, 0, Self.Width, Self.Height));
 
   SDL_UnlockSurface(tmpSurface);
 
-  SDL_SaveBMP(tmpSurface, PChar(Filename));
+  ImagingSDL.SaveSDLSurfaceToFile(Filename, tmpSurface);
 
   SDL_FreeSurface(tmpSurface);
 
@@ -1066,10 +1093,10 @@ end;
 
 function TelWindow.OnPoint(Coord: TelVector2i; Rect: TelRect): Boolean; 
 begin
-  if (Coord.X >= Rect.x) and
-     (Coord.X >= Rect.y) and
-     (Coord.X < (Rect.x + Rect.w)) and
-     (Coord.Y < (Rect.y + Rect.h)) then Result := true else Result := false;
+  if (Coord.X >= Rect.X) and
+     (Coord.X >= Rect.Y) and
+     (Coord.X < (Rect.X + Rect.W)) and
+     (Coord.Y < (Rect.Y + Rect.H)) then Result := true else Result := false;
 end;
 
 procedure TelWindow.HandleEvents;
