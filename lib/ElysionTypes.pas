@@ -67,576 +67,6 @@ const
 		SYS_BITS = 32;
 	{$ENDIF}
 	
-	
-// ASCII Keymap
-// copied from SDL.pas
-
-
-MAX_JOYSTICKS = 2; // only 2 are supported in the multimedia API
-{$EXTERNALSYM MAX_JOYSTICKS}
-MAX_AXES = 6; // each joystick can have up to 6 axes
-{$EXTERNALSYM MAX_AXES}
-MAX_BUTTONS = 32; // and 32 buttons
-{$EXTERNALSYM MAX_BUTTONS}
-AXIS_MIN = -32768; // minimum value for axis coordinate
-{$EXTERNALSYM AXIS_MIN}
-AXIS_MAX = 32767; // maximum value for axis coordinate
-{$EXTERNALSYM AXIS_MAX}
-JOY_AXIS_THRESHOLD = (((AXIS_MAX) - (AXIS_MIN)) / 100); // 1% motion
-{$EXTERNALSYM JOY_AXIS_THRESHOLD}
-
-
-HAT_CENTERED = $00;
-{$EXTERNALSYM HAT_CENTERED}
-HAT_UP = $01;
-{$EXTERNALSYM HAT_UP}
-HAT_RIGHT = $02;
-{$EXTERNALSYM HAT_RIGHT}
-HAT_DOWN = $04;
-{$EXTERNALSYM HAT_DOWN}
-HAT_LEFT = $08;
-{$EXTERNALSYM HAT_LEFT}
-HAT_RIGHTUP = HAT_RIGHT or HAT_UP;
-{$EXTERNALSYM HAT_RIGHTUP}
-HAT_RIGHTDOWN = HAT_RIGHT or HAT_DOWN;
-{$EXTERNALSYM HAT_RIGHTDOWN}
-HAT_LEFTUP = HAT_LEFT or HAT_UP;
-{$EXTERNALSYM HAT_LEFTUP}
-HAT_LEFTDOWN = HAT_LEFT or HAT_DOWN;
-{$EXTERNALSYM HAT_LEFTDOWN}
-
-  K_UNKNOWN = 0;
-{$EXTERNALSYM K_UNKNOWN}
-  K_FIRST = 0;
-{$EXTERNALSYM K_FIRST}
-  K_BACKSPACE = 8;
-{$EXTERNALSYM K_BACKSPACE}
-  K_TAB = 9;
-{$EXTERNALSYM K_TAB}
-  K_CLEAR = 12;
-{$EXTERNALSYM K_CLEAR}
-  K_RETURN = 13;
-{$EXTERNALSYM K_RETURN}
-  K_PAUSE = 19;
-{$EXTERNALSYM K_PAUSE}
-  K_ESCAPE = 27;
-{$EXTERNALSYM K_ESCAPE}
-  K_SPACE = 32;
-{$EXTERNALSYM K_SPACE}
-  K_EXCLAIM = 33;
-{$EXTERNALSYM K_EXCLAIM}
-  K_QUOTEDBL = 34;
-{$EXTERNALSYM K_QUOTEDBL}
-  K_HASH = 35;
-{$EXTERNALSYM K_HASH}
-  K_DOLLAR = 36;
-{$EXTERNALSYM K_DOLLAR}
-  K_AMPERSAND = 38;
-{$EXTERNALSYM K_AMPERSAND}
-  K_QUOTE = 39;
-{$EXTERNALSYM K_QUOTE}
-  K_LEFTPAREN = 40;
-{$EXTERNALSYM K_LEFTPAREN}
-  K_RIGHTPAREN = 41;
-{$EXTERNALSYM K_RIGHTPAREN}
-  K_ASTERISK = 42;
-{$EXTERNALSYM K_ASTERISK}
-  K_PLUS = 43;
-{$EXTERNALSYM K_PLUS}
-  K_COMMA = 44;
-{$EXTERNALSYM K_COMMA}
-  K_MINUS = 45;
-{$EXTERNALSYM K_MINUS}
-  K_PERIOD = 46;
-{$EXTERNALSYM K_PERIOD}
-  K_SLASH = 47;
-{$EXTERNALSYM K_SLASH}
-  K_0 = 48;
-{$EXTERNALSYM K_0}
-  K_1 = 49;
-{$EXTERNALSYM K_1}
-  K_2 = 50;
-{$EXTERNALSYM K_2}
-  K_3 = 51;
-{$EXTERNALSYM K_3}
-  K_4 = 52;
-{$EXTERNALSYM K_4}
-  K_5 = 53;
-{$EXTERNALSYM K_5}
-  K_6 = 54;
-{$EXTERNALSYM K_6}
-  K_7 = 55;
-{$EXTERNALSYM K_7}
-  K_8 = 56;
-{$EXTERNALSYM K_8}
-  K_9 = 57;
-{$EXTERNALSYM K_9}
-  K_COLON = 58;
-{$EXTERNALSYM K_COLON}
-  K_SEMICOLON = 59;
-{$EXTERNALSYM K_SEMICOLON}
-  K_LESS = 60;
-{$EXTERNALSYM K_LESS}
-  K_EQUALS = 61;
-{$EXTERNALSYM K_EQUALS}
-  K_GREATER = 62;
-{$EXTERNALSYM K_GREATER}
-  K_QUESTION = 63;
-{$EXTERNALSYM K_QUESTION}
-  K_AT = 64;
-{$EXTERNALSYM K_AT}
-
-  { Skip uppercase letters }
-
-  K_LEFTBRACKET = 91;
-{$EXTERNALSYM K_LEFTBRACKET}
-  K_BACKSLASH = 92;
-{$EXTERNALSYM K_BACKSLASH}
-  K_RIGHTBRACKET = 93;
-{$EXTERNALSYM K_RIGHTBRACKET}
-  K_CARET = 94;
-{$EXTERNALSYM K_CARET}
-  K_UNDERSCORE = 95;
-{$EXTERNALSYM K_UNDERSCORE}
-  K_BACKQUOTE = 96;
-{$EXTERNALSYM K_BACKQUOTE}
-  K_a = 97;
-{$EXTERNALSYM K_a}
-  K_b = 98;
-{$EXTERNALSYM K_b}
-  K_c = 99;
-{$EXTERNALSYM K_c}
-  K_d = 100;
-{$EXTERNALSYM K_d}
-  K_e = 101;
-{$EXTERNALSYM K_e}
-  K_f = 102;
-{$EXTERNALSYM K_f}
-  K_g = 103;
-{$EXTERNALSYM K_g}
-  K_h = 104;
-{$EXTERNALSYM K_h}
-  K_i = 105;
-{$EXTERNALSYM K_i}
-  K_j = 106;
-{$EXTERNALSYM K_j}
-  K_k = 107;
-{$EXTERNALSYM K_k}
-  K_l = 108;
-{$EXTERNALSYM K_l}
-  K_m = 109;
-{$EXTERNALSYM K_m}
-  K_n = 110;
-{$EXTERNALSYM K_n}
-  K_o = 111;
-{$EXTERNALSYM K_o}
-  K_p = 112;
-{$EXTERNALSYM K_p}
-  K_q = 113;
-{$EXTERNALSYM K_q}
-  K_r = 114;
-{$EXTERNALSYM K_r}
-  K_s = 115;
-{$EXTERNALSYM K_s}
-  K_t = 116;
-{$EXTERNALSYM K_t}
-  K_u = 117;
-{$EXTERNALSYM K_u}
-  K_v = 118;
-{$EXTERNALSYM K_v}
-  K_w = 119;
-{$EXTERNALSYM K_w}
-  K_x = 120;
-{$EXTERNALSYM K_x}
-  K_y = 121;
-{$EXTERNALSYM K_y}
-  K_z = 122;
-{$EXTERNALSYM K_z}
-  K_DELETE = 127;
-{$EXTERNALSYM K_DELETE}
-  // End of ASCII mapped keysyms
-
-  // International keyboard syms
-  K_WORLD_0 = 160; // 0xA0
-{$EXTERNALSYM K_WORLD_0}
-  K_WORLD_1 = 161;
-{$EXTERNALSYM K_WORLD_1}
-  K_WORLD_2 = 162;
-{$EXTERNALSYM K_WORLD_2}
-  K_WORLD_3 = 163;
-{$EXTERNALSYM K_WORLD_3}
-  K_WORLD_4 = 164;
-{$EXTERNALSYM K_WORLD_4}
-  K_WORLD_5 = 165;
-{$EXTERNALSYM K_WORLD_5}
-  K_WORLD_6 = 166;
-{$EXTERNALSYM K_WORLD_6}
-  K_WORLD_7 = 167;
-{$EXTERNALSYM K_WORLD_7}
-  K_WORLD_8 = 168;
-{$EXTERNALSYM K_WORLD_8}
-  K_WORLD_9 = 169;
-{$EXTERNALSYM K_WORLD_9}
-  K_WORLD_10 = 170;
-{$EXTERNALSYM K_WORLD_10}
-  K_WORLD_11 = 171;
-{$EXTERNALSYM K_WORLD_11}
-  K_WORLD_12 = 172;
-{$EXTERNALSYM K_WORLD_12}
-  K_WORLD_13 = 173;
-{$EXTERNALSYM K_WORLD_13}
-  K_WORLD_14 = 174;
-{$EXTERNALSYM K_WORLD_14}
-  K_WORLD_15 = 175;
-{$EXTERNALSYM K_WORLD_15}
-  K_WORLD_16 = 176;
-{$EXTERNALSYM K_WORLD_16}
-  K_WORLD_17 = 177;
-{$EXTERNALSYM K_WORLD_17}
-  K_WORLD_18 = 178;
-{$EXTERNALSYM K_WORLD_18}
-  K_WORLD_19 = 179;
-{$EXTERNALSYM K_WORLD_19}
-  K_WORLD_20 = 180;
-{$EXTERNALSYM K_WORLD_20}
-  K_WORLD_21 = 181;
-{$EXTERNALSYM K_WORLD_21}
-  K_WORLD_22 = 182;
-{$EXTERNALSYM K_WORLD_22}
-  K_WORLD_23 = 183;
-{$EXTERNALSYM K_WORLD_23}
-  K_WORLD_24 = 184;
-{$EXTERNALSYM K_WORLD_24}
-  K_WORLD_25 = 185;
-{$EXTERNALSYM K_WORLD_25}
-  K_WORLD_26 = 186;
-{$EXTERNALSYM K_WORLD_26}
-  K_WORLD_27 = 187;
-{$EXTERNALSYM K_WORLD_27}
-  K_WORLD_28 = 188;
-{$EXTERNALSYM K_WORLD_28}
-  K_WORLD_29 = 189;
-{$EXTERNALSYM K_WORLD_29}
-  K_WORLD_30 = 190;
-{$EXTERNALSYM K_WORLD_30}
-  K_WORLD_31 = 191;
-{$EXTERNALSYM K_WORLD_31}
-  K_WORLD_32 = 192;
-{$EXTERNALSYM K_WORLD_32}
-  K_WORLD_33 = 193;
-{$EXTERNALSYM K_WORLD_33}
-  K_WORLD_34 = 194;
-{$EXTERNALSYM K_WORLD_34}
-  K_WORLD_35 = 195;
-{$EXTERNALSYM K_WORLD_35}
-  K_WORLD_36 = 196;
-{$EXTERNALSYM K_WORLD_36}
-  K_WORLD_37 = 197;
-{$EXTERNALSYM K_WORLD_37}
-  K_WORLD_38 = 198;
-{$EXTERNALSYM K_WORLD_38}
-  K_WORLD_39 = 199;
-{$EXTERNALSYM K_WORLD_39}
-  K_WORLD_40 = 200;
-{$EXTERNALSYM K_WORLD_40}
-  K_WORLD_41 = 201;
-{$EXTERNALSYM K_WORLD_41}
-  K_WORLD_42 = 202;
-{$EXTERNALSYM K_WORLD_42}
-  K_WORLD_43 = 203;
-{$EXTERNALSYM K_WORLD_43}
-  K_WORLD_44 = 204;
-{$EXTERNALSYM K_WORLD_44}
-  K_WORLD_45 = 205;
-{$EXTERNALSYM K_WORLD_45}
-  K_WORLD_46 = 206;
-{$EXTERNALSYM K_WORLD_46}
-  K_WORLD_47 = 207;
-{$EXTERNALSYM K_WORLD_47}
-  K_WORLD_48 = 208;
-{$EXTERNALSYM K_WORLD_48}
-  K_WORLD_49 = 209;
-{$EXTERNALSYM K_WORLD_49}
-  K_WORLD_50 = 210;
-{$EXTERNALSYM K_WORLD_50}
-  K_WORLD_51 = 211;
-{$EXTERNALSYM K_WORLD_51}
-  K_WORLD_52 = 212;
-{$EXTERNALSYM K_WORLD_52}
-  K_WORLD_53 = 213;
-{$EXTERNALSYM K_WORLD_53}
-  K_WORLD_54 = 214;
-{$EXTERNALSYM K_WORLD_54}
-  K_WORLD_55 = 215;
-{$EXTERNALSYM K_WORLD_55}
-  K_WORLD_56 = 216;
-{$EXTERNALSYM K_WORLD_56}
-  K_WORLD_57 = 217;
-{$EXTERNALSYM K_WORLD_57}
-  K_WORLD_58 = 218;
-{$EXTERNALSYM K_WORLD_58}
-  K_WORLD_59 = 219;
-{$EXTERNALSYM K_WORLD_59}
-  K_WORLD_60 = 220;
-{$EXTERNALSYM K_WORLD_60}
-  K_WORLD_61 = 221;
-{$EXTERNALSYM K_WORLD_61}
-  K_WORLD_62 = 222;
-{$EXTERNALSYM K_WORLD_62}
-  K_WORLD_63 = 223;
-{$EXTERNALSYM K_WORLD_63}
-  K_WORLD_64 = 224;
-{$EXTERNALSYM K_WORLD_64}
-  K_WORLD_65 = 225;
-{$EXTERNALSYM K_WORLD_65}
-  K_WORLD_66 = 226;
-{$EXTERNALSYM K_WORLD_66}
-  K_WORLD_67 = 227;
-{$EXTERNALSYM K_WORLD_67}
-  K_WORLD_68 = 228;
-{$EXTERNALSYM K_WORLD_68}
-  K_WORLD_69 = 229;
-{$EXTERNALSYM K_WORLD_69}
-  K_WORLD_70 = 230;
-{$EXTERNALSYM K_WORLD_70}
-  K_WORLD_71 = 231;
-{$EXTERNALSYM K_WORLD_71}
-  K_WORLD_72 = 232;
-{$EXTERNALSYM K_WORLD_72}
-  K_WORLD_73 = 233;
-{$EXTERNALSYM K_WORLD_73}
-  K_WORLD_74 = 234;
-{$EXTERNALSYM K_WORLD_74}
-  K_WORLD_75 = 235;
-{$EXTERNALSYM K_WORLD_75}
-  K_WORLD_76 = 236;
-{$EXTERNALSYM K_WORLD_76}
-  K_WORLD_77 = 237;
-{$EXTERNALSYM K_WORLD_77}
-  K_WORLD_78 = 238;
-{$EXTERNALSYM K_WORLD_78}
-  K_WORLD_79 = 239;
-{$EXTERNALSYM K_WORLD_79}
-  K_WORLD_80 = 240;
-{$EXTERNALSYM K_WORLD_80}
-  K_WORLD_81 = 241;
-{$EXTERNALSYM K_WORLD_81}
-  K_WORLD_82 = 242;
-{$EXTERNALSYM K_WORLD_82}
-  K_WORLD_83 = 243;
-{$EXTERNALSYM K_WORLD_83}
-  K_WORLD_84 = 244;
-{$EXTERNALSYM K_WORLD_84}
-  K_WORLD_85 = 245;
-{$EXTERNALSYM K_WORLD_85}
-  K_WORLD_86 = 246;
-{$EXTERNALSYM K_WORLD_86}
-  K_WORLD_87 = 247;
-{$EXTERNALSYM K_WORLD_87}
-  K_WORLD_88 = 248;
-{$EXTERNALSYM K_WORLD_88}
-  K_WORLD_89 = 249;
-{$EXTERNALSYM K_WORLD_89}
-  K_WORLD_90 = 250;
-{$EXTERNALSYM K_WORLD_90}
-  K_WORLD_91 = 251;
-{$EXTERNALSYM K_WORLD_91}
-  K_WORLD_92 = 252;
-{$EXTERNALSYM K_WORLD_92}
-  K_WORLD_93 = 253;
-{$EXTERNALSYM K_WORLD_93}
-  K_WORLD_94 = 254;
-{$EXTERNALSYM K_WORLD_94}
-  K_WORLD_95 = 255; // 0xFF
-{$EXTERNALSYM K_WORLD_95}
-
-  // Numeric keypad
-  K_KP0 = 256;
-{$EXTERNALSYM K_KP0}
-  K_KP1 = 257;
-{$EXTERNALSYM K_KP1}
-  K_KP2 = 258;
-{$EXTERNALSYM K_KP2}
-  K_KP3 = 259;
-{$EXTERNALSYM K_KP3}
-  K_KP4 = 260;
-{$EXTERNALSYM K_KP4}
-  K_KP5 = 261;
-{$EXTERNALSYM K_KP5}
-  K_KP6 = 262;
-{$EXTERNALSYM K_KP6}
-  K_KP7 = 263;
-{$EXTERNALSYM K_KP7}
-  K_KP8 = 264;
-{$EXTERNALSYM K_KP8}
-  K_KP9 = 265;
-{$EXTERNALSYM K_KP9}
-  K_KP_PERIOD = 266;
-{$EXTERNALSYM K_KP_PERIOD}
-  K_KP_DIVIDE = 267;
-{$EXTERNALSYM K_KP_DIVIDE}
-  K_KP_MULTIPLY = 268;
-{$EXTERNALSYM K_KP_MULTIPLY}
-  K_KP_MINUS = 269;
-{$EXTERNALSYM K_KP_MINUS}
-  K_KP_PLUS = 270;
-{$EXTERNALSYM K_KP_PLUS}
-  K_KP_ENTER = 271;
-{$EXTERNALSYM K_KP_ENTER}
-  K_KP_EQUALS = 272;
-{$EXTERNALSYM K_KP_EQUALS}
-
-  // Arrows + Home/End pad
-  K_UP = 273;
-{$EXTERNALSYM K_UP}
-  K_DOWN = 274;
-{$EXTERNALSYM K_DOWN}
-  K_RIGHT = 275;
-{$EXTERNALSYM K_RIGHT}
-  K_LEFT = 276;
-{$EXTERNALSYM K_LEFT}
-  K_INSERT = 277;
-{$EXTERNALSYM K_INSERT}
-  K_HOME = 278;
-{$EXTERNALSYM K_HOME}
-  K_END = 279;
-{$EXTERNALSYM K_END}
-  K_PAGEUP = 280;
-{$EXTERNALSYM K_PAGEUP}
-  K_PAGEDOWN = 281;
-{$EXTERNALSYM K_PAGEDOWN}
-
-  // Function keys
-  K_F1 = 282;
-{$EXTERNALSYM K_F1}
-  K_F2 = 283;
-{$EXTERNALSYM K_F2}
-  K_F3 = 284;
-{$EXTERNALSYM K_F3}
-  K_F4 = 285;
-{$EXTERNALSYM K_F4}
-  K_F5 = 286;
-{$EXTERNALSYM K_F5}
-  K_F6 = 287;
-{$EXTERNALSYM K_F6}
-  K_F7 = 288;
-{$EXTERNALSYM K_F7}
-  K_F8 = 289;
-{$EXTERNALSYM K_F8}
-  K_F9 = 290;
-{$EXTERNALSYM K_F9}
-  K_F10 = 291;
-{$EXTERNALSYM K_F10}
-  K_F11 = 292;
-{$EXTERNALSYM K_F11}
-  K_F12 = 293;
-{$EXTERNALSYM K_F12}
-  K_F13 = 294;
-{$EXTERNALSYM K_F13}
-  K_F14 = 295;
-{$EXTERNALSYM K_F14}
-  K_F15 = 296;
-{$EXTERNALSYM K_F15}
-
-  // Key state modifier keys
-  K_NUMLOCK = 300;
-{$EXTERNALSYM K_NUMLOCK}
-  K_CAPSLOCK = 301;
-{$EXTERNALSYM K_CAPSLOCK}
-  K_SCROLLOCK = 302;
-{$EXTERNALSYM K_SCROLLOCK}
-  K_RSHIFT = 303;
-{$EXTERNALSYM K_RSHIFT}
-  K_LSHIFT = 304;
-{$EXTERNALSYM K_LSHIFT}
-  K_RCTRL = 305;
-{$EXTERNALSYM K_RCTRL}
-  K_LCTRL = 306;
-{$EXTERNALSYM K_LCTRL}
-  K_RALT = 307;
-{$EXTERNALSYM K_RALT}
-  K_LALT = 308;
-{$EXTERNALSYM K_LALT}
-  K_RMETA = 309;
-{$EXTERNALSYM K_RMETA}
-  K_LMETA = 310;
-{$EXTERNALSYM K_LMETA}
-  K_LSUPER = 311; // Left "Windows" key
-{$EXTERNALSYM K_LSUPER}
-  K_RSUPER = 312; // Right "Windows" key
-{$EXTERNALSYM K_RSUPER}
-  K_MODE = 313; // "Alt Gr" key
-{$EXTERNALSYM K_MODE}
-  K_COMPOSE = 314; // Multi-key compose key
-{$EXTERNALSYM K_COMPOSE}
-
-  // Miscellaneous function keys
-  K_HELP = 315;
-{$EXTERNALSYM K_HELP}
-  K_PRINT = 316;
-{$EXTERNALSYM K_PRINT}
-  K_SYSREQ = 317;
-{$EXTERNALSYM K_SYSREQ}
-  K_BREAK = 318;
-{$EXTERNALSYM K_BREAK}
-  K_MENU = 319;
-{$EXTERNALSYM K_MENU}
-  K_POWER = 320; // Power Macintosh power key
-{$EXTERNALSYM K_POWER}
-  K_EURO = 321; // Some european keyboards
-{$EXTERNALSYM K_EURO}
-// End of keys
-
-  // Enumeration of valid key mods (possibly OR'd together)
-  KMOD_NONE = $0000;
-{$EXTERNALSYM KMOD_NONE}
-  KMOD_LSHIFT = $0001;
-{$EXTERNALSYM KMOD_LSHIFT}
-  KMOD_RSHIFT = $0002;
-{$EXTERNALSYM KMOD_RSHIFT}
-  KMOD_LCTRL = $0040;
-{$EXTERNALSYM KMOD_LCTRL}
-  KMOD_RCTRL = $0080;
-{$EXTERNALSYM KMOD_RCTRL}
-  KMOD_LALT = $0100;
-{$EXTERNALSYM KMOD_LALT}
-  KMOD_RALT = $0200;
-{$EXTERNALSYM KMOD_RALT}
-  KMOD_LMETA = $0400;
-{$EXTERNALSYM KMOD_LMETA}
-  KMOD_RMETA = $0800;
-{$EXTERNALSYM KMOD_RMETA}
-  KMOD_NUM = $1000;
-{$EXTERNALSYM KMOD_NUM}
-  KMOD_CAPS = $2000;
-{$EXTERNALSYM KMOD_CAPS}
-  KMOD_MODE = 44000;
-{$EXTERNALSYM KMOD_MODE}
-  KMOD_RESERVED = $8000;
-{$EXTERNALSYM KMOD_RESERVED}
-
-  KMOD_CTRL = (KMOD_LCTRL or KMOD_RCTRL);
-{$EXTERNALSYM KMOD_CTRL}
-  KMOD_SHIFT = (KMOD_LSHIFT or KMOD_RSHIFT);
-{$EXTERNALSYM KMOD_SHIFT}
-  KMOD_ALT = (KMOD_LALT or KMOD_RALT);
-{$EXTERNALSYM KMOD_ALT}
-  KMOD_META = (KMOD_LMETA or KMOD_RMETA);
-{$EXTERNALSYM KMOD_META}
-
-
-// And here we go with the mouse buttons
-  BUTTON_LEFT      = 1;
-{$EXTERNALSYM BUTTON_LEFT}
-  BUTTON_MIDDLE    = 2;
-{$EXTERNALSYM BUTTON_MIDDLE}
-  BUTTON_RIGHT     = 3;
-{$EXTERNALSYM BUTTON_RIGHT}
-  BUTTON_WHEELUP   = 4;
-{$EXTERNALSYM BUTTON_WHEELUP}
-  BUTTON_WHEELDOWN = 5;
-{$EXTERNALSYM BUTTON_WHEELDOWN}
-// End of copying from other units
 
 
 type
@@ -706,7 +136,7 @@ type
     R, G, B, A: Byte;
 
     {$IFDEF CAN_METHODS}
-    procedure Clear();
+    procedure Clear(anAlpha: Byte = 255);
     procedure Make(aR, aG, aB: Byte; anA: Byte = 255);
 
     function ToString(): String;
@@ -718,6 +148,8 @@ type
     procedure Multiply(Color: TelColor);
     procedure Divide(Color: TelColor);
     procedure Scale(Factor: Single);
+
+    function Equals(aColor: TelColor): Boolean;
     {$ENDIF}
   end;
 
@@ -742,6 +174,7 @@ type
     function ToVector2i(): PelVector2i;
     function ToVector3f(): PelVector3f;
     function ToVector3i(): PelVector3i;
+    function ToSize(): PelSize;
 
     // Operators (has to compliant to earlier Delphi versions)
     procedure Add(Vector: TelVector2f);
@@ -753,6 +186,8 @@ type
     // Vector stuff
     function DotProduct(Vector: TelVector2f): Single;
     procedure Normalize();
+
+    function Equals(aVector: TelVector2f): Boolean;
     {$ENDIF}
   end;
 
@@ -788,6 +223,8 @@ type
     // Vector stuff
     function DotProduct(Vector: TelVector2i): Integer;
     procedure Normalize();
+
+    function Equals(aVector: TelVector2i): Boolean;
     {$ENDIF}
   end;
 
@@ -807,6 +244,9 @@ type
 
     // Convert to other vector types
     function ToVector2i(): PelVector2i;
+    function ToVector2f(): PelVector2f;
+    function ToVector3i(): PelVector3i;
+    function ToVector3f(): PelVector3f;
 
     // Operators (has to compliant to earlier Delphi versions)
     procedure Add(Size: TelSize);
@@ -814,6 +254,11 @@ type
     procedure Multiply(Size: TelSize);
     procedure Divide(Size: TelSize);
     procedure Scale(Factor: Single);
+
+    function GetAspectRatio(): Single;
+    function IsWide(): Boolean;
+
+    function Equals(aSize: TelSize): Boolean;
     {$ENDIF}
   end;
 
@@ -838,6 +283,7 @@ type
     function ToVector3i(): PelVector3i;
     function ToVector2f(): PelVector2f;
     function ToVector2i(): PelVector2i;
+    function ToSize(): PelSize;
 
     // Operators (has to compliant to earlier Delphi versions)
     procedure Add(Vector: TelVector3f);
@@ -848,6 +294,8 @@ type
 
     // Vector stuff
     function DotProduct(Vector: TelVector3f): Single;
+    function CrossProduct(Vector: TelVector3f): PelVector3f;
+
     procedure Normalize();
 
     procedure Zero();
@@ -855,6 +303,8 @@ type
     procedure Forward();
     procedure Up();
     procedure Right();
+
+    function Equals(aVector: TelVector3f): Boolean;
     {$ENDIF}
   end;
 
@@ -878,6 +328,7 @@ type
     function ToVector3f(EmptyZ: Boolean = False): PelVector3f;
     function ToVector2f(): PelVector2f;
     function ToVector2i(): PelVector2i;
+    function ToSize(): PelSize;
 
     // Operators (has to compliant to earlier Delphi versions)
     procedure Add(Vector: TelVector3i);
@@ -888,6 +339,8 @@ type
 
     // Vector stuff
     function DotProduct(Vector: TelVector3i): Integer;
+    function CrossProduct(Vector: TelVector3i): PelVector3i;
+
     procedure Normalize();
 
     procedure Zero();
@@ -895,6 +348,8 @@ type
     procedure Forward();
     procedure Up();
     procedure Right();
+
+    function Equals(aVector: TelVector3i): Boolean;
     {$ENDIF}
   end;
 
@@ -917,10 +372,18 @@ type
 
     procedure Make(aX, aY, aW, aH: Single); Overload;
     procedure Make(aX, aY, aW, aH: Integer); Overload;
+    procedure Make(aPosition: TelVector2f; aSize: TelSize); Overload;
+    procedure Make(aPosition: TelVector2i; aSize: TelSize); Overload;
 
     function ContainsVector(aVector: TelVector2i): Boolean; Overload;
     function ContainsVector(aVector: TelVector2f): Boolean; Overload;
     function ContainsRect(aRect: TelRect): Boolean; Overload;
+
+    function GetAspectRatio(): Single;
+    function IsWide(): Boolean;
+
+    function Equals(aRect: TelRect): Boolean;
+    function IsEmpty(): Boolean;
     {$ENDIF}
   end;
 
@@ -939,7 +402,7 @@ type
   TelShadow = record
     Blur: Integer;
     Color: TelColor;
-    Position: TelVector2i;
+    Position: TelVector2f;
     Visible: Boolean;
   end;
 
@@ -1187,8 +650,8 @@ function IsRectEmpty(Rect: TelRect): Boolean;
 begin
   if ((Rect.X <> 0) and
       (Rect.Y <> 0) and
-	  (Rect.W > 0) and
-	  (Rect.H > 0)) then Result := false else Result := true;
+      (Rect.W > 0) and
+      (Rect.H > 0)) then Result := false else Result := true;
 end;
 
 function VectorEquals(VecOne, VecTwo: TelVector2f): Boolean;
@@ -1243,12 +706,12 @@ end;
 
 {$IFDEF CAN_METHODS}
 
-procedure TelColor.Clear();
+procedure TelColor.Clear(anAlpha: Byte = 255);
 begin
   R := 0;
   G := 0;
   B := 0;
-  A := 0;
+  A := anAlpha;
 end;
 
 procedure TelColor.Make(aR, aG, aB: Byte; anA: Byte = 255);
@@ -1324,8 +787,15 @@ begin
   Self.G := tG;
   Self.B := tB;
   Self.A := tA;
-end;	
+end;
 
+function TelColor.Equals(aColor: TelColor): Boolean;
+begin
+  if ((Self.R = aColor.R) and (Self.G = aColor.G) and (Self.B = aColor.B) and (Self.A = aColor.A)) then
+    Result := true
+  else
+    Result := false;
+end;
 
 procedure TelVector2f.Clear();
 begin
@@ -1375,7 +845,16 @@ begin
 
   Result := @tmpVec;
 end;
-	
+
+function TelVector2f.ToSize(): PelSize;
+var
+  tmpSize: TelSize;
+begin
+  tmpSize := makeSize(Trunc(X), Trunc(Y));
+
+  Result := @tmpSize;
+end;
+
 procedure TelVector2f.Add(Vector: TelVector2f);
 begin
   Self.X := Self.X + Vector.X;
@@ -1417,6 +896,13 @@ begin
   Self.Y := Self.Y / GetLength;
 end;
 
+function TelVector2f.Equals(aVector: TelVector2f): Boolean;
+begin
+  if ((Self.X = aVector.X) and (Self.Y = aVector.Y)) then
+    Result := true
+  else
+    Result := false;
+end;
 
 procedure TelVector2i.Clear();
 begin
@@ -1517,6 +1003,13 @@ begin
   Self.Y := Trunc(Self.Y / GetLength);
 end;
 
+function TelVector2i.Equals(aVector: TelVector2i): Boolean;
+begin
+  if ((Self.X = aVector.X) and (Self.Y = aVector.Y)) then
+    Result := true
+  else
+    Result := false;
+end;
 
 procedure TelSize.Clear();
 begin
@@ -1535,11 +1028,38 @@ begin
   Result := Format('Width: %d Height: %d', [Width, Height])
 end;
 
+function TelSize.ToVector2f(): PelVector2f;
+var
+  tmpVec: TelVector2f;
+begin
+  tmpVec := makeV2f(Width, Height);
+
+  Result := @tmpVec;
+end;
+
 function TelSize.ToVector2i(): PelVector2i;
 var
   tmpVec: TelVector2i;
 begin
   tmpVec := makeV2i(Width, Height);
+
+  Result := @tmpVec;
+end;
+
+function TelSize.ToVector3f(): PelVector3f;
+var
+  tmpVec: TelVector3f;
+begin
+  tmpVec := makeV3f(Width, Height);
+
+  Result := @tmpVec;
+end;
+
+function TelSize.ToVector3i(): PelVector3i;
+var
+  tmpVec: TelVector3i;
+begin
+  tmpVec := makeV3i(Width, Height);
 
   Result := @tmpVec;
 end;
@@ -1574,6 +1094,22 @@ begin
   Self.Height := Trunc(Self.Height * Factor);
 end;
 
+function TelSize.GetAspectRatio(): Single;
+begin
+  Result := Width / Height;
+end;
+
+function TelSize.IsWide(): Boolean;
+begin
+  if GetAspectRatio > (4 / 3) then Result := true
+  else Result := false;
+end;
+
+function TelSize.Equals(aSize: TelSize): Boolean;
+begin
+  if ((Self.Width = aSize.Width) and (Self.Height = aSize.Height)) then Result := true
+  else Result := false;
+end;
 
 procedure TelVector3f.Clear();
 begin
@@ -1625,46 +1161,70 @@ begin
 
   Result := @tmpVec;
 end;
-	
+
+function TelVector3f.ToSize(): PelSize;
+var
+  tmpSize: TelSize;
+begin
+  tmpSize := makeSize(Trunc(X), Trunc(Y));
+
+  Result := @tmpSize;
+end;
+
 procedure TelVector3f.Add(Vector: TelVector3f);
 begin
   Self.X := Self.X + Vector.X;
   Self.Y := Self.Y + Vector.Y;
+  Self.Z := Self.Z + Vector.Z;
 end;
 
 procedure TelVector3f.Sub(Vector: TelVector3f);
 begin
   Self.X := Self.Y - Vector.X;
   Self.Y := Self.Y - Vector.Y;
+  Self.Z := Self.Z - Vector.Z;
 end;
 
 procedure TelVector3f.Multiply(Vector: TelVector3f);
 begin
   Self.X := Self.X * Vector.X;
   Self.Y := Self.Y * Vector.Y;
+  Self.Z := Self.Z * Vector.Z;
 end;
 
 procedure TelVector3f.Divide(Vector: TelVector3f);
 begin
   Self.X := Self.X / Vector.X;
   Self.Y := Self.Y / Vector.Y;
+  Self.Z := Self.Z / Vector.Z;
 end;
 
 procedure TelVector3f.Scale(Factor: Single);
 begin
   Self.X := Self.X * Factor;
   Self.Y := Self.Y * Factor;
+  Self.Z := Self.Z * Factor;
 end;
 	
 function TelVector3f.DotProduct(Vector: TelVector3f): Single;
 begin
-  Result := (Self.X * Vector.X) + (Self.Y * Vector.Y);
+  Result := (Self.X * Vector.X) + (Self.Y * Vector.Y) + (Self.Z * Vector.Z);
+end;
+
+function TelVector3f.CrossProduct(Vector: TelVector3f): PelVector3f;
+var
+  tmpVec: TelVector3f;
+begin
+  tmpVec := makeV3f(Self.Y * Vector.Z - Vector.Y * Self.Z, Self.Z * Vector.X - Vector.Z * Self.X, Self.X * Vector.Y - Vector.X * Self.Y);
+
+  Result := @tmpVec;
 end;
 
 procedure TelVector3f.Normalize();
 begin
   Self.X := Self.X / GetLength;
   Self.Y := Self.Y / GetLength;
+  Self.Z := Self.Z / GetLength;
 end;
 
 procedure TelVector3f.Zero();
@@ -1702,27 +1262,36 @@ begin
   Self.Z := 0.0;
 end;
 
+function TelVector3f.Equals(aVector: TelVector3f): Boolean;
+begin
+  if ((Self.X = aVector.X) and (Self.Y = aVector.Y) and (Self.Z = aVector.Z)) then
+    Result := true
+  else
+    Result := false;
+end;
+
 procedure TelVector3i.Clear();
 begin
   X := 0;
   Y := 0;
+  Z := 0;
 end;
 
 function TelVector3i.GetLength(): Double;
 begin
-  Result := sqrt(X * X + Y * Y);
+  Result := sqrt(X * X + Y * Y + Z * Z);
 end;
 	
 procedure TelVector3i.Make(aX, aY, aZ: Integer);
 begin
   X := aX;
   Y := aY;
-  Z := aZ
+  Z := aZ;
 end;
 	
 function TelVector3i.ToString(): String;
 begin
-  Result := Format('X: %d Y: %d, Z: %d', [X, Y, Z])
+  Result := Format('X: %d Y: %d, Z: %d', [X, Y, Z]);
 end;
 	
 function TelVector3i.ToVector3f(EmptyZ: Boolean = False): PelVector3f;
@@ -1752,46 +1321,70 @@ begin
 
   Result := @tmpVec;
 end;
-	
+
+function TelVector3i.ToSize(): PelSize;
+var
+  tmpSize: TelSize;
+begin
+  tmpSize := makeSize(X, Y);
+
+  Result := @tmpSize;
+end;
+
 procedure TelVector3i.Add(Vector: TelVector3i);
 begin
   Self.X := Self.X + Vector.X;
   Self.Y := Self.Y + Vector.Y;
+  Self.Z := Self.Z + Vector.Z;
 end;
 
 procedure TelVector3i.Sub(Vector: TelVector3i);
 begin
   Self.X := Self.Y - Vector.X;
   Self.Y := Self.Y - Vector.Y;
+  Self.Z := Self.Z - Vector.Z;
 end;
 
 procedure TelVector3i.Multiply(Vector: TelVector3i);
 begin
   Self.X := Self.X * Vector.X;
   Self.Y := Self.Y * Vector.Y;
+  Self.Z := Self.Z * Vector.Z;
 end;
 
 procedure TelVector3i.Divide(Vector: TelVector3i);
 begin
   Self.X := Trunc(Self.X / Vector.X);
   Self.Y := Trunc(Self.Y / Vector.Y);
+  Self.Z := Trunc(Self.Z / Vector.Z);
 end;
 
 procedure TelVector3i.Scale(Factor: Single);
 begin
   Self.X := Trunc(Self.X * Factor);
   Self.Y := Trunc(Self.Y * Factor);
+  Self.Z := Trunc(Self.Z * Factor);
 end;
 	
 function TelVector3i.DotProduct(Vector: TelVector3i): Integer;
 begin
-  Result := (Self.X * Vector.X) + (Self.Y * Vector.Y);
+  Result := (Self.X * Vector.X) + (Self.Y * Vector.Y) + (Self.Z * Vector.Z);
+end;
+
+function TelVector3i.CrossProduct(Vector: TelVector3i): PelVector3i;
+var
+  tmpVec: TelVector3i;
+begin
+  tmpVec := makeV3i(Self.Y * Vector.Z - Vector.Y * Self.Z, Self.Z * Vector.X - Vector.Z * Self.X, Self.X * Vector.Y - Vector.X * Self.Y);
+
+  Result := @tmpVec;
 end;
 
 procedure TelVector3i.Normalize();
 begin
   Self.X := Trunc(Self.X / GetLength);
   Self.Y := Trunc(Self.Y / GetLength);
+  Self.Z := Trunc(Self.Z / GetLength);
 end;
 
 procedure TelVector3i.Zero();
@@ -1829,6 +1422,14 @@ begin
   Self.Z := 0;
 end;
 
+function TelVector3i.Equals(aVector: TelVector3i): Boolean;
+begin
+  if ((Self.X = aVector.X) and (Self.Y = aVector.Y) and (Self.Z = aVector.Z)) then
+    Result := true
+  else
+    Result := false;
+end;
+
 
 
 procedure TelRect.Clear();
@@ -1855,6 +1456,22 @@ begin
   H := aH;
 end;
 
+procedure TelRect.Make(aPosition: TelVector2f; aSize: TelSize);
+begin
+  X := aPosition.X;
+  Y := aPosition.Y;
+  W := aSize.Width * 1.0;
+  H := aSize.Height * 1.0;
+end;
+
+procedure TelRect.Make(aPosition: TelVector2i; aSize: TelSize);
+begin
+  X := aPosition.X * 1.0;
+  Y := aPosition.Y * 1.0;
+  W := aSize.Width * 1.0;
+  H := aSize.Height * 1.0;
+end;
+
 function TelRect.ContainsVector(aVector: TelVector2i): Boolean;
 begin
   if (aVector.X >= Self.X) and
@@ -1877,6 +1494,33 @@ begin
      (aRect.Y >= Self.Y) and
      (aRect.X <= (Self.X + Self.W)) and
      (aRect.Y <= (Self.Y + Self.H)) then Result := true else Result := false;
+end;
+
+function TelRect.GetAspectRatio(): Single;
+begin
+  Result := W / H;
+end;
+
+function TelRect.IsWide(): Boolean;
+begin
+  if GetAspectRatio > (4 / 3) then Result := true
+  else Result := false;
+end;
+
+function TelRect.Equals(aRect: TelRect): Boolean;
+begin
+  if (aRect.X = Self.X) and
+     (aRect.Y = Self.Y) and
+     (aRect.W = Self.W) and
+     (aRect.H = Self.H) then Result := true else Result := false;
+end;
+
+function TelRect.IsEmpty(): Boolean;
+begin
+  if ((X <> 0) and
+      (Y <> 0) and
+      (W > 0) and
+      (H > 0)) then Result := false else Result := true;
 end;
 
 {$ELSE}
