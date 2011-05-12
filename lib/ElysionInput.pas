@@ -9,6 +9,7 @@ uses
   ElysionApplication,
   ElysionLogger,
   ElysionTimer,
+  ElysionKeyCode,
 
   SDL,
   SysUtils,
