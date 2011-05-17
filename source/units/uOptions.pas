@@ -24,7 +24,7 @@ type
 	
     procedure Render; Override;
     procedure Update(dt: Double); Override;
-    procedure HandleEvents; //Override;
+    procedure HandleEvents; Override;
   published
     property Menu: TelMenu read fMenu write fMenu;
   end;
