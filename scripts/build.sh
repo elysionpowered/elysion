@@ -105,7 +105,7 @@ then
   FPC_BIN=`which ppc386`
 
   # Compiling Intel x86 binary
-  ${FPC_BIN} ${CONFIG_FILE} -XR${DEV_LINK_INTEL32} -k"-L${LIB_FOLDER}/MacOSX -L/usr/X11R6/lib" ${SRC_MAIN}
+  ${FPC_BIN} ${CONFIG_FILE} -XR${DEV_LINK_INTEL32} -k"-L${LIB_FOLDER}/MacOSX -L/usr/X11R6/lib " ${SRC_MAIN}
   mv "${BIN_FOLDER}/${BIN_MAIN}" "${BIN_FOLDER}/${BIN_MAIN}-intel_x86"
   rm ${BIN_FOLDER}/*.o ${BIN_FOLDER}/*.ppu
   
