@@ -12,11 +12,11 @@ RES_FOLDER="../resources"
 SRC_FOLDER="../source"
 
 # Info.plist constants
-BUNDLE_REGION = "English"
-BUNDLE_ICON = "logo.icns"
-BUNDLE_IDENT = "com.mycompanyname"
-BUNDLE_SIGNATURE = "????"
-BUNDLE_VERSION = "1.0"
+BUNDLE_REGION="English"
+BUNDLE_ICON="logo.icns"
+BUNDLE_IDENT="com.mycompanyname"
+BUNDLE_SIGNATURE="????"
+BUNDLE_VERSION="1.0"
 
 
 SRC_MAIN="main.lpr"
@@ -41,6 +41,11 @@ then
   DEV_LINK_PPC=
   DEV_LINK_INTEL32=
   DEV_LINK_INTEL64=
+
+  MIN_PPC=
+  MIN_INTEL32=
+  MIN_INTEL64=
+
 
   
   if [ -d /Library/Frameworks/SDL.framework ]
@@ -78,6 +83,13 @@ then
     SDL_NET_PATH="~/Library/Frameworks/SDL_net.framework"
   fi
 
+  if [ [ -d "/Developer/SDKs/MacOSX10.6.sdk" ] || [ -d "/Developer/SDKs/MacOSX10.5.sdk" ] || [ -d "/Developer/SDKs/MacOSX10.4u.sdk" ] ]
+  then
+    echo "At least one Mac OS X SDK found"
+  else
+    echo "XCode does not seem be installed. Please install XCode."
+    exit 1
+  fi
 
   if [ -d "/Developer/SDKs/MacOSX10.6.sdk" ]
   then
@@ -85,27 +97,32 @@ then
     DEV_LINK_INTEL32="/Developer/SDKs/MacOSX10.6.sdk"
     DEV_LINK_INTEL64="/Developer/SDKs/MacOSX10.6.sdk"
 
-  elif [ -d "/Developer/SDKs/MacOSX10.5.sdk" ]
+    MIN_INTEL32="10.6.0"
+    MIN_INTEL64="10.6.0"
+  fi
+
+  if [ -d "/Developer/SDKs/MacOSX10.5.sdk" ]
   then
     DEV_LINK_PPC="/Developer/SDKs/MacOSX10.5.sdk"
     DEV_LINK_INTEL32="/Developer/SDKs/MacOSX10.5.sdk"
-    DEV_LINK_INTEL64="/Developer/SDKs/MacOSX10.5.sdk"
 
-  elif [ -d "/Developer/SDKs/MacOSX10.4u.sdk" ]
+    MIN_INTEL32="10.5.0"
+  fi
+
+  if [ -d "/Developer/SDKs/MacOSX10.4u.sdk" ]
   then
     DEV_LINK_PPC="/Developer/SDKs/MacOSX10.4u.sdk"
 	DEV_LINK_INTEL32="/Developer/SDKs/MacOSX10.4u.sdk"
-  else
-    echo "XCode does not seem be installed. Please install XCode."
-    exit 1
 
+    MIN_PPC="10.4.0"
+    MIN_INTEL32="10.4.0"
   fi
 
 
   FPC_BIN=`which ppc386`
 
   # Compiling Intel x86 binary
-  ${FPC_BIN} ${CONFIG_FILE} -XR${DEV_LINK_INTEL32} -k"-L${LIB_FOLDER}/MacOSX -L/usr/X11R6/lib " ${SRC_MAIN}
+  ${FPC_BIN} ${CONFIG_FILE} -XR${DEV_LINK_INTEL32} -k"-L${LIB_FOLDER}/MacOSX -L/usr/X11R6/lib" ${SRC_MAIN}
   mv "${BIN_FOLDER}/${BIN_MAIN}" "${BIN_FOLDER}/${BIN_MAIN}-intel_x86"
   rm ${BIN_FOLDER}/*.o ${BIN_FOLDER}/*.ppu
   
@@ -126,13 +143,25 @@ then
   
   # Creating universal binary
 
+  # Strip executables
+  if [ -f "${BIN_FOLDER}/${BIN_MAIN}-intel_x86" ]
+  then
+    strip "${BIN_FOLDER}/${BIN_MAIN}-intel_x86"
+  fi
+
+  if [ -f "${BIN_FOLDER}/${BIN_MAIN}-intel_x64" ]
+  then
+    strip "${BIN_FOLDER}/${BIN_MAIN}-intel_x64"
+  fi
+
+  if [ -f "${BIN_FOLDER}/${BIN_MAIN}-ppc" ]
+  then
+    strip "${BIN_FOLDER}/${BIN_MAIN}-ppc"
+  fi
+
   # All three compilers are here... yeah, universal binary de luxe (Intel 32, Intel 64 + PowerPC 32)
   if [ -f "${BIN_FOLDER}/${BIN_MAIN}-intel_x86" ] && [ -f "${BIN_FOLDER}/${BIN_MAIN}-intel_x64" ] && [ -f "${BIN_FOLDER}/${BIN_MAIN}-ppc" ]
   then
-    strip "${BIN_FOLDER}/${BIN_MAIN}-intel_x86"
-    strip "${BIN_FOLDER}/${BIN_MAIN}-intel_x64"
-    strip "${BIN_FOLDER}/${BIN_MAIN}-ppc"
-
     lipo -create "${BIN_FOLDER}/${BIN_MAIN}-intel_x86" "${BIN_FOLDER}/${BIN_MAIN}-intel_x64" "${BIN_FOLDER}/${BIN_MAIN}-ppc" -output "${BIN_FOLDER}/${EXEC_NAME}"
     rm -rf "${BIN_FOLDER}/${BIN_MAIN}-intel_x86"
     rm -rf "${BIN_FOLDER}/${BIN_MAIN}-intel_x64"
@@ -141,9 +170,6 @@ then
   # PowerPC 32 + Intel 32
   elif [ -f "${BIN_FOLDER}/${BIN_MAIN}-intel_x86" ] && [ -f "${BIN_FOLDER}/${BIN_MAIN}-ppc" ]
   then
-    strip "${BIN_FOLDER}/${BIN_MAIN}-intel_x86"
-    strip "${BIN_FOLDER}/${BIN_MAIN}-ppc"
-
     lipo -create "${BIN_FOLDER}/${BIN_MAIN}-intel_x86" "${BIN_FOLDER}/${BIN_MAIN}-ppc" -output "${BIN_FOLDER}/${EXEC_NAME}"
     rm -rf "${BIN_FOLDER}/${BIN_MAIN}-intel_x86"
     rm -rf "${BIN_FOLDER}/${BIN_MAIN}-ppc"
@@ -151,9 +177,6 @@ then
   # Intel 32 + Intel 64
   elif [ -f "${BIN_FOLDER}/${BIN_MAIN}-intel_x86" ] && [ -f "${BIN_FOLDER}/${BIN_MAIN}-intel_x64" ]
   then
-    strip "${BIN_FOLDER}/${BIN_MAIN}-intel_x86"
-    strip "${BIN_FOLDER}/${BIN_MAIN}-intel_x64"
-
     lipo -create "${BIN_FOLDER}/${BIN_MAIN}-intel_x86" "${BIN_FOLDER}/${BIN_MAIN}-intel_x64" -output "${BIN_FOLDER}/${EXEC_NAME}"
     rm -rf "${BIN_FOLDER}/${BIN_MAIN}-intel_x86"
     rm -rf "${BIN_FOLDER}/${BIN_MAIN}-intel_x64"
@@ -213,6 +236,15 @@ then
 	        <string>${BUNDLE_VERSION}</string>\
 	        <key>CSResourcesFileMapped</key>\
 	        <true/>\
+            <key>LSMinimumSystemVersionByArchitecture</key>\
+ 	        <dict>\
+ 		        <key>x86_64</key>\
+ 		        <string>${MIN_INTEL64}</string>\
+ 		        <key>i386</key>\
+ 		        <string>${MIN_INTEL32}</string>\
+ 		        <key>ppc</key>\
+ 		        <string>${MIN_PPC}</string>\
+ 	        </dict>\
 	</dict>\
 	</plist>" >> "${BIN_FOLDER}/${APP_NAME}.app/Contents/Info.plist"
 
