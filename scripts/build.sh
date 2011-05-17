@@ -20,7 +20,7 @@ BUNDLE_VERSION = "1.0"
 
 
 SRC_MAIN="main.lpr"
-BIN_MAIN=
+BIN_MAIN=`basename ${SRC_MAIN} .lpr`
 
 
 CONFIG_FILE="@config.cfg"
@@ -33,55 +33,136 @@ cd ${SRC_FOLDER}
 
 if [ -f /System/Library/Frameworks/Cocoa.framework/Cocoa ]
 then
-  SDL_PATH = ""
-  SDL_MIXER_PATH = ""
-  SDL_TTF_PATH = ""
-  SDL_NET_PATH = ""
+  SDL_PATH=
+  SDL_MIXER_PATH=
+  SDL_TTF_PATH=
+  SDL_NET_PATH=
+
+  DEV_LINK_PPC=
+  DEV_LINK_INTEL32=
+  DEV_LINK_INTEL64=
+
   
-  if [ -f /Library/Frameworks/SDL.framework ]
+  if [ -d /Library/Frameworks/SDL.framework ]
   then
-    SDL_PATH = "/Library/Frameworks/SDL.framework"
+    SDL_PATH="/Library/Frameworks/SDL.framework"
+  elif [ -d ~/Library/Frameworks/SDL.framework ]
+  then
+    SDL_PATH="~/Library/Frameworks/SDL.framework"
+  else
+    echo "SDL not detected. Please check: https://github.com/freezedev/elysion/wiki/Setting-up-our-development-environment"
+    exit 1
   fi
 
-  #if [ -f /]
+  if [ -d /Library/Frameworks/SDL_mixer.framework ]
+  then
+    SDL_MIXER_PATH="/Library/Frameworks/SDL_mixer.framework"
+  elif [ -d ~/Library/Frameworks/SDL_mixer.framework ]
+  then
+    SDL_MIXER_PATH="~/Library/Frameworks/SDL_mixer.framework"
+  fi
+
+  if [ -d /Library/Frameworks/SDL_ttf.framework ]
+  then
+    SDL_TTF_PATH="/Library/Frameworks/SDL_ttf.framework"
+  elif [ -d ~/Library/Frameworks/SDL_ttf.framework ]
+  then
+    SDL_TTF_PATH="~/Library/Frameworks/SDL_ttf.framework"
+  fi
+
+  if [ -d /Library/Frameworks/SDL_net.framework ]
+  then
+    SDL_NET_PATH="/Library/Frameworks/SDL_net.framework"
+  elif [ -d ~/Library/Frameworks/SDL_net.framework ]
+  then
+    SDL_NET_PATH="~/Library/Frameworks/SDL_net.framework"
+  fi
+
+
+  if [ -d "/Developer/SDKs/MacOSX10.6.sdk" ]
+  then
+    DEV_LINK_PPC=
+    DEV_LINK_INTEL32="/Developer/SDKs/MacOSX10.6.sdk"
+    DEV_LINK_INTEL64="/Developer/SDKs/MacOSX10.6.sdk"
+
+  elif [ -d "/Developer/SDKs/MacOSX10.5.sdk" ]
+  then
+    DEV_LINK_PPC="/Developer/SDKs/MacOSX10.5.sdk"
+    DEV_LINK_INTEL32="/Developer/SDKs/MacOSX10.5.sdk"
+    DEV_LINK_INTEL64="/Developer/SDKs/MacOSX10.5.sdk"
+
+  elif [ -d "/Developer/SDKs/MacOSX10.4u.sdk" ]
+  then
+    DEV_LINK_PPC="/Developer/SDKs/MacOSX10.4u.sdk"
+	DEV_LINK_INTEL32="/Developer/SDKs/MacOSX10.4u.sdk"
+  else
+    echo "XCode does not seem be installed. Please install XCode."
+    exit 1
+
+  fi
+
 
   FPC_BIN=`which ppc386`
 
   # Compiling Intel x86 binary
-  ${FPC_BIN} ${CONFIG_FILE} -k"-L${LIB_FOLDER}/MacOSX -L/usr/X11R6/lib" ${SRC_MAIN}
-  mv ${BIN_FOLDER}/main ${BIN_FOLDER}/main-intel_x86
-  rm ${BIN_FOLDER}/link.res
+  ${FPC_BIN} ${CONFIG_FILE} -XR${DEV_LINK_INTEL32} -k"-L${LIB_FOLDER}/MacOSX -L/usr/X11R6/lib" ${SRC_MAIN}
+  mv "${BIN_FOLDER}/${BIN_MAIN}" "${BIN_FOLDER}/${BIN_MAIN}-intel_x86"
   rm ${BIN_FOLDER}/*.o ${BIN_FOLDER}/*.ppu
-  rm ${SRC_HEADER}/*.o ${SRC_HEADER}/*.ppu ${SRC_HEADER}/*.dcu ${SRC_HEADER}/*.a
   
   FPC_BIN=`which ppcx64`
   
   # Compiling Intel x64 binary
-  ${FPC_BIN} ${CONFIG_FILE} -k"-L${LIB_FOLDER}/MacOSX -L/usr/X11R6/lib" ${SRC_MAIN}
-  mv ${BIN_FOLDER}/main ${BIN_FOLDER}/main-intel_x64
-  rm ${BIN_FOLDER}/link.res
+  ${FPC_BIN} ${CONFIG_FILE} -XR${DEV_LINK_INTEL64} -k"-L${LIB_FOLDER}/MacOSX -L/usr/X11R6/lib" ${SRC_MAIN}
+  mv "${BIN_FOLDER}/${BIN_MAIN}" "${BIN_FOLDER}/${BIN_MAIN}-intel_x64"
   rm ${BIN_FOLDER}/*.o ${BIN_FOLDER}/*.ppu
-  rm ${SRC_HEADER}/*.o ${SRC_HEADER}/*.ppu ${SRC_HEADER}/*.dcu ${SRC_HEADER}/*.a
   
   FPC_BIN=`which ppcppc`
   
   # Compiling PowerPC binary
-  ${FPC_BIN} ${CONFIG_FILE} -k"-L${LIB_FOLDER}/MacOSX -L/usr/X11R6/lib" ${SRC_MAIN}
-  mv ${BIN_FOLDER}/main ${BIN_FOLDER}/main-ppc
+  ${FPC_BIN} ${CONFIG_FILE} -XR${DEV_LINK_PPC} -k"-L${LIB_FOLDER}/MacOSX -L/usr/X11R6/lib" ${SRC_MAIN}
+  mv "${BIN_FOLDER}/${BIN_MAIN}" "${BIN_FOLDER}/${BIN_MAIN}-ppc"
   rm ${BIN_FOLDER}/*.o ${BIN_FOLDER}/*.ppu
   
   
   # Creating universal binary
-  if [ -f ${BIN_FOLDER}/main-intel_x86 ] &&  [ -f ${BIN_FOLDER}/main-ppc ]
-  then
-    strip ${BIN_FOLDER}/main-intel_x86
-    strip ${BIN_FOLDER}/main-intel_x64
-    strip ${BIN_FOLDER}/main-ppc
 
-    lipo -create ${BIN_FOLDER}/main-intel_x86 ${BIN_FOLDER}/main-intel_x64 ${BIN_FOLDER}/main-ppc -output ${BIN_FOLDER}/${EXEC_NAME}
-    rm -rf ${BIN_FOLDER}/main-intel_x86
-    rm -rf ${BIN_FOLDER}/main-intel_x64
-    rm -rf ${BIN_FOLDER}/main-ppc
+  # All three compilers are here... yeah, universal binary de luxe (Intel 32, Intel 64 + PowerPC 32)
+  if [ -f "${BIN_FOLDER}/${BIN_MAIN}-intel_x86" ] && [ -f "${BIN_FOLDER}/${BIN_MAIN}-intel_x64" ] && [ -f "${BIN_FOLDER}/${BIN_MAIN}-ppc" ]
+  then
+    strip "${BIN_FOLDER}/${BIN_MAIN}-intel_x86"
+    strip "${BIN_FOLDER}/${BIN_MAIN}-intel_x64"
+    strip "${BIN_FOLDER}/${BIN_MAIN}-ppc"
+
+    lipo -create "${BIN_FOLDER}/${BIN_MAIN}-intel_x86" "${BIN_FOLDER}/${BIN_MAIN}-intel_x64" "${BIN_FOLDER}/${BIN_MAIN}-ppc" -output "${BIN_FOLDER}/${EXEC_NAME}"
+    rm -rf "${BIN_FOLDER}/${BIN_MAIN}-intel_x86"
+    rm -rf "${BIN_FOLDER}/${BIN_MAIN}-intel_x64"
+    rm -rf "${BIN_FOLDER}/${BIN_MAIN}-ppc"
+
+  # PowerPC 32 + Intel 32
+  elif [ -f "${BIN_FOLDER}/${BIN_MAIN}-intel_x86" ] && [ -f "${BIN_FOLDER}/${BIN_MAIN}-ppc" ]
+  then
+    strip "${BIN_FOLDER}/${BIN_MAIN}-intel_x86"
+    strip "${BIN_FOLDER}/${BIN_MAIN}-ppc"
+
+    lipo -create "${BIN_FOLDER}/${BIN_MAIN}-intel_x86" "${BIN_FOLDER}/${BIN_MAIN}-ppc" -output "${BIN_FOLDER}/${EXEC_NAME}"
+    rm -rf "${BIN_FOLDER}/${BIN_MAIN}-intel_x86"
+    rm -rf "${BIN_FOLDER}/${BIN_MAIN}-ppc"
+
+  # Intel 32 + Intel 64
+  elif [ -f "${BIN_FOLDER}/${BIN_MAIN}-intel_x86" ] && [ -f "${BIN_FOLDER}/${BIN_MAIN}-intel_x64" ]
+  then
+    strip "${BIN_FOLDER}/${BIN_MAIN}-intel_x86"
+    strip "${BIN_FOLDER}/${BIN_MAIN}-intel_x64"
+
+    lipo -create "${BIN_FOLDER}/${BIN_MAIN}-intel_x86" "${BIN_FOLDER}/${BIN_MAIN}-intel_x64" -output "${BIN_FOLDER}/${EXEC_NAME}"
+    rm -rf "${BIN_FOLDER}/${BIN_MAIN}-intel_x86"
+    rm -rf "${BIN_FOLDER}/${BIN_MAIN}-intel_x64"
+
+  else
+    strip "${BIN_FOLDER}/${BIN_MAIN}-intel_x86"
+
+    mv "${BIN_FOLDER}/${BIN_MAIN}-intel_x86" "${BIN_FOLDER}/${EXEC_NAME}"
+
   fi
   
   if [ -d "${BIN_FOLDER}/${APP_NAME}.app" ] 
@@ -98,12 +179,13 @@ then
   mkdir "${BIN_FOLDER}/${APP_NAME}.app/Contents/Resources"
   mkdir "${BIN_FOLDER}/${APP_NAME}.app/Contents/Frameworks"
   
-  cp -R  ${RES_FOLDER} "${BIN_FOLDER}/${APP_NAME}.app/Contents/Resources/"
+  cp -R  "${RES_FOLDER}/" "${BIN_FOLDER}/${APP_NAME}.app/Contents/Resources/"
   
   # Copy frameworks from System
-  cp -R /Library/Frameworks/SDL.framework "${BIN_FOLDER}/${APP_NAME}.app/Contents/Frameworks/"
-  cp -R /Library/Frameworks/SDL_mixer.framework "${BIN_FOLDER}/${APP_NAME}.app/Contents/Frameworks/"
-  cp -R /Library/Frameworks/SDL_ttf.framework "${BIN_FOLDER}/${APP_NAME}.app/Contents/Frameworks/"
+  cp -R "${SDL_PATH}" "${BIN_FOLDER}/${APP_NAME}.app/Contents/Frameworks/"
+  cp -R "${SDL_MIXER_PATH}" "${BIN_FOLDER}/${APP_NAME}.app/Contents/Frameworks/"
+  cp -R "${SDL_TTF_PATH}" "${BIN_FOLDER}/${APP_NAME}.app/Contents/Frameworks/"
+  cp -R "${SDL_NET_PATH}" "${BIN_FOLDER}/${APP_NAME}.app/Contents/Frameworks/"
   
 	mv "${BIN_FOLDER}/${EXEC_NAME}" "${BIN_FOLDER}/${APP_NAME}.app/Contents/MacOS/" 
 	
@@ -140,8 +222,9 @@ else
 
   ${FPC_BIN} ${CONFIG_FILE} ${SRC_MAIN}
   
-  if [ -f "${BIN_FOLDER}/main" ]
+  if [ -f "${BIN_FOLDER}/${BIN_MAIN}" ]
   then
-    mv "${BIN_FOLDER}/main" "${BIN_FOLDER}/${EXEC_NAME}"
+    mv "${BIN_FOLDER}/${BIN_MAIN}" "${BIN_FOLDER}/${EXEC_NAME}"
   fi
+
 fi
