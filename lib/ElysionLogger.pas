@@ -25,16 +25,6 @@ uses
 
 type
 
-{%region 'Logger priority types'}
-// Logger message type
-TLogMessageType = 
-  (ltError,   //< Displays message as an error
-   ltWarning, //< Displays message as a warning
-   ltNote);   //< Displays message as a note
-
-TLogMessagePriorities = set of TLogMessageType;
-{%endregion}
-
 {%region 'Logger class (Prototype)'}
 {
   Class: TelLogger @br
@@ -197,7 +187,7 @@ begin
   fText.Add('" alt="Elysion Logo" />');
   fText.Add('<span id="title"><a href="https://github.com/freezedev/elysion">Elysion Library</a> Log</span> <br />');
   fText.Add('<strong>CPU:</strong> ' + IntToStr(SYS_BITS) + '-bit <br /> <b>Operating system:</b> ' + SYS_NAME + '<br />');
-  fText.Add('<strong>Version:</strong> ' + IntToString(VER_MAJOR, true, 1) + '-' + IntToString(VER_MINOR, true, 1) + ' "' + VER_CODENAME + '" (' + VER_CODENAME_RANDOMQUOTE + ') <br /> <strong>Stable:</strong> '+BoolToString(VER_STABLE)+'<br />');
+  fText.Add('<strong>Version:</strong> ' + IntToString(VER_MAJOR, true, 1) + '-' + IntToString(VER_MINOR, true, 1) + VER_REVISION + ' "' + VER_CODENAME + '" (' + VER_CODENAME_RANDOMQUOTE + ') <br /> <strong>Stable:</strong> '+BoolToString(VER_STABLE)+'<br />');
   fText.Add('<strong>Filename:</strong> ' + fFilename + '<br />');
   fText.Add('</header>');
   fText.Add('<br /></br />');
@@ -375,9 +365,16 @@ begin
     HTMLWriteTail;
 
     fText.SaveToFile(fFilename + '.html');
-  finally
-    inherited;
+  except
+    // TODO: Proper error handling ;)
+    on E: EAccessViolation do ; //< Workaround for Issue #19
+    on E: EFCreateError do //< No permission to create file
   end;
+
+
+  fText.Free;
+
+  inherited;
 end;
 
 procedure TelLogger.WriteLog(const Msg: String; LogMessageType: TLogMessageType = ltError; FormatHTML: Boolean = false);
@@ -421,6 +418,6 @@ initialization
   ;
 
 finalization
-  if isLoggerActive then TelLogger.getInstance.Destroy;
+  if isLoggerActive then TelLogger.GetInstance.Free;
 
 end.
