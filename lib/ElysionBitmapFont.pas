@@ -125,7 +125,6 @@ end;*)
 function TelBitmapFont.GetWidth_Text(aText: String): Integer;
 begin
   Result := SFont_TextWidth2(@fFontInfo, PChar(aText));
-  Self.Log(aText + ' ' + IntToStr(SFont_TextWidth2(@fFontInfo, PChar(aText))) + ' ' + IntToStr(SFont_TextWidth(PChar(aText))));
 end;
 
 function TelBitmapFont.GetWidth(): Integer;
