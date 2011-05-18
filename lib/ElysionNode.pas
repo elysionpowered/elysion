@@ -47,18 +47,19 @@ type
 
       procedure SetAlign(Value: TelAlignment); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-      function GetWidth(): Integer; virtual; abstract;
-      function GetHeight(): Integer; virtual; abstract;
+      function GetWidth(): Integer; virtual;
+      function GetHeight(): Integer; virtual;
 
       function GetMouseDown(): Boolean; virtual; abstract;
       function GetMouseUp(): Boolean; virtual; abstract;
       function GetMouseMove(): Boolean; virtual; abstract;
       function GetMouseOver(): Boolean; virtual; abstract;
       function GetMouseOut(): Boolean; virtual; abstract;
-      function GetDragStart(): Boolean;
-      function GetDragging(): Boolean;
-      function GetDragEnd(): Boolean;
+      function GetDragStart(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function GetDragging(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function GetDragEnd(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
       function GetClick(): Boolean; virtual; abstract;
+      function GetRightClick(): Boolean; virtual; abstract;
       function GetDblClick(): Boolean; virtual; abstract;
 
       function GetLeft(): Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -84,11 +85,13 @@ type
       procedure Draw; virtual; abstract;
 
       function WriteToXML(): TStringList;
+      function WriteToJSON(): TStringList;
+
       procedure Hover(MouseOverEvent, MouseOutEvent: TelNodeEvent);
 
       procedure Rotate(DeltaAngle: Single); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-      // Simple Animation, for more complex animations use Elysion Animators
+      // Simple Animation, for more complex animations (espacially key frame animations, multiple animations triggered at the same time and such) use ElysionAnimators.pas
       procedure Animate(AnimProperty: TelAnimationProperty; Duration: Integer = 1000; Delay: Integer = 0; Transition: TelAnimationTransition = atLinear);
 
       procedure Lock(); {$IFDEF CAN_INLINE} inline; {$ENDIF} //< Locks this node -> Update won't be called
@@ -103,6 +106,8 @@ type
       Rotation: TelImageRotation;
       Color: TelColor;
       Scale: TelVector2f;
+	  
+      Margin: TelRect;
       Shadow: TelShadow;
 
       property AbsolutePosition: TelVector3f read GetAbsolutePosition;
@@ -134,6 +139,7 @@ type
       property Dragging: Boolean read GetDragging;
       property DragEnd: Boolean read GetDragEnd;
       property Click: Boolean read GetClick;
+      property RightClick: Boolean read GetRightClick;
       property DblClick: Boolean read GetDblClick;
 
       // CSS-like selectors
@@ -148,6 +154,7 @@ type
 
       property Locked: Boolean read fLocked write SetLocked;
 
+      // Here is some alternative positionin' for ya (Use for UI elements)
       property Left: Single read GetLeft write SetLeft;
       property Top: Single read GetTop write SetTop;
       property Right: Single read GetRight write SetRight;
@@ -162,20 +169,21 @@ type
      private
       fNodeList: TList;
 
-      function Get(Index: Integer): TelNode;
-      function GetPos(Index: String): Integer;
-      procedure Put(Index: Integer; const Item: TelNode);
-      procedure PutS(Index: String; const Item: TelNode);
-      function GetS(Index: String): TelNode;
+      function Get(Index: Integer): TelNode; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function GetPos(Index: String): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure Put(Index: Integer; const Item: TelNode); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure PutS(Index: String; const Item: TelNode); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function GetS(Index: String): TelNode; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-      function GetCount: Integer;
+      function GetCount: Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     public
       constructor Create; Override;
       destructor Destroy; Override;
 
-      procedure Insert(Index: Integer; Node: TelNode);
-      function  Add(Node: TelNode): Integer;
-      procedure Delete(Index: Integer);
+      procedure Insert(Index: Integer; Node: TelNode); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function Add(Node: TelNode): Integer; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function Add(NodeArray: TelNodeArray): Integer; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure Delete(Index: Integer); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       property Items[Index: Integer]: TelNode read Get write Put; default;
       property Find[Index: String]: TelNode read GetS write PutS;
@@ -333,6 +341,16 @@ begin
   end;
 end;
 
+function TelNode.GetWidth(): Integer;
+begin
+  Result := 0;
+end;
+
+function TelNode.GetHeight(): Integer;
+begin
+  Result := 0;
+end;
+
 function TelNode.GetAbsolutePosition(): TelVector3f;
 begin
   if (fParent = nil) then Result := Self.Position
@@ -450,8 +468,35 @@ begin
 end;
 
 function TelNode.WriteToXML(): TStringList;
+var
+  tmpStringList: TStringList;
 begin
+  tmpStringList := TStringList.Create;
+  tmpStringList.Add('<' + Self.ClassName + '>');
 
+  tmpStringList.Add(Position.ToKey('position')^.ToXML());
+  tmpStringList.Add(Color.ToKey('color')^.ToXML());
+  tmpStringList.Add(Scale.ToKey('scale')^.ToXML());
+
+  tmpStringList.Add('</' + Self.ClassName + '>');
+
+  Result := tmpStringList;
+end;
+
+function TelNode.WriteToJSON(): TStringList;
+var
+  tmpStringList: TStringList;
+begin
+  tmpStringList := TStringList.Create;
+  tmpStringList.Add(Self.ClassName + ': {');
+
+  tmpStringList.Add(Position.ToKey('position')^.ToJSON() + ',');
+  tmpStringList.Add(Color.ToKey('color')^.ToJSON() + ',');
+  tmpStringList.Add(Scale.ToKey('scale')^.ToJSON());
+
+  tmpStringList.Add('}');
+
+  Result := tmpStringList;
 end;
 
 procedure TelNode.Hover(MouseOverEvent, MouseOutEvent: TelNodeEvent);
@@ -463,7 +508,9 @@ end;
 procedure TelNode.Animate(AnimProperty: TelAnimationProperty;
   Duration: Integer; Delay: Integer; Transition: TelAnimationTransition);
 begin
-  if IsAnimated then Exit;
+  if IsAnimated then Exit; //< Already animated? Exit here...
+  
+  
 end;
 
 procedure TelNode.Update(dt: Double = 0.0);
@@ -576,6 +623,14 @@ end;
 function TelNodeList.Add(Node: TelNode): Integer;
 begin
   Result := fNodeList.Add(Node);
+end;
+
+function TelNodeList.Add(NodeArray: TelNodeArray): Integer;
+var
+  i: Integer;
+begin
+  for i := 0 to Length(NodeArray) - 1 do
+    Result := fNodeList.Add(NodeArray[i]);
 end;
 
 procedure TelNodeList.Delete(Index: Integer);

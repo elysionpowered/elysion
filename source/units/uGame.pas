@@ -81,11 +81,11 @@ begin
   if Self.Param('-window') then ForceWindow := true;
 
   // Get ya priorities straight
+
+  tmpFullscreen := false;
   if Debug then
-  begin
-    TelLogger.getInstance.Priorities := [ltNote, ltWarning, ltError];
-    tmpFullscreen := false
-  end else tmpFullscreen := true;
+    TelLogger.getInstance.Priorities := [ltNote, ltWarning, ltError]
+  else tmpFullscreen := true;
 
   if (ForceWindow) and (not ForceFullscreen) then tmpFullscreen := false
     else tmpFullscreen := true;
@@ -112,8 +112,6 @@ begin
 end;
 
 procedure TGame.Initialize;
-var
-  newRatio: Single;
 begin
 
   // Initialize Audio here if you have any sound/music

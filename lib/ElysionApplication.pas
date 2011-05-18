@@ -1,3 +1,11 @@
+(**
+  * ElysionApplication.pas
+  *
+  * Handles application container and windows
+  *
+  * @author(Johannes Stein and contributors <http://elysionpowered.org>)
+  *
+  *)
 unit ElysionApplication;
 
 {$I Elysion.inc}
@@ -17,7 +25,12 @@ uses
 
   SDL,
   SDLUtils,
+  {$IFDEF USE_VAMPYRE}
   ImagingSDL,
+  {$ENDIF}
+  {$IFDEF USE_SDL_IMAGE}
+  SDL_image,
+  {$ENDIF}
   SDLTextures,
   {$IFDEF USE_DGL_HEADER}
   dglOpenGL,
@@ -29,25 +42,30 @@ uses
 
 type
 
-{	@classname @br
-	Description: @br
-	Provides an application container
-	}
+{
+    @classname @br
+    Description: @br
+    Provides an application container
+
+}
 TAppContainer = class(TelModuleContainer)
   private
     FInitialized: Boolean;
 
     FRun: Boolean;
 
-    {	Application.GetUnicodeSupport @br
-    	@return
+    {
+        Application.GetUnicodeSupport @br
+        Unicode support
+        @return
 
-    	}
+    }
     function GetUnicodeSupport: Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-	{	Application.SetUnicodeSupport
+    {
+        Application.SetUnicodeSupport
 
-    	}
+    }
     procedure SetUnicodeSupport(Value: Boolean); {$IFDEF CAN_INLINE} inline; {$ENDIF}
   public
     {
@@ -77,19 +95,16 @@ TAppContainer = class(TelModuleContainer)
     function Initialize(Width, Height, Bits: Integer; Fullscreen: Boolean = false): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
     {
-
+      Application.Finalize
     }
     procedure Finalize(); Override;
 
     {
       Application.CreateWindow
-      Parameters: Name: String
-                  Width, Height, Bits: Integer
-                  Fullscreen: Boolean
-                  VideoFlag: TelVideoFlags
-
-      Note: Only supported in ElysionLegacy and ElysionKronos @br
-            ElysionMobile creates a window automatically
+      @param Name: String
+             Width, Height, Bits: Integer
+             Fullscreen: Boolean
+             VideoFlag: TelVideoFlags
 
     }
     function CreateWindow(aName: String; Width, Height, Bits: Integer; Fullscreen: Boolean; VideoFlag: TelVideoFlag): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -119,9 +134,6 @@ TAppContainer = class(TelModuleContainer)
     }
     property UnicodeSupport: Boolean read GetUnicodeSupport write SetUnicodeSupport;
 end;
-
-//
-TDisplayOrientation = (doLandscape, doPortrait);
 
 TelWindow = class(TelObject)
   private
@@ -166,7 +178,6 @@ TelWindow = class(TelObject)
 
     fFPSTimer, fDeltaTimer, fCursorReset: TelTimer;
 
-    fScreenshotCounter: Integer;
     fMouseDownCount, fMouseUpCount, fMouseMotionCount: Integer;
 
     fDeltaTime: Double;
@@ -176,122 +187,120 @@ TelWindow = class(TelObject)
 
     function GetAspectRatio(): Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-        // Get the window title
-        function GetCaption: String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    // Get the window title
+    function GetCaption: String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-	// Sets the window title
-        procedure SetCaption(Caption: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    // Sets the window title
+    procedure SetCaption(Caption: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-        procedure SetFPS(Value: Single); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-        function GetFPS: Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure SetFPS(Value: Single); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetFPS: Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-        function GetDeltaTime: Double; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetDeltaTime: Double; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-        function GetWidth: Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-        function GetHeight: Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-        function GetBitsPerPixel: Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-        
-        function GetJoystickCount(): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetWidth: Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetHeight: Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetBitsPerPixel: Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-        procedure SetNativeResolution(NativeRes: TelVector2i);
-        function GetNativeResolution: TelVector2i;
+    function GetJoystickCount(): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-        function GetDisplayOrientation(): TDisplayOrientation;
-        function GetWideScreen(): Boolean;
+    procedure SetNativeResolution(NativeRes: TelVector2i); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetNativeResolution: TelVector2i; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-    public
+    function GetDisplayOrientation(): TDisplayOrientation; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetWideScreen(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-        // You can access the SDL surface directly if you wish
-	SDL_Surface: PSDL_Surface;
+  public
 
-        // Maybe fix: Move input arrays to Input class
+      // You can access the SDL surface directly if you wish
+      SDL_Surface: PSDL_Surface;
 
-	// True, if key is pressed down
-	KeyDown: array[0..K_EURO] of Boolean;
+      // Maybe fix: Move input arrays to Input class
 
-	// True, if key is pressed up again
-	KeyUp: array[0..K_EURO] of Boolean;
+      // True, if key is pressed down
+      KeyDown: array[0..K_EURO] of Boolean;
 
-	// True, if key is pressed down
-	ModKeyDown: array[KMOD_NONE..KMOD_META] of Boolean;
+      // True, if key is pressed up again
+      KeyUp: array[0..K_EURO] of Boolean;
 
-	// True, if key is pressed up again
-	ModKeyUp: array[KMOD_NONE..KMOD_META] of Boolean;
+      // True, if key is pressed down
+      ModKeyDown: array[KMOD_NONE..KMOD_META] of Boolean;
 
-	// True, if mouse button is pressed down
-	MouseButtonDown: array[BUTTON_LEFT..BUTTON_WHEELDOWN] of Boolean;
+      // True, if key is pressed up again
+      ModKeyUp: array[KMOD_NONE..KMOD_META] of Boolean;
 
-	// True, if mouse button is pressed up again
-	MouseButtonUp: array[BUTTON_LEFT..BUTTON_WHEELDOWN] of Boolean;
+      // True, if mouse button is pressed down
+      MouseButtonDown: array[BUTTON_LEFT..BUTTON_WHEELDOWN] of Boolean;
 
-        // True, if mouse button is pressed down
-	JoyButtonDown: array[0..MAX_BUTTONS] of Boolean;
+      // True, if mouse button is pressed up again
+      MouseButtonUp: array[BUTTON_LEFT..BUTTON_WHEELDOWN] of Boolean;
 
-	// True, if mouse button is pressed up again
-	JoyButtonUp: array[0..MAX_BUTTONS] of Boolean;
+      // True, if mouse button is pressed down
+      JoyButtonDown: array[0..MAX_BUTTONS] of Boolean;
 
-        JoyAxis: array[0..MAX_AXES] of Integer;
+      // True, if mouse button is pressed up again
+      JoyButtonUp: array[0..MAX_BUTTONS] of Boolean;
 
-        JoyHat: array[HAT_CENTERED..255] of Boolean;
+      JoyAxis: array[0..MAX_AXES] of Integer;
 
-
+      JoyHat: array[HAT_CENTERED..255] of Boolean;
 
 
-  constructor Create; Override;
-  destructor Destroy; Override;
+      constructor Create; Override;
+      destructor Destroy; Override;
 
-  function SetVideoMode(_Width, _Height, _ColorBits: Integer; _Fullscreen: Boolean; _VideoFlag: TelVideoFlag): Boolean; Overload;
+      function SetVideoMode(_Width, _Height, _ColorBits: Integer; _Fullscreen: Boolean; _VideoFlag: TelVideoFlag): Boolean; Overload;
 
-	// Sets video mode for the surface. Use this if you want to change the resolution in-game.
-	function SetVideoMode(_Width, _Height, _ColorBits: Integer; _Fullscreen: Boolean = False): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-
-	// Switches between windowed mode and fullscreen mode
-	procedure ToggleFullscreen(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-	// Use BeginScene first thing in the game loop
-	procedure BeginScene(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-	// Use EndScene last thing before the end of the game loop
-        procedure EndScene(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    // Set projection matrix
-    // Expert function: Automatically Ortho mode is being called, this function needs to be used
-    // if you want to display 3d objects on the screen, you need to call perspective mode
-    procedure SetProjection(ProjectionMode: TelProjectionMode); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      // Sets video mode for the surface. Use this if you want to change the resolution in-game.
+      function SetVideoMode(_Width, _Height, _ColorBits: Integer; _Fullscreen: Boolean = False): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
 
-        // Expert function: Use background image instead of a color
-        procedure SetBackgroundImage(Surface: PSDL_Surface); Overload;
+      // Switches between windowed mode and fullscreen mode
+      procedure ToggleFullscreen(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-	// Sets background image with specifying a filename
-	procedure SetBackgroundImage(const Filename: String); Overload;
+      // Use BeginScene first thing in the game loop
+      procedure BeginScene(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-	// Sets background color
-        procedure SetBackgroundColor(Color: TelColor);
+      // Use EndScene last thing before the end of the game loop
+      procedure EndScene(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-	// Sets a window icon
-        procedure SetIcon(Filename: String); Overload;
+      // Set projection matrix
+      // Expert function: Automatically Ortho mode is being called, this function needs to be used
+      // if you want to display 3d objects on the screen, you need to call perspective mode
+      procedure SetProjection(ProjectionMode: TelProjectionMode); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-	// Sets a window icon with color key
-	procedure SetIcon(Filename: String; Mask: TelColor); Overload;
 
-	// Hide the standard black/white cursor. Normally turned on
-        procedure HideCursor; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      // Expert function: Use background image instead of a color
+      procedure SetBackgroundImage(Surface: PSDL_Surface); Overload;
 
-	// Show the cursor
-        procedure ShowCursor; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      // Sets background image with specifying a filename
+      procedure SetBackgroundImage(const Filename: String); Overload;
 
-	// Saves the surface into an image
-        Procedure TakeScreenshot(Filename: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      // Sets background color
+      procedure SetBackgroundColor(Color: TelColor); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-        // Checks if a point is within a rect
-        Function OnPoint(Coord: TelVector2i; Rect: TelRect): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      // Sets a window icon
+      procedure SetIcon(Filename: String); Overload;
 
-  // Checks if surface is active
-  function IsActive: Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      // Sets a window icon with color key
+      procedure SetIcon(Filename: String; Mask: TelColor); Overload;
 
-  function GetTicks(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      // Hide the standard black/white cursor. Normally turned on
+      procedure HideCursor; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+      // Show the cursor
+      procedure ShowCursor; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+      // Saves the surface into an image
+      Procedure TakeScreenshot(aFilename: String = '');
+
+      // Checks if a point is within a rect
+      Function OnPoint(Coord: TelVector2i; Rect: TelRect): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+      // Checks if surface is active
+      function IsActive: Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+      function GetTicks(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       property BackgroundColor: TelColor read fBackgroundColor write fBackgroundColor;
 
@@ -314,7 +323,7 @@ TelWindow = class(TelObject)
 
     // Read-only, set values through SetVideoMode
     property Width: Integer read GetWidth;
-	  property Height: Integer read GetHeight;
+    property Height: Integer read GetHeight;
     property Bits: Integer read GetBitsPerPixel;
     property Fullscreen: Boolean read FFullscreen;
 
@@ -323,22 +332,22 @@ TelWindow = class(TelObject)
     property MouseMotionCount: Integer read fMouseMotionCount write fMouseMotionCount;
 
 
-	  // Setting the caption
-	  property Caption: String read GetCaption write SetCaption;
+    // Setting the caption
+    property Caption: String read GetCaption write SetCaption;
 
-	  property DeltaTime: Double read GetDeltaTime;
-	  
-	  property JoystickCount: Integer read GetJoystickCount;
+    property DeltaTime: Double read GetDeltaTime;
 
-
-	    property FPS: Single read GetFPS write SetFPS;
-	    property LimitFPS: Boolean read fLimitFPS write fLimitFPS;
+    property JoystickCount: Integer read GetJoystickCount;
 
 
-	    // Values for experts
-	    property FoVY: Double read FFoVY write FFoVY;
-	    property ZNear: Double read FZNear write FZNear;
-	    property ZFar: Double read FZFar write FZFar;
+    property FPS: Single read GetFPS write SetFPS;
+    property LimitFPS: Boolean read fLimitFPS write fLimitFPS;
+
+
+    // Values for experts
+    property FoVY: Double read FFoVY write FFoVY;
+    property ZNear: Double read FZNear write FZNear;
+    property ZFar: Double read FZFar write FZFar;
 end;
 
  // Factory pattern
@@ -531,8 +540,7 @@ end;
 
 constructor TelWindow.Create;
 var
-  i, tmpScreenshotCount: Integer;
-  searchResult: TSearchRec;
+  i: Integer;
 begin
   inherited Create;
 
@@ -548,7 +556,6 @@ begin
   fBackgroundColor := makeCol(0, 0, 0, 255);
 
   fFrames := 0;
-  fScreenShotCounter := 0;
   fMouseMotionEvent := false;
 
 
@@ -611,26 +618,10 @@ begin
     JoyHat[i] := false;
   end;
 
-  // Check if user made some screenshots and set screenshot counter accordingly
-
-  tmpScreenshotCount := 0;
-  if FindFirst('screenshot*.png', faAnyFile, searchResult) = 0 then
-  begin
-    repeat
-      tmpScreenshotCount := tmpScreenshotCount + 1;
-    until FindNext(searchResult) <> 0;
-
-    // Must free up resources used by these successful finds
-    FindClose(searchResult);
-  end;
-
-  fScreenShotCounter := tmpScreenshotCount;
-
 
   // Probably not needed here...
   if FHideCursor then SDL_ShowCursor(0)
                  else SDL_ShowCursor(1);
-
 
 end;
 
@@ -1038,18 +1029,37 @@ begin
   SDL_ShowCursor(1);
 end;
 
-procedure TelWindow.TakeScreenshot(Filename: String);
+procedure TelWindow.TakeScreenshot(aFilename: String = '');
 var
   tmpSurface: PSDL_Surface;
   rmask, gmask, bmask, amask: Uint32;
-  SBits: Integer;
+  tmpScreenshotCount: Integer;
+  tmpFilename, formattedDateTime: String;
+  searchResult: TSearchRec;
 begin
-  // fScreenshotCounter + 1 is a trick to prevent wrting over old files
-  Filename := Filename + IntToString(fScreenShotCounter + 1, true, 3);
+  if aFilename = '' then aFilename := ParamStr(0);
+  DateTimeToString(formattedDateTime, 'yyyy-mm-dd_hh-nn-ss', Now);
 
-  if UpperCase(ExtractFileExt(Filename)) <> '.PNG' then
+  tmpScreenshotCount := 1;
+  tmpFilename := aFilename + '_' + formattedDateTime;
+
+  // If someone is spamming the screenshot button key it should not overwrite older files
+  if FindFirst(aFilename + '_' + formattedDateTime + '*.png', faAnyFile, searchResult) = 0 then
   begin
-    Filename := Filename + '.png';
+    repeat
+      tmpScreenshotCount := tmpScreenshotCount + 1;
+    until FindNext(searchResult) <> 0;
+
+    // Must free up resources used by these successful finds
+    FindClose(searchResult);
+
+    if tmpScreenshotCount >= 2 then
+      tmpFilename := aFilename + '_' + formattedDateTime + ' ' + IntToStr(tmpScreenshotCount);
+  end;
+
+  if UpperCase(ExtractFileExt(tmpFilename)) <> '.PNG' then
+  begin
+    tmpFilename := tmpFilename + '.png';
   end;
 
   if SDL_BYTEORDER = SDL_BIG_ENDIAN then
@@ -1076,19 +1086,24 @@ begin
 
   //glReadPixels(0, 0, Self.Width, Self.Height, GL_BGR, GL_UNSIGNED_BYTE, tmpSurface^.pixels);
 
+  // Saves OpenGL context into tmpSurface
+  glReadPixels(0, 0, Self.Width, Self.Height, GL_RGB, GL_UNSIGNED_BYTE, tmpSurface^.pixels);
+
   // By default Elysion's origin is at the top-left corner which is not the
   // default setting of OpenGL (default setting of OpenGL: bottom-left)
-  // So we need to flip the image vertically (That's all that's happenin' here)
-  glReadPixels(0, 0, Self.Width, Self.Height, GL_RGB, GL_UNSIGNED_BYTE, tmpSurface^.pixels);
+  // So we need to flip the image (That's all that's happenin' here)
   SDL_FlipRectV(tmpSurface, PSDLRect(0, 0, Self.Width, Self.Height));
 
   SDL_UnlockSurface(tmpSurface);
 
-  ImagingSDL.SaveSDLSurfaceToFile(Filename, tmpSurface);
+  // Saves image to file
+  {$IFDEF USE_VAMPYRE}
+  ImagingSDL.SaveSDLSurfaceToFile(tmpFilename, tmpSurface);
+  {$ELSE}
+  SDL_SaveBMP(tmpSurface, PChar(tmpFile));
+  {$ENDIF}
 
   SDL_FreeSurface(tmpSurface);
-
-  fScreenShotCounter := fScreenShotCounter + 1;
 end;
 
 function TelWindow.OnPoint(Coord: TelVector2i; Rect: TelRect): Boolean; 

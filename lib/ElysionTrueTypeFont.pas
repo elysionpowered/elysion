@@ -52,27 +52,24 @@ TelTrueTypeFont = class(TelFontContainer)
     fMargin: Integer;
     fLines: Integer;
 
-    fText, fFilename: String;
+    fFilename: String;
     fSize: Integer;
 
     Texture: array[0..1024] of GLuInt;
 
     function RenderFont(Text: String; FontRender: TFontRender; TextStyle: TTextStyle): PSDL_Surface;
 
-    procedure SetColor(Color: TelColor); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure SetColor(aColor: TelColor); {$IFDEF CAN_INLINE} inline; {$ENDIF}
     function GetColor: TelColor; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-    procedure SetRenderType(FontRender: TFontRender); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure SetRenderType(aFontRender: TFontRender); {$IFDEF CAN_INLINE} inline; {$ENDIF}
     function GetRenderType: TFontRender; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-    procedure SetFontStyle(FontStyles: TFontStyles); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure SetFontStyle(aFontStyles: TFontStyles); {$IFDEF CAN_INLINE} inline; {$ENDIF}
     function GetFontStyle: TFontStyles; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-    procedure SetTextStyle(TextStyle: TTextStyle); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure SetTextStyle(aTextStyle: TTextStyle); {$IFDEF CAN_INLINE} inline; {$ENDIF}
     function GetTextStyle: TTextStyle; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    procedure SetText(Text: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function GetText: String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
     function GetFontPointer: PTTF_Font; {$IFDEF CAN_INLINE} inline; {$ENDIF}
   protected
@@ -100,12 +97,6 @@ TelTrueTypeFont = class(TelFontContainer)
     property Margin: Integer read fMargin write fMargin;
     property Trim: Boolean read fTrim write fTrim;
     property Lines: Integer read fLines;
-
-    property Size: Integer read fSize write SetSize;
-    property Text: String read GetText write SetText;
-
-    property Height: Integer read GetHeight;
-    property Width: Integer read GetWidth;
 
     property FontStyle: TFontStyles read GetFontStyle write SetFontStyle;
     property TextStyle: TTextStyle read GetTextStyle write SetTextStyle;
@@ -172,30 +163,30 @@ begin
   // Quickfix for mulitple line breaks
   if Text = '' then Text := ' ';
 
-      case FontRender of
-		rtSolid:
-		begin
-		  case TextStyle of
-		    tsNormal: TMP_Surface := TTF_RenderText_Solid(fFont, PChar(Text), convCol(fColor));
-			tsUnicode: TMP_Surface := TTF_RenderUNICODE_Solid(fFont, PUInt16(Text), convCol(fColor));
-			tsUTF8: TMP_Surface := TTF_RenderUTF8_Solid(fFont, PChar(Text), convCol(fColor));
-		  end;
+  case FontRender of
+    rtSolid:
+    begin
+      case TextStyle of
+	tsNormal: TMP_Surface := TTF_RenderText_Solid(fFont, PChar(Text), convCol(fColor));
+	tsUnicode: TMP_Surface := TTF_RenderUNICODE_Solid(fFont, PUInt16(Text), convCol(fColor));
+	tsUTF8: TMP_Surface := TTF_RenderUTF8_Solid(fFont, PChar(Text), convCol(fColor));
+      end;
+    end;
 
-	    end;
-		rtBlended:
-		begin
-		  case TextStyle of
-		    tsNormal: TMP_Surface := TTF_RenderText_Blended(fFont, PChar(Text), convCol(fColor));
-			tsUnicode: TMP_Surface := TTF_RenderUNICODE_Blended(fFont, PUInt16(Text), convCol(fColor));
-			tsUTF8: TMP_Surface := TTF_RenderUTF8_Blended(fFont, PChar(Text), convCol(fColor));
-		  end;
-	    end;
+    rtBlended:
+    begin
+      case TextStyle of
+	tsNormal: TMP_Surface := TTF_RenderText_Blended(fFont, PChar(Text), convCol(fColor));
+	tsUnicode: TMP_Surface := TTF_RenderUNICODE_Blended(fFont, PUInt16(Text), convCol(fColor));
+	tsUTF8: TMP_Surface := TTF_RenderUTF8_Blended(fFont, PChar(Text), convCol(fColor));
+      end;
+    end;
 
-	  end;
+  end;
 
-	  Result := SDL_DisplayFormatAlpha(TMP_Surface);
-	  //Result := TMP_Surface;
-	  SDL_FreeSurface(TMP_Surface);
+  Result := SDL_DisplayFormatAlpha(TMP_Surface);
+  //Result := TMP_Surface;
+  SDL_FreeSurface(TMP_Surface);
 
 end;
 
@@ -206,6 +197,7 @@ begin
 
   fChange := true;
   fFont := nil;
+  fText := '';
 
   fTrim := true;
   fMargin := 2;
@@ -238,34 +230,36 @@ begin
     Directory := ExtractFilePath(ParamStr(0));
     fFilename := aFilename;
 
-    if FileExists(Directory + Content.RootDirectory + aFilename) then
+    if FileExists(Directory + Content.Root + aFilename) then
     begin
       fSize := PtSize;
-      fFont := TTF_OpenFont(PChar(Directory + Content.RootDirectory + aFilename), PtSize);
+      fFont := TTF_OpenFont(PChar(Directory + Content.Root + aFilename), PtSize);
       FontStyle := [];
       fTextStyle := tsNormal;
       fFontRender := rtSolid;
+
+      if isLoggerActive then TelLogger.GetInstance.WriteLog('<i>' + Self.UniqueID + '</i><br /> File loaded: ' + aFilename, ltNote, true);
 
     end else if isLoggerActive then TelLogger.GetInstance.WriteLog('File not found: '+Directory+Content.RootDirectory+aFileName, ltError);
   end else if isLoggerActive then TelLogger.GetInstance.WriteLog('No filename specifies.', ltError);
 end;
 
-procedure TelTrueTypeFont.SetFontStyle(FontStyles: TFontStyles); 
+procedure TelTrueTypeFont.SetFontStyle(aFontStyles: TFontStyles);
 var FontFlag: Cardinal;
 begin
-    if FontStyles <> fFontStyles then
+    if aFontStyles <> fFontStyles then
     begin
-        fFontStyles := FontStyles;
-        fChange := true;
+      fFontStyles := aFontStyles;
+      fChange := true;
 
-	    if fFontStyles = [] then TTF_SetFontStyle(fFont, TTF_STYLE_NORMAL)
-		else begin
-		  if fsBold in fFontStyles then FontFlag := TTF_STYLE_BOLD;
-		  if fsItalic in fFontStyles then FontFlag := FontFlag or TTF_STYLE_ITALIC;
-		  if fsUnderline in fFontStyles then FontFlag := FontFlag or TTF_STYLE_UNDERLINE;
+      if fFontStyles = [] then TTF_SetFontStyle(fFont, TTF_STYLE_NORMAL)
+      else begin
+	if fsBold in fFontStyles then FontFlag := TTF_STYLE_BOLD;
+	if fsItalic in fFontStyles then FontFlag := FontFlag or TTF_STYLE_ITALIC;
+	if fsUnderline in fFontStyles then FontFlag := FontFlag or TTF_STYLE_UNDERLINE;
 
-		  TTF_SetFontStyle(fFont, FontFlag)
-		end;
+	TTF_SetFontStyle(fFont, FontFlag)
+      end;
     end;
 end;
 
@@ -274,13 +268,10 @@ begin
   Result := fFontStyles;
 end;
 
-procedure TelTrueTypeFont.SetTextStyle(TextStyle: TTextStyle); 
+procedure TelTrueTypeFont.SetTextStyle(aTextStyle: TTextStyle);
 begin
-  //if TextStyle <> fTextStyle then
-  //begin
-    //fChange := true;
-    fTextStyle := TextStyle;
-  //end;
+  if aTextStyle <> fTextStyle then
+    fTextStyle := aTextStyle;
 end;
 
 function TelTrueTypeFont.GetTextStyle: TTextStyle; 
@@ -288,13 +279,10 @@ begin
   Result := fTextStyle;
 end;
 
-procedure TelTrueTypeFont.SetRenderType(FontRender: TFontRender); 
+procedure TelTrueTypeFont.SetRenderType(aFontRender: TFontRender);
 begin
-  //if FontRender <> fFontRender then
-  //begin
-    //fChange := true;
-    fFontRender := FontRender;
-  //end;
+  if aFontRender <> fFontRender then
+    fFontRender := aFontRender;
 end;
 
 function TelTrueTypeFont.GetRenderType: TFontRender; 
@@ -302,13 +290,10 @@ begin
   Result := fFontRender;
 end;
 
-procedure TelTrueTypeFont.SetColor(Color: TelColor); 
+procedure TelTrueTypeFont.SetColor(aColor: TelColor);
 begin
-  //if Color <> fColor then
-  //begin
-    //fChange := true;
-    fColor := Color;
-  //end;
+  if not fColor.Equals(aColor) then
+    fColor := aColor;
 end;
 
 function TelTrueTypeFont.GetColor: TelColor; 
@@ -316,26 +301,13 @@ begin
   Result := fColor;
 end;
 
-procedure TelTrueTypeFont.SetText(Text: String); 
-begin
-  if Text <> fText then
-  begin
-    fChange := true;
-    fText := Text;
-  end;
-end;
-
-function TelTrueTypeFont.GetText: String; 
-begin
-  Result := fText;
-end;
-
 function TelTrueTypeFont.GetHeight: Integer;
 var
   tmp: Integer;
 begin
+  inherited;
+
   tmp := 0;
-  Result := 0;
 
   case fTextStyle of
     tsNormal: TTF_SizeText(fFont, PChar(fText), tmp, Result);
@@ -346,7 +318,7 @@ end;
 
 function TelTrueTypeFont.GetWidth: Integer;
 begin
-  result := GetWidth_Text(fText);
+  Result := GetWidth_Text(fText);
 end;
 
 procedure TelTrueTypeFont.SetSize(Value: Integer);
@@ -376,8 +348,9 @@ function TelTrueTypeFont.GetWidth_Text(Text: String): Integer;
 var
   tmp: Integer;
 begin
+  inherited;
+
   tmp := 0;
-  Result := 0;
 
   case fTextStyle of
     tsNormal: TTF_SizeText(fFont, PChar(Text), Result, tmp);
@@ -394,7 +367,7 @@ var
   i: Integer;
   tmpTop, tmpTop2: Single;
 begin
-  if aText <> '' then fText := aText;
+  if aText <> fText then fText := aText;
 
   if ((fFont <> nil) and (fText <> '')) then
   begin

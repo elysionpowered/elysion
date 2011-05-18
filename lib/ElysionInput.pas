@@ -1,3 +1,9 @@
+(**
+  * Elysion Input API
+  *
+  * @author(Johannes Stein and contributors <http://elysionpowered.org>)
+  *
+  *)
 unit ElysionInput;
 
 interface
@@ -49,6 +55,7 @@ TelKeyboardHelper = class
     property LastUsedKey: LongWord read GetLastUsedKey;
 end;
 
+// TODO: Add multiple joystick support
 TelJoystickHelper = class
   private
     fLastUsedButton: LongWord;

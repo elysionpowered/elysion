@@ -20,7 +20,7 @@ function BoolToString(aValue: Boolean): String; {$IFDEF CAN_INLINE} inline; {$EN
 function Split(fText: String;fSep: Char;fTrim: Boolean=false;fQuotes: Boolean=false): TStringList;
 
 
-function GetFilenameExtension(Filename: String): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function GetFilenameExtension(Filename: String; isUpperCase: Boolean = true): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 function GetFilenameWithoutExt(Filename: String): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
 function GetUserDirectory(): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -112,14 +112,39 @@ begin
 end;
 
 
-function GetFilenameExtension(Filename: String): String;
+function GetFilenameExtension(Filename: String; isUpperCase: Boolean = true): String;
+var
+  lastSlash, lastDot, diffDotSlash, tmpLength: Integer;
 begin
-  Result := UpperCase(Copy(Filename, LastDelimiter('.', Filename) + 1, Length(Filename)));
+  lastSlash := LastDelimiter(DirectorySeparator, Filename);
+  lastDot := LastDelimiter('.', Filename);
+  
+  diffDotSlash := lastDot - lastSlash;
+
+  if ((lastDot = 0) or (diffDotSlash <= 0)) then Result := ''
+  else begin
+    tmpLength := Length(Filename) - lastDot;
+
+    if isUpperCase then Result := UpperCase(Copy(Filename, lastDot + 1, tmpLength))
+    else Result := LowerCase(Copy(Filename, lastDot + 1, tmpLength));
+  end;
 end;
 
 function GetFilenameWithoutExt(Filename: String): String;
+var
+  lastSlash, lastDot, diffDotSlash, tmpLength: Integer;
 begin
-  Result := Copy(Filename, LastDelimiter(DirectorySeparator, Filename) + 1, LastDelimiter('.', Filename) - 1);
+  lastSlash := LastDelimiter(DirectorySeparator, Filename);
+  lastDot := LastDelimiter('.', Filename);
+  
+  diffDotSlash := lastDot - lastSlash;
+
+  if ((lastDot = 0) or (diffDotSlash <= 0)) then
+    tmpLength := Length(Filename) - lastSlash
+  else
+    tmpLength := lastDot - lastSlash - 1;
+  
+  Result := Copy(Filename, lastSlash + 1, tmpLength);
 end;
 
 {$IFDEF WINDOWS}
@@ -150,18 +175,21 @@ begin
   {$IFDEF WINDOWS}
     SpecDir := GetWinSpecialDir(CSIDL_LOCAL_APPDATA);
     if SpecDir = '' then SpecDir := GetWinSpecialDir(CSIDL_APPDATA);
-    // Still no folder found... ok, take the
+    // Still no folder found... ok, take the user directory
     if SpecDir = '' then SpecDir := GetUserDirectory();
 
-    Result := SpecDir;
+    if AppName = '' then Result := SpecDir + DirectorySeparator
+    else Result := SpecDir + DirectorySeparator + AppName + DirectorySeparator;
   {$ENDIF}
 
   {$IFDEF LINUX}
-    Result := GetUserDirectory() + '.' + AppName + DirectorySeparator;
+    if AppName = '' then Result := GetUserDirectory() + DirectorySeparator
+    else Result := GetUserDirectory() + '.' + AppName + DirectorySeparator;
   {$ENDIF}
 
   {$IFDEF DARWIN}
-    Result := GetUserDirectory() + 'Application\ Support' + DirectorySeparator + AppName + DirectorySeparator;
+    if AppName = '' then Result := GetUserDirectory() + DirectorySeparator
+    else Result := GetUserDirectory() + 'Library/Application Support' + DirectorySeparator + AppName + DirectorySeparator;
   {$ENDIF}
 end;
 

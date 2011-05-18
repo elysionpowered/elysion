@@ -11,6 +11,7 @@ interface
 {$ENDIF}
 
 uses
+  ElysionTypes,
   ElysionObject,
   ElysionApplication,
   ElysionLogger,
@@ -236,7 +237,7 @@ finalization
   if Audio <> nil then
   begin
     Audio.Finalize();
-    Audio.Destroy;
+    Audio.Free;
   end;
 {$ENDIF}
 

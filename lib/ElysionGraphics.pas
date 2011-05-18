@@ -63,6 +63,7 @@ type
       function GetDragging(): Boolean;
       function GetDragEnd(): Boolean;
       function GetClick(): Boolean; Override;
+      function GetRightClick(): Boolean; Override;
       function GetDblClick(): Boolean; Override;
     public
       constructor Create; Override;
@@ -608,6 +609,13 @@ begin
   if ((MouseOver) and (Input.Mouse.LeftClick)) then Result := true;
 end;
 
+function TelSprite.GetRightClick(): Boolean;
+begin
+  Result := false;
+
+  if ((MouseOver) and (Input.Mouse.RightClick())) then Result := true;
+end;
+
 function TelSprite.GetDblClick(): Boolean;
 begin
   Result := false;
@@ -793,7 +801,7 @@ begin
       case BlendMode of
         bmAdd: glBlendFunc(GL_ONE, GL_ONE);
         bmNormal: glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        bmSub: glBlendFunc(GL_ZERO, GL_ZERO);
+        bmSub: glBlendFunc(GL_ZERO, GL_ONE);
       end;
       glEnable(GL_BLEND);
 
@@ -916,12 +924,10 @@ end;
 procedure TelSpriteList.Insert(Index: Integer; Sprite: TelSprite);
 begin
   if ((Index >= 0) and (Index <= FSpriteList.Count - 1)) then FSpriteList.Insert(Index, Sprite)
-  {$IFDEF USE_LOGGER}
   else begin
-    if Index > FSpriteList.Count - 1 then TelLogger.GetInstance.WriteLog('SpriteList: Index > Count');
-    if Index < 0 then TelLogger.GetInstance.WriteLog('SpriteList : Index < Count');
+    if Index > FSpriteList.Count - 1 then if IsLoggerActive then TelLogger.GetInstance.WriteLog('SpriteList: Index > Count');
+    if Index < 0 then if IsLoggerActive then TelLogger.GetInstance.WriteLog('SpriteList : Index < Count');
   end;
-  {$ENDIF}
 end;
 
 function TelSpriteList.Add(Sprite: TelSprite): Integer;
@@ -939,24 +945,20 @@ begin
     TmpSprite.Destroy;
     FSpriteList.Delete(Index);
   end
-  {$IFDEF USE_LOGGER}
   else begin
-    if Index > FSpriteList.Count - 1 then TelLogger.GetInstance.WriteLog('SpriteList: Index > Count');
-    if Index < 0 then TelLogger.GetInstance.WriteLog('SpriteList : Index < Count');
+    if Index > FSpriteList.Count - 1 then if IsLoggerActive then TelLogger.GetInstance.WriteLog('SpriteList: Index > Count');
+    if Index < 0 then if IsLoggerActive then TelLogger.GetInstance.WriteLog('SpriteList : Index < Count');
   end;
-  {$ENDIF}
 
 end;
 
 function TelSpriteList.Get(Index: Integer): TelSprite;
 begin
   if ((Index >= 0) and (Index <= FSpriteList.Count - 1)) then Result := TelSprite(FSpritelist[Index])
-  {$IFDEF USE_LOGGER}
   else begin
-    if Index > FSpriteList.Count - 1 then TelLogger.GetInstance.WriteLog('SpriteList: Index > Count');
-    if Index < 0 then TelLogger.GetInstance.WriteLog('SpriteList : Index < Count');
+    if Index > FSpriteList.Count - 1 then if IsLoggerActive then TelLogger.GetInstance.WriteLog('SpriteList: Index > Count');
+    if Index < 0 then if IsLoggerActive then TelLogger.GetInstance.WriteLog('SpriteList : Index < Count');
   end;
-  {$ENDIF}
 
 end;
 
@@ -988,12 +990,10 @@ begin
     TmpSprite.Destroy;
     Insert(Index, Item);
   end
-  {$IFDEF USE_LOGGER}
   else begin
-    if Index > FSpriteList.Count - 1 then TelLogger.GetInstance.WriteLog('SpriteList: Index > Count');
-    if Index < 0 then TelLogger.GetInstance.WriteLog('SpriteList : Index < Count');
+    if Index > FSpriteList.Count - 1 then if IsLoggerActive then TelLogger.GetInstance.WriteLog('SpriteList: Index > Count');
+    if Index < 0 then if IsLoggerActive then TelLogger.GetInstance.WriteLog('SpriteList : Index < Count');
   end;
-  {$ENDIF}
 
 end;
 
@@ -1019,13 +1019,9 @@ Begin
       TmpSprite.Destroy;
       Insert(TMP, Item);
 	end
-    {$IFDEF USE_LOGGER}
-    else TelLogger.GetInstance.WriteLog('SpriteList: Index does not exist');
-    {$ENDIF}
+    else if IsLoggerActive then TelLogger.GetInstance.WriteLog('SpriteList: Index does not exist');
   end
-  {$IFDEF USE_LOGGER}
-  else TelLogger.GetInstance.WriteLog('SpriteList: Index string is empty');
-  {$ENDIF}
+  else if IsLoggerActive then TelLogger.GetInstance.WriteLog('SpriteList: Index string is empty');
 End;
 
 procedure TelSpriteList.LoadFromStream(Stream: TFileStream);
@@ -1041,9 +1037,7 @@ begin
 
   if TmpHead <> Head then
   begin
-    {$IFDEF USE_LOGGER}
-    TelLogger.GetInstance.WriteLog('Could not load file: Wrong file');
-    {$ENDIF}
+    if IsLoggerActive then TelLogger.GetInstance.WriteLog('Could not load file: Wrong file');
   end else
   begin
     Stream.Read(loop, SizeOf(Integer));

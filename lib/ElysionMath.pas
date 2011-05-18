@@ -1,4 +1,8 @@
-
+(**
+  *
+  *
+  * @author(Johannes Stein <http://www.elysionpowered.org>)
+  *)
 unit ElysionMath;
 // Crazy source code comment #1337: Hands up if you like math
 
@@ -15,6 +19,12 @@ function Lerp(Min, Max: Integer; Amt: Single = 0.5): Single; Overload; {$IFDEF C
 
 function InverseLerp(Min, Max: Single; Amt: Single = 0.5): Single; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 function InverseLerp(Min, Max: Integer; Amt: Single = 0.5): Single; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+function Slerp(Min, Max: Single; Amt: Single = 0.5): Single; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function Slerp(Min, Max: Integer; Amt: Single = 0.5): Single; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+function InverseSlerp(Min, Max: Single; Amt: Single = 0.5): Single; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function Inverseslerp(Min, Max: Integer; Amt: Single = 0.5): Single; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
 function CubicHermite(Min, Max: Single; StartTangent, EndTangent: Single; Amt: Single = 0.5): Single;
 
@@ -56,6 +66,26 @@ end;
 function InverseLerp(Min, Max: Integer; Amt: Single = 0.5): Single;
 begin
   Result := InverseLerp(Min * 1.0, Max * 1.0, Amt);
+end;
+
+function Slerp(Min, Max: Single; Amt: Single = 0.5): Single;
+begin
+  // TODO: Implement this stuff!
+end;
+
+function Slerp(Min, Max: Integer; Amt: Single = 0.5): Single;
+begin
+  Result := Slerp(Min * 1.0, Max * 1.0, Amt);
+end;
+
+function InverseSlerp(Min, Max: Single; Amt: Single = 0.5): Single;
+begin
+  Result := Max - Slerp(Min, Max, Amt);
+end;
+
+function InverseSlerp(Min, Max: Integer; Amt: Single = 0.5): Single;
+begin
+  Result := InverseSlerp(Min * 1.0, Max * 1.0, Amt);
 end;
 
 function CubicHermite(Min, Max: Single; StartTangent, EndTangent: Single; Amt: Single = 0.5): Single;

@@ -32,7 +32,7 @@ type
 	
     procedure Render; Override;
     procedure Update(dt: Double); Override;
-    procedure HandleEvents; //Override;
+    procedure HandleEvents; Override;
   published
     property Menu: TelMenu read fMenu write fMenu;
 
@@ -53,7 +53,6 @@ begin
   Menu.Spacing := 16;
 
   Menu.Position := makeV3f((ActiveWindow.Width - Menu.Width) - 32, (ActiveWindow.Height - Menu.Height) div 2);
-  //Menu.HoverAnimation := true;
 
   for i := 0 to Menu.Count - 1 do
     Menu.Items[i].TextLabel.Color := makeCol(0, 0, 0);

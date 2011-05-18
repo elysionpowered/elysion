@@ -62,17 +62,12 @@
 		{$PASCALMAINNAME SDL_main} // Needed for Snow Leopard
 		{$linklib SDLmain}
 
-		  {$linkframework Cocoa}
-		  {$linkframework SDL}
-		  {$linkframework OpenGL}
-
-		  //{$IFDEF USE_SDL_IMAGE} {$linkframework SDL_image} {$ENDIF}
-		  //{$IFDEF USE_SDL_MIXER} {$linkframework SDL_mixer} {$ENDIF}
-		  //{$IFDEF USE_SDL_GFX}   {$linkframework SDL_gfx}   {$ENDIF}
-		  //{$IFDEF USE_SDL_NET}   {$linkframework SDL_net}   {$ENDIF}
+		{$linkframework Cocoa}
+		{$linkframework SDL}
+		{$linkframework OpenGL}
 	{$ENDIF}
 
 {$ENDIF}
 
-// Initializes container objects (Font container, Application container) by default
+// Initializes container objects (Font container, Application container, etc.) by default
 {$DEFINE AUTO_INIT}

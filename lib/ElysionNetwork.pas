@@ -1,3 +1,10 @@
+(**
+  * Elysion Network API
+  *
+  * @author(Johannes Stein and contributors <http://elysionpowered.org>)
+  *
+  *)
+
 unit ElysionNetwork;
 
 interface

@@ -1,3 +1,10 @@
+{
+  ElysionTimer
+
+
+
+  @author(Johannes Stein and contributors <http://elysionpowered.org>)
+}
 unit ElysionTimer;
 
 interface
@@ -54,8 +61,7 @@ TelTimer = class(TelObject, ITimer)
 
     function GetTicks(): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-    procedure Update(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
+    procedure Update(dt: Double = 0.0); {$IFDEF CAN_INLINE} inline; {$ENDIF}
   published
     property Active: Boolean read FActive;
 
@@ -163,7 +169,7 @@ begin
   end;
 end;
 
-procedure TelTimer.Update; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+procedure TelTimer.Update(dt: Double = 0.0); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 begin
   if Self.Event then OnEvent();
 end;

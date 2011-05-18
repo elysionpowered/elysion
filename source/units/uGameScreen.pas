@@ -17,6 +17,7 @@ uses
   ElysionColor,
   ElysionTrueTypeFont,
   ElysionAnimator,
+  ElysionStorage,
   uGlobal,
   uBasic,
   uConfig;
@@ -27,6 +28,7 @@ type
     fSprite: TelSprite;
 
     fFont: TelTrueTypeFont;
+
     fPaused, fGameOver: Boolean;
 
     procedure DrawDialog(Title, Text: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -36,7 +38,7 @@ type
 
     procedure Render; Override;
     procedure Update(dt: Double); Override;
-    procedure HandleEvents; //Override;
+    procedure HandleEvents; Override;
 
     procedure Reset;
   published

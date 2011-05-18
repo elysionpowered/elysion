@@ -13,28 +13,32 @@ uses
   Classes;
 
 type
+
+
+  { TelContent }
+
   TelContent = class(TelObject)
   private
-    fRootDirectory: String;
+    fDirList: TStringList;
 
-    fSubDirList: TStringList;
+    function Get(Index: Integer): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure Put(Index: Integer; Value: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-    //function GetSubDirectory(aName: String): String;
-    //procedure SetSubDirectory(aName: String; Value: String);
+    function GetRoot(): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure SetRoot(Value: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    function GetCount(): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
   public
     constructor Create; Override;
     destructor Destroy; Override;
 
-    //function Load(Filename: String);
-    //function LoadTexture(Filename: String): TelTexture;
-
-
-    procedure AddPath(aName: String);
-
+    function AddPath(const aName: String): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
   published
-    property RootDirectory: String read fRootDirectory write fRootDirectory;
-    //property SubDirectory[Index: String]: String read GetSubDirectory write SetSubDirectory;
+    property RootDirectory: String read GetRoot write SetRoot; //deprecated
+    property Root: String read GetRoot write SetRoot;
 
+    property Items[Index: Integer]: String read Get write Put; default;
+    property Count: Integer read GetCount;
   end;
 
 {$IFDEF AUTO_INIT}
@@ -46,29 +50,47 @@ implementation
 
 constructor TelContent.Create;
 begin
-  fRootDirectory := '';
+  inherited;
 
-  fSubDirList := TStringList.Create;
+  fDirList := TStringList.Create;
+  fDirList.Add('');
 end;
 
 destructor TelContent.Destroy;
 begin
-  fSubDirList.Free;
+  fDirList.Free;
+
+  inherited;
 end;
 
-(*function TelContent.GetSubDirectory(aName: String): String;
+function TelContent.GetCount(): Integer;
 begin
-
+  Result := fDirList.Count;
 end;
 
-procedure TelContent.SetSubDirectory(aName: String; Value: String);
+function TelContent.Get(Index: Integer): String;
 begin
+  Result := fDirList.Strings[Index];
+end;
 
-end;  *)
-
-procedure TelContent.AddPath(aName: String);
+procedure TelContent.Put(Index: Integer; Value: String);
 begin
+  fDirList.Strings[Index] := Value;
+end;
 
+function TelContent.GetRoot(): String;
+begin
+  Result := fDirList.Strings[0];
+end;
+
+procedure TelContent.SetRoot(Value: String);
+begin
+  fDirList.Strings[0] := Value;
+end;
+
+function TelContent.AddPath(const aName: String): Integer;
+begin
+  Result := fDirList.Add(aName);
 end;
 
 {$IFDEF AUTO_INIT}

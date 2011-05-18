@@ -11,7 +11,7 @@ uses
 
 type
   IObject = interface
-    //function DebugInfo(): String;
+    procedure DebugInfo();
   end;
   
   IReadableData = interface
@@ -95,7 +95,7 @@ type
 
     procedure Stop();
 
-    procedure Update();
+    procedure Update(dt: Double = 0.0);
   end;
 
 implementation

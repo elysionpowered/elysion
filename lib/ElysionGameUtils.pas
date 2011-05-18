@@ -84,6 +84,43 @@ type
       property CheckForUniqueID: Boolean read fCheckForUniqueID write fCheckForUniqueID; //< If you're not 21, you're not going to be served ;)
   end;
 
+  TelQuest = record
+    Active, Completed: Boolean;
+    Caption: String;
+    Description: TStringList;
+  end;
+
+  TelQuestManager = class
+    private
+      fList: TList;
+
+      function GetCompleted(): Integer;
+      function GetCount(): Integer;
+    public
+      constructor Create;
+      destructor Destroy;
+
+      procedure Add(Quest: TelQuest);
+    published
+      property Completed: Integer read GetCompleted;
+      property Count: Integer read GetCount;
+  end;
+
+  TelHighscoreEntry = record
+    Caption: String;
+    Points: Integer;
+  end;
+
+  TelHighscoreList = class
+    private
+      fList: TList;
+    public
+      constructor Create;
+      destructor Destroy;
+
+      procedure Show(Entries: Integer);
+  end;
+
 {$IFDEF AUTO_INIT}
 var
   Achievements: TAchievementManager;

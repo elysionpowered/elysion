@@ -3,9 +3,7 @@
   *  Unit: ElysionObject
   *  Description: Contains basic class (TelObject)
   *
-  *  Part of Elysion Frameworks
-  *  Elysion Frameworks is licensed under the MIT/MPL license
-  *  See LICENSE.TXT for more information
+  * @author(Johannes Stein and contributors <http://elysionpowered.org>)
   *
   *)
 {%endregion}
@@ -32,7 +30,10 @@ type
   * Description:
   *   Basic object
   *)
-TelObject = class(TInterfacedObject)
+
+{ TelObject }
+
+TelObject = class(TInterfacedObject, IObject)
 private
   FObjectCount: Integer; //< Private stored: Object creation id -> Part of Unique ID
 
@@ -67,12 +68,20 @@ public
   destructor Destroy; Override;
 
   (**
+    * procedure TelObject.DebugInfo @br
+    * Type: Method @br
+    * @param None @br
+    * Description: Writes a debug message of the current object into the logger
+    *)
+  procedure DebugInfo(); virtual;
+
+  (**
     * procedure TelObject.Msg @br
     * Type: Method @br
     * @param Msg: String @br
     * Description: Logs Msg as an error message
     *)
-  procedure Log(Msg: String); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  procedure Log(Msg: String; LogMessageType: TLogMessageType = ltError); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
   (**
     * procedure TelObject.Msg @br
@@ -80,7 +89,7 @@ public
     * @param Msg: Integer @br
     * Description: Logs Msg as an error message
     *)
-  procedure Log(Msg: Integer); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  procedure Log(Msg: Integer; LogMessageType: TLogMessageType = ltError); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
   (**
     * procedure TelObject.Msg @br
@@ -88,7 +97,7 @@ public
     * @param Msg: Single @br
     * Description: Logs Msg as an error message
     *)
-  procedure Log(Msg: Single); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  procedure Log(Msg: Single; LogMessageType: TLogMessageType = ltError); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 published
   property Drawable: Boolean read FDrawable;             //< Determines if object can be drawn on the screen
   property Name: String read FName write FName;          //< Name of an object
@@ -114,15 +123,20 @@ end;
 
 TelFontContainer = class(TelObject)
 protected
+  fText: String;
+
   function GetHeight(): Integer; virtual; abstract;
   function GetWidth(): Integer; virtual; abstract;
 
   function GetSize(): Integer; virtual; abstract;
   procedure SetSize(Value: Integer); virtual; abstract; //< May be empty depending on the implementation
+
+  procedure SetText(aText: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  function GetText: String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 public
   procedure LoadFromFile(const aFilename: String); virtual; abstract;
 
-  public function GetWidth_Text(Text: String): Integer; virtual; abstract;
+  function GetWidth_Text(Text: String): Integer; virtual; abstract;
 
   procedure TextOut(aPoint: TelVector3f; aText: String = ''; LineBreak: Boolean = true); virtual; abstract;
 published
@@ -130,6 +144,8 @@ published
   property Width: Integer read GetWidth;
 
   property Size: Integer read GetSize write SetSize;
+
+  property Text: String read GetText write SetText;
 end;
 	
 
@@ -170,24 +186,40 @@ begin
   inherited;
 end;
 
+procedure TelObject.DebugInfo();
+begin
+  ;
+end;
+
 function TelObject.GetUniqueID(): String;
 begin
   Result := Self.ClassName + IntToString(fObjectCount, true, 4);
 end;
 
-procedure TelObject.Log(Msg: String);
+procedure TelObject.Log(Msg: String; LogMessageType: TLogMessageType = ltError);
 begin
-  TelLogger.GetInstance.WriteLog(Self.UniqueID + ' : ' + Msg);
+  TelLogger.GetInstance.WriteLog(Self.UniqueID + ' : ' + Msg, LogMessageType);
 end;
 
-procedure TelObject.Log(Msg: Integer);
+procedure TelObject.Log(Msg: Integer; LogMessageType: TLogMessageType = ltError);
 begin
-  TelLogger.GetInstance.WriteLog(Self.UniqueID + ' : ' + IntToStr(Msg));
+  TelLogger.GetInstance.WriteLog(Self.UniqueID + ' : ' + IntToStr(Msg), LogMessageType);
 end;
 
-procedure TelObject.Log(Msg: Single);
+procedure TelObject.Log(Msg: Single; LogMessageType: TLogMessageType = ltError);
 begin
-  TelLogger.GetInstance.WriteLog(Self.UniqueID + ' : ' + FloatToStr(Msg));
+  TelLogger.GetInstance.WriteLog(Self.UniqueID + ' : ' + FloatToStr(Msg), LogMessageType);
+end;
+
+procedure TelFontContainer.SetText(aText: String);
+begin
+  if aText <> fText then
+    fText := aText;
+end;
+
+function TelFontContainer.GetText: String;
+begin
+  Result := fText;
 end;
 
 end.

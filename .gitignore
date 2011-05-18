@@ -11,6 +11,8 @@
 *.compiled
 *.identcache
 *.local
+*.cache
+*.res
 *.app
 *.rst
 
