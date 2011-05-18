@@ -19,7 +19,7 @@
 <code>type TelStorage = class(<a class="normal"  href="ElysionObject.TelObject.html">TelObject</a>)</code></p>
 <h2 class="description">Description</h2>
 <p>
-TelStorage</p>
+TODO: Reflect if that should be a singleton</p>
 <a name="%40Hierarchy"></a><h2 class="hierarchy">Hierarchy</h2>
 <ul class="hierarchy"><li class="ancestor">TInterfacedObject</li>
 <li class="ancestor"><a class="normal"  href="ElysionObject.TelObject.html">TelObject</a></li>
@@ -28,55 +28,59 @@ TelStorage</p>
 <table class="summary wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>constructor <b><a   href="ElysionStorage.TelStorage.html#Create">Create</a></b>;</code></td>
+<td class="itemcode"><code>constructor <b><a   href="ElysionStorage.TelStorage.html#Create">Create</a></b>; Override;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>destructor <b><a   href="ElysionStorage.TelStorage.html#Destroy">Destroy</a></b>;</code></td>
+<td class="itemcode"><code>destructor <b><a   href="ElysionStorage.TelStorage.html#Destroy">Destroy</a></b>; Override;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionStorage.TelStorage.html#SetKey">SetKey</a></b>(KeyName, KeyValue: String);</code></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionStorage.TelStorage.html#DebugInfo">DebugInfo</a></b>(); Override;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a   href="ElysionStorage.TelStorage.html#GetKey">GetKey</a></b>(KeyName): String;</code></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionStorage.TelStorage.html#SetKey">SetKey</a></b>(KeyName, KeyValue: String); Overload;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a   href="ElysionStorage.TelStorage.html#GetKeyAsInt">GetKeyAsInt</a></b>(KeyName): Integer;</code></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionStorage.TelStorage.html#SetKey">SetKey</a></b>(aKey: <a   href="ElysionTypes.TKeyIdent.html">TKeyIdent</a>); Overload;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a   href="ElysionStorage.TelStorage.html#GetKeyAsBool">GetKeyAsBool</a></b>(KeyName): Boolean;</code></td>
+<td class="itemcode"><code>function <b><a   href="ElysionStorage.TelStorage.html#GetKey">GetKey</a></b>(KeyName: String): <a   href="ElysionTypes.TKeyIdent.html">TKeyIdent</a>;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a   href="ElysionStorage.TelStorage.html#GetKeyAsFloat">GetKeyAsFloat</a></b>(KeyName): Single;</code></td>
+<td class="itemcode"><code>function <b><a   href="ElysionStorage.TelStorage.html#GetKeyValue">GetKeyValue</a></b>(KeyName: String): String;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a   href="ElysionStorage.TelStorage.html#KeyExists">KeyExists</a></b>(KeyString: String): Boolean;</code></td>
+<td class="itemcode"><code>function <b><a   href="ElysionStorage.TelStorage.html#GetKeyAsInt">GetKeyAsInt</a></b>(KeyName: String): Integer;</code></td>
 </tr>
 <tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a   href="ElysionStorage.TelStorage.html#GetKeyAsBool">GetKeyAsBool</a></b>(KeyName: String): Boolean;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a   href="ElysionStorage.TelStorage.html#GetKeyAsFloat">GetKeyAsFloat</a></b>(KeyName: String): Single;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a   href="ElysionStorage.TelStorage.html#KeyExists">KeyExists</a></b>(KeyName: String): Boolean;</code></td>
+</tr>
+<tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>procedure <b><a   href="ElysionStorage.TelStorage.html#Push">Push</a></b>();</code></td>
 </tr>
-<tr class="list2">
-<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionStorage.TelStorage.html#Pop">Pop</a></b>();</code></td>
-</tr>
 <tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionStorage.TelStorage.html#Pull">Pull</a></b>();</code></td>
+</tr>
+<tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>procedure <b><a   href="ElysionStorage.TelStorage.html#Clear">Clear</a></b>();</code></td>
-</tr>
-<tr class="list2">
-<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a   href="ElysionStorage.TelStorage.html#LoadFileFromStorage">LoadFileFromStorage</a></b>(Filename: String): TStringList;</code></td>
-</tr>
-<tr class="list">
-<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionStorage.TelStorage.html#SaveFileToStorage">SaveFileToStorage</a></b>(Filename: String; Content: TStringList);</code></td>
 </tr>
 </table>
 <a name="%40Properties"></a><h3 class="summary">Properties</h3>
@@ -87,11 +91,19 @@ TelStorage</p>
 </tr>
 <tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a   href="ElysionStorage.TelStorage.html#Directory">Directory</a></b>: String read fDirectory write fDirectory;</code></td>
+<td class="itemcode"><code>property <b><a   href="ElysionStorage.TelStorage.html#FileFormat">FileFormat</a></b>: <a   href="ElysionStorage.html#TStorageFileFormat">TStorageFileFormat</a> read fFileFormat write fFileFormat;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionStorage.TelStorage.html#Directory">Directory</a></b>: String read fDirectory write SetDirectory;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
 <td class="itemcode"><code>property <b><a   href="ElysionStorage.TelStorage.html#Modified">Modified</a></b>: Boolean read fModified;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionStorage.TelStorage.html#AutoSave">AutoSave</a></b>: Boolean read fAutoSave write fAutoSave;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
@@ -99,7 +111,7 @@ TelStorage</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Create"></a><code>constructor <b>Create</b>;</code></td>
+<td class="itemcode"><a name="Create"></a><code>constructor <b>Create</b>; Override;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -107,7 +119,7 @@ TelStorage</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Destroy"></a><code>destructor <b>Destroy</b>;</code></td>
+<td class="itemcode"><a name="Destroy"></a><code>destructor <b>Destroy</b>; Override;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -115,7 +127,7 @@ TelStorage</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="SetKey"></a><code>procedure <b>SetKey</b>(KeyName, KeyValue: String);</code></td>
+<td class="itemcode"><a name="DebugInfo"></a><code>procedure <b>DebugInfo</b>(); Override;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -123,7 +135,7 @@ TelStorage</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="GetKey"></a><code>function <b>GetKey</b>(KeyName): String;</code></td>
+<td class="itemcode"><a name="SetKey"></a><code>procedure <b>SetKey</b>(KeyName, KeyValue: String); Overload;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -131,7 +143,7 @@ TelStorage</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="GetKeyAsInt"></a><code>function <b>GetKeyAsInt</b>(KeyName): Integer;</code></td>
+<td class="itemcode"><a name="SetKey"></a><code>procedure <b>SetKey</b>(aKey: <a   href="ElysionTypes.TKeyIdent.html">TKeyIdent</a>); Overload;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -139,7 +151,7 @@ TelStorage</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="GetKeyAsBool"></a><code>function <b>GetKeyAsBool</b>(KeyName): Boolean;</code></td>
+<td class="itemcode"><a name="GetKey"></a><code>function <b>GetKey</b>(KeyName: String): <a   href="ElysionTypes.TKeyIdent.html">TKeyIdent</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -147,7 +159,7 @@ TelStorage</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="GetKeyAsFloat"></a><code>function <b>GetKeyAsFloat</b>(KeyName): Single;</code></td>
+<td class="itemcode"><a name="GetKeyValue"></a><code>function <b>GetKeyValue</b>(KeyName: String): String;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -155,7 +167,31 @@ TelStorage</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="KeyExists"></a><code>function <b>KeyExists</b>(KeyString: String): Boolean;</code></td>
+<td class="itemcode"><a name="GetKeyAsInt"></a><code>function <b>GetKeyAsInt</b>(KeyName: String): Integer;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="GetKeyAsBool"></a><code>function <b>GetKeyAsBool</b>(KeyName: String): Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="GetKeyAsFloat"></a><code>function <b>GetKeyAsFloat</b>(KeyName: String): Single;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="KeyExists"></a><code>function <b>KeyExists</b>(KeyName: String): Boolean;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -173,11 +209,11 @@ Pushes changes to default file</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Pop"></a><code>procedure <b>Pop</b>();</code></td>
+<td class="itemcode"><a name="Pull"></a><code>procedure <b>Pull</b>();</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
-Pops default file from storage</p>
+Pull default file from storage</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
@@ -188,26 +224,6 @@ Pops default file from storage</p>
 <tr><td colspan="2">
 <p>
 Clears complete storage</p>
-</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="LoadFileFromStorage"></a><code>function <b>LoadFileFromStorage</b>(Filename: String): TStringList;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Load custom file</p>
-</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="SaveFileToStorage"></a><code>procedure <b>SaveFileToStorage</b>(Filename: String; Content: TStringList);</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Save custom file</p>
 </td></tr>
 </table>
 <h3 class="detail">Properties</h3>
@@ -224,7 +240,15 @@ Default filename</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><a name="Directory"></a><code>property <b>Directory</b>: String read fDirectory write fDirectory;</code></td>
+<td class="itemcode"><a name="FileFormat"></a><code>property <b>FileFormat</b>: <a   href="ElysionStorage.html#TStorageFileFormat">TStorageFileFormat</a> read fFileFormat write fFileFormat;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Directory"></a><code>property <b>Directory</b>: String read fDirectory write SetDirectory;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -237,6 +261,16 @@ Default filename</p>
 <tr><td colspan="2">
 &nbsp;</td></tr>
 </table>
-<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2011-04-30 03:13:33</em>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="AutoSave"></a><code>property <b>AutoSave</b>: Boolean read fAutoSave write fAutoSave;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Automatically saves if a key has been changed</p>
+</td></tr>
+</table>
+<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2011-05-18 03:44:09</em>
 </span>
 </body></html>

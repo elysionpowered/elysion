@@ -19,7 +19,7 @@
 <code>type TelWindow = class(<a class="normal"  href="ElysionObject.TelObject.html">TelObject</a>)</code></p>
 <h2 class="description">Description</h2>
 <div class="nodescription">no description available, TelObject description follows</div><p>
-* * Class: TelObject <br> * Group: Essential <br> * Description: * Basic object</p>
+TelObject</p>
 <a name="%40Hierarchy"></a><h2 class="hierarchy">Hierarchy</h2>
 <ul class="hierarchy"><li class="ancestor">TInterfacedObject</li>
 <li class="ancestor"><a class="normal"  href="ElysionObject.TelObject.html">TelObject</a></li>
@@ -32,11 +32,11 @@
 </tr>
 <tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code><b><a   href="ElysionApplication.TelWindow.html#KeyDown">KeyDown</a></b>: array[0..<a   href="ElysionTypes.html#K_EURO">K_EURO</a>] of Boolean;</code></td>
+<td class="itemcode"><code><b><a   href="ElysionApplication.TelWindow.html#KeyDown">KeyDown</a></b>: array[0..<a   href="ElysionKeyCode.html#K_EURO">K_EURO</a>] of Boolean;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code><b><a   href="ElysionApplication.TelWindow.html#KeyUp">KeyUp</a></b>: array[0..<a   href="ElysionTypes.html#K_EURO">K_EURO</a>] of Boolean;</code></td>
+<td class="itemcode"><code><b><a   href="ElysionApplication.TelWindow.html#KeyUp">KeyUp</a></b>: array[0..<a   href="ElysionKeyCode.html#K_EURO">K_EURO</a>] of Boolean;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
@@ -56,15 +56,15 @@
 </tr>
 <tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code><b><a   href="ElysionApplication.TelWindow.html#JoyButtonDown">JoyButtonDown</a></b>: array[0..<a   href="ElysionTypes.html#MAX_BUTTONS">MAX_BUTTONS</a>] of Boolean;</code></td>
+<td class="itemcode"><code><b><a   href="ElysionApplication.TelWindow.html#JoyButtonDown">JoyButtonDown</a></b>: array[0..<a   href="ElysionKeyCode.html#MAX_BUTTONS">MAX_BUTTONS</a>] of Boolean;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code><b><a   href="ElysionApplication.TelWindow.html#JoyButtonUp">JoyButtonUp</a></b>: array[0..<a   href="ElysionTypes.html#MAX_BUTTONS">MAX_BUTTONS</a>] of Boolean;</code></td>
+<td class="itemcode"><code><b><a   href="ElysionApplication.TelWindow.html#JoyButtonUp">JoyButtonUp</a></b>: array[0..<a   href="ElysionKeyCode.html#MAX_BUTTONS">MAX_BUTTONS</a>] of Boolean;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code><b><a   href="ElysionApplication.TelWindow.html#JoyAxis">JoyAxis</a></b>: array[0..<a   href="ElysionTypes.html#MAX_AXES">MAX_AXES</a>] of Integer;</code></td>
+<td class="itemcode"><code><b><a   href="ElysionApplication.TelWindow.html#JoyAxis">JoyAxis</a></b>: array[0..<a   href="ElysionKeyCode.html#MAX_AXES">MAX_AXES</a>] of Integer;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
@@ -135,7 +135,7 @@
 </tr>
 <tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>Procedure <b><a   href="ElysionApplication.TelWindow.html#TakeScreenshot">TakeScreenshot</a></b>(Filename: String);</code></td>
+<td class="itemcode"><code>Procedure <b><a   href="ElysionApplication.TelWindow.html#TakeScreenshot">TakeScreenshot</a></b>(aFilename: String = '');</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
@@ -190,7 +190,7 @@
 </tr>
 <tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#DisplayOrientation">DisplayOrientation</a></b>: <a   href="ElysionApplication.html#TDisplayOrientation">TDisplayOrientation</a> read GetDisplayOrientation;</code></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#DisplayOrientation">DisplayOrientation</a></b>: <a   href="ElysionTypes.html#TDisplayOrientation">TDisplayOrientation</a> read GetDisplayOrientation;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
@@ -272,7 +272,7 @@ You can access the SDL surface directly if you wish</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="KeyDown"></a><code><b>KeyDown</b>: array[0..<a   href="ElysionTypes.html#K_EURO">K_EURO</a>] of Boolean;</code></td>
+<td class="itemcode"><a name="KeyDown"></a><code><b>KeyDown</b>: array[0..<a   href="ElysionKeyCode.html#K_EURO">K_EURO</a>] of Boolean;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -282,7 +282,7 @@ Maybe fix: Move input arrays to Input class True, if key is pressed down</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="KeyUp"></a><code><b>KeyUp</b>: array[0..<a   href="ElysionTypes.html#K_EURO">K_EURO</a>] of Boolean;</code></td>
+<td class="itemcode"><a name="KeyUp"></a><code><b>KeyUp</b>: array[0..<a   href="ElysionKeyCode.html#K_EURO">K_EURO</a>] of Boolean;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -332,7 +332,7 @@ True, if mouse button is pressed up again</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="JoyButtonDown"></a><code><b>JoyButtonDown</b>: array[0..<a   href="ElysionTypes.html#MAX_BUTTONS">MAX_BUTTONS</a>] of Boolean;</code></td>
+<td class="itemcode"><a name="JoyButtonDown"></a><code><b>JoyButtonDown</b>: array[0..<a   href="ElysionKeyCode.html#MAX_BUTTONS">MAX_BUTTONS</a>] of Boolean;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -342,7 +342,7 @@ True, if mouse button is pressed down</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="JoyButtonUp"></a><code><b>JoyButtonUp</b>: array[0..<a   href="ElysionTypes.html#MAX_BUTTONS">MAX_BUTTONS</a>] of Boolean;</code></td>
+<td class="itemcode"><a name="JoyButtonUp"></a><code><b>JoyButtonUp</b>: array[0..<a   href="ElysionKeyCode.html#MAX_BUTTONS">MAX_BUTTONS</a>] of Boolean;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -352,7 +352,7 @@ True, if mouse button is pressed up again</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="JoyAxis"></a><code><b>JoyAxis</b>: array[0..<a   href="ElysionTypes.html#MAX_AXES">MAX_AXES</a>] of Integer;</code></td>
+<td class="itemcode"><a name="JoyAxis"></a><code><b>JoyAxis</b>: array[0..<a   href="ElysionKeyCode.html#MAX_AXES">MAX_AXES</a>] of Integer;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -513,7 +513,7 @@ Show the cursor</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="TakeScreenshot"></a><code>Procedure <b>TakeScreenshot</b>(Filename: String);</code></td>
+<td class="itemcode"><a name="TakeScreenshot"></a><code>Procedure <b>TakeScreenshot</b>(aFilename: String = '');</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -624,7 +624,7 @@ Checks if surface is active</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><a name="DisplayOrientation"></a><code>property <b>DisplayOrientation</b>: <a   href="ElysionApplication.html#TDisplayOrientation">TDisplayOrientation</a> read GetDisplayOrientation;</code></td>
+<td class="itemcode"><a name="DisplayOrientation"></a><code>property <b>DisplayOrientation</b>: <a   href="ElysionTypes.html#TDisplayOrientation">TDisplayOrientation</a> read GetDisplayOrientation;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -763,6 +763,6 @@ Values for experts</p>
 <tr><td colspan="2">
 &nbsp;</td></tr>
 </table>
-<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2011-04-30 03:13:32</em>
+<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2011-05-18 03:44:07</em>
 </span>
 </body></html>

@@ -39,19 +39,19 @@ Class: TelLogger <br> Group: Optional <br> Description: Very simple logger class
 </tr>
 <tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionLogger.TelLogger.html#WriteLog">WriteLog</a></b>(const Msg: String; LogMessageType: <a   href="ElysionLogger.html#TLogMessageType">TLogMessageType</a> = ltError; FormatHTML: Boolean = false); Overload;</code></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionLogger.TelLogger.html#WriteLog">WriteLog</a></b>(const Msg: String; LogMessageType: <a   href="ElysionTypes.html#TLogMessageType">TLogMessageType</a> = ltError; FormatHTML: Boolean = false); Overload;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionLogger.TelLogger.html#WriteLog">WriteLog</a></b>(const Msg: String; Category: String; LogMessageType: <a   href="ElysionLogger.html#TLogMessageType">TLogMessageType</a> = ltError; FormatHTML: Boolean = false); Overload;</code></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionLogger.TelLogger.html#WriteLog">WriteLog</a></b>(const Msg: String; Category: String; LogMessageType: <a   href="ElysionTypes.html#TLogMessageType">TLogMessageType</a> = ltError; FormatHTML: Boolean = false); Overload;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionLogger.TelLogger.html#WriteLog">WriteLog</a></b>(const Msg: String; Args: array of const; LogMessageType: <a   href="ElysionLogger.html#TLogMessageType">TLogMessageType</a> = ltError; FormatHTML: Boolean = false); Overload;</code></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionLogger.TelLogger.html#WriteLog">WriteLog</a></b>(const Msg: String; Args: array of const; LogMessageType: <a   href="ElysionTypes.html#TLogMessageType">TLogMessageType</a> = ltError; FormatHTML: Boolean = false); Overload;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionLogger.TelLogger.html#WriteLog">WriteLog</a></b>(const Msg: String; Args: array of const; Category: String; LogMessageType: <a   href="ElysionLogger.html#TLogMessageType">TLogMessageType</a> = ltError; FormatHTML: Boolean = false); Overload;</code></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionLogger.TelLogger.html#WriteLog">WriteLog</a></b>(const Msg: String; Args: array of const; Category: String; LogMessageType: <a   href="ElysionTypes.html#TLogMessageType">TLogMessageType</a> = ltError; FormatHTML: Boolean = false); Overload;</code></td>
 </tr>
 </table>
 <a name="%40Properties"></a><h3 class="summary">Properties</h3>
@@ -62,7 +62,7 @@ Class: TelLogger <br> Group: Optional <br> Description: Very simple logger class
 </tr>
 <tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a   href="ElysionLogger.TelLogger.html#Priorities">Priorities</a></b>: <a   href="ElysionLogger.html#TLogMessagePriorities">TLogMessagePriorities</a> read fPriorities write fPriorities;</code></td>
+<td class="itemcode"><code>property <b><a   href="ElysionLogger.TelLogger.html#Priorities">Priorities</a></b>: <a   href="ElysionTypes.html#TLogMessagePriorities">TLogMessagePriorities</a> read fPriorities write fPriorities;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
@@ -100,7 +100,7 @@ destructor TelLogger.Destroy <br> Type: Destructor <br> Parameters: None <br> De
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="WriteLog"></a><code>procedure <b>WriteLog</b>(const Msg: String; LogMessageType: <a   href="ElysionLogger.html#TLogMessageType">TLogMessageType</a> = ltError; FormatHTML: Boolean = false); Overload;</code></td>
+<td class="itemcode"><a name="WriteLog"></a><code>procedure <b>WriteLog</b>(const Msg: String; LogMessageType: <a   href="ElysionTypes.html#TLogMessageType">TLogMessageType</a> = ltError; FormatHTML: Boolean = false); Overload;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -117,7 +117,7 @@ procedure TelLogger.WriteLog <br> Parameters: <br>   Description: Writes a user-
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="WriteLog"></a><code>procedure <b>WriteLog</b>(const Msg: String; Category: String; LogMessageType: <a   href="ElysionLogger.html#TLogMessageType">TLogMessageType</a> = ltError; FormatHTML: Boolean = false); Overload;</code></td>
+<td class="itemcode"><a name="WriteLog"></a><code>procedure <b>WriteLog</b>(const Msg: String; Category: String; LogMessageType: <a   href="ElysionTypes.html#TLogMessageType">TLogMessageType</a> = ltError; FormatHTML: Boolean = false); Overload;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -136,7 +136,7 @@ procedure TelLogger.WriteLog <br> Parameters: <br>    Description: Writes a user
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="WriteLog"></a><code>procedure <b>WriteLog</b>(const Msg: String; Args: array of const; LogMessageType: <a   href="ElysionLogger.html#TLogMessageType">TLogMessageType</a> = ltError; FormatHTML: Boolean = false); Overload;</code></td>
+<td class="itemcode"><a name="WriteLog"></a><code>procedure <b>WriteLog</b>(const Msg: String; Args: array of const; LogMessageType: <a   href="ElysionTypes.html#TLogMessageType">TLogMessageType</a> = ltError; FormatHTML: Boolean = false); Overload;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -155,7 +155,7 @@ procedure TelLogger.WriteLog <br> Parameters: <br>    Description: Writes a user
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="WriteLog"></a><code>procedure <b>WriteLog</b>(const Msg: String; Args: array of const; Category: String; LogMessageType: <a   href="ElysionLogger.html#TLogMessageType">TLogMessageType</a> = ltError; FormatHTML: Boolean = false); Overload;</code></td>
+<td class="itemcode"><a name="WriteLog"></a><code>procedure <b>WriteLog</b>(const Msg: String; Args: array of const; Category: String; LogMessageType: <a   href="ElysionTypes.html#TLogMessageType">TLogMessageType</a> = ltError; FormatHTML: Boolean = false); Overload;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -185,11 +185,11 @@ procedure TelLogger.WriteLog <br> Parameters: <br>     Description: Writes a use
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><a name="Priorities"></a><code>property <b>Priorities</b>: <a   href="ElysionLogger.html#TLogMessagePriorities">TLogMessagePriorities</a> read fPriorities write fPriorities;</code></td>
+<td class="itemcode"><a name="Priorities"></a><code>property <b>Priorities</b>: <a   href="ElysionTypes.html#TLogMessagePriorities">TLogMessagePriorities</a> read fPriorities write fPriorities;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
 </table>
-<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2011-04-30 03:13:33</em>
+<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2011-05-18 03:44:09</em>
 </span>
 </body></html>
