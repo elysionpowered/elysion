@@ -18,7 +18,7 @@ interface
 
 uses
   //ElysionUtils,
-
+  Classes,
   SDLUtils,
   SysUtils;
 
@@ -26,88 +26,52 @@ uses
 const
   // Version information
   VER_MAJOR = 11;
-  VER_MINOR = 04;
-  VER_CODENAME = 'Caprica'; //< Codename
+  VER_MINOR = 05;
+  VER_REVISION = 'a';
+
+  VER_CODENAME = 'Daenerys'; //< Codename
   VER_STABLE = true;
 
   // Other random stuff mostly regarding version information
-  VER_CODENAME_UNIVERSE = 'Battlestar Galactica / Caprica'; //< From which universe the codename comes from
-  VER_CODENAME_RANDOMQUOTE = 'A cybernetic lifeform node. A Cylon...'; //< Random quote from that universe
+  VER_CODENAME_UNIVERSE = 'Game Of Thrones'; //< From which universe the codename comes from
+  VER_CODENAME_RANDOMQUOTE = 'Winter is coming...'; //< Random quote from that universe
 
   // So, in case you didn't get this: Each codename comes from a movie or TV show
 
-	{$IFDEF FPC}
-		// Usage of FreePascal is recommanded
-		{$IFDEF UNIX}
-		  {$IFDEF DARWIN}
-      	{$IFDEF IPHONE}
-        	SYS_NAME = 'iPhone-MacOS';
-        {$ELSE}
-        	SYS_NAME = 'Mac OS X';
-        {$ENDIF}
-		  {$ELSE}
-			{$IFDEF GP2X}
-			  SYS_NAME = 'GP2X-Linux';
-			{$ELSE}
-			  SYS_NAME = 'Linux';
-			{$ENDIF}
-		  {$ENDIF}
-		{$ELSE}
-		  SYS_NAME = 'Windows';
-		{$ENDIF}
+  {$IFDEF FPC}
+	  // Usage of FreePascal is recommanded
+	  {$IFDEF UNIX}
+	    {$IFDEF DARWIN}
+              {$IFDEF IPHONE}
+                      SYS_NAME = 'iPhone-MacOS';
+              {$ELSE}
+                      SYS_NAME = 'Mac OS X';
+              {$ENDIF}
+	        {$ELSE}
+		      {$IFDEF GP2X}
+		        SYS_NAME = 'GP2X-Linux';
+		      {$ELSE}
+		        SYS_NAME = 'Linux';
+		      {$ENDIF}
+	        {$ENDIF}
+	      {$ELSE}
+	        SYS_NAME = 'Windows';
+	      {$ENDIF}
 
-		{$IFDEF CPU64}
-		  SYS_BITS = 64;
-		{$ELSE}
-		  SYS_BITS = 32;
-		{$ENDIF}
-	{$ELSE}
-    // Assume Delphi
-		SYS_NAME = 'Windows';
-		SYS_BITS = 32;
-	{$ENDIF}
-	
+	      {$IFDEF CPU64}
+	        SYS_BITS = 64;
+	      {$ELSE}
+	        SYS_BITS = 32;
+	      {$ENDIF}
+          {$ELSE}
+// Assume Delphi
+	  SYS_NAME = 'Windows';
+	  SYS_BITS = 32;
+  {$ENDIF}
+
 
 
 type
-
-  TKey = object
-    KeyName: String;
-	
-  end;
-
-  {$IFDEF FPC}
-  TKeyLongString = object
-  {$ELSE}
-  TKeyLongString = record
-  {$ENDIF}
-  
-  end;
-  
-  
-
-  {$IFDEF FPC}
-  TKeyString = object
-  {$ELSE}
-  TKeyString = record
-  {$ENDIF}
-    KeyName: String;
-	Value: String;
-	
-    {$IFDEF CAN_METHODS}
-	
-	{$ENDIF}
-  end;
-  
-  TKeyInt = record
-    KeyName: String;
-	Value: Integer;
-  end;
-  
-  TKeyFloat = record
-    KeyName: String;
-	Value: Single;
-  end;
 
   // Forward declaration
   PelColor = ^TelColor;
@@ -115,7 +79,80 @@ type
   PelVector2i = ^TelVector2i;
   PelVector3f = ^TelVector3f;
   PelVector3i = ^TelVector3i;
+
+  PelRect = ^TelRect;
   PelSize = ^TelSize;
+
+
+  PKeyIdent = ^TKeyIdent;
+
+  { TKeyIdent }
+
+  {$IFDEF FPC}
+  TKeyIdent = object
+  {$ELSE}
+  TKeyIdent = record
+  {$ENDIF}
+    Name: String;
+    Value: String;
+
+    {$IFDEF CAN_METHODS}
+      procedure Clear();
+
+      procedure SetValue(aValue: Integer); Overload;
+      procedure SetValue(aValue: Single); Overload;
+      procedure SetValue(aValue: Boolean); Overload;
+
+      function ToInt(): Integer;
+      function ToFloat(): Single;
+      function ToBool(): Boolean;
+
+      function ToColor(): PelColor;
+      function ToVector2f(): PelVector2f;
+      function ToVector2i(): PelVector2i;
+      function ToVector3f(): PelVector3f;
+      function ToVector3i(): PelVector3i;
+      function ToSize(): PelSize;
+      function ToRect(): PelRect;
+
+      function ToString(): String;
+      function ToXML(): String;
+      function ToJSON(): String;
+    {$ENDIF}
+  end;
+
+  TKeyArray = array of TKeyIdent;
+
+  { TKeyList }
+
+  TKeyList = class
+     private
+      fList: TList;
+
+      function Get(Index: Integer): TKeyIdent; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure Put(Index: Integer; const Item: TKeyIdent); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+      function GetCount: Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    public
+      constructor Create;
+      destructor Destroy; Override;
+
+      procedure Insert(Index: Integer; Key: TKeyIdent); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      //function Add(Key: TKeyIdent): Integer; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function Add(Key: PKeyIdent): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      //function Add(KeyArray: TKeyArray): Integer; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure Delete(Index: Integer); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+      function GetPos(KeyName: String): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function Exists(KeyName: String): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+      procedure Clear(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+      property Items[Index: Integer]: TKeyIdent read Get write Put; default;
+    published
+      property Count: Integer read GetCount;
+  end;
+
 
   {%region '--- TelColor type definition ---'}
     {%region '--- TelColor description ---'}
@@ -139,7 +176,9 @@ type
     procedure Clear(anAlpha: Byte = 255);
     procedure Make(aR, aG, aB: Byte; anA: Byte = 255);
 
+    function ToKey(KeyName: String): PKeyIdent;
     function ToString(): String;
+
     procedure ToFloat(var floatR: Single; var floatG: Single; var floatB: Single; var floatA: Single);
 
     // Operators (has to compliant to earlier Delphi versions)
@@ -170,11 +209,12 @@ type
 
     function ToString(): String;
 
-    // Convert to other vector types
+    // Convert to other types
     function ToVector2i(): PelVector2i;
     function ToVector3f(): PelVector3f;
     function ToVector3i(): PelVector3i;
     function ToSize(): PelSize;
+    function ToKey(KeyName: String): PKeyIdent;
 
     // Operators (has to compliant to earlier Delphi versions)
     procedure Add(Vector: TelVector2f);
@@ -207,11 +247,12 @@ type
 
     function ToString(): String;
 
-    // Convert to other vector types
+    // Convert to other types
     function ToVector2f(): PelVector2f;
     function ToVector3f(): PelVector3f;
     function ToVector3i(): PelVector3i;
     function ToSize(): PelSize;
+    function ToKey(KeyName: String): PKeyIdent;
 
     // Operators (has to compliant to earlier Delphi versions)
     procedure Add(Vector: TelVector2i);
@@ -242,11 +283,12 @@ type
 
     function ToString(): String;
 
-    // Convert to other vector types
+    // Convert to other types
     function ToVector2i(): PelVector2i;
     function ToVector2f(): PelVector2f;
     function ToVector3i(): PelVector3i;
     function ToVector3f(): PelVector3f;
+    function ToKey(KeyName: String): PKeyIdent;
 
     // Operators (has to compliant to earlier Delphi versions)
     procedure Add(Size: TelSize);
@@ -279,11 +321,12 @@ type
 
     function ToString(): String;
 
-    // Convert to other vector types
+    // Convert to other types
     function ToVector3i(): PelVector3i;
     function ToVector2f(): PelVector2f;
     function ToVector2i(): PelVector2i;
     function ToSize(): PelSize;
+    function ToKey(KeyName: String): PKeyIdent;
 
     // Operators (has to compliant to earlier Delphi versions)
     procedure Add(Vector: TelVector3f);
@@ -324,11 +367,12 @@ type
 
     function ToString(): String;
 
-    // Convert to other vector types
+    // Convert to other types
     function ToVector3f(EmptyZ: Boolean = False): PelVector3f;
     function ToVector2f(): PelVector2f;
     function ToVector2i(): PelVector2i;
     function ToSize(): PelSize;
+    function ToKey(KeyName: String): PKeyIdent;
 
     // Operators (has to compliant to earlier Delphi versions)
     procedure Add(Vector: TelVector3i);
@@ -361,6 +405,9 @@ type
   end;
 
   {$IFDEF FPC}
+
+  { TelRect }
+
   TelRect = object
   {$ELSE}
   TelRect = record
@@ -375,6 +422,9 @@ type
     procedure Make(aPosition: TelVector2f; aSize: TelSize); Overload;
     procedure Make(aPosition: TelVector2i; aSize: TelSize); Overload;
 
+    function ToString(): String;
+    function ToKey(KeyName: String): PKeyIdent;
+
     function ContainsVector(aVector: TelVector2i): Boolean; Overload;
     function ContainsVector(aVector: TelVector2f): Boolean; Overload;
     function ContainsRect(aRect: TelRect): Boolean; Overload;
@@ -387,7 +437,8 @@ type
     {$ENDIF}
   end;
 
-
+  // Display orientation (will be renamed in the future)
+  TDisplayOrientation = (doLandscape, doPortrait);
 
   TelImageOffset = record
     Position: TelVector2i;
@@ -480,8 +531,19 @@ type
   end;
   {%endregion}
 
+  {%region 'Logger priority types'}
+  // Logger message type
+  TLogMessageType =
+    (ltError,   //< Displays message as an error
+     ltWarning, //< Displays message as a warning
+     ltNote);   //< Displays message as a note
+
+  TLogMessagePriorities = set of TLogMessageType;
+  {%endregion}
+
   TelEvent = procedure() of object;
 
+  {%region 'General functions'}
   function makeGradient(StartColor: TelColor; EndColor: TelColor; GradientStyle: TGradientStyle = gsVertical): TelGradient; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
   function makeV2f(aX, aY: Single): TelVector2f; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -498,6 +560,11 @@ type
   function makeP2D(aX, aY: Single): TelVector2f; Overload; deprecated;
   function makeP3D(aX, aY: Integer; aZ: Integer = 0): TelVector3i; Overload; deprecated;
   function makeP3D(aX, aY: Single; aZ: Single = 0.0): TelVector3f; Overload; deprecated;
+
+  function makeKey(KeyName, KeyValue: String): TKeyIdent; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  function makeKey(KeyName: String; KeyValue: Integer): TKeyIdent; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  function makeKey(KeyName: String; KeyValue: Single): TKeyIdent; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  {%endregion}
 
 
   function IsRectEmpty(Rect: TelRect): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -646,6 +713,36 @@ begin
   Result := tmpRect;
 end;
 
+function makeKey(KeyName, KeyValue: String): TKeyIdent;
+var
+  tmpKey: TKeyIdent;
+begin
+  tmpKey.Name := KeyName;
+  tmpKey.Value := KeyValue;
+
+  Result := tmpKey;
+end;
+
+function makeKey(KeyName: String; KeyValue: Integer): TKeyIdent;
+var
+  tmpKey: TKeyIdent;
+begin
+  tmpKey.Name := KeyName;
+  tmpKey.Value := IntToStr(KeyValue);
+
+  Result := tmpKey;
+end;
+
+function makeKey(KeyName: String; KeyValue: Single): TKeyIdent;
+var
+  tmpKey: TKeyIdent;
+begin
+  tmpKey.Name := KeyName;
+  tmpKey.Value := FloatToStr(KeyValue);
+
+  Result := tmpKey;
+end;
+
 function IsRectEmpty(Rect: TelRect): Boolean;
 begin
   if ((Rect.X <> 0) and
@@ -703,8 +800,329 @@ begin
     Result := true;
 end;
 
+{ TKeyList }
+
+function TKeyList.Get(Index: Integer): TKeyIdent;
+begin
+  if ((Index >= 0) and (Index <= fList.Count - 1)) then Result := PKeyIdent(fList.Items[Index])^;
+end;
+
+procedure TKeyList.Put(Index: Integer; const Item: TKeyIdent);
+begin
+  if ((Index >= 0) and (Index <= fList.Count - 1)) then fList.Items[Index] := PKeyIdent(@Item);
+end;
+
+function TKeyList.GetCount: Integer;
+begin
+  Result := fList.Count;
+end;
+
+constructor TKeyList.Create;
+begin
+  inherited Create;
+
+  fList := TList.Create;
+end;
+
+destructor TKeyList.Destroy;
+begin
+  fList.Free;
+
+  inherited Destroy;
+end;
+
+procedure TKeyList.Insert(Index: Integer; Key: TKeyIdent);
+begin
+  if ((Index >= 0) and (Index <= fList.Count - 1)) then
+  begin
+    if (GetPos(Key.Name) = -1) then fList.Insert(Index, @Key);
+  end;
+end;
+
+(*function TKeyList.Add(Key: TKeyIdent): Integer;
+begin
+  Result := Self.Add(PKeyIdent(@Key));
+end;*)
+
+function TKeyList.Add(Key: PKeyIdent): Integer;
+begin
+  if (GetPos(Key^.Name) = -1) then Result := fList.Add(Key);
+end;
+
+(*function TKeyList.Add(KeyArray: TKeyArray): Integer;
+var
+  i: Integer;
+begin
+  for i := 0 to Length(KeyArray) - 1 do Result := Self.Add(PKeyIdent(@KeyArray[i]));
+end;*)
+
+procedure TKeyList.Delete(Index: Integer);
+begin
+  if ((Index >= 0) and (Index <= fList.Count - 1)) then fList.Delete(Index);
+end;
+
+function TKeyList.GetPos(KeyName: String): Integer;
+var
+  i: Integer;
+begin
+  Result := -1;
+
+  for i := 0 to GetCount - 1 do
+  begin
+    if Items[i].Name = KeyName then
+    begin
+      Result := i;
+      Exit;
+    end;
+  end;
+end;
+
+function TKeyList.Exists(KeyName: String): Boolean;
+var
+  i: Integer;
+begin
+  for i := 0 to GetCount - 1 do
+  begin
+    if Items[i].Name = KeyName then Result := true
+    else Result := false;
+  end;
+end;
+
+procedure TKeyList.Clear();
+var
+  i: Integer;
+begin
+  for i := 0 to fList.Count - 1 do Delete(i);
+end;
 
 {$IFDEF CAN_METHODS}
+
+procedure TKeyIdent.Clear();
+begin
+  Value := '';
+end;
+
+procedure TKeyIdent.SetValue(aValue: Integer);
+begin
+  Value := IntToStr(aValue);
+end;
+
+procedure TKeyIdent.SetValue(aValue: Single);
+begin
+  Value := FloatToStr(aValue);
+end;
+
+procedure TKeyIdent.SetValue(aValue: Boolean);
+begin
+  if aValue then Value := 'true'
+  else Value := 'false';
+end;
+
+function TKeyIdent.ToInt(): Integer;
+begin
+  try
+    Result := StrToInt(Value);
+  except
+    on Exception: EConvertError do Exit;
+  end;
+end;
+
+function TKeyIdent.ToFloat(): Single;
+begin
+  try
+    Result := StrToFloat(Value);
+  except
+    on Exception: EConvertError do Exit;
+  end;
+end;
+
+function TKeyIdent.ToBool(): Boolean;
+begin
+  if ((Value = 'true') or (Value = '1')) then Result := true
+  else Result := false;
+end;
+
+function TKeyIdent.ToColor(): PelColor;
+var
+  tmpString: String;
+  posR, posG, posB, posA: Integer;
+  tmpR, tmpG, tmpB, tmpA: Byte;
+  tmpColor: TelColor;
+begin
+  // Remove spaces and double colons
+  tmpString := StringReplace(Value, ' ', '', [rfReplaceAll, rfIgnoreCase]);
+  tmpString := StringReplace(Value, ':', '', [rfReplaceAll, rfIgnoreCase]);
+
+  posR := Pos('R', tmpString);
+  posG := Pos('G', tmpString);
+  posB := Pos('B', tmpString);
+  posA := Pos('A', tmpString);
+
+  tmpR := StrToInt(Copy(tmpString, posR + 1, posG - (posR + 1)));
+  tmpG := StrToInt(Copy(tmpString, posG + 1, posB - (posG + 1)));
+  tmpB := StrToInt(Copy(tmpString, posB + 1, posA - (posB + 1)));
+  tmpA := StrToInt(Copy(tmpString, posA + 1, Length(tmpString)));
+
+  tmpColor := makeCol(tmpR, tmpG, tmpB, tmpA);
+
+  Result := @tmpColor;
+end;
+
+function TKeyIdent.ToVector2f(): PelVector2f;
+var
+  tmpString: String;
+  posX, posY: Integer;
+  tmpX, tmpY: Single;
+  tmpVec: TelVector2f;
+begin
+  // Remove spaces and double colons
+  tmpString := StringReplace(Value, ' ', '', [rfReplaceAll, rfIgnoreCase]);
+  tmpString := StringReplace(Value, ':', '', [rfReplaceAll, rfIgnoreCase]);
+
+  posX := Pos('X', tmpString);
+  posY := Pos('Y', tmpString);
+
+  tmpX := StrToInt(Copy(tmpString, posX + 1, posY - (posX + 1)));
+  tmpY := StrToInt(Copy(tmpString, posY + 1, Length(tmpString)));
+
+  tmpVec := makeV2f(tmpX, tmpY);
+
+  Result := @tmpVec;
+end;
+
+function TKeyIdent.ToVector2i(): PelVector2i;
+var
+  tmpString: String;
+  posX, posY: Integer;
+  tmpX, tmpY: Integer;
+  tmpVec: TelVector2i;
+begin
+  // Remove spaces and double colons
+  tmpString := StringReplace(Value, ' ', '', [rfReplaceAll, rfIgnoreCase]);
+  tmpString := StringReplace(Value, ':', '', [rfReplaceAll, rfIgnoreCase]);
+
+  posX := Pos('X', tmpString);
+  posY := Pos('Y', tmpString);
+
+  tmpX := StrToInt(Copy(tmpString, posX + 1, posY - (posX + 1)));
+  tmpY := StrToInt(Copy(tmpString, posY + 1, Length(tmpString)));
+
+  tmpVec := makeV2i(tmpX, tmpY);
+
+  Result := @tmpVec;
+end;
+
+function TKeyIdent.ToVector3f(): PelVector3f;
+var
+  tmpString: String;
+  posX, posY, posZ: Integer;
+  tmpX, tmpY, tmpZ: Single;
+  tmpVec: TelVector3f;
+begin
+  // Remove spaces and double colons
+  tmpString := StringReplace(Value, ' ', '', [rfReplaceAll, rfIgnoreCase]);
+  tmpString := StringReplace(Value, ':', '', [rfReplaceAll, rfIgnoreCase]);
+
+  posX := Pos('X', tmpString);
+  posY := Pos('Y', tmpString);
+  posZ := Pos('Z', tmpString);
+
+  tmpX := StrToInt(Copy(tmpString, posX + 1, posY - (posX + 1)));
+  tmpY := StrToInt(Copy(tmpString, posY + 1, posZ - (posY + 1)));
+  tmpZ := StrToInt(Copy(tmpString, posZ + 1, Length(tmpString)));
+
+  tmpVec := makeV3f(tmpX, tmpY, tmpZ);
+
+  Result := @tmpVec;
+end;
+
+function TKeyIdent.ToVector3i(): PelVector3i;
+var
+  tmpString: String;
+  posX, posY, posZ: Integer;
+  tmpX, tmpY, tmpZ: Integer;
+  tmpVec: TelVector3i;
+begin
+  // Remove spaces and double colons
+  tmpString := StringReplace(Value, ' ', '', [rfReplaceAll, rfIgnoreCase]);
+  tmpString := StringReplace(Value, ':', '', [rfReplaceAll, rfIgnoreCase]);
+
+  posX := Pos('X', tmpString);
+  posY := Pos('Y', tmpString);
+  posZ := Pos('Z', tmpString);
+
+  tmpX := StrToInt(Copy(tmpString, posX + 1, posY - (posX + 1)));
+  tmpY := StrToInt(Copy(tmpString, posY + 1, posZ - (posY + 1)));
+  tmpZ := StrToInt(Copy(tmpString, posZ + 1, Length(tmpString)));
+
+  tmpVec := makeV3i(tmpX, tmpY, tmpZ);
+
+  Result := @tmpVec;
+end;
+
+function TKeyIdent.ToSize(): PelSize;
+var
+  tmpString: String;
+  posW, posH: Integer;
+  tmpW, tmpH: Integer;
+  tmpSize: TelSize;
+begin
+  // Remove spaces and double colons
+  tmpString := StringReplace(Value, ' ', '', [rfReplaceAll, rfIgnoreCase]);
+  tmpString := StringReplace(Value, ':', '', [rfReplaceAll, rfIgnoreCase]);
+
+  posW := Pos('Width', tmpString);
+  posH := Pos('Height', tmpString);
+
+  tmpW := StrToInt(Copy(tmpString, posW + 1, posH - (posW + 1)));
+  tmpH := StrToInt(Copy(tmpString, posH + 1, Length(tmpString)));
+
+  tmpSize := makeSize(tmpW, tmpH);
+
+  Result := @tmpSize;
+end;
+
+function TKeyIdent.ToRect(): PelRect;
+var
+  tmpString: String;
+  posX, posY, posW, posH: Integer;
+  tmpX, tmpY, tmpW, tmpH: Single;
+  tmpRect: TelRect;
+begin
+  // Remove spaces and double colons
+  tmpString := StringReplace(Value, ' ', '', [rfReplaceAll, rfIgnoreCase]);
+  tmpString := StringReplace(Value, ':', '', [rfReplaceAll, rfIgnoreCase]);
+
+  posX := Pos('X', tmpString);
+  posY := Pos('Y', tmpString);
+  posW := Pos('W', tmpString);
+  posH := Pos('H', tmpString);
+
+  tmpX := StrToInt(Copy(tmpString, posX + 1, posY - (posX + 1)));
+  tmpY := StrToInt(Copy(tmpString, posY + 1, posW - (posY + 1)));
+  tmpW := StrToInt(Copy(tmpString, posW + 1, posH - (posW + 1)));
+  tmpH := StrToInt(Copy(tmpString, posH + 1, Length(tmpString)));
+
+  tmpRect := makeRect(tmpX, tmpY, tmpW, tmpH);
+
+  Result := @tmpRect;
+end;
+
+function TKeyIdent.ToString(): String;
+begin
+  Result := Format('Key "%s": %s', [Name, Value]);
+end;
+
+function TKeyIdent.ToXML(): String;
+begin
+  Result := Format('<key name="%s">%s</key>', [Name, Value]);
+end;
+
+function TKeyIdent.ToJSON(): String;
+begin
+  Result := Format('"%s": {"%s"}', [Name, Value]);
+end;
+
 
 procedure TelColor.Clear(anAlpha: Byte = 255);
 begin
@@ -725,6 +1143,16 @@ end;
 function TelColor.ToString(): String;
 begin
   Result := Format('R: %d G: %d B: %d A: %d', [R, G, B, A]);
+end;
+
+function TelColor.ToKey(KeyName: String): PKeyIdent;
+var
+  tmpKey: TKeyIdent;
+begin
+  tmpKey.Name := KeyName;
+  tmpKey.Value := Self.ToString();
+
+  Result := @tmpKey;
 end;
 
 procedure TelColor.ToFloat(var floatR: Single; var floatG: Single; var floatB: Single; var floatA: Single);
@@ -855,6 +1283,16 @@ begin
   Result := @tmpSize;
 end;
 
+function TelVector2f.ToKey(KeyName: String): PKeyIdent;
+var
+  tmpKey: TKeyIdent;
+begin
+  tmpKey.Name := KeyName;
+  tmpKey.Value := Self.ToString();
+
+  Result := @tmpKey;
+end;
+
 procedure TelVector2f.Add(Vector: TelVector2f);
 begin
   Self.X := Self.X + Vector.X;
@@ -961,6 +1399,16 @@ begin
 
   Result := @tmpVec;
 end;
+
+function TelVector2i.ToKey(KeyName: String): PKeyIdent;
+var
+  tmpKey: TKeyIdent;
+begin
+  tmpKey.Name := KeyName;
+  tmpKey.Value := Self.ToString();
+
+  Result := @tmpKey;
+end;
 	
 procedure TelVector2i.Add(Vector: TelVector2i);
 begin
@@ -1062,6 +1510,16 @@ begin
   tmpVec := makeV3i(Width, Height);
 
   Result := @tmpVec;
+end;
+
+function TelSize.ToKey(KeyName: String): PKeyIdent;
+var
+  tmpKey: TKeyIdent;
+begin
+  tmpKey.Name := KeyName;
+  tmpKey.Value := Self.ToString();
+
+  Result := @tmpKey;
 end;
 
 procedure TelSize.Add(Size: TelSize);
@@ -1169,6 +1627,16 @@ begin
   tmpSize := makeSize(Trunc(X), Trunc(Y));
 
   Result := @tmpSize;
+end;
+
+function TelVector3f.ToKey(KeyName: String): PKeyIdent;
+var
+  tmpKey: TKeyIdent;
+begin
+  tmpKey.Name := KeyName;
+  tmpKey.Value := Self.ToString();
+
+  Result := @tmpKey;
 end;
 
 procedure TelVector3f.Add(Vector: TelVector3f);
@@ -1331,6 +1799,16 @@ begin
   Result := @tmpSize;
 end;
 
+function TelVector3i.ToKey(KeyName: String): PKeyIdent;
+var
+  tmpKey: TKeyIdent;
+begin
+  tmpKey.Name := KeyName;
+  tmpKey.Value := Self.ToString();
+
+  Result := @tmpKey;
+end;
+
 procedure TelVector3i.Add(Vector: TelVector3i);
 begin
   Self.X := Self.X + Vector.X;
@@ -1470,6 +1948,21 @@ begin
   Y := aPosition.Y * 1.0;
   W := aSize.Width * 1.0;
   H := aSize.Height * 1.0;
+end;
+
+function TelRect.ToString(): String;
+begin
+  Result := Format('X: %f Y: %f W: %f H: %f', [X, Y, W, H]);
+end;
+
+function TelRect.ToKey(KeyName: String): PKeyIdent;
+var
+  tmpKey: TKeyIdent;
+begin
+  tmpKey.Name := KeyName;
+  tmpKey.Value := Self.ToString();
+
+  Result := @tmpKey;
 end;
 
 function TelRect.ContainsVector(aVector: TelVector2i): Boolean;
