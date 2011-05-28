@@ -37,14 +37,13 @@ type
       fTexture: TelTexture;
       fClipRect: TelRect;
       fBlendMode: TelBlendMode;
+      fBoundingBox: TelBoundingBox;
+      fCustomBBox: TelRect;
 
       function GetFilename(): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       function GetTransparent(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
       procedure SetTransparent(Value: Boolean); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-      function GetMouseOverPixel(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      function GetClickPixel(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       function GetTextureWidth(): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
       function GetTextureHeight(): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -59,9 +58,9 @@ type
       function GetMouseMove(): Boolean; Override;
       function GetMouseOver(): Boolean; Override;
       function GetMouseOut(): Boolean; Override;
-      function GetDragStart(): Boolean;
-      function GetDragging(): Boolean;
-      function GetDragEnd(): Boolean;
+      function GetDragStart(): Boolean; Override;
+      function GetDragging(): Boolean; Override;
+      function GetDragEnd(): Boolean; Override;
       function GetClick(): Boolean; Override;
       function GetRightClick(): Boolean; Override;
       function GetDblClick(): Boolean; Override;
@@ -88,17 +87,19 @@ type
       procedure Move(aPoint: TelVector2i); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
       procedure Move(aPoint: TelVector3f); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
+      function Collides(OtherSprite: TelSprite): Boolean;
+
       procedure Draw; Override;
       procedure Update(dt: Double = 0.0); Override;
 
       property ClipRect: TelRect read fClipRect; // Use ClipImage to set ClipRect
+      // Custom Bounding Box
+      property CustomBBox: TelRect read fCustomBBox write fCustomBBox;
     published
       property AspectRatio: Single read GetAspectRatio;
 
       property BlendMode: TelBlendMode read fBlendMode write fBlendMode;
-
-      property MouseOverPixel: Boolean read GetMouseOverPixel;
-      property ClickPixel: Boolean read GetClickPixel;
+      property BoundingBox: TelBoundingBox read fBoundingBox write fBoundingBox;
 
       property Filename: String read GetFilename;
 
@@ -517,6 +518,7 @@ begin
 
   Texture := TelTexture.Create;
   BlendMode := bmNormal;
+  fBoundingBox := bbDefault;
 
   //fDrawable := true;
 
@@ -546,21 +548,21 @@ end;
 
 function TelSprite.GetMouseDown(): Boolean;
 begin
-  Result := false;
+  inherited;
 
   if ((MouseOver) and (Input.Mouse.Down)) then Result := true;
 end;
 
 function TelSprite.GetMouseUp(): Boolean;
 begin
-  Result := false;
+  inherited;
 
   if ((MouseOver) and (Input.Mouse.Up)) then Result := true;
 end;
 
 function TelSprite.GetMouseMove(): Boolean;
 begin
-  Result := false;
+  inherited;
 
   if ((MouseOver) and (Input.Mouse.Motion)) then Result := true;
 end;
@@ -569,21 +571,55 @@ function TelSprite.GetMouseOver(): Boolean;
 var
   tempRect: TelRect;
 begin
-
-  tempRect.X := Self.Position.X * ActiveWindow.ResScale.X;
-  tempRect.Y := Self.Position.Y * ActiveWindow.ResScale.Y;
-  tempRect.W := fClipRect.W * ActiveWindow.ResScale.X;
-  tempRect.H := fClipRect.H * ActiveWindow.ResScale.Y;
+  inherited;
 
   {$IFDEF CAN_METHODS}
-    Result := tempRect.ContainsVector(ActiveWindow.Cursor);
+    if ((Self.BoundingBox = bbCustom) and (Self.CustomBBox.IsEmpty())) then Self.BoundingBox := bbDefault;
   {$ELSE}
-    Result := RectContainsVector(fClipRect, ActiveWindow.Cursor);
+    if ((Self.BoundingBox = bbCustom) and (IsRectEmpty(Self.CustomBBox)) then Self.BoundingBox := bbDefault;
   {$ENDIF}
+
+  case Self.BoundingBox of
+    bbDefault:
+    begin
+      tempRect.X := Self.Position.X * ActiveWindow.ResScale.X;
+      tempRect.Y := Self.Position.Y * ActiveWindow.ResScale.Y;
+      tempRect.W := fClipRect.W * ActiveWindow.ResScale.X;
+      tempRect.H := fClipRect.H * ActiveWindow.ResScale.Y;
+
+      {$IFDEF CAN_METHODS}
+        Result := tempRect.ContainsVector(ActiveWindow.Cursor);
+      {$ELSE}
+        Result := RectContainsVector(fClipRect, ActiveWindow.Cursor);
+      {$ENDIF}
+    end;
+
+    bbCustom:
+    begin
+      tempRect.X := (Self.Position.X + Self.CustomBBox.X) * ActiveWindow.ResScale.X;
+      tempRect.Y := (Self.Position.Y + Self.CustomBBox.Y) * ActiveWindow.ResScale.Y;
+      tempRect.W := Self.CustomBBox.W * ActiveWindow.ResScale.X;
+      tempRect.H := Self.CustomBBox.H * ActiveWindow.ResScale.Y;
+
+      {$IFDEF CAN_METHODS}
+        Result := tempRect.ContainsVector(ActiveWindow.Cursor);
+      {$ELSE}
+        Result := RectContainsVector(fClipRect, ActiveWindow.Cursor);
+      {$ENDIF}
+    end;
+
+    bbPixel:
+    begin
+      Result := PixelTest(Self, makeRect(ActiveWindow.Cursor.X, ActiveWindow.Cursor.Y, 1, 1));
+    end;
+  end;
+
 end;
 
 function TelSprite.GetMouseOut(): Boolean;
 begin
+  inherited;
+
   Result := not GetMouseOver();
 end;
 
@@ -604,34 +640,23 @@ end;
 
 function TelSprite.GetClick(): Boolean;
 begin
-  Result := false;
+  inherited;
 
-  if ((MouseOver) and (Input.Mouse.LeftClick)) then Result := true;
+  Result := ((MouseOver) and (Input.Mouse.LeftClick));
 end;
 
 function TelSprite.GetRightClick(): Boolean;
 begin
-  Result := false;
+  inherited;
 
-  if ((MouseOver) and (Input.Mouse.RightClick())) then Result := true;
+  Result := ((MouseOver) and (Input.Mouse.RightClick()));
 end;
 
 function TelSprite.GetDblClick(): Boolean;
 begin
-  Result := false;
+  inherited;
 
-  if ((MouseOver) and (Input.Mouse.DblClick)) then Result := true;
-end;
-
-function TelSprite.GetMouseOverPixel(): Boolean;
-begin
-  Result := PixelTest(Self, makeRect(ActiveWindow.Cursor.X, ActiveWindow.Cursor.Y, 1, 1));
-end;
-
-function TelSprite.GetClickPixel(): Boolean;
-begin
-  if ((MouseOverPixel) and (Input.Mouse.LeftClick)) then Result := true
-     else Result := false;
+  Result := ((MouseOver) and (Input.Mouse.DblClick));
 end;
 
 function TelSprite.GetTextureWidth(): Integer; 
@@ -763,6 +788,11 @@ end;
 procedure TelSprite.Move(aPoint: TelVector3f);
 begin
   Position.Add(aPoint);
+end;
+
+function TelSprite.Collides(OtherSprite: TelSprite): Boolean;
+begin
+  // TODO!!!!!
 end;
 
 procedure TelSprite.Draw;

@@ -27,7 +27,7 @@ const
   // Version information
   VER_MAJOR = 11;
   VER_MINOR = 05;
-  VER_REVISION = 'a';
+  VER_REVISION = 'b';
 
   VER_CODENAME = 'Daenerys'; //< Codename
   VER_STABLE = true;
@@ -479,6 +479,8 @@ type
 
   TGradientStyle = SDLUtils.TGradientStyle;
   TColorVertices = array[0..3] of TelColor;
+
+  TelBoundingBox = (bbDefault, bbCustom, bbPixel);
 
   TelGradient = Record
     StartColor: TelColor;

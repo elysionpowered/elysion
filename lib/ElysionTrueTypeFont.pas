@@ -348,7 +348,7 @@ function TelTrueTypeFont.GetWidth_Text(Text: String): Integer;
 var
   tmp: Integer;
 begin
-  inherited;
+  //inherited;
 
   tmp := 0;
 

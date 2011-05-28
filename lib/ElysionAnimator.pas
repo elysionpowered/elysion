@@ -63,7 +63,7 @@ type
     public
       AnimProperty: TelAnimationProperty;
 
-      constructor Create; Overload;
+      constructor Create; Override; Overload;
       constructor Create(aTarget: TelNode); Overload;
       destructor Destroy; Override;
 

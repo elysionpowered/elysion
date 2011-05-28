@@ -311,6 +311,8 @@ end;
 
 function TelLabel.GetMouseOver(): Boolean;
 begin
+  inherited;
+
   fRect := makeRect(Position.X, Position.Y, GetWidth(), GetHeight());
 
   {$IFDEF CAN_METHODS}
@@ -322,9 +324,9 @@ end;
 
 function TelLabel.GetClick(): Boolean;
 begin
-  if (Self.MouseOver and Input.Mouse.LeftClick) then
-    Result := true
-  else Result := false;
+  inherited;
+
+  Result := (Self.MouseOver and Input.Mouse.LeftClick);
 end;
 
 procedure TelLabel.SetSize(Value: Integer);
@@ -456,6 +458,8 @@ function TelButton.GetMouseOver: Boolean;
 var
   fRect: TelRect;
 begin
+  inherited;
+
   fRect := makeRect(Position.X, Position.Y, GetWidth(), GetHeight());
 
   {$IFDEF CAN_METHODS}
@@ -475,9 +479,9 @@ end;
 
 function TelButton.GetClick: Boolean;
 begin
-  if MouseOver and Input.Mouse.LeftClick then
-    Result := true
-  else Result := false;
+  inherited;
+
+  Result := (MouseOver and Input.Mouse.LeftClick);
 end;
 
 procedure TelButton.SetCaption(Value: String);
@@ -572,6 +576,8 @@ function TelMenu.GetMouseOver(): Boolean;
 var
   i: Integer;
 begin
+  inherited;
+
   for i := 0 to fButtonList.Count - 1 do
   begin
     if TelButton(fButtonList.Items[i]).MouseOver then
@@ -591,6 +597,8 @@ function TelMenu.GetClick(): Boolean;
 var
   i: Integer;
 begin
+  inherited;
+
   for i := 0 to fButtonList.Count - 1 do
   begin
     if TelButton(fButtonList.Items[i]).Click then

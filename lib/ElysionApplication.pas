@@ -370,11 +370,12 @@ end;
       property WindowCount: Integer read fWindowCount;
   end;
 
-  TelDesktopEnvironment = class(TelObject)
+  TelEnvironment = class(TelObject)
     private
       fWidth: Integer;
       fHeight: Integer;
       fColorDepth: Byte;
+      fMobile: Boolean;
 
       function GetAspectRatio(): Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     public
@@ -387,6 +388,8 @@ end;
       property Width: Integer read fWidth;
       property Height: Integer read fHeight;
       property ColorDepth: Byte read fColorDepth;
+
+      property Mobile: Boolean read fMobile;
   end;
 
 {$IFDEF AUTO_INIT}
@@ -394,7 +397,7 @@ var
   // Application
   Application: TAppContainer;
   WindowManager: TelWindowManager;
-  Desktop: TelDesktopEnvironment;
+  Environment: TelEnvironment;
 {$ENDIF}
 
   function ActiveWindow: TelWindow; {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -1339,7 +1342,7 @@ begin
   FreeAndNil(fWindowList);
 end;
 
-constructor TelDesktopEnvironment.Create;
+constructor TelEnvironment.Create;
 var
   VideoInfo: PSDL_VideoInfo;
 begin
@@ -1360,14 +1363,24 @@ begin
   fHeight := VideoInfo^.current_h;
   fColorDepth := VideoInfo^.vfmt^.BitsPerPixel;
 
+  fMobile := false;
+  {$IFDEF FPC}
+    {$IFDEF IPHONEOS}
+      fMobile := true;
+    {$ENDIF}
+    {$IFDEF ARM}
+      // In most cases mobile; TODO: add more precise conditions
+      fMobile := true;
+    {$ENDIF}
+  {$ENDIF}
 end;
 
-destructor TelDesktopEnvironment.Destroy;
+destructor TelEnvironment.Destroy;
 begin
   inherited;
 end;
 
-function TelDesktopEnvironment.GetAspectRatio(): Single;
+function TelEnvironment.GetAspectRatio(): Single;
 begin
   Result := (Self.Width / Self.Height);
 end;
@@ -1376,10 +1389,10 @@ end;
 initialization
   Application := TAppContainer.Create;
   WindowManager := TelWindowManager.Create;
-  Desktop := TelDesktopEnvironment.Create;
+  Environment := TelEnvironment.Create;
 
 finalization
-  Desktop.Destroy;
+  Environment.Destroy;
   WindowManager.Destroy;
   Application.Destroy;
 {$ENDIF}

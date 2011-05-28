@@ -50,17 +50,17 @@ type
       function GetWidth(): Integer; virtual;
       function GetHeight(): Integer; virtual;
 
-      function GetMouseDown(): Boolean; virtual; abstract;
-      function GetMouseUp(): Boolean; virtual; abstract;
-      function GetMouseMove(): Boolean; virtual; abstract;
-      function GetMouseOver(): Boolean; virtual; abstract;
-      function GetMouseOut(): Boolean; virtual; abstract;
-      function GetDragStart(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      function GetDragging(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      function GetDragEnd(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      function GetClick(): Boolean; virtual; abstract;
-      function GetRightClick(): Boolean; virtual; abstract;
-      function GetDblClick(): Boolean; virtual; abstract;
+      function GetMouseDown(): Boolean; virtual;
+      function GetMouseUp(): Boolean; virtual;
+      function GetMouseMove(): Boolean; virtual;
+      function GetMouseOver(): Boolean; virtual;
+      function GetMouseOut(): Boolean; virtual;
+      function GetDragStart(): Boolean; virtual;
+      function GetDragging(): Boolean; virtual;
+      function GetDragEnd(): Boolean; virtual;
+      function GetClick(): Boolean; virtual;
+      function GetRightClick(): Boolean; virtual;
+      function GetDblClick(): Boolean; virtual;
 
       function GetLeft(): Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
       function GetTop(): Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -287,6 +287,31 @@ begin
   OnDblClick := nil;
 end;
 
+function TelNode.GetMouseDown(): Boolean;
+begin
+  Result := false;
+end;
+
+function TelNode.GetMouseUp(): Boolean;
+begin
+  Result := false;
+end;
+
+function TelNode.GetMouseMove(): Boolean;
+begin
+  Result := false;
+end;
+
+function TelNode.GetMouseOver(): Boolean;
+begin
+  Result := false;
+end;
+
+function TelNode.GetMouseOut(): Boolean;
+begin
+  Result := false;
+end;
+
 function TelNode.GetDragStart(): Boolean;
 begin
   Result := false;
@@ -303,6 +328,21 @@ function TelNode.GetDragEnd(): Boolean;
 begin
   Result := false;
   if (not Draggable) then Exit;
+end;
+
+function TelNode.GetClick(): Boolean;
+begin
+  Result := false;
+end;
+
+function TelNode.GetRightClick(): Boolean;
+begin
+  Result := false;
+end;
+
+function TelNode.GetDblClick(): Boolean;
+begin
+  Result := false;
 end;
 
 procedure TelNode.SetAlign(Value: TelAlignment);
