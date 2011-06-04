@@ -23,6 +23,12 @@ type
   protected
     fAlign: TelAlignment;
 
+    fDecorations: TelElementDecorations;
+
+    fBorder: TelBorder;
+    fMargin: TelExtValue;
+    fPadding: TelExtValue;
+
       fParent: TelNode;
 
       fOnMouseDown: TelNodeEvent;
@@ -36,9 +42,7 @@ type
       fOnClick: TelNodeEvent;
       fOnDblClick: TelNodeEvent;
 
-      fVisible, fLocked, fDraggable, fIsAnimated: Boolean;
-
-      fSelectorID, fSelectorClass: String;
+      fVisible, fLocked, fDraggable, fDidDragStart, fDidDragging, fIsAnimated, fDrawable: Boolean;
 
       function GetAbsolutePosition(): TelVector3f; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
@@ -46,6 +50,11 @@ type
       procedure SetAlpha(anAlpha: Byte); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       procedure SetAlign(Value: TelAlignment); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+      function GetInnerWidth(): Integer; virtual;
+      function GetInnerHeight(): Integer; virtual;
+      function GetOuterWidthProp(): Integer;
+      function GetOuterHeightProp(): Integer;
 
       function GetWidth(): Integer; virtual;
       function GetHeight(): Integer; virtual;
@@ -72,6 +81,8 @@ type
       procedure SetBottom(Value: Single); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       procedure SetLocked(Value: Boolean); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+      function GetRelCursor(): TelVector2i;
     public
       // Public methods
       constructor Create; Override;
@@ -81,6 +92,9 @@ type
 
       procedure Move(Delta: TelVector3f); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
       procedure Move(Delta: TelVector2i); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+      function GetOuterWidth(Value: TelElementDecorations): Integer;
+      function GetOuterHeight(Value: TelElementDecorations): Integer;
 
       procedure Draw; virtual; abstract;
 
@@ -102,18 +116,24 @@ type
     public
       // Public properties would be nicer though
       Position: TelVector3f;
-      Offset: TelImageOffset;
+      Origin: TelVector2f;
       Rotation: TelImageRotation;
       Color: TelColor;
       Scale: TelVector2f;
-	  
-      Margin: TelRect;
+
       Shadow: TelShadow;
 
       property AbsolutePosition: TelVector3f read GetAbsolutePosition;
       property Align: TelAlignment read fAlign write SetAlign;
+      property RelCursor: TelVector2i read GetRelCursor;
     published
       property Alpha: Byte read GetAlpha write SetAlpha default 255;
+
+      property Border: TelBorder read fBorder write fBorder;
+      property Margin: TelExtValue read fMargin write fMargin;
+      property Padding: TelExtValue read fPadding write fPadding;
+
+      property Decorations: TelElementDecorations read fDecorations write fDecorations;
 
       // Event methods
       property OnMouseDown: TelNodeEvent read fOnMouseDown write fOnMouseDown;
@@ -142,16 +162,18 @@ type
       property RightClick: Boolean read GetRightClick;
       property DblClick: Boolean read GetDblClick;
 
-      // CSS-like selectors
-      property SelectorID: String read fSelectorID write fSelectorID;
-      property SelectorClass: String read fSelectorClass write fSelectorClass;
-
       property IsAnimated: Boolean read fIsAnimated;
       property Draggable: Boolean read fDraggable;
 
       property Width: Integer read GetWidth;
       property Height: Integer read GetHeight;
 
+      property InnerWidth: Integer read GetInnerWidth;
+      property InnerHeight: Integer read GetInnerHeight;
+      property OuterWidth: Integer read GetOuterWidthProp;
+      property OuterHeight: Integer read GetOuterHeightProp;
+
+      property Drawable: Boolean read fDrawable;
       property Locked: Boolean read fLocked write SetLocked;
 
       // Here is some alternative positionin' for ya (Use for UI elements)
@@ -161,6 +183,43 @@ type
       property Bottom: Single read GetBottom write SetBottom;
 
       property Visible: Boolean read fVisible write fVisible default true;
+  end;
+
+  // Node with CSS styling
+
+  { TelStyledNode }
+
+  TelStyledNode = class(TelNode)
+  protected
+    fStyleList: TStringList;
+
+    fSelectorID, fSelectorClass: String;
+
+    function GetItem(Index: Integer): String;
+    procedure SetItem(Index: Integer; const AValue: String);
+
+    function GetCount(): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  public
+    constructor Create; Override;
+    destructor Destroy; Override;
+
+    procedure Add(const S: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure Insert(Index: Integer; const S: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure Delete(Index: Integer); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    procedure LoadStyleFromFile(const aFilename: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure SaveStyleToFile(const aFilename: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    procedure Apply(); Overload;
+    procedure Apply(const S: String); Overload;
+  published
+    property Count: Integer read GetCount;
+
+    // CSS-like selectors
+    property SelectorID: String read fSelectorID write fSelectorID;
+    property SelectorClass: String read fSelectorClass write fSelectorClass;
+
+    property StyleItem[Index: Integer]: String read GetItem write SetItem; default;
   end;
 
   TelNodeArray = array of TelNode;
@@ -193,18 +252,25 @@ type
 
   procedure CopyNodeValues(aNode, bNode: TelNode);
   procedure ForceNodeCopy(aNode, bNode: TelNode);
+  function Center(aNode: TelNode): TelVector2f;
 
 implementation
 
 procedure CopyNodeValues(aNode, bNode: TelNode);
 begin
   aNode.Position := bNode.Position;
-  aNode.Offset := bNode.Offset;
+  aNode.Origin := bNode.Origin;
+
+  aNode.Margin := bNode.Margin;
+  aNode.Padding := bNode.Padding;
+  aNode.Border := bNode.Border;
+  aNode.Shadow := bNode.Shadow;
+
   aNode.Rotation := bNode.Rotation;
   aNode.Color := bNode.Color;
   aNode.Scale := bNode.Scale;
 
-  aNode.Align := bNode.Align;;
+  aNode.Align := bNode.Align;
 
   aNode.Alpha := bNode.Alpha;
 
@@ -214,7 +280,13 @@ end;
 procedure ForceNodeCopy(aNode, bNode: TelNode);
 begin
   aNode.Position := bNode.Position;
-  aNode.Offset := bNode.Offset;
+  aNode.Origin := bNode.Origin;
+
+  aNode.Margin := bNode.Margin;
+  aNode.Padding := bNode.Padding;
+  aNode.Border := bNode.Border;
+  aNode.Shadow := bNode.Shadow;
+
   aNode.Rotation := bNode.Rotation;
   aNode.Color := bNode.Color;
   aNode.Scale := bNode.Scale;
@@ -239,11 +311,103 @@ begin
   aNode.Visible := bNode.Visible;
 end;
 
+function Center(aNode: TelNode): TelVector2f;
+begin
+  Result := makeV2f(aNode.Width / 2, aNode.Height / 2);
+end;
+
+{ TelStyledNode }
+
+constructor TelStyledNode.Create;
+begin
+  inherited Create;
+
+  fStyleList := TStringList.Create;
+end;
+
+destructor TelStyledNode.Destroy;
+begin
+  fStyleList.Free;
+
+  inherited Destroy;
+end;
+
+function TelStyledNode.GetItem(Index: Integer): String;
+begin
+  Result := fStyleList.Strings[Index];
+end;
+
+procedure TelStyledNode.SetItem(Index: Integer; const AValue: String);
+begin
+  fStyleList.Strings[Index] := AValue;
+end;
+
+function TelStyledNode.GetCount(): Integer;
+begin
+  Result := fStyleList.Count;
+end;
+
+procedure TelStyledNode.Add(const S: String);
+begin
+  fStyleList.Add(S);
+
+  Apply();
+end;
+
+procedure TelStyledNode.Insert(Index: Integer; const S: String);
+begin
+  fStyleList.Insert(Index, S);
+end;
+
+procedure TelStyledNode.Delete(Index: Integer);
+begin
+  fStyleList.Delete(Index);
+end;
+
+procedure TelStyledNode.LoadStyleFromFile(const aFilename: String);
+begin
+  fStyleList.LoadFromFile(aFilename);
+
+  Apply();
+end;
+
+procedure TelStyledNode.SaveStyleToFile(const aFilename: String);
+begin
+  fStyleList.SaveToFile(aFilename);
+end;
+
+procedure TelStyledNode.Apply();
+var
+  i: Integer;
+begin
+  for i := 0 to Count do Apply(fStyleList.Strings[i]);
+end;
+
+procedure TelStyledNode.Apply(const S: String);
+var
+  AttrName, AttrValue: String;
+begin
+
+  // Parse
+  //if S = 'left' then Self.Left := AttrValue;
+end;
+
+{ TelNode }
+
 constructor TelNode.Create;
 begin
+  inherited;
+
   Position.Clear;
-  Offset.Position.Clear;
-  Offset.Rotation.Clear;
+  Origin.Clear();
+
+  fMargin := TelExtValue.Create;
+  fPadding := TelExtValue.Create;
+  fBorder := TelBorder.Create;
+
+  Shadow.Clear();
+
+  fDecorations := [edMargin, edPadding, edBorder];
 
   Rotation.Angle := 0;
   Rotation.Vector := makeV3f(0.0, 0.0, 1.0);
@@ -258,6 +422,11 @@ begin
   fDraggable := true;
   fLocked := false;
   fIsAnimated := false;
+
+  fDrawable := false;
+
+  fDidDragStart := false;
+  fDidDragging := false;
 
   fParent := nil;
 
@@ -285,6 +454,17 @@ begin
   OnDragEnd := nil;
   OnClick := nil;
   OnDblClick := nil;
+
+  fMargin.Destroy;
+  fPadding.Destroy;
+  fBorder.Destroy;
+
+  inherited;
+end;
+
+function TelNode.GetRelCursor(): TelVector2i;
+begin
+  Result := makeV2i(Trunc(Self.Left - ActiveWindow.Cursor.X), Trunc(Self.Top - ActiveWindow.Cursor.Y));
 end;
 
 function TelNode.GetMouseDown(): Boolean;
@@ -379,6 +559,26 @@ begin
       avBottom: Position.Y := parentHeight - Self.Height;
     end;
   end;
+end;
+
+function TelNode.GetInnerWidth(): Integer;
+begin
+  Result := 0;
+end;
+
+function TelNode.GetInnerHeight(): Integer;
+begin
+  Result := 0;
+end;
+
+function TelNode.GetOuterWidthProp(): Integer;
+begin
+  Result := GetOuterWidth(fDecorations);
+end;
+
+function TelNode.GetOuterHeightProp(): Integer;
+begin
+  Result := GetOuterHeight(fDecorations);
 end;
 
 function TelNode.GetWidth(): Integer;
@@ -492,6 +692,92 @@ end;
 procedure TelNode.SetAlpha(anAlpha: Byte);
 begin
   Color.A := anAlpha;
+end;
+
+function TelNode.GetOuterWidth(Value: TelElementDecorations): Integer;
+var
+  tmpWidth: Integer;
+
+  marLeft, marRight: Single;
+  borLeft, borRight: Single;
+  padLeft, padRight: Single;
+begin
+  tmpWidth := GetInnerHeight();
+
+  if edMargin in Value then
+  begin
+    marLeft := Margin.Left;
+    marRight := Margin.Right;
+  end else
+  begin
+    marLeft := 0;
+    marRight := 0;
+  end;
+
+  if edBorder in Value then
+  begin
+    borLeft := Border.Left.Width;
+    borRight := Border.Right.Width;
+  end else
+  begin
+    borLeft := 0;
+    borRight := 0;
+  end;
+
+  if edPadding in Value then
+  begin
+    padLeft := Padding.Left;
+    padRight := Padding.Right;
+  end else
+  begin
+    padLeft := 0;
+    padRight := 0;
+  end;
+
+  Result := Trunc(tmpWidth + marLeft + marRight + borLeft + borRight + padLeft + padRight);
+end;
+
+function TelNode.GetOuterHeight(Value: TelElementDecorations): Integer;
+var
+  tmpHeight: Integer;
+
+  marTop, marBottom: Single;
+  borTop, borBottom: Single;
+  padTop, padBottom: Single;
+begin
+  tmpHeight := GetInnerHeight();
+
+  if edMargin in Value then
+  begin
+    marTop := Margin.Top;
+    marBottom := Margin.Bottom;
+  end else
+  begin
+    marTop := 0;
+    marBottom := 0;
+  end;
+
+  if edBorder in Value then
+  begin
+    borTop := Border.Top.Width;
+    borBottom := Border.Bottom.Width;
+  end else
+  begin
+    borTop := 0;
+    borBottom := 0;
+  end;
+
+  if edPadding in Value then
+  begin
+    padTop := Padding.Top;
+    padBottom := Padding.Bottom;
+  end else
+  begin
+    padTop := 0;
+    padBottom := 0;
+  end;
+
+  Result := Trunc(tmpHeight + marTop + marBottom + borTop + borBottom + padTop + padBottom);
 end;
 
 procedure TelNode.Move(Delta: TelVector3f);

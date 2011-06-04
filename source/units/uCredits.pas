@@ -27,7 +27,7 @@ type
     destructor Destroy; Override;
 	
     procedure Render; Override;
-    procedure Update(dt: Double); Override;
+    procedure Update(dt: Double = 0.0); Override;
     procedure HandleEvents; Override;
   published
     property Font: TelTrueTypeFont read fFont write fFont;
@@ -63,6 +63,8 @@ end;
 
 procedure TCredits.Render;
 begin
+  inherited;
+
   GUI.RoundedBox(makeRect(ActiveWindow.Width - 300 - 80 + 16, 60 + 16, 300, 450), makeCol(0, 0, 0, 128), 8);
 
   Font.TextOut(makeV3f(ActiveWindow.Width - 300 - 80 + 16 + 8, 60 + 16 + 8), 'Credits stuff');
@@ -70,9 +72,9 @@ begin
   Button.Draw();
 end;
 
-procedure TCredits.Update(dt: Double);
+procedure TCredits.Update(dt: Double = 0.0);
 begin
-
+  inherited;
 end;
 
 procedure TCredits.HandleEvents;

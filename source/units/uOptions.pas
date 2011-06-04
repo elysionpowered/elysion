@@ -56,12 +56,16 @@ end;
 
 procedure TOptions.Render;
 begin
+  inherited;
+
   GUI.RoundedBox(makeRect(Menu.Position.X - 8, Menu.Position.Y - 8, Menu.Width + 16, Menu.Height), makeCol(0, 0, 0, 128), 8);
   Menu.Draw;
 end;
 
 procedure TOptions.Update(dt: Double);
 begin
+  inherited;
+
   Menu.Update(dt);
 
   if Music then Menu.Items[0].Caption := 'Music: On' else Menu.Items[0].Caption := 'Music: Off';

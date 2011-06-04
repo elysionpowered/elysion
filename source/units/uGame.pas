@@ -91,8 +91,8 @@ begin
     else tmpFullscreen := true;
 
   // Super
-  if ((Desktop.Width = 1024) and (Desktop.Height = 600)) then
-    inherited Create(Desktop.Width, Desktop.Height, AppConfig.Bits, true)
+  if ((Environment.Width = 1024) and (Environment.Height = 600)) then
+    inherited Create(Environment.Width, Environment.Height, AppConfig.Bits, true)
   else
     inherited Create(AppConfig.Width, AppConfig.Height, AppConfig.Bits, false);
 
@@ -229,7 +229,7 @@ begin
     if Input.Keyboard.isKeyHit(Key.Escape) or Input.XBox360Controller.Back then Application.Quit();
   end;
 
-  // Fullscreen not working at the moment, needs fixing
+  // In-game fullscreen switching only working partially at the moment, needs fixing
   if Input.Keyboard.isKeyHit(Key.F) then
   begin
     ShowFPS := not ShowFPS;

@@ -50,6 +50,7 @@ protected
   FDrawable: Boolean; //< Privileged: Draw flag of an object -> Read-only
   FID: Integer;       //< Privileged: ID of an object -> Access (read/write) through published properties (TelObject.ID)
   FTag: Cardinal;     //< Privileged: Tag of an object -> Access (read/write) through published properties (TelObject.Tag)
+  FDebug: Boolean;    //< Privileged: Debug flag -> Access (read/write) though published properties (TelObject.Debug)
 public
   (**
     * constructor TelObject.Create @br
@@ -99,6 +100,8 @@ public
     *)
   procedure Log(Msg: Single; LogMessageType: TLogMessageType = ltError); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 published
+  property Debug: Boolean read FDebug write FDebug default false; //< Debug flag
+
   property Drawable: Boolean read FDrawable;             //< Determines if object can be drawn on the screen
   property Name: String read FName write FName;          //< Name of an object
   property ID: Integer read FID write FID default 0;     //< ID of an object

@@ -1,0 +1,31 @@
+V11-05b:
++ Added: ElysionTypes.Border, ElysionTypes.BorderRadius, ElysionTypes.ExtValues (Data types for CSS-like styling)
+* Replaced: TelNode.Offset is now TelNode.Origin (for rotation offset) and TelNode.Margin (for position offset)
++ Added: TelNode.Border and TelNode.Padding
++ Added: ElysionTypes.TelGaugeFloat (= ElysionTypes.TelGauge) and ElysionTypes.TelGaugeInt (Non-visual gauge data type that can be used for health bars, progress, etc.)
++ Added: Custom bounding box rectangle support for TelSprite (TelSprite.CustomBBox)
++ Added: Better handling bounding boxes in TelSprite using TelSprite.BoundingBox (also includes better support for per-pixel collision in TelSprite.MouseOver and TelSprite.Click)
+* Fixed: TelNode events are no longer abstract by default
++ Added: function ElysionTypes.IsInRange (checks if a value in between a min and max value), was previously a part of the default template in uBasic.pas
+* Fixed: Origin for TelSprite is now its center, not 0px 0px (top left corner)
+* Fixed: DrawLine functions now have TelVector2f as a parameter instead of TelVector2i
+* Fixed: Nodes (TelNode and its derivates, such as TelSprite) can be added to scenes (In which case the scene handles the draw and update calls of the added node; as seen in Cocos2D or Adobe Flash)
+-
+
+V11-05a:
+Bugfixes:
+- Fixes a bug in which the screenshot was saved inverted (Screenshot saving is a lot smoother now, it saves the screenshot with a timestamp)
+- Added a workaround for a rare bug in a which an access violation occurred when closing the game window
+- Fixes math calculations in both TelVector3i and TelVector3f
+- Some minor bugfixes
+
+New features:
+- Added new data type: ElysionTypes.TelSize (will replace TelVector2i in some portions of the code)
+- Added dot product calculation for both TelVector3f and TelVector3i
+- Shell script is more customizable now (only on Mac OS X)
+- Better support for Mac OS X 10.4 Tiger (Shell scripts automatically detects installed SDKs and compiles against the earliest possible SDK)
+- Added a key management system
+- Added a storage system similar to HTML5 LocalStorage (based on the key management system)
+
+V11-04 and older:
+Sorry guys, didn't really keep track of the changelogs.

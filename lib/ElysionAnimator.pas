@@ -70,7 +70,7 @@ type
       procedure FadeEffect(aStartValue, anEndValue: Byte; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear);
       procedure MoveEffect(aStartValue, anEndValue: TelVector3f; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear); Overload;
       procedure MoveEffect(aStartValue: TelVector3f; anAngle, aDistance: Single; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear); Overload;
-      procedure OffsetEffect(aStartValue, anEndValue: TelImageOffset; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear);
+      procedure OriginEffect(aStartValue, anEndValue: TelVector2f; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear);
       procedure RotationEffect(aStartValue, anEndValue: TelImageRotation; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear); Overload;
       procedure RotationEffect(aStartValue, anEndValue: Single; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear); Overload;
       procedure ColorEffect(aStartValue, anEndValue: TelColor; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear);
@@ -256,7 +256,7 @@ begin
       case AnimProperty.AnimType of
         atAlpha: fTarget.Alpha := AnimProperty.StartAlpha;
         atPosition: fTarget.Position := AnimProperty.StartPosition;
-        atOffset: fTarget.Offset := AnimProperty.StartOffset;
+        atOrigin: fTarget.Origin := AnimProperty.StartOrigin;
         atRotation: fTarget.Rotation := AnimProperty.StartRotation;
         atColor: fTarget.Color := AnimProperty.StartColor;
         atScale: fTarget.Scale := AnimProperty.StartScale;
@@ -291,7 +291,7 @@ begin
   case AnimProperty.AnimType of
     atAlpha: Target.Alpha := AnimProperty.StartAlpha;
     atPosition: Target.Position := AnimProperty.StartPosition;
-    atOffset: Target.Offset := AnimProperty.StartOffset;
+    atOrigin: Target.Origin := AnimProperty.StartOrigin;
     atRotation: Target.Rotation := AnimProperty.StartRotation;
     atColor: Target.Color := AnimProperty.StartColor;
     atScale: Target.Scale := AnimProperty.StartScale;
@@ -303,7 +303,7 @@ begin
   case AnimProperty.AnimType of
     atAlpha: Target.Alpha := AnimProperty.EndAlpha;
     atPosition: Target.Position := AnimProperty.EndPosition;
-    atOffset: Target.Offset := AnimProperty.EndOffset;
+    atOrigin: Target.Origin := AnimProperty.EndOrigin;
     atRotation: Target.Rotation := AnimProperty.EndRotation;
     atColor: Target.Color := AnimProperty.EndColor;
     atScale: Target.Scale := AnimProperty.EndScale;
@@ -351,16 +351,16 @@ begin
   end;
 end;
 
-procedure TelAnimator.OffsetEffect(aStartValue, anEndValue: TelImageOffset; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear);
+procedure TelAnimator.OriginEffect(aStartValue, anEndValue: TelVector2f; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear);
 begin
   if Duration <> aDuration then Duration := aDuration;
   if Transition <> aTransition then Transition := aTransition;
 
   with AnimProperty do
   begin
-    AnimType := atOffset;
-    StartOffset := aStartValue;
-    EndOffset := anEndValue;
+    AnimType := atOrigin;
+    StartOrigin := aStartValue;
+    EndOrigin := anEndValue;
   end;
 end;
 
@@ -489,53 +489,27 @@ procedure TelAnimator.Update(dt: Double = 0.0);
     end;
   end;
 
-  procedure AnimOffset(dt: Double = 0.0);
+  procedure AnimOrigin(dt: Double = 0.0);
   begin
-    // Position offset
-    if not VectorEquals(AnimProperty.StartOffset.Position, AnimProperty.EndOffset.Position) then
+    if not VectorEquals(AnimProperty.StartOrigin, AnimProperty.EndOrigin) then
     begin
       case Transition of
         atLinear:
         begin
-          if AnimProperty.StartOffset.Position.X <> AnimProperty.EndOffset.Position.X then
+          if AnimProperty.StartOrigin.X <> AnimProperty.EndOrigin.X then
           begin
-            if AnimProperty.StartOffset.Position.X > AnimProperty.EndOffset.Position.X then
-              fTarget.Offset.Position.X := Trunc(InverseLerp(AnimProperty.EndOffset.Position.X, AnimProperty.StartOffset.Position.X, Step))
+            if AnimProperty.StartOrigin.X > AnimProperty.EndOrigin.X then
+              fTarget.Origin.X := InverseLerp(AnimProperty.EndOrigin.X, AnimProperty.StartOrigin.X, Step)
             else
-              fTarget.Offset.Position.X := Trunc(Lerp(AnimProperty.StartOffset.Position.X, AnimProperty.EndOffset.Position.X, Step));
+              fTarget.Origin.X := Lerp(AnimProperty.StartOrigin.X, AnimProperty.EndOrigin.X, Step);
           end;
 
-          if AnimProperty.StartOffset.Position.Y <> AnimProperty.EndOffset.Position.Y then
+          if AnimProperty.StartOrigin.Y <> AnimProperty.EndOrigin.Y then
           begin
-            if AnimProperty.StartOffset.Position.Y > AnimProperty.EndOffset.Position.Y then
-              fTarget.Offset.Position.Y := Trunc(InverseLerp(AnimProperty.EndOffset.Position.Y, AnimProperty.StartOffset.Position.Y, Step))
+            if AnimProperty.StartOrigin.Y > AnimProperty.EndOrigin.Y then
+              fTarget.Origin.Y := InverseLerp(AnimProperty.EndOrigin.Y, AnimProperty.StartOrigin.Y, Step)
             else
-              fTarget.Offset.Position.Y := Trunc(Lerp(AnimProperty.StartOffset.Position.Y, AnimProperty.EndOffset.Position.Y, Step));
-          end;
-        end;
-      end;
-    end;
-
-    // Rotation offset
-    if not VectorEquals(AnimProperty.StartOffset.Rotation, AnimProperty.EndOffset.Rotation) then
-    begin
-      case Transition of
-        atLinear:
-        begin
-          if AnimProperty.StartOffset.Rotation.X <> AnimProperty.EndOffset.Rotation.X then
-          begin
-            if AnimProperty.StartOffset.Rotation.X > AnimProperty.EndOffset.Rotation.X then
-              fTarget.Offset.Rotation.X := Trunc(InverseLerp(AnimProperty.EndOffset.Rotation.X, AnimProperty.StartOffset.Rotation.X, Step))
-            else
-              fTarget.Offset.Rotation.X := Trunc(Lerp(AnimProperty.StartOffset.Rotation.X, AnimProperty.EndOffset.Rotation.X, Step));
-          end;
-
-          if AnimProperty.StartOffset.Rotation.Y <> AnimProperty.EndOffset.Rotation.Y then
-          begin
-            if AnimProperty.StartOffset.Rotation.Y > AnimProperty.EndOffset.Rotation.Y then
-              fTarget.Offset.Rotation.Y := Trunc(InverseLerp(AnimProperty.EndOffset.Rotation.Y, AnimProperty.StartOffset.Rotation.Y, Step))
-            else
-              fTarget.Offset.Rotation.Y := Trunc(Lerp(AnimProperty.StartOffset.Rotation.Y, AnimProperty.EndOffset.Rotation.Y, Step));
+              fTarget.Origin.Y := Lerp(AnimProperty.StartOrigin.Y, AnimProperty.EndOrigin.Y, Step);
           end;
         end;
       end;
@@ -681,7 +655,7 @@ begin
         case AnimProperty.AnimType of
           atAlpha: AnimAlpha(dt);
           atPosition: AnimPosition(dt);
-          atOffset: AnimOffset(dt);
+          atOrigin: AnimOrigin(dt);
           atRotation: AnimRotation(dt);
           atColor: AnimColor(dt);
           atScale: AnimScale(dt);

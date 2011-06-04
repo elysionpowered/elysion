@@ -655,7 +655,7 @@ begin
           case Animator.AnimProperty.AnimType of
             atAlpha: tmpButton.Alpha := Animator.AnimProperty.StartAlpha;
             atPosition: tmpButton.Position := Animator.AnimProperty.StartPosition;
-            atOffset: tmpButton.Offset := Animator.AnimProperty.StartOffset;
+            atOrigin: tmpButton.Origin := Animator.AnimProperty.StartOrigin;
             atRotation: tmpButton.Rotation := Animator.AnimProperty.StartRotation;
             atColor: tmpButton.Color := Animator.AnimProperty.StartColor;
             atScale: tmpButton.Scale := Animator.AnimProperty.StartScale;

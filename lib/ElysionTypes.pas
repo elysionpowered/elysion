@@ -18,6 +18,7 @@ interface
 
 uses
   //ElysionUtils,
+  ElysionMath,
   Classes,
   SDLUtils,
   SysUtils;
@@ -73,7 +74,7 @@ const
 
 type
 
-  // Forward declaration
+  // Forward declarations
   PelColor = ^TelColor;
   PelVector2f = ^TelVector2f;
   PelVector2i = ^TelVector2i;
@@ -270,42 +271,6 @@ type
   end;
 
   {$IFDEF FPC}
-  TelSize = object
-  {$ELSE}
-  TelSize = record
-  {$ENDIF}
-    Width, Height: Integer;
-
-    {$IFDEF CAN_METHODS}
-    procedure Clear();
-
-    procedure Make(aWidth, aHeight: Integer);
-
-    function ToString(): String;
-
-    // Convert to other types
-    function ToVector2i(): PelVector2i;
-    function ToVector2f(): PelVector2f;
-    function ToVector3i(): PelVector3i;
-    function ToVector3f(): PelVector3f;
-    function ToKey(KeyName: String): PKeyIdent;
-
-    // Operators (has to compliant to earlier Delphi versions)
-    procedure Add(Size: TelSize);
-    procedure Sub(Size: TelSize);
-    procedure Multiply(Size: TelSize);
-    procedure Divide(Size: TelSize);
-    procedure Scale(Factor: Single);
-
-    function GetAspectRatio(): Single;
-    function IsWide(): Boolean;
-
-    function Equals(aSize: TelSize): Boolean;
-    {$ENDIF}
-  end;
-
-
-  {$IFDEF FPC}
   TelVector3f = object
   {$ELSE}
   TelVector3f = record
@@ -404,10 +369,49 @@ type
     Color: TelColor;
   end;
 
+  { TelSize }
+
   {$IFDEF FPC}
+  TelSize = object
+  {$ELSE}
+  TelSize = record
+  {$ENDIF}
+    Width, Height: Integer;
+
+    {$IFDEF CAN_METHODS}
+    procedure Clear();
+
+    procedure Make(aWidth, aHeight: Integer);
+
+    function ToString(): String;
+
+    // Convert to other types
+    function ToVector2i(): PelVector2i;
+    function ToVector2f(): PelVector2f;
+    function ToVector3i(): PelVector3i;
+    function ToVector3f(): PelVector3f;
+    function ToKey(KeyName: String): PKeyIdent;
+
+    // Operators (has to compliant to earlier Delphi versions)
+    procedure Add(Size: TelSize);
+    procedure Sub(Size: TelSize);
+    procedure Multiply(Size: TelSize);
+    procedure Divide(Size: TelSize);
+    procedure Scale(Factor: Single);
+
+    function Center(): PelVector2f; Overload;
+    function Center(aRect: PelRect): PelVector2f; Overload;
+
+    function GetAspectRatio(): Single;
+    function IsWide(): Boolean;
+
+    function Equals(aSize: TelSize): Boolean;
+    {$ENDIF}
+  end;
 
   { TelRect }
 
+  {$IFDEF FPC}
   TelRect = object
   {$ELSE}
   TelRect = record
@@ -425,6 +429,9 @@ type
     function ToString(): String;
     function ToKey(KeyName: String): PKeyIdent;
 
+    function Center(): PelVector2f; Overload;
+    function Center(aRect: TelRect): PelVector2f; Overload;
+
     function ContainsVector(aVector: TelVector2i): Boolean; Overload;
     function ContainsVector(aVector: TelVector2f): Boolean; Overload;
     function ContainsRect(aRect: TelRect): Boolean; Overload;
@@ -441,8 +448,8 @@ type
   TDisplayOrientation = (doLandscape, doPortrait);
 
   TelImageOffset = record
-    Position: TelVector2i;
-    Rotation: TelVector2i;
+    Position: TelVector2f;
+    Rotation: TelVector2f;
   end;
 
   TelImageRotation = record
@@ -450,11 +457,22 @@ type
     Vector: TelVector3f;
   end;
 
+  {$IFDEF FPC}
+
+  { TelShadow }
+
+  TelShadow = object
+  {$ELSE}
   TelShadow = record
+  {$ENDIF}
     Blur: Integer;
     Color: TelColor;
     Position: TelVector2f;
     Visible: Boolean;
+
+    {$IFDEF CAN_METHODS}
+    procedure Clear();
+    {$ENDIF}
   end;
 
   PelButtonEvent = ^TelButtonEvent;
@@ -498,12 +516,192 @@ type
     Horizontal: TAlignHorizontal;
   end;
 
+  { TelExtValue }
+
+  TelExtValue = class
+  protected
+    fLeft, fTop, fRight, fBottom: Single;
+
+    function GetValue: Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure SetValue(const AValue: Single); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  public
+    constructor Create;
+    destructor Destroy; Override;
+
+    function IsEmpty(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  published
+    property Value: Single read GetValue write SetValue;
+
+    property Left: Single read fLeft write fLeft;
+    property Top: Single read fTop write fTop;
+    property Right: Single read fRight write fRight;
+    property Bottom: Single read fBottom write fBottom;
+  end;
+
+  (*TelMargin = record
+    case Byte of
+    0: (Value: Single);
+    1: (Left, Top, Right, Bottom: Single);
+  end;
+
+  TelPadding = record
+    case Byte of
+    0: (Value: Single);
+    1: (Left, Top, Right, Bottom: Single);
+  end;*)
+
+  TelBorderStyle = (bsSolid, bsDashed, bsDouble, bsDotted, bsGroove, bsRidge, bsInset, bsOutset);
+
+  TelBorderRadius = class
+  protected
+    fTopLeft, fTopRight, fBottomLeft, fBottomRight: Single;
+
+    function GetValue: Single;
+    procedure SetValue(const AValue: Single);
+  public
+    constructor Create; Overload;
+    constructor Create(aTopLeft, aTopRight, aBottomLeft, aBottomRight: Single); Overload;
+    constructor Create(aRect: TelRect); Overload;
+
+    destructor Destroy; Override;
+
+    function IsEmpty(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function Equals(aBorderRadius: TelBorderRadius): Boolean; Overload;
+  published
+    property Value: Single read GetValue write SetValue;
+
+    property TopLeft: Single read fTopLeft write fTopLeft;
+    property TopRight: Single read fTopRight write fTopRight;
+    property BottomLeft: Single read fBottomLeft write fBottomLeft;
+    property BottomRight: Single read fBottomRight write fBottomRight;
+  end;
+
+  { TelBorderSide }
+
+  TelBorderSide = class
+  protected
+    fWidth: Single;
+    fStyle: TelBorderStyle;
+  public
+    constructor Create;
+    destructor Destroy; Override;
+  public
+    Color: TelColor;
+  published
+    property Width: Single read fWidth write fWidth;
+    property Style: TelBorderStyle read fStyle write fStyle;
+  end;
+
+  { TelBorder }
+
+  TelBorder = class
+  protected
+    fLeft, fTop, fRight, fBottom: TelBorderSide;
+    fRadius: TelBorderRadius;
+
+    function GetColor: TelColor; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure SetColor(const AValue: TelColor); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    function GetWidth: Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure SetWidth(AValue: Single); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    function GetStyle: TelBorderStyle; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure SetStyle(AValue: TelBorderStyle); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    function IsEmpty(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  public
+    constructor Create;
+    destructor Destroy; Override;
+  public
+    property Color: TelColor read GetColor write SetColor;
+  published
+    property Radius: TelBorderRadius read fRadius write fRadius;
+
+    property Width: Single read GetWidth write SetWidth;
+    property Style: TelBorderStyle read GetStyle write SetStyle;
+
+    property Left: TelBorderSide read fLeft write fLeft;
+    property Top: TelBorderSide read fTop write fTop;
+    property Right: TelBorderSide read fRight write fRight;
+    property Bottom: TelBorderSide read fBottom write fBottom;
+  end;
+
+  (*TelBorderRadius = record
+    case Byte of
+    0: (Value: Single);
+    1: (LeftTop, LeftBottom, RightTop, RightBottom: Single);
+  end;
+
+  TelBorderSide = record
+    Style: TelBorderStyle;
+    Width: Single;
+    Color: TelColor;
+    Radius: TelBorderRadius;
+  end;
+
+  TelBorder = record
+    case Byte of
+    0:
+    (
+      Style: TelBorderStyle;
+      Width: Single;
+      Color: TelColor;
+      Radius: TelBorderRadius;
+    );
+    1: (Left, Top, Right, Bottom: TelBorderSide);
+  end;*)
+
+  TelElementDecoration = (edMargin, edPadding, edBorder);
+  TelElementDecorations = set of TelElementDecoration;
+
+
+  { TelGaugeFloat }
+
+  TelGaugeFloat = class
+  protected
+    fValue, fMin, fMax: Single;
+
+    procedure SetValue(AValue: Single); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  public
+    constructor Create; Overload;
+    constructor Create(Min, Max: Single; Value: Single = 0.0);
+
+    destructor Destroy; Override;
+  published
+    property Min: Single read fMin write fMin;
+    property Max: Single read fMax write fMax;
+    property Value: Single read fValue write SetValue;
+  end;
+
+  { TelGaugeInt }
+
+  TelGaugeInt = class
+  protected
+    fValue, fMin, fMax: Integer;
+
+    procedure SetValue(AValue: Integer); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  public
+    constructor Create; Overload;
+    constructor Create(Min, Max: Integer; Value: Integer = 0);
+
+    destructor Destroy; Override;
+  published
+    property Min: Integer read fMin write fMin;
+    property Max: Integer read fMax write fMax;
+    property Value: Integer read fValue write SetValue;
+  end;
+
+  { TelGauge }
+
+  TelGauge = TelGaugeFloat;
+
+
   // See: TelGraphicObject.Generate;
   TGenerateMode = (gmAuto, gmRGB, gmRGBA);
 
   {%region 'Animation types'}
   // Each animator type responds to a node property
-  TelAnimationType = (atAlpha, atPosition, atOffset, atRotation, atColor, atScale, atShadow);
+  TelAnimationType = (atAlpha, atPosition, atOrigin, atRotation, atColor, atScale, atShadow);
 
   // Different animator transitions: Only linear is working right now, the others are placeholders
   TelAnimationTransition = (atLinear, atEaseIn, atEaseOut, atEaseInOut, atBounce);
@@ -513,7 +711,7 @@ type
     case AnimType: TelAnimationType of
       atAlpha: (Alpha: Byte);
       atPosition: (Position: TelVector3f);
-      atOffset: (Offset: TelImageOffset);
+      atOrigin: (Origin: TelVector2f);
       atRotation: (Rotation: TelImageRotation);
       atColor: (Color: TelColor);
       atScale: (Scale: TelVector2f);
@@ -525,7 +723,7 @@ type
     case AnimType: TelAnimationType of
       atAlpha: (StartAlpha, EndAlpha: Byte);
       atPosition: (StartPosition, EndPosition: TelVector3f);
-      atOffset: (StartOffset, EndOffset: TelImageOffset);
+      atOrigin: (StartOrigin, EndOrigin: TelVector2f);
       atRotation: (StartRotation, EndRotation: TelImageRotation);
       atColor: (StartColor, EndColor: TelColor);
       atScale: (StartScale, EndScale: TelVector2f);
@@ -580,6 +778,9 @@ type
 
   function ColorEquals(ColorOne, ColorTwo: TelColor): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
+
+  function IsInRange(Min, Max, Value: Integer): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  function IsInRange(Min, Max, Value: Single): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
   {$IFNDEF CAN_METHODS}
   function RectContainsVector(aRect: TelRect; aVector: TelVector2i): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -745,61 +946,291 @@ begin
   Result := tmpKey;
 end;
 
+
 function IsRectEmpty(Rect: TelRect): Boolean;
 begin
-  if ((Rect.X <> 0) and
-      (Rect.Y <> 0) and
-      (Rect.W > 0) and
-      (Rect.H > 0)) then Result := false else Result := true;
+  Result := ((Rect.X = 0) and (Rect.Y = 0) and (Rect.W = 0) and (Rect.H = 0));
 end;
 
 function VectorEquals(VecOne, VecTwo: TelVector2f): Boolean;
 begin
-  if (VecOne.X <> VecTwo.X) or
-     (VecOne.Y <> VecTwo.Y) then
-    Result := false
-  else
-    Result := true;
+  Result := ((VecOne.X = VecTwo.X) or (VecOne.Y = VecTwo.Y));
 end;
 
 function VectorEquals(VecOne, VecTwo: TelVector2i): Boolean;
 begin
-  if (VecOne.X <> VecTwo.X) or
-     (VecOne.Y <> VecTwo.Y) then
-    Result := false
-  else
-    Result := true;
+  Result := ((VecOne.X = VecTwo.X) or (VecOne.Y = VecTwo.Y));
 end;
 
 function VectorEquals(VecOne, VecTwo: TelVector3f): Boolean;
 begin
-  if (VecOne.X <> VecTwo.X) or
-     (VecOne.Y <> VecTwo.Y) or
-     (VecOne.Z <> VecTwo.Z) then
-    Result := false
-  else
-    Result := true;
+  Result := ((VecOne.X = VecTwo.X) or (VecOne.Y = VecTwo.Y) or (VecOne.Z = VecTwo.Z));
 end;
 
 function VectorEquals(VecOne, VecTwo: TelVector3i): Boolean;
 begin
-  if (VecOne.X <> VecTwo.X) or
-     (VecOne.Y <> VecTwo.Y) or
-     (VecOne.Z <> VecTwo.Z) then
-    Result := false
-  else
-    Result := true;
+  Result := ((VecOne.X = VecTwo.X) or (VecOne.Y = VecTwo.Y) or (VecOne.Z = VecTwo.Z));
 end;
 
 function ColorEquals(ColorOne, ColorTwo: TelColor): Boolean;
 begin
-  if (ColorOne.R <> ColorTwo.R) or
-     (ColorOne.G <> ColorTwo.G) or
-     (ColorOne.B <> ColorTwo.B) or
-     (ColorOne.A <> ColorOne.A) then
-    Result := false
-  else
-    Result := true;
+  Result := ((ColorOne.R = ColorTwo.R) or (ColorOne.G = ColorTwo.G) or (ColorOne.B = ColorTwo.B) or (ColorOne.A = ColorOne.A));
+end;
+
+function IsInRange(Min, Max, Value: Integer): Boolean;
+begin
+  Result :=  ((Value >= Min) and (Value <= Max));
+end;
+
+function IsInRange(Min, Max, Value: Single): Boolean;
+begin
+  Result :=  ((Value >= Min) and (Value <= Max));
+end;
+
+{ TelShadow }
+
+procedure TelShadow.Clear();
+begin
+  Self.Blur := 0;
+  Self.Color.Clear();
+  Self.Position.Clear();
+  Self.Visible := false;
+end;
+
+{ TelGaugeFloat }
+
+procedure TelGaugeFloat.SetValue(AValue: Single);
+begin
+  fValue := Clamp(AValue, fMin, fMax);
+end;
+
+constructor TelGaugeFloat.Create;
+begin
+  fMin := 0.0;
+  fMax := 0.0;
+  fValue := 0.0;
+end;
+
+constructor TelGaugeFloat.Create(Min, Max: Single; Value: Single = 0.0);
+begin
+  fMin := Min;
+  fMax := Max;
+  fValue := Value;
+end;
+
+destructor TelGaugeFloat.Destroy;
+begin
+  inherited Destroy;
+end;
+
+{ TelGaugeInt }
+
+procedure TelGaugeInt.SetValue(AValue: Integer);
+begin
+  fValue := Clamp(AValue, fMin, fMax);
+end;
+
+constructor TelGaugeInt.Create;
+begin
+  fMin := 0;
+  fMax := 0;
+  fValue := 0;
+end;
+
+constructor TelGaugeInt.Create(Min, Max: Integer; Value: Integer = 0);
+begin
+  fMin := Min;
+  fMax := Max;
+  fValue := Value;
+end;
+
+destructor TelGaugeInt.Destroy;
+begin
+  inherited Destroy;
+end;
+
+{ TelBorderRadius }
+
+constructor TelBorderRadius.Create;
+begin
+  fTopLeft := 0;
+  fTopRight := 0;
+  fBottomLeft := 0;
+  fBottomRight := 0;
+end;
+
+constructor TelBorderRadius.Create(aTopLeft, aTopRight, aBottomLeft, aBottomRight: Single);
+begin
+  fTopLeft := aTopLeft;
+  fTopRight := aTopRight;
+  fBottomLeft := aBottomLeft;
+  fBottomRight := aBottomRight;
+end;
+
+constructor TelBorderRadius.Create(aRect: TelRect);
+begin
+  fTopLeft := aRect.X;
+  fTopRight := aRect.Y;
+  fBottomLeft := aRect.W;
+  fBottomRight := aRect.H;
+end;
+
+destructor TelBorderRadius.Destroy;
+begin
+  inherited;
+end;
+
+function TelBorderRadius.GetValue: Single;
+begin
+  Result := ((TopLeft + TopRight + BottomLeft + BottomRight) / 4);
+end;
+
+procedure TelBorderRadius.SetValue(const AValue: Single);
+begin
+  TopLeft := AValue;
+  TopRight := AValue;
+  BottomLeft := AValue;
+  BottomRight := AValue;
+end;
+
+function TelBorderRadius.IsEmpty(): Boolean;
+begin
+  Result := (Value = 0);
+end;
+
+function TelBorderRadius.Equals(aBorderRadius: TelBorderRadius): Boolean;
+begin
+  Result := ((Self.TopLeft = aBorderRadius.TopLeft) or (Self.TopRight = aBorderRadius.TopRight) or (Self.BottomLeft = aBorderRadius.BottomLeft) or (Self.BottomRight = aBorderRadius.BottomRight));
+end;
+
+{ TelBorderSide }
+
+constructor TelBorderSide.Create;
+begin
+  fWidth := 0;
+  fStyle := bsSolid;
+  Color := makeCol(0, 0, 0);
+end;
+
+destructor TelBorderSide.Destroy;
+begin
+  inherited Destroy;
+end;
+
+{ TelBorder }
+
+function TelBorder.GetColor: TelColor;
+begin
+  if (fLeft.Color.Equals(fTop.Color) and fTop.Color.Equals(fRight.Color) and fRight.Color.Equals(fBottom.Color)) then
+  begin
+    Result := fLeft.Color;
+  end else
+  begin
+    Result := makeCol(fLeft.Color.R + fTop.Color.R + fRight.Color.R + fBottom.Color.R / 4,
+                      fLeft.Color.G + fTop.Color.G + fRight.Color.G + fBottom.Color.G / 4,
+                      fLeft.Color.B + fTop.Color.B + fRight.Color.B + fBottom.Color.B / 4,
+                      fLeft.Color.A + fTop.Color.A + fRight.Color.A + fBottom.Color.A / 4);
+  end;
+end;
+
+procedure TelBorder.SetColor(const AValue: TelColor);
+begin
+  fLeft.Color := AValue;
+  fTop.Color := AValue;
+  fRight.Color := AValue;
+  fBottom.Color := AValue;
+end;
+
+function TelBorder.GetWidth: Single;
+begin
+  Result := (fLeft.Width + fTop.Width + fRight.Width + fBottom.Width) / 4;
+end;
+
+procedure TelBorder.SetWidth(AValue: Single);
+begin
+  fLeft.Width := AValue;
+  fTop.Width := AValue;
+  fRight.Width := AValue;
+  fBottom.Width := AValue;
+end;
+
+function TelBorder.GetStyle: TelBorderStyle;
+begin
+  if ((fLeft.Style = fTop.Style) and (fTop.Style = fRight.Style) and (fRight.Style = fBottom.Style)) then
+  begin
+    Result := fLeft.Style;
+  end else
+  begin
+    Result := bsSolid;
+  end;
+end;
+
+procedure TelBorder.SetStyle(AValue: TelBorderStyle);
+begin
+  fLeft.Style := AValue;
+  fTop.Style := AValue;
+  fRight.Style := AValue;
+  fBottom.Style := AValue;
+end;
+
+constructor TelBorder.Create;
+begin
+  fLeft := TelBorderSide.Create;
+  fTop := TelBorderSide.Create;
+  fRight := TelBorderSide.Create;
+  fBottom := TelBorderSide.Create;
+
+  fRadius := TelBorderRadius.Create;
+end;
+
+destructor TelBorder.Destroy;
+begin
+  fLeft.Destroy;
+  fTop.Destroy;
+  fRight.Destroy;
+  fBottom.Destroy;
+
+  fRadius.Destroy;
+
+  inherited Destroy;
+end;
+
+function TelBorder.IsEmpty(): Boolean;
+begin
+  Result := ((fLeft.Width = 0) or (fTop.Width = 0) or (fRight.Width = 0) or (fBottom.Width = 0));
+end;
+
+{ TelExtValue }
+
+function TelExtValue.GetValue: Single;
+begin
+  Result := ((Left + Top + Right + Bottom) / 4);
+end;
+
+procedure TelExtValue.SetValue(const AValue: Single);
+begin
+  Left := AValue;
+  Top := AValue;
+  Right := AValue;
+  Bottom := AValue;
+end;
+
+constructor TelExtValue.Create;
+begin
+  fLeft := 0;
+  fTop := 0;
+  fRight := 0;
+  fBottom := 0;
+end;
+
+destructor TelExtValue.Destroy;
+begin
+  inherited Destroy;
+end;
+
+function TelExtValue.IsEmpty(): Boolean;
+begin
+  Result := (Value = 0);
 end;
 
 { TKeyList }
@@ -1221,10 +1652,7 @@ end;
 
 function TelColor.Equals(aColor: TelColor): Boolean;
 begin
-  if ((Self.R = aColor.R) and (Self.G = aColor.G) and (Self.B = aColor.B) and (Self.A = aColor.A)) then
-    Result := true
-  else
-    Result := false;
+  Result := ((Self.R = aColor.R) and (Self.G = aColor.G) and (Self.B = aColor.B) and (Self.A = aColor.A));
 end;
 
 procedure TelVector2f.Clear();
@@ -1338,10 +1766,7 @@ end;
 
 function TelVector2f.Equals(aVector: TelVector2f): Boolean;
 begin
-  if ((Self.X = aVector.X) and (Self.Y = aVector.Y)) then
-    Result := true
-  else
-    Result := false;
+  Result := ((Self.X = aVector.X) and (Self.Y = aVector.Y));
 end;
 
 procedure TelVector2i.Clear();
@@ -1455,10 +1880,7 @@ end;
 
 function TelVector2i.Equals(aVector: TelVector2i): Boolean;
 begin
-  if ((Self.X = aVector.X) and (Self.Y = aVector.Y)) then
-    Result := true
-  else
-    Result := false;
+  Result := ((Self.X = aVector.X) and (Self.Y = aVector.Y));
 end;
 
 procedure TelSize.Clear();
@@ -1554,6 +1976,24 @@ begin
   Self.Height := Trunc(Self.Height * Factor);
 end;
 
+function TelSize.Center(): PelVector2f;
+var
+  tmpVec: TelVector2f;
+begin
+  tmpVec := makeV2f(Self.Width / 2, Self.Height / 2);
+
+  Result := @tmpVec;
+end;
+
+function TelSize.Center(aRect: PelRect): PelVector2f;
+var
+  tmpVec: TelVector2f;
+begin
+  tmpVec := makeV2f(Self.Width - (aRect^.W - aRect^.X) / 2, Self.Height - (aRect^.H - aRect^.Y) / 2);
+
+  Result := @tmpVec;
+end;
+
 function TelSize.GetAspectRatio(): Single;
 begin
   Result := Width / Height;
@@ -1561,14 +2001,12 @@ end;
 
 function TelSize.IsWide(): Boolean;
 begin
-  if GetAspectRatio > (4 / 3) then Result := true
-  else Result := false;
+  Result := (GetAspectRatio > (4 / 3));
 end;
 
 function TelSize.Equals(aSize: TelSize): Boolean;
 begin
-  if ((Self.Width = aSize.Width) and (Self.Height = aSize.Height)) then Result := true
-  else Result := false;
+  Result := ((Self.Width = aSize.Width) and (Self.Height = aSize.Height));
 end;
 
 procedure TelVector3f.Clear();
@@ -1734,10 +2172,7 @@ end;
 
 function TelVector3f.Equals(aVector: TelVector3f): Boolean;
 begin
-  if ((Self.X = aVector.X) and (Self.Y = aVector.Y) and (Self.Z = aVector.Z)) then
-    Result := true
-  else
-    Result := false;
+  Result := ((Self.X = aVector.X) and (Self.Y = aVector.Y) and (Self.Z = aVector.Z));
 end;
 
 procedure TelVector3i.Clear();
@@ -1904,10 +2339,7 @@ end;
 
 function TelVector3i.Equals(aVector: TelVector3i): Boolean;
 begin
-  if ((Self.X = aVector.X) and (Self.Y = aVector.Y) and (Self.Z = aVector.Z)) then
-    Result := true
-  else
-    Result := false;
+  Result := ((Self.X = aVector.X) and (Self.Y = aVector.Y) and (Self.Z = aVector.Z));
 end;
 
 
@@ -1967,28 +2399,37 @@ begin
   Result := @tmpKey;
 end;
 
+function TelRect.Center(): PelVector2f;
+var
+  tmpVec: TelVector2f;
+begin
+  tmpVec := makeV2f((Self.W - Self.X) / 2, (Self.H - Self.Y) / 2);
+
+  Result := @tmpVec;
+end;
+
+function TelRect.Center(aRect: TelRect): PelVector2f;
+var
+  tmpVec: TelVector2f;
+begin
+  tmpVec := makeV2f(Self.W - (aRect.W - aRect.X) / 2, Self.H - (aRect.H - aRect.Y));
+
+  Result := @tmpVec;
+end;
+
 function TelRect.ContainsVector(aVector: TelVector2i): Boolean;
 begin
-  if (aVector.X >= Self.X) and
-     (aVector.Y >= Self.Y) and
-     (aVector.X <= (Self.X + Self.W)) and
-     (aVector.Y <= (Self.Y + Self.H)) then Result := true else Result := false;
+  Result := ((aVector.X >= Self.X) and (aVector.Y >= Self.Y) and (aVector.X <= (Self.X + Self.W)) and (aVector.Y <= (Self.Y + Self.H)));
 end;
 
 function TelRect.ContainsVector(aVector: TelVector2f): Boolean;
 begin
-  if (aVector.X >= Self.X) and
-     (aVector.Y >= Self.Y) and
-     (aVector.X <= (Self.X + Self.W)) and
-     (aVector.Y <= (Self.Y + Self.H)) then Result := true else Result := false;
+  Result := ((aVector.X >= Self.X) and (aVector.Y >= Self.Y) and (aVector.X <= (Self.X + Self.W)) and (aVector.Y <= (Self.Y + Self.H)));
 end;
 
 function TelRect.ContainsRect(aRect: TelRect): Boolean;
 begin
-  if (aRect.X >= Self.X) and
-     (aRect.Y >= Self.Y) and
-     (aRect.X <= (Self.X + Self.W)) and
-     (aRect.Y <= (Self.Y + Self.H)) then Result := true else Result := false;
+  Result := ((aRect.X >= Self.X) and (aRect.Y >= Self.Y) and (aRect.X <= (Self.X + Self.W)) and (aRect.Y <= (Self.Y + Self.H)));
 end;
 
 function TelRect.GetAspectRatio(): Single;
@@ -1998,50 +2439,34 @@ end;
 
 function TelRect.IsWide(): Boolean;
 begin
-  if GetAspectRatio > (4 / 3) then Result := true
-  else Result := false;
+  Result := (GetAspectRatio > (4 / 3));
 end;
 
 function TelRect.Equals(aRect: TelRect): Boolean;
 begin
-  if (aRect.X = Self.X) and
-     (aRect.Y = Self.Y) and
-     (aRect.W = Self.W) and
-     (aRect.H = Self.H) then Result := true else Result := false;
+  Result := ((aRect.X = Self.X) and (aRect.Y = Self.Y) and (aRect.W = Self.W) and (aRect.H = Self.H));
 end;
 
 function TelRect.IsEmpty(): Boolean;
 begin
-  if ((X <> 0) and
-      (Y <> 0) and
-      (W > 0) and
-      (H > 0)) then Result := false else Result := true;
+  Result := ((X = 0) and (Y = 0) and (W = 0) and (H = 0));
 end;
 
 {$ELSE}
 
 function RectContainsVector(aRect: TelRect; aVector: TelVector2i): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 begin
-  if (aVector.X >= aRect.X) and
-     (aVector.Y >= aRect.Y) and
-     (aVector.X <= (aRect.X + aRect.W)) and
-     (aVector.Y <= (aRect.Y + aRect.H)) then Result := true else Result := false;
+  Result := ((aVector.X >= aRect.X) and (aVector.Y >= aRect.Y) and (aVector.X <= (aRect.X + aRect.W)) and (aVector.Y <= (aRect.Y + aRect.H)));
 end;
 
 function RectContainsVector(aRect: TelRect; aVector: TelVector2f): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 begin
-  if (aVector.X >= aRect.X) and
-     (aVector.Y >= aRect.Y) and
-     (aVector.X <= (aRect.X + aRect.W)) and
-     (aVector.Y <= (aRect.Y + aRect.H)) then Result := true else Result := false;
+  Result := ((aVector.X >= aRect.X) and (aVector.Y >= aRect.Y) and (aVector.X <= (aRect.X + aRect.W)) and (aVector.Y <= (aRect.Y + aRect.H)));
 end;
 
 function RectContainsRect(aRect, bRect: TelRect): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 begin
-  if (aRect.X >= bRect.X) and
-     (aRect.Y >= bRect.Y) and
-     (aRect.X <= (bRect.X + bRect.W)) and
-     (aRect.Y <= (bRect.Y + bRect.H)) then Result := true else Result := false;
+  Result := (((aRect.X >= bRect.X) and (aRect.Y >= bRect.Y) and (aRect.X <= (bRect.X + bRect.W)) and (aRect.Y <= (bRect.Y + bRect.H)));
 end;
 {$ENDIF}
 

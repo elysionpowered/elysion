@@ -53,11 +53,16 @@ changes its color with each click.
 	  // Alternative you could also write: mySprite.Color := makeCol(Random(255), Random(255), Random(255));
 	end;
 
+	
+That of course is just a small example of what Elysion can do. It is a full-fledged game framework and aims to be so: It allows you to play sound and music via ElysionAudio (which is based upon SDL_mixer), a texture manager which takes care of all your textures without you needing to worry about it, Elysion has a storage system similar to HTML5 Localstorage, integrated support for Cascading Stylesheets (CSS), as well as game-specific class and helpers (such as adding nodes to scenes).
+
 
 License
 -------
 
 Elysion is dual-licensed under the MIT and MPL license. Choose which one
-you like the most or use both if you feel like it.
+you like the most or use both if you feel like it.  
+You are allowed to use in any project of any kind, be it open-source, commercial, closed-source or a combination those.  
+You don't even need to acknowledge that you used Elysion in your application, but it is greatly appreciated.  
 
-Be careful though: Other third-party libraries included in this package (in /lib/Dependencies) may use a different license.  
+Hint: Other third-party libraries included in this package (in /lib/Dependencies) may use a different license.  

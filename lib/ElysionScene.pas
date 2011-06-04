@@ -158,7 +158,7 @@ var
 begin
   for i := 0 to fNodeList.Count - 1 do
   begin
-    if fNodeList.Items[i] <> nil then fNodeList.Items[i].Draw;
+    if fNodeList.Items[i] <> nil then if fNodeList.Items[i].Drawable then fNodeList.Items[i].Draw;
   end;
 end;
 

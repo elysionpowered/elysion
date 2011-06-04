@@ -87,7 +87,7 @@ type
       procedure Move(aPoint: TelVector2i); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
       procedure Move(aPoint: TelVector3f); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-      function Collides(OtherSprite: TelSprite): Boolean;
+      function Collides(Other: TelSprite): Boolean;
 
       procedure Draw; Override;
       procedure Update(dt: Double = 0.0); Override;
@@ -147,24 +147,24 @@ type
     private
       fMaxFrames, fFrame: Integer;
       fTimer: TelTimer;
-
-      function GetInterval(): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure SetInterval(Value: Integer); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      fFrameSize: TelSize;
     public
       constructor Create; Override;
       destructor Destroy; Override;
 
-      procedure Start(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure Define(AnimName: String; aRect: TelRect; Length: Integer = 1000);
+
+      procedure Play(AnimName: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
       procedure Stop(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
       procedure Pause(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
       procedure UnPause(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       procedure Draw(); Override;
       procedure Update(dt: Double = 0.0); Override;
+
+      property FrameSize: TelSize read fFrameSize write fFrameSize;
     published
       property Frame: Integer read fFrame write fFrame;
-
-      property Interval: Integer read GetInterval write SetInterval;
 
       property MaxFrames: Integer read fMaxFrames write fMaxFrames;
   end;
@@ -172,29 +172,29 @@ type
 TelSpriteList = class(TelObject)
   private
     FSpriteList: TList;
-	Head: String[13];
+    Head: String[13];
 
     function Get(Index: Integer): TelSprite;
-	function GetPos(Index: String): Integer;
+    function GetPos(Index: String): Integer;
     procedure Put(Index: Integer; const Item: TelSprite);
-	procedure PutS(Index: String; const Item: TelSprite);
+    procedure PutS(Index: String; const Item: TelSprite);
     function GetS(Index: String): TelSprite;
     function GetCount: integer;
   public
     constructor Create; Override;
-	destructor Destroy; Override;
+    destructor Destroy; Override;
 
-	procedure Insert(Index: Integer; Sprite: TelSprite);
+    procedure Insert(Index: Integer; Sprite: TelSprite);
     function  Add(Sprite: TelSprite): Integer;
     procedure Delete(Index: Integer);
     procedure LoadFromStream(Stream : TFileStream);
     procedure SaveToStream(Stream : TFileStream);
 
     procedure LoadFromFile(Filename: String);
-	procedure SaveToFile(Filename: String);
+    procedure SaveToFile(Filename: String);
 
-	property Items[Index: Integer]: TelSprite read Get write Put; default;
-	property Find[Index: String]: TelSprite read GetS write PutS;
+    property Items[Index: Integer]: TelSprite read Get write Put; default;
+    property Find[Index: String]: TelSprite read GetS write PutS;
   published
     property Count: Integer read GetCount;
 end;
@@ -284,8 +284,8 @@ end;
   procedure DrawQuad(pX, pY, pW, pH, pZ: Single; Vertices: TColorVertices); Overload;
   procedure DrawQuad(OrgX, OrgY, ClipX, ClipY, ClipW, ClipH, DrawX, DrawY, DrawW, DrawH, Z: Single); Overload;
 
-  procedure DrawLine(Src, Dst: TelVector2i; Color: TelColor); Overload;
-  procedure DrawLine(Points: array of TelVector2i; Color: TelColor); Overload;
+  procedure DrawLine(Src, Dst: TelVector2f; Color: TelColor); Overload;
+  procedure DrawLine(Points: array of TelVector2f; Color: TelColor); Overload;
 
   function CollisionTest(RectOne, RectTwo: TelRect): Boolean; Overload;
   function CollisionTest(SpriteOne, SpriteTwo: TelSprite): Boolean; Overload;
@@ -397,7 +397,7 @@ end;
 
 
 
-procedure DrawLine(Src, Dst: TelVector2i; Color: TelColor);
+procedure DrawLine(Src, Dst: TelVector2f; Color: TelColor);
 begin
   glColor3f(Color.R / 255, Color.G / 255, Color.B / 255);
 
@@ -408,7 +408,7 @@ begin
   glEnd;
 end;
 
-procedure DrawLine(Points: array of TelVector2i; Color: TelColor);
+procedure DrawLine(Points: array of TelVector2f; Color: TelColor);
 var
   i: Integer;
 begin
@@ -520,7 +520,7 @@ begin
   BlendMode := bmNormal;
   fBoundingBox := bbDefault;
 
-  //fDrawable := true;
+  fDrawable := true;
 
 end;
 
@@ -550,21 +550,21 @@ function TelSprite.GetMouseDown(): Boolean;
 begin
   inherited;
 
-  if ((MouseOver) and (Input.Mouse.Down)) then Result := true;
+  Result := ((MouseOver) and (Input.Mouse.Down));
 end;
 
 function TelSprite.GetMouseUp(): Boolean;
 begin
   inherited;
 
-  if ((MouseOver) and (Input.Mouse.Up)) then Result := true;
+  Result := ((MouseOver) and (Input.Mouse.Up));
 end;
 
 function TelSprite.GetMouseMove(): Boolean;
 begin
   inherited;
 
-  if ((MouseOver) and (Input.Mouse.Motion)) then Result := true;
+  Result := ((MouseOver) and (Input.Mouse.Motion));
 end;
 
 function TelSprite.GetMouseOver(): Boolean;
@@ -626,16 +626,38 @@ end;
 function TelSprite.GetDragStart(): Boolean;
 begin
   inherited GetDragStart;
+
+  //if (MouseDown and MouseMove) then fDidDragStart := true;
+  //if (MouseUp) then if fDidDragStart then fDidDragStart := false;
+
+  Result := fDidDragStart;
 end;
 
 function TelSprite.GetDragging(): Boolean;
 begin
-  inherited GetDragging;
+  inherited;
+
+  if fDidDragStart then
+  begin
+    fDidDragging := (MouseMove);
+  end;
+
+  fDidDragStart := not fDidDragging;
+
+  Result := fDidDragging;
 end;
 
 function TelSprite.GetDragEnd(): Boolean;
 begin
   inherited GetDragEnd;
+
+  if (fDidDragging and MouseUp) then
+  begin
+    Result := true;
+
+    fDidDragging := false;
+    if fDidDragStart then fDidDragStart := false;
+  end;
 end;
 
 function TelSprite.GetClick(): Boolean;
@@ -710,10 +732,11 @@ begin
       if aClipRect.W <= 0 then aClipRect.W := TextureWidth;
       if aClipRect.H <= 0 then aClipRect.H := TextureHeight;
 
-      // TODO: Fix the next line
-      //Offset.Rotation := makeV2i(Texture.Width div 2, Texture.Height div 2);
 
       ClipImage(aClipRect);
+
+      // Sets origin to center
+      Origin := Center(Self);
 
       //FAnim.W := GetSurfaceWidth div Trunc(FClipRect.W);
       //FAnim.H := GetSurfaceHeight div Trunc(FClipRect.H);
@@ -768,11 +791,58 @@ begin
 end;
 
 function TelSprite.OnPoint(Coord: TelVector2f): Boolean;
+var
+  marLeft, marTop, marRight, marBottom: Single;
+  padLeft, padTop, padRight, padBottom: Single;
+  borLeft, borTop, borRight, borBottom: Single;
 begin
-  if (Coord.X >= (Position.X - Offset.Rotation.X - Offset.Position.X) * Scale.X * ActiveWindow.ResScale.X) and
-     (Coord.Y >= (Position.Y - Offset.Rotation.Y - Offset.Position.Y) * Scale.Y * ActiveWindow.ResScale.Y) and
-     (Coord.X < (Position.X - Offset.Rotation.X - Offset.Position.X + ClipRect.W) * Scale.X * ActiveWindow.ResScale.X) and
-     (Coord.Y < (Position.Y - Offset.Rotation.Y - Offset.Position.Y + ClipRect.H) * Scale.Y * ActiveWindow.ResScale.Y) then Result := true else Result := false;
+
+  if edMargin in Decorations then
+  begin
+    marLeft := Margin.Left;
+    marTop := Margin.Top;
+    marRight := Margin.Right;
+    marBottom := Margin.Bottom;
+  end else
+  begin
+    marLeft := 0;
+    marTop := 0;
+    marRight := 0;
+    marBottom := 0;
+  end;
+
+  if edPadding in Decorations then
+  begin
+    padLeft := Padding.Left;
+    padTop := Padding.Top;
+    padRight := Padding.Right;
+    padBottom := Padding.Bottom;
+  end else
+  begin
+    padLeft := 0;
+    padTop := 0;
+    padRight := 0;
+    padBottom := 0;
+  end;
+
+  if edBorder in Decorations then
+  begin
+    borLeft := Border.Left.Width;
+    borTop := Border.Top.Width;
+    borRight := Border.Right.Width;
+    borBottom := Border.Bottom.Width;
+  end else
+  begin
+    borLeft := 0;
+    borTop := 0;
+    borRight := 0;
+    borBottom := 0;
+  end;
+
+  Result := ((Coord.X >= (Position.X - Origin.X - marLeft - borLeft - padLeft) * Scale.X * ActiveWindow.ResScale.X) and
+             (Coord.Y >= (Position.Y - Origin.Y - marTop - borTop - padTop) * Scale.Y * ActiveWindow.ResScale.Y) and
+             (Coord.X < (Position.X - Origin.X + ClipRect.W + marRight + borRight + padRight) * Scale.X * ActiveWindow.ResScale.X) and
+             (Coord.Y < (Position.Y - Origin.Y + ClipRect.H + marBottom + borBottom + padBottom) * Scale.Y * ActiveWindow.ResScale.Y));
 end;
 
 procedure TelSprite.Move(aPoint: TelVector2f); 
@@ -790,9 +860,29 @@ begin
   Position.Add(aPoint);
 end;
 
-function TelSprite.Collides(OtherSprite: TelSprite): Boolean;
+function TelSprite.Collides(Other: TelSprite): Boolean;
 begin
-  // TODO!!!!!
+  if Self.BoundingBox = Other.BoundingBox then
+  begin
+    case BoundingBox of
+      bbDefault: Result := CollisionTest(Self, Other);
+      bbCustom: Result := CollisionTest(Self.CustomBBox, Other.CustomBBox);
+      bbPixel: Result := PixelTest(Self, Other);
+    end;
+  end else
+  begin
+    // Default bounding box <-> Custom bounding box
+    if ((Self.BoundingBox = bbDefault) and (Other.BoundingBox = bbCustom)) then Result := CollisionTest(Self.ClipRect, Other.CustomBBox);
+    if ((Self.BoundingBox = bbCustom) and (Other.BoundingBox = bbDefault)) then Result := CollisionTest(Other.CustomBBox, Self.ClipRect);
+
+    // Default bounding box <-> Pixel
+    if ((Self.BoundingBox = bbDefault) and (Other.BoundingBox = bbPixel)) then Result := PixelTest(Other, Self);
+    if ((Self.BoundingBox = bbPixel) and (Other.BoundingBox = bbDefault)) then Result := PixelTest(Self, Other);
+
+    // Custom bounding box <-> Pixel
+    if ((Self.BoundingBox = bbCustom) and (Other.BoundingBox = bbPixel)) then Result := PixelTest(Other, Self.CustomBBox);
+    if ((Self.BoundingBox = bbPixel) and (Other.BoundingBox = bbCustom)) then Result := PixelTest(Self, Other.CustomBBox);
+  end;
 end;
 
 procedure TelSprite.Draw;
@@ -821,8 +911,8 @@ begin
         glAlphaFunc(GL_GREATER, 0.1);
       end;
 
-  	glTranslatef((Position.X - Offset.Position.X + Offset.Rotation.X) * ActiveWindow.ResScale.X,
-                     (Position.Y - Offset.Position.Y + Offset.Rotation.Y) * ActiveWindow.ResScale.Y, 0);
+  	glTranslatef((Position.X - Margin.Left - Border.Left.Width - Padding.Left + Origin.X) * ActiveWindow.ResScale.X,
+                     (Position.Y - Margin.Top - Border.Top.Width - Padding.Top + Origin.Y) * ActiveWindow.ResScale.Y, 0);
 
   	if Abs(Rotation.Angle) >= 360.0 then Rotation.Angle := 0.0;
 
@@ -840,7 +930,7 @@ begin
 
         DrawQuad(Texture.Width, Texture.Height,
                  fClipRect.X, fClipRect.Y, fClipRect.W, fClipRect.H,
-                 -Offset.Rotation.X, -Offset.Rotation.Y, Self.Width, Self.Height,
+                 -Origin.X, -Origin.Y, Self.Width, Self.Height,
                  Position.Z);
       //DrawQuad(TelVector2i.Create(TextureWidth, TextureHeight), FClipRect, TelRect.Create(-Offset.Rotation.X, -Offset.Rotation.Y, Width, Height), Position.Z);
 
@@ -879,19 +969,15 @@ begin
   inherited;
 end;
 
-function TelSpriteSheet.GetInterval(): Integer;
+procedure TelSpriteSheet.Define(AnimName: String; aRect: TelRect;
+  Length: Integer);
 begin
-  Result := fTimer.Interval;
+
 end;
 
-procedure TelSpriteSheet.SetInterval(Value: Integer);
+procedure TelSpriteSheet.Play(AnimName: String);
 begin
-  fTimer.Interval := Value;
-end;
 
-procedure TelSpriteSheet.Start();
-begin
-  fTimer.Start();
 end;
 
 procedure TelSpriteSheet.Stop();
