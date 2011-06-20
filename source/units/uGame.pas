@@ -12,6 +12,7 @@ uses
   ElysionTrueTypeFont,
   ElysionTimer,
   ElysionInput,
+  ElysionMath,
   ElysionUtils,
 
   SysUtils,

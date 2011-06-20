@@ -16,6 +16,7 @@ uses
   ElysionApplication,
   ElysionGraphics,
   ElysionLogger,
+  ElysionMath,
   ElysionContent,
   ElysionUtils,
 

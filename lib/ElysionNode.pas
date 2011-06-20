@@ -12,6 +12,7 @@ uses
   ElysionInterfaces,
   ElysionTimer,
   ElysionObject,
+  ElysionMath,
   ElysionUtils;
 
 type
@@ -951,13 +952,15 @@ end;
 function TelNode.WriteToXML(): TStringList;
 var
   tmpStringList: TStringList;
+  tmpIdentPos, tmpIdentColor, tmpIdentScale : TKeyIdent;
 begin
+
   tmpStringList := TStringList.Create;
   tmpStringList.Add('<' + Self.ClassName + '>');
 
-  tmpStringList.Add(Position.ToKey('position')^.ToXML());
-  tmpStringList.Add(Color.ToKey('color')^.ToXML());
-  tmpStringList.Add(Scale.ToKey('scale')^.ToXML());
+  tmpStringList.Add( FromVector3f('position',Position).ToXML() );
+  tmpStringList.Add( Color.ToKey('color').ToXML()  );
+  tmpStringList.Add( FromVector2f('scale',Scale).ToXML());
 
   tmpStringList.Add('</' + Self.ClassName + '>');
 
@@ -971,9 +974,9 @@ begin
   tmpStringList := TStringList.Create;
   tmpStringList.Add(Self.ClassName + ': {');
 
-  tmpStringList.Add(Position.ToKey('position')^.ToJSON() + ',');
-  tmpStringList.Add(Color.ToKey('color')^.ToJSON() + ',');
-  tmpStringList.Add(Scale.ToKey('scale')^.ToJSON());
+  tmpStringList.Add( FromVector3f('position',Position).ToJSON() + ',');
+  tmpStringList.Add( Color.ToKey('color').ToJSON()  + ',');
+  tmpStringList.Add( FromVector2f('scale',Scale).ToJSON());
 
   tmpStringList.Add('}');
 

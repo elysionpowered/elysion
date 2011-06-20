@@ -8,6 +8,7 @@ uses
   ElysionScene,
   ElysionGraphics,
   ElysionInput,
+  ElysionMath,
   ElysionGUI,
 
   uBasic,

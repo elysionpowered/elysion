@@ -10,6 +10,7 @@ interface
 uses
   ElysionTypes,
   ElysionObject,
+  ElysionMath,
 
   {$IFDEF USE_VAMPYRE}   ImagingSDL, {$ENDIF}
   {$IFDEF USE_SDL_IMAGE} SDL_image,  {$ENDIF}

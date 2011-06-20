@@ -17,6 +17,7 @@ uses
   ElysionInput,
   ElysionTrueTypeFont,
   ElysionUtils,
+  ElysionMath,
   ElysionAnimator,
 
   SDLUtils,

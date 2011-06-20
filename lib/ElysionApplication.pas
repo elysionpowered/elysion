@@ -15,6 +15,7 @@ interface
 uses
   ElysionTypes,
   ElysionObject,
+  ElysionMath,
   ElysionColor,
   ElysionContent,
   ElysionLogger,

@@ -16,6 +16,7 @@ uses
   ElysionLogger,
   ElysionTimer,
   ElysionKeyCode,
+  ElysionMath,
 
   SDL,
   SysUtils,

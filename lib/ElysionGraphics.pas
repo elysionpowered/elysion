@@ -16,6 +16,7 @@ uses
   ElysionTexture,
   ElysionContent,
   ElysionLogger,
+  ElysionMath,
 
   {$IFDEF USE_DGL_HEADER}
   dglOpenGL,

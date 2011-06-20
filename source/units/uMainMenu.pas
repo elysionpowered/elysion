@@ -11,6 +11,7 @@ uses
   ElysionApplication,
   ElysionGUI,
   ElysionInput,
+  ElysionMath,
   ElysionAnimator,
   ElysionAssets,
 

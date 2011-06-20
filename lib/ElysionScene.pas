@@ -16,6 +16,8 @@ uses
 
     ElysionObject,
     ElysionApplication,
+    ElysionMath,
+    ElysionTypes,
     ElysionNode;
 
 

@@ -11,6 +11,7 @@ uses
   ElysionGraphics,
   ElysionInput,
   ElysionGUI,
+  ElysionMath,
   ElysionTrueTypeFont,
 
   uBasic,
