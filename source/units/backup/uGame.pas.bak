@@ -93,7 +93,7 @@ begin
 
   // Super
   if ((Environment.Width = 1024) and (Environment.Height = 600)) then
-    inherited Create(Environment.Width, Environment.Height, AppConfig.Bits, true);
+    inherited Create(Environment.Width, Environment.Height, AppConfig.Bits, true)
   //else
     //inherited Create(AppConfig.Width, AppConfig.Height, AppConfig.Bits, false);
 

@@ -34,11 +34,10 @@
       <Unit0>
         <Filename Value="main.lpr"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="5"/>
-        <CursorPos X="8" Y="50"/>
+        <CursorPos X="66" Y="30"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -553,10 +552,11 @@
       <Unit51>
         <Filename Value="..\lib\ElysionScene.pas"/>
         <UnitName Value="ElysionScene"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
         <TopLine Value="399"/>
-        <CursorPos X="3" Y="418"/>
+        <CursorPos X="5" Y="418"/>
         <UsageCount Value="101"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
