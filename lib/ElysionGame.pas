@@ -17,6 +17,7 @@ uses
 
     ElysionObject,
     ElysionApplication,
+    ElysionMath,
     ElysionScene;
 
 

@@ -6,7 +6,7 @@ interface
 
 uses
   ElysionTypes,
-
+  ElysionMath,
   Classes;
 
 type

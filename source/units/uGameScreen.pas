@@ -18,6 +18,7 @@ uses
   ElysionColor,
   ElysionTrueTypeFont,
   ElysionAnimator,
+  ElysionMath,
   ElysionStorage,
   uGlobal,
   uBasic,

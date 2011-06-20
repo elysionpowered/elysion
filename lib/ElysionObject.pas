@@ -18,6 +18,7 @@ uses
   ElysionInterfaces,
 
   ElysionUtils,
+  ElysionMath,
   ElysionTypes,
   ElysionLogger,
   SysUtils;
