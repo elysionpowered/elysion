@@ -47,6 +47,7 @@ bin/*.html
 bin/*.a
 bin/*.dbg
 bin/*.or
+bin/main
 
 # Excluded files #
 ##################
