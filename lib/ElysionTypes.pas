@@ -27,15 +27,15 @@ uses
 const
   // Version information
   VER_MAJOR = 11;
-  VER_MINOR = 05;
-  VER_REVISION = 'b';
+  VER_MINOR = 06;
+  VER_REVISION = 'a';
 
-  VER_CODENAME = 'Daenerys'; //< Codename
+  VER_CODENAME = 'Echo'; //< Codename
   VER_STABLE = true;
 
   // Other random stuff mostly regarding version information
-  VER_CODENAME_UNIVERSE = 'Game Of Thrones'; //< From which universe the codename comes from
-  VER_CODENAME_RANDOMQUOTE = 'Winter is coming...'; //< Random quote from that universe
+  VER_CODENAME_UNIVERSE = 'Dollhouse'; //< From which universe the codename comes from
+  VER_CODENAME_RANDOMQUOTE = 'Did I fall asleep?'; //< Random quote from that universe
 
   // So, in case you didn't get this: Each codename comes from a movie or TV show
 

@@ -14,6 +14,9 @@ interface
 function Clamp(Value, Min, Max: Integer): Integer; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 function Clamp(Value, Min, Max: Single): Single; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
+function ClampToByte(Value: Single): Single; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function ClampToByte(Value: Integer): Integer; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
 function Lerp(Min, Max: Single; Amt: Single = 0.5): Single; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 function Lerp(Min, Max: Integer; Amt: Single = 0.5): Single; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
@@ -41,6 +44,16 @@ begin
   else
     if Value >= Max then Result := Max
       else Result := Value;
+end;
+
+function ClampToByte(Value: Single): Single;
+begin
+  Result := Clamp(Value, 0.0, 255.0);
+end;
+
+function ClampToByte(Value: Integer): Integer;
+begin
+  Result := Clamp(Value, 0, 255);
 end;
 
 function Lerp(Min, Max: Single; Amt: Single = 0.5): Single;

@@ -26,6 +26,9 @@ function GetFilenameWithoutExt(Filename: String): String; {$IFDEF CAN_INLINE} in
 function GetUserDirectory(): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 function GetAppUserDirectory(AppName: String): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
+// Checks if the application is in an application bundle or not (Mac OS X only)
+function IsApplicationBundle(LazAppBundle: Boolean = false): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
 {$IFDEF WINDOWS}
 function GetWinSpecialDir(FolderID: Cardinal): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 {$ENDIF}
@@ -190,6 +193,46 @@ begin
   {$IFDEF DARWIN}
     if AppName = '' then Result := GetUserDirectory() + DirectorySeparator
     else Result := GetUserDirectory() + 'Library/Application Support' + DirectorySeparator + AppName + DirectorySeparator;
+  {$ENDIF}
+end;
+
+//returns true if a given directory is empty, false otherwise
+function IsDirectoryEmpty(const Directory : String) : Boolean;
+var
+  searchRec: TSearchRec;
+begin
+  // If a directory does not exist, it is probably empty ;)
+  if not DirectoryExists(Directory) then
+  begin
+    Result := true;
+    Exit;
+  end;
+
+  Try
+    Result := ((FindFirst(directory + DirectorySeparator + '*.*', faAnyFile, searchRec) = 0) and (FindNext(searchRec) = 0) and (FindNext(searchRec) <> 0));
+   finally
+     FindClose(searchRec);
+   end;
+end;
+
+// Checks if application is in an application bundle (Mac OS X only)
+function IsApplicationBundle(LazAppBundle: Boolean = false): Boolean;
+var
+  IsAppBundle: Boolean;
+begin
+
+  {$IFNDEF DARWIN}
+    Result := false;
+  {$ELSE}
+    // Check for MacOS folder and PList file
+    // Should be enough I guess (especially if you have or want bundles that are not the way Apple has specified)
+    IsAppBundle := (DirectoryExists(ExtractFilePath(ParamStr(0)) + '../MacOS') and DirectoryExists(ExtractFilePath(ParamStr(0)) + '../../Contents') and FileExists(ExtractFilePath(ParamStr(0)) + '../Info.plist'));
+
+    if LazAppBundle then
+      // Lazarus standard app bundle
+      Result := IsAppBundle and (IsDirectoryEmpty((ExtractFilePath(ParamStr(0)) + '../Resources')))
+    else
+      Result := IsAppBundle;
   {$ENDIF}
 end;
 

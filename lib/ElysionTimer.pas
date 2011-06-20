@@ -119,7 +119,7 @@ begin
   inherited Destroy;
 end;
 
-procedure TelTimer.Start; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+procedure TelTimer.Start;
 begin
   FActive := true;
   FPaused := false;
@@ -128,13 +128,13 @@ begin
   FOldTicks := 0;
 end;
 
-procedure TelTimer.Stop; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+procedure TelTimer.Stop;
 begin
   FActive := false;
   FPaused := false;
 end;
 
-procedure TelTimer.Pause; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+procedure TelTimer.Pause;
 begin
   if (Active) and (not Paused) then
   begin
@@ -144,7 +144,7 @@ begin
   end;
 end;
 
-procedure TelTimer.UnPause; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+procedure TelTimer.UnPause;
 begin
   if Paused then
   begin
@@ -158,7 +158,7 @@ begin
   end;
 end;
 
-function TelTimer.GetTicks(): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function TelTimer.GetTicks(): Integer;
 begin
   Result := 0;
 
@@ -169,12 +169,12 @@ begin
   end;
 end;
 
-procedure TelTimer.Update(dt: Double = 0.0); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+procedure TelTimer.Update(dt: Double = 0.0);
 begin
   if Self.Event then OnEvent();
 end;
 
-function TelTimer.GetEvent: Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function TelTimer.GetEvent: Boolean;
 begin
   Result := false;
 

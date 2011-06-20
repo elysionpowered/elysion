@@ -73,7 +73,7 @@ begin
   fForceWindow := false;
 
   fShowFPS := false;
-  GameState := gsMainMenu;
+  //GameState := gsMainMenu;
 
   // Check for commandline parameters
   if Self.Param('-debug') then Debug := true;
@@ -106,9 +106,6 @@ begin
   inherited;
 
   fLoadScreen.Destroy;
-
-  MainMenu.Destroy;
-  if GameScreen <> nil then GameScreen.Destroy;
 end;
 
 procedure TGame.Initialize;
@@ -136,98 +133,56 @@ begin
   //Application.LogDriverInfo();
   Input.DebugInfo();
 
+  // Create scenes
+  MainMenu := TMainMenu.Create('mainmenu');
+  Options := TOptions.Create('options');
+  Credits := TCredits.Create('credits');
+  GameScreen := TGameScreen.Create('game');
 
-  MainMenu := TMainMenu.Create();
-  Options := TOptions.Create();
-  Credits := TCredits.Create();
+  // Add scenes to scene director
+  SceneDirector.Add(MainMenu);
+  SceneDirector.Add(Options);
+  SceneDirector.Add(Credits);
+  SceneDirector.Add(GameScreen);
 
+  // Switch to main menu
+  SceneDirector.SwitchTo('mainmenu');
 end;
 
 procedure TGame.Render;
 begin
-
-  if MainMenu.NewGameClick then
-  begin
-    fLoadScreen.Draw;
-    ActiveWindow.EndScene;
-
-    if fGameScreen <> nil then FreeAndNil(fGameScreen);
-    fGameScreen := TGameScreen.Create;
-
-    MainMenu.NewGameClick := false;
-  end;
-
-
-  case GameState of
-    gsMainMenu: MainMenu.Render();
-    gsOptions: Options.Render();
-    gsIntro: ; //< As if we would need an intro? ;)
-    gsCredits: Credits.Render();
-    gsGame: GameScreen.Render();
-  end;
-  
+  // This renders all scenes added to the scene director
+  inherited Render;
 end;
 
 procedure TGame.Update(dt: Double);
 begin
-  
+  // This updated all scenes added to the scene director
+  inherited Update(dt);
+
+  // Shows FPS and debug information
   if ShowFPS then
     fFont.TextOut(makeV3f(8, 8, 0), Format('FPS: %.2f Delta: %.5f \n Mouse Abs: %d %d Rel: %d %d',
       [ActiveWindow.FPS, ActiveWindow.DeltaTime,
        Input.Mouse.Cursor.X, Input.Mouse.Cursor.Y,
        Input.Mouse.RelCursor.X, Input.Mouse.RelCursor.Y]));
 
-
-  case GameState of
-    gsCredits:
-    begin
-      Credits.Update(dt);
-    end;
-    gsOptions:
-    begin
-      Options.Update(dt);
-    end;
-    gsMainMenu:
-    begin
-      MainMenu.Update(dt);
-    end;
-    gsGame:
-    begin
-      GameScreen.Update(dt);
-    end;
-  end;
-
 end;
 
 procedure TGame.HandleEvents();
 begin
-  case GameState of
-    gsCredits:
-    begin
-      Credits.HandleEvents;
-    end;
-    gsOptions:
-    begin
-      Options.HandleEvents;
-    end;
-    gsMainMenu:
-    begin
-      MainMenu.HandleEvents;
-    end;
-    gsGame:
-    begin
-      GameScreen.HandleEvents;
-    end;
-  end;
+  // This renders all scenes added to the scene director
+  inherited HandleEvents;
 
   // Keyboard Inputs
-  if GameState <> gsMainMenu then
+  if SceneDirector.CurrentScene.Name <> 'mainmenu' then
   begin
-    if Input.Keyboard.isKeyHit(Key.Escape) or Input.XBox360Controller.Back then GameState := gsMainMenu;
+    if Input.Keyboard.isKeyHit(Key.Escape) or Input.XBox360Controller.Back then SceneDirector.SwitchTo('mainmenu');
   end else
   begin
     if Input.Keyboard.isKeyHit(Key.Escape) or Input.XBox360Controller.Back then Application.Quit();
   end;
+
 
   // In-game fullscreen switching only working partially at the moment, needs fixing
   if Input.Keyboard.isKeyHit(Key.F) then

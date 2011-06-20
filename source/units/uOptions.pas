@@ -86,7 +86,8 @@ begin
 
   if Menu.ButtonClick('Back') or Input.XBox360Controller.B() then
   begin
-    GameState := gsMainMenu;
+    //GameState := gsMainMenu;
+    SceneDirector.SwitchTo('mainmenu');
   end;
 end;
 

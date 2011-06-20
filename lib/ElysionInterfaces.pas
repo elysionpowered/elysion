@@ -13,6 +13,10 @@ type
   IObject = interface
     procedure DebugInfo();
   end;
+
+  IDataContainer = interface
+
+  end;
   
   IReadableData = interface
     function LoadFromXML(): Boolean;
@@ -53,6 +57,8 @@ type
 	function RemoveEventListener(anEvent: TelEvent): Boolean;
 	function HasEventListener(anEventName: String): Boolean;
 	procedure DispatchEvent(anEvent: TelEvent);
+
+  procedure RegisterEvent();
   end;
   
   IEntity = interface(IObject) 

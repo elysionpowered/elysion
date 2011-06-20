@@ -6,14 +6,70 @@ interface
 
 uses
   Classes,
+  SysUtils,
   ElysionTypes,
   ElysionApplication,
   ElysionInterfaces,
   ElysionTimer,
-  ElysionObject;
+  ElysionObject,
+  ElysionUtils;
 
 type
+  // Property data types for nodes
+  // This is primarily used for Stylesheets and animators
+  // but can and should be integrated into a scripting engine
+  // This is primarily for determing how strings will be mapped to properties
+
+                    // Simple data types
+  TelNodeProperty = (npUnknown, npLeft, npTop, npRight, npBottom, npVisible, npAlpha, npWidth, npHeight,
+                    // Semi-advanced data types ("Wrapper" for advanced data types, such as "Position.X", "Scale.X" or "padding-left")
+                    // Position
+                    npPosX, npPosY, npPosZ,
+                    // Scale
+                    npScaleX, npScaleY,
+                    // Border
+                    npBorderL, //< Left border
+                    npBorderT, //< Top border
+                    npBorderR, //< Right border
+                    npBorderB, //< Bottom border
+                    // Padding
+                    npPaddingL, //< Left padding
+                    npPaddingT, //< Top padding
+                    npPaddingR, //< Right padding
+                    npPaddingB, //< Bottom padding
+                    // Margin
+                    npMarginL, //< Left padding
+                    npMarginT, //< Top padding
+                    npMarginR, //< Right padding
+                    npMarginB, //< Bottom padding
+                    // Rotation
+                    npRotX, npRotY, npRotZ,
+                    // Shadow
+                    npShadowBlur,
+                    npShadowPosX, npShadowPosY,
+                    npShadowColorR, npShadowColorG, npShadowColorB,
+                    // Color
+                    npColorR, npColorG, npColorB,
+                    // Origin
+                    npOriginX, npOriginY,
+                    // Advanced data types
+                    npPosition, npScale, npBorder, npPadding, npMargin, npRotation, npShadow, npColor, npOrigin);
+  TelNodeProperties = set of TelNodeProperty;
+
+
+  // If TelNode.Editable is turned on, it allows you to edit the node according
+  // to TelNode.EditModes -> Practically this allows you edit nodes in your
+  // application. If you are developing a game you don't need to develop
+  // an editor as you could turn your game into an editor at any time
+  TelNodeEditMode = (emMove, emRotate, emScale, emColor, emOrigin);
+  TelNodeEditModes = set of TelNodeEditMode;
+
   TelNode = class; //< forward declaration
+
+  // Event types
+  // This is used to determine how strings will be mapped to events
+  TelNodeEventType = (etUnknown, etCustom, etMouseDown, etMouseUp, etMouseMove, etMouseOver, etMouseOut, etDragStart, etDragging, etDragEnd, etClick, etDblClick);
+  TelNodeEventTypes = set of TelNodeEventType;
 
   TelNodeEvent = procedure(aNode: TelNode; EventArgs: TelObject = nil) of object;
 
@@ -24,6 +80,8 @@ type
     fAlign: TelAlignment;
 
     fDecorations: TelElementDecorations;
+    fReadProps, fWriteProps: TelNodeProperties;
+    fEventTypes: TelNodeEventTypes;
 
     fBorder: TelBorder;
     fMargin: TelExtValue;
@@ -42,7 +100,9 @@ type
       fOnClick: TelNodeEvent;
       fOnDblClick: TelNodeEvent;
 
-      fVisible, fLocked, fDraggable, fDidDragStart, fDidDragging, fIsAnimated, fDrawable: Boolean;
+      fVisible, fLocked, fDraggable, fDidDragStart, fDidDragging, fIsAnimated, fDrawable, fEditable: Boolean;
+
+      fEditModes: TelNodeEditModes;
 
       function GetAbsolutePosition(): TelVector3f; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
@@ -83,6 +143,11 @@ type
       procedure SetLocked(Value: Boolean); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       function GetRelCursor(): TelVector2i;
+
+      function IsPropertyValid(aPropName: String): TelNodeProperties;
+      function IsEventValid(anEventName: String): TelNodeEventTypes;
+
+      function GetModified(): Boolean;
     public
       // Public methods
       constructor Create; Override;
@@ -126,6 +191,11 @@ type
       property AbsolutePosition: TelVector3f read GetAbsolutePosition;
       property Align: TelAlignment read fAlign write SetAlign;
       property RelCursor: TelVector2i read GetRelCursor;
+
+      property ReadProps: TelNodeProperties read fReadProps write fReadProps;
+      property WriteProps: TelNodeProperties read fWriteProps write fWriteProps;
+
+      property EventTypes: TelNodeEventTypes read fEventTypes write fEventTypes;
     published
       property Alpha: Byte read GetAlpha write SetAlpha default 255;
 
@@ -134,6 +204,10 @@ type
       property Padding: TelExtValue read fPadding write fPadding;
 
       property Decorations: TelElementDecorations read fDecorations write fDecorations;
+
+      property EditModes: TelNodeEditModes read fEditModes write fEditModes;
+
+      property Modified: Boolean read GetModified;
 
       // Event methods
       property OnMouseDown: TelNodeEvent read fOnMouseDown write fOnMouseDown;
@@ -173,8 +247,9 @@ type
       property OuterWidth: Integer read GetOuterWidthProp;
       property OuterHeight: Integer read GetOuterHeightProp;
 
-      property Drawable: Boolean read fDrawable;
-      property Locked: Boolean read fLocked write SetLocked;
+      property Editable: Boolean read fEditable write fEditable default false;
+      property Drawable: Boolean read fDrawable default false;
+      property Locked: Boolean read fLocked write SetLocked default false;
 
       // Here is some alternative positionin' for ya (Use for UI elements)
       property Left: Single read GetLeft write SetLeft;
@@ -187,13 +262,11 @@ type
 
   // Node with CSS styling
 
-  { TelStyledNode }
+  { TelNodeStyle }
 
-  TelStyledNode = class(TelNode)
+  TelNodeStyle = class(TelObject)
   protected
     fStyleList: TStringList;
-
-    fSelectorID, fSelectorClass: String;
 
     function GetItem(Index: Integer): String;
     procedure SetItem(Index: Integer; const AValue: String);
@@ -207,19 +280,33 @@ type
     procedure Insert(Index: Integer; const S: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
     procedure Delete(Index: Integer); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-    procedure LoadStyleFromFile(const aFilename: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure SaveStyleToFile(const aFilename: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure LoadFromFile(const aFilename: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure SaveToFile(const aFilename: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  published
+    property Count: Integer read GetCount;
+
+    property Item[Index: Integer]: String read GetItem write SetItem; default;
+  end;
+
+  { TelStyledNode }
+
+  TelStyledNode = class(TelNode)
+  protected
+    fSelectorID, fSelectorClass: String;
+
+    fStyle: TelNodeStyle;
+  public
+    constructor Create; Override;
+    destructor Destroy; Override;
 
     procedure Apply(); Overload;
     procedure Apply(const S: String); Overload;
   published
-    property Count: Integer read GetCount;
-
     // CSS-like selectors
     property SelectorID: String read fSelectorID write fSelectorID;
     property SelectorClass: String read fSelectorClass write fSelectorClass;
 
-    property StyleItem[Index: Integer]: String read GetItem write SetItem; default;
+    property Style: TelNodeStyle read fStyle write fStyle;
   end;
 
   TelNodeArray = array of TelNode;
@@ -252,7 +339,11 @@ type
 
   procedure CopyNodeValues(aNode, bNode: TelNode);
   procedure ForceNodeCopy(aNode, bNode: TelNode);
-  function Center(aNode: TelNode): TelVector2f;
+  function Center(aNode: TelNode): TelVector2f; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+  function GetSimpleProperties(): TelNodeProperties; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  function GetSemiAdvProperties(): TelNodeProperties; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  function GetAdvProperties(): TelNodeProperties; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
 implementation
 
@@ -316,71 +407,102 @@ begin
   Result := makeV2f(aNode.Width / 2, aNode.Height / 2);
 end;
 
-{ TelStyledNode }
+function GetSimpleProperties(): TelNodeProperties;
+begin
+  Result := [npLeft, npTop, npRight, npBottom, npVisible, npAlpha, npWidth, npHeight];
+end;
 
-constructor TelStyledNode.Create;
+function GetSemiAdvProperties(): TelNodeProperties;
+begin
+  Result := [npPosX, npPosY, npPosZ, npScaleX, npScaleY, npBorderL, npBorderT,
+    npBorderR, npBorderB, npPaddingL, npPaddingT, npPaddingR, npPaddingB, npMarginL,
+    npMarginT, npMarginR, npMarginB, npRotX, npRotY, npRotZ, npShadowBlur, npShadowPosX,
+    npShadowPosY, npShadowColorR, npShadowColorG, npShadowColorB, npColorR, npColorG,
+    npColorB, npOriginX, npOriginY];
+end;
+
+function GetAdvProperties(): TelNodeProperties;
+begin
+  Result := [npPosition, npScale, npBorder, npPadding, npMargin, npRotation, npShadow, npColor, npOrigin];
+end;
+
+{ TelNodeStyle }
+
+constructor TelNodeStyle.Create;
 begin
   inherited Create;
 
   fStyleList := TStringList.Create;
 end;
 
-destructor TelStyledNode.Destroy;
+destructor TelNodeStyle.Destroy;
 begin
   fStyleList.Free;
 
   inherited Destroy;
 end;
 
-function TelStyledNode.GetItem(Index: Integer): String;
+function TelNodeStyle.GetItem(Index: Integer): String;
 begin
   Result := fStyleList.Strings[Index];
 end;
 
-procedure TelStyledNode.SetItem(Index: Integer; const AValue: String);
+procedure TelNodeStyle.SetItem(Index: Integer; const AValue: String);
 begin
   fStyleList.Strings[Index] := AValue;
 end;
 
-function TelStyledNode.GetCount(): Integer;
+function TelNodeStyle.GetCount(): Integer;
 begin
   Result := fStyleList.Count;
 end;
 
-procedure TelStyledNode.Add(const S: String);
+procedure TelNodeStyle.Add(const S: String);
 begin
   fStyleList.Add(S);
-
-  Apply();
 end;
 
-procedure TelStyledNode.Insert(Index: Integer; const S: String);
+procedure TelNodeStyle.Insert(Index: Integer; const S: String);
 begin
   fStyleList.Insert(Index, S);
 end;
 
-procedure TelStyledNode.Delete(Index: Integer);
+procedure TelNodeStyle.Delete(Index: Integer);
 begin
   fStyleList.Delete(Index);
 end;
 
-procedure TelStyledNode.LoadStyleFromFile(const aFilename: String);
+procedure TelNodeStyle.LoadFromFile(const aFilename: String);
 begin
   fStyleList.LoadFromFile(aFilename);
-
-  Apply();
 end;
 
-procedure TelStyledNode.SaveStyleToFile(const aFilename: String);
+procedure TelNodeStyle.SaveToFile(const aFilename: String);
 begin
   fStyleList.SaveToFile(aFilename);
+end;
+
+{ TelStyleNode }
+
+constructor TelStyledNode.Create;
+begin
+  inherited;
+
+  fStyle := TelNodeStyle.Create;
+end;
+
+destructor TelStyledNode.Destroy;
+begin
+  fStyle.Destroy;
+
+  inherited;
 end;
 
 procedure TelStyledNode.Apply();
 var
   i: Integer;
 begin
-  for i := 0 to Count do Apply(fStyleList.Strings[i]);
+  for i := 0 to Style.Count do Apply(Style.Item[i]);
 end;
 
 procedure TelStyledNode.Apply(const S: String);
@@ -424,6 +546,14 @@ begin
   fIsAnimated := false;
 
   fDrawable := false;
+  fEditable := false;
+
+  fEditModes := [emMove, emRotate, emScale, emColor, emOrigin];
+
+  fReadProps := GetSimpleProperties() + GetSemiAdvProperties() + GetAdvProperties();
+  fWriteProps := GetSimpleProperties() + GetSemiAdvProperties();
+
+  fEventTypes := [etMouseDown, etMouseUp, etMouseMove, etMouseOver, etMouseOut, etDragStart, etDragging, etDragEnd, etClick, etDblClick];
 
   fDidDragStart := false;
   fDidDragging := false;
@@ -465,6 +595,31 @@ end;
 function TelNode.GetRelCursor(): TelVector2i;
 begin
   Result := makeV2i(Trunc(Self.Left - ActiveWindow.Cursor.X), Trunc(Self.Top - ActiveWindow.Cursor.Y));
+end;
+
+function TelNode.IsPropertyValid(aPropName: String): TelNodeProperties;
+begin
+
+end;
+
+function TelNode.IsEventValid(anEventName: String): TelNodeEventTypes;
+begin
+
+end;
+
+function TelNode.GetModified(): Boolean;
+begin
+
+end;
+
+function IsValidProperty(aPropName: String): TelNodeProperties;
+var
+  tmpString: String;
+  tmpStringList: TStringList;
+begin
+  tmpString := LowerCase(aPropName);
+
+  tmpStringList := Split(tmpString, ',', true);
 end;
 
 function TelNode.GetMouseDown(): Boolean;

@@ -4,6 +4,10 @@ unit uBasic;
 
 interface
 
+uses
+  SysUtils,
+  ElysionUtils;
+
 {$I Elysion.inc}
 
 const
@@ -13,17 +17,6 @@ const
   WIDTH = 1024;
   HEIGHT = 600;
   BITS = 32;
-  
-  
-  {$IFDEF WINDOWS}
-  RESPATH = '..\resources\';
-  {$ELSE}
-    {$IFDEF DARWIN}
-    RESPATH = '../Resources/';
-    {$ELSE}
-    RESPATH = '../resources/';
-    {$ENDIF}
-  {$ENDIF}
 
   {$IFNDEF FPC}
     // Assume Delphi
@@ -36,10 +29,10 @@ const
 
 
 type
-  TGameState = (gsMainMenu, gsGame, gsInstructions, gsIntro, gsOptions, gsCredits);
+  //TGameState = (gsMainMenu, gsGame, gsInstructions, gsIntro, gsOptions, gsCredits);
   TLanguage = (laGerman, laEnglish);
 
-function GetResPath: String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function GetResPath(aCustomResName: String = ''): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 function GetResDataPath: String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 function GetResImgPath: String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 function GetResSndPath: String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -48,9 +41,28 @@ function GetStdFont: String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
 implementation
 
-function GetResPath: String;
+var
+  ResName, PreDir: String;
+
+function GetResPath(aCustomResName: String = ''): String;
 begin
-  Result := RESPATH;
+  if aCustomResName <> '' then ResName := aCustomResName
+  else ResName := 'resources';
+
+  // Resources folder can either be a parent sub-folder or a direct sub-folder
+  // relative to the executable
+  if DirectoryExists(ExtractFilePath(ParamStr(0)) + '..' + DirectorySeparator + ResName) then PreDir := '..' + DirectorySeparator
+  else PreDir := '';
+
+  {$IFDEF DARWIN}
+    if IsApplicationBundle(true) then Result := '../../../' + PreDir + ResName + DirectorySeparator
+    else begin
+      if IsApplicationBundle(false) then Result := '../Resources/'
+      else Result := PreDir + ResName + DirectorySeparator;
+    end;
+  {$ELSE}
+    Result := PreDir + ResName + DirectorySeparator;
+  {$ENDIF}
 end;
 
 function GetResDataPath: String;

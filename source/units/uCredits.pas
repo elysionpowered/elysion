@@ -81,7 +81,8 @@ procedure TCredits.HandleEvents;
 begin
   if Button.Click or Input.XBox360Controller.B() then
   begin
-    GameState := gsMainMenu;
+    //GameState := gsMainMenu;
+    SceneDirector.SwitchTo('mainmenu');
   end;
 end;
 

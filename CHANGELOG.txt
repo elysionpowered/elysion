@@ -1,4 +1,4 @@
-V11-05b:
+V11-06a:
 + Added: ElysionTypes.Border, ElysionTypes.BorderRadius, ElysionTypes.ExtValues (Data types for CSS-like styling)
 * Replaced: TelNode.Offset is now TelNode.Origin (for rotation offset) and TelNode.Margin (for position offset)
 + Added: TelNode.Border and TelNode.Padding
@@ -10,7 +10,8 @@ V11-05b:
 * Fixed: Origin for TelSprite is now its center, not 0px 0px (top left corner)
 * Fixed: DrawLine functions now have TelVector2f as a parameter instead of TelVector2i
 * Fixed: Nodes (TelNode and its derivates, such as TelSprite) can be added to scenes (In which case the scene handles the draw and update calls of the added node; as seen in Cocos2D or Adobe Flash)
--
++ Added: ElysionScene.TelSceneList and ElysionScene.TelSceneDirector
++ Added: Integrated ElysionScene.TelSceneDirector into ElysionScene.TelGame
 
 V11-05a:
 Bugfixes:

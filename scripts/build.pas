@@ -15,26 +15,31 @@ var
   tmpResult: TAppParams;
 
 begin
-  // Get params
-  for i := 0 to ParamCount do
-  begin
-    if ((ParamStr(i) = 'debug') or (ParamStr(i) = 'dbg') or (ParamStr(i) = '-debug') or (ParamStr(i) = '--debug') or (ParamStr(i) = '-d')) then tmpResult := tmpResult + [apDebug];
-    if ((ParamStr(i) = 'release') or (ParamStr(i) = 'rel') or (ParamStr(i) = '-release') or (ParamStr(i) = '--release') or (ParamStr(i) = '-r')) then tmpResult := tmpResult + [apRelease];
-    if ((ParamStr(i) = 'universal') or (ParamStr(i) = '-universal') or (ParamStr(i) = '--universal')) then tmpResult := tmpResult + [apUniversal];
-    if ((ParamStr(i) = 'macappstore') or (ParamStr(i) = '-macappstore') or (ParamStr(i) = '--macappstore')) then tmpResult := tmpResult + [apMacAppStore];
-    if ((ParamStr(i) = 'curarch') or (ParamStr(i) = '-curarch') or (ParamStr(i) = '--curarch')) then tmpResult := tmpResult + [apCurArchOnly];
-    if ((ParamStr(i) = 'custombundle') or (ParamStr(i) = 'cbundle') or (ParamStr(i) = '-custombundle') or (ParamStr(i) = '--custombundle')) then tmpResult := tmpResult + [apCustomBundle];
+  if ParamCount = 0 then tmpResult := [apHelp]
+  else begin
+    // Get params
+    for i := 0 to ParamCount do
+    begin
+      if ((ParamStr(i) = 'debug') or (ParamStr(i) = 'dbg') or (ParamStr(i) = '-debug') or (ParamStr(i) = '--debug') or (ParamStr(i) = '-d')) then tmpResult := tmpResult + [apDebug];
+      if ((ParamStr(i) = 'release') or (ParamStr(i) = 'rel') or (ParamStr(i) = '-release') or (ParamStr(i) = '--release') or (ParamStr(i) = '-r')) then tmpResult := tmpResult + [apRelease];
+      if ((ParamStr(i) = 'universal') or (ParamStr(i) = '-universal') or (ParamStr(i) = '--universal')) then tmpResult := tmpResult + [apUniversal];
+      if ((ParamStr(i) = 'macappstore') or (ParamStr(i) = '-macappstore') or (ParamStr(i) = '--macappstore')) then tmpResult := tmpResult + [apMacAppStore];
+      if ((ParamStr(i) = 'curarch') or (ParamStr(i) = '-curarch') or (ParamStr(i) = '--curarch')) then tmpResult := tmpResult + [apCurArchOnly];
+      if ((ParamStr(i) = 'custombundle') or (ParamStr(i) = 'cbundle') or (ParamStr(i) = '-custombundle') or (ParamStr(i) = '--custombundle')) then tmpResult := tmpResult + [apCustomBundle];
 
-    if ((ParamStr(i) = 'help') or (ParamStr(i) = '-help') or (ParamStr(i) = '--help') or (ParamStr(i) = '-h')) then tmpResult := tmpResult + [apHelp];
-    if ((ParamStr(i) = 'verbose') or (ParamStr(i) = '-verbose') or (ParamStr(i) = '--verbose') or (ParamStr(i) = '-v')) then tmpResult := tmpResult + [apVerbose];
+      if ((ParamStr(i) = 'help') or (ParamStr(i) = '-help') or (ParamStr(i) = '--help') or (ParamStr(i) = '-h')) then tmpResult := tmpResult + [apHelp];
+      if ((ParamStr(i) = 'verbose') or (ParamStr(i) = '-verbose') or (ParamStr(i) = '--verbose') or (ParamStr(i) = '-v')) then tmpResult := tmpResult + [apVerbose];
+    end;
+
+
+
+    // Trim
+    if ((apDebug in tmpResult) and (apRelease in tmpResult)) then tmpResult := tmpResult - [apDebug];
+    if ((apUniversal in tmpResult) and (apCurArchOnly in tmpResult)) then tmpResult := tmpResult - [apCurArchOnly];
+
+    // Add debug or release flag
+    if ((not (apDebug in tmpResult)) and (not (apRelease in tmpResult))) then tmpResult := tmpResult + [apDebug];
   end;
-
-  // Trim
-  if ((apDebug in tmpResult) and (apRelease in tmpResult)) then tmpResult := tmpResult - [apDebug];
-  if ((apUniversal in tmpResult) and (apCurArchOnly in tmpResult)) then tmpResult := tmpResult - [apCurArchOnly];
-
-  // Add debug or release flag
-  if ((not (apDebug in tmpResult)) and (not (apRelease in tmpResult))) then tmpResult := tmpResult + [apDebug];
 
   Result := tmpResult;
 end;

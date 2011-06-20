@@ -57,6 +57,12 @@ changes its color with each click.
 That of course is just a small example of what Elysion can do. It is a full-fledged game framework and aims to be so: It allows you to play sound and music via ElysionAudio (which is based upon SDL_mixer), a texture manager which takes care of all your textures without you needing to worry about it, Elysion has a storage system similar to HTML5 Localstorage, integrated support for Cascading Stylesheets (CSS), as well as game-specific class and helpers (such as adding nodes to scenes).
 
 
+Getting Started
+---------------
+
+For detailed information please visit the Elysion wiki: https://github.com/freezedev/elysion/wiki
+
+
 License
 -------
 

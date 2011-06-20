@@ -102,7 +102,8 @@ procedure TMainMenu.HandleEvents;
 begin
   if Menu.ButtonClick('New game') or Input.XBox360Controller.Start() then
   begin
-    GameState := gsGame;
+    //GameState := gsGame;
+    SceneDirector.SwitchTo('game');
     fNewGameClick := true;
   end;
 
@@ -110,12 +111,14 @@ begin
   //if Menu.OnButtonClick('How to play') then GameState := gsInstructions;
   if Menu.ButtonClick('Credits') then
   begin
-    GameState := gsCredits;
+    //GameState := gsCredits;
+    SceneDirector.SwitchTo('credits');
   end;
 
   if Menu.ButtonClick('Options') then
   begin
-    GameState := gsOptions;
+    //GameState := gsOptions;
+    SceneDirector.SwitchTo('options');
   end;
 
   if Menu.ButtonClick('Quit') or Input.XBox360Controller.B() then

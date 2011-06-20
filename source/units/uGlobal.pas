@@ -22,7 +22,10 @@ var
   Music: Boolean = true;
   Sound: Boolean = true;
 
-{$IFDEF GLOBAL_PROPERTY}
+implementation
+
+
+(*{$IFDEF GLOBAL_PROPERTY}
 
 function getGameState: TGameState; {$IFDEF CAN_INLNE} inline; {$ENDIF}
 procedure setGameState(aGameState: TGameState); {$IFDEF CAN_INLNE} inline; {$ENDIF}
@@ -49,6 +52,6 @@ begin
   fGameState := aGameState;
 end;
 
-{$ENDIF}
+{$ENDIF}*)
 
 end.

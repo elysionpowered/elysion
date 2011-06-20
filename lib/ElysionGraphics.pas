@@ -1314,7 +1314,7 @@ end;
 
 constructor TelCamera.Create;
 begin
-
+  inherited;
 end;
 
 destructor TelCamera.Destroy;
