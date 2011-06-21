@@ -49,7 +49,7 @@
         <UnitName Value="ElysionAudio"/>
       </Item4>
       <Item5>
-        <Filename Value="ElysionGraphics/Font/ElysionBitmapFont.pas"/>
+        <Filename Value="ElysionGraphics/Fonts/ElysionBitmapFont.pas"/>
         <UnitName Value="ElysionBitmapFont"/>
       </Item5>
       <Item6>
@@ -61,7 +61,7 @@
         <UnitName Value="ElysionContent"/>
       </Item7>
       <Item8>
-        <Filename Value="ElysionCore/IO/DataElysionData.pas"/>
+        <Filename Value="ElysionCore/IO/ElysionData.pas"/>
         <UnitName Value="ElysionData"/>
       </Item8>
       <Item9>
@@ -125,7 +125,7 @@
         <UnitName Value="ElysionTimer"/>
       </Item23>
       <Item24>
-        <Filename Value="ElysionGraphics/Font/ElysionTrueTypeFont.pas"/>
+        <Filename Value="ElysionGraphics/Fonts/ElysionTrueTypeFont.pas"/>
         <UnitName Value="ElysionTrueTypeFont"/>
       </Item24>
       <Item25>

@@ -30,15 +30,14 @@
         <LaunchingApplication PathPlusParams="\usr\X11R6\bin\xterm -T 'Lazarus Run Output' -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <Units Count="60">
+    <Units Count="61">
       <Unit0>
         <Filename Value="main.lpr"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="5"/>
-        <CursorPos X="7" Y="50"/>
+        <TopLine Value="1"/>
+        <CursorPos X="22" Y="18"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -169,10 +168,11 @@
       <Unit14>
         <Filename Value="..\lib\ElysionCore\ElysionApplication.pas"/>
         <UnitName Value="ElysionApplication"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="741"/>
-        <CursorPos X="5" Y="754"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="1"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -299,6 +299,7 @@
       <Unit28>
         <Filename Value=""/>
         <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="None"/>
       </Unit28>
       <Unit29>
         <Filename Value="..\lib\Dependencies\SDL\SDLTextures.pas"/>
@@ -427,6 +428,7 @@
         <TopLine Value="13"/>
         <CursorPos X="2" Y="37"/>
         <UsageCount Value="42"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit42>
       <Unit43>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\rtl\win\sysutils.pp"/>
@@ -435,6 +437,7 @@
         <TopLine Value="21"/>
         <CursorPos X="3" Y="47"/>
         <UsageCount Value="28"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit43>
       <Unit44>
         <Filename Value="..\lib\ElysionFoundation\Pipeline\ElysionAssets.pas"/>
@@ -585,8 +588,17 @@
         <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit59>
+      <Unit60>
+        <Filename Value="..\lib\elysion.pas"/>
+        <UnitName Value="Elysion"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="1"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit60>
     </Units>
-    <JumpHistory Count="4" HistoryIndex="3">
+    <JumpHistory Count="9" HistoryIndex="8">
       <Position1>
         <Filename Value="units\uGame.pas"/>
         <Caret Line="100" Column="8" TopLine="66"/>
@@ -603,14 +615,34 @@
         <Filename Value="units\uGame.pas"/>
         <Caret Line="99" Column="77" TopLine="86"/>
       </Position4>
+      <Position5>
+        <Filename Value="..\lib\ElysionCore\ElysionApplication.pas"/>
+        <Caret Line="754" Column="5" TopLine="741"/>
+      </Position5>
+      <Position6>
+        <Filename Value="..\lib\ElysionCore\ElysionApplication.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position6>
+      <Position7>
+        <Filename Value="main.lpr"/>
+        <Caret Line="18" Column="22" TopLine="3"/>
+      </Position7>
+      <Position8>
+        <Filename Value="..\lib\ElysionCore\ElysionApplication.pas"/>
+        <Caret Line="2" Column="189" TopLine="1"/>
+      </Position8>
+      <Position9>
+        <Filename Value="..\lib\ElysionCore\ElysionApplication.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position9>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="9"/>
     <PathDelim Value="\"/>
     <SearchPaths>
-      <IncludeFiles Value="$(ProjOutDir);..\lib"/>
-      <OtherUnitFiles Value="..\lib;..\lib\Dependencies\SDL;..\lib\Dependencies\OpenGL;..\lib\Dependencies\Vampyre;units"/>
+      <IncludeFiles Value="$(ProjOutDir);..\lib\ElysionCore;$(ProjOutDir);..\lib\ElysionCore\Base;..\lib\ElysionCore\IO;..\lib\ElysionCore\Audio;..\lib\ElysionCore\Math;..\lib\ElysionGraphics;..\lib\ElysionGraphics\Effects;..\lib\ElysionGraphics\Renderers;..\lib\ElysionGraphics\Fonts;..\lib\ElysionGraphics\Animations;..\lib\ElysionGraphics\Textures;..\lib\ElysionGraphics\Shaders;..\lib\ElysionFoundation;..\lib\ElysionFoundation\GUI;..\lib\ElysionFoundation\Network;..\lib\ElysionFoundation\Pipeline;..\lib\ElysionFoundation\Scene;..\lib\ElysionFoundation\Scripting"/>
+      <OtherUnitFiles Value="..\lib;..\lib\Dependencies\SDL;..\lib\Dependencies\OpenGL;..\lib\Dependencies\Vampyre;units $(ProjOutDir);..\lib\ElysionCore;$(ProjOutDir);..\lib\ElysionCore\Base;..\lib\ElysionCore\IO;..\lib\ElysionCore\Audio;..\lib\ElysionCore\Math;..\lib\ElysionGraphics;..\lib\ElysionGraphics\Effects;..\lib\ElysionGraphics\Renderers;..\lib\ElysionGraphics\Fonts;..\lib\ElysionGraphics\Animations;..\lib\ElysionGraphics\Textures;..\lib\ElysionGraphics\Shaders;..\lib\ElysionFoundation;..\lib\ElysionFoundation\GUI;..\lib\ElysionFoundation\Network;..\lib\ElysionFoundation\Pipeline;..\lib\ElysionFoundation\Scene;..\lib\ElysionFoundation\Scripting"/>
       <UnitOutputDirectory Value="..\bin"/>
     </SearchPaths>
     <Conditionals Value="// Mac OS build macro
