@@ -16521,7 +16521,7 @@ begin
 end;
 
 procedure Read_GL_SUN_vertex;
-begin
+begin    {
   glColor4ubVertex2fSUN := dglGetProcAddress('glColor4ubVertex2fSUN');
   glColor4ubVertex2fvSUN := dglGetProcAddress('glColor4ubVertex2fvSUN');
   glColor4ubVertex3fSUN := dglGetProcAddress('glColor4ubVertex3fSUN');
@@ -16561,7 +16561,7 @@ begin
   glReplacementCodeuiTexCoord2fNormal3fVertex3fSUN := dglGetProcAddress('glReplacementCodeuiTexCoord2fNormal3fVertex3fSUN');
   glReplacementCodeuiTexCoord2fNormal3fVertex3fvSUN := dglGetProcAddress('glReplacementCodeuiTexCoord2fNormal3fVertex3fvSUN');
   glReplacementCodeuiTexCoord2fColor4fNormal3fVertex3fSUN := dglGetProcAddress('glReplacementCodeuiTexCoord2fColor4fNormal3fVertex3fSUN');
-  glReplacementCodeuiTexCoord2fColor4fNormal3fVertex3fvSUN := dglGetProcAddress('glReplacementCodeuiTexCoord2fColor4fNormal3fVertex3fvSUN');
+  glReplacementCodeuiTexCoord2fColor4fNormal3fVertex3fvSUN := dglGetProcAddress('glReplacementCodeuiTexCoord2fColor4fNormal3fVertex3fvSUN');}
 end;
 
 {$IFDEF DGL_WIN}

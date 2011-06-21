@@ -84,6 +84,33 @@
 unit ElysionRendering;
 
 
+uses
+  ElysionUtils,
+  ElysionObject,
+  ElysionApplication,
+  ElysionTypes,
+  ElysionColor,
+  ElysionInput,
+  ElysionTimer,
+  ElysionNode,
+  ElysionTexture,
+  ElysionContent,
+  ElysionLogger,
+
+  {$IFDEF USE_DGL_HEADER}
+  dglOpenGL,
+  {$ELSE}
+  gl, glu, glext,
+  {$ENDIF}
+  SDL,
+  SDLUtils,
+  //SDLTextures,
+
+  SysUtils,
+  OpenURLUtil,
+  Classes;
+
+
 
 
 

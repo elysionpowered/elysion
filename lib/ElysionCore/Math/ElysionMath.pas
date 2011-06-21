@@ -4,7 +4,7 @@
   * @author(Johannes Stein <http://www.elysionpowered.org>)
   *)
 unit ElysionMath;
-// Crazy source code comment #1337: Hands up if you like math
+// Crazy source code comment #1337: Hands up if you like math   -- I like math! \O/
 
 {$I Elysion.inc}
 
