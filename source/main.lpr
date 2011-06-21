@@ -15,7 +15,7 @@ program myapplication;
 {$I Elysion.inc}
 
 uses
-  ElysionApplication in '../lib/ElysionApplication.pas',
+  ElysionApplication in '../lib/ElysionCore/ElysionApplication.pas',
   uGame in 'units/uGame.pas';
 
 var
