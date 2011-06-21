@@ -30,7 +30,7 @@ begin
   // Loads images and config files and everything else
   Game.Initialize();
 
-  {// Game Loop
+  // Game Loop
   while Application.Run do
   begin
     // Clears buffer
@@ -47,6 +47,6 @@ begin
     
     // Flip surface
     ActiveWindow.EndScene;
-  end;}
+  end;
   
 end.

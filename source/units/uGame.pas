@@ -94,11 +94,10 @@ begin
 
   // Super
   if ((Environment.Width = 1024) and (Environment.Height = 600)) then
-    inherited Create(Environment.Width, Environment.Height, AppConfig.Bits, true);
-  //else
-    //inherited Create(AppConfig.Width, AppConfig.Height, AppConfig.Bits, false);
+    inherited Create(Environment.Width, Environment.Height, AppConfig.Bits, true)
+  else
+    inherited Create(AppConfig.Width, AppConfig.Height, AppConfig.Bits, false);
 
-  exit;
   fLoadScreen := TelSprite.Create;
   fLoadScreen.LoadFromFile(GetResImgPath + 'loadscreen.jpg');
 
@@ -114,10 +113,6 @@ end;
 procedure TGame.Initialize;
 var I : integer;
 begin
-
-  // Initialize Audio here if you have any sound/music
-  //Audio.Initialize();
-  I := 0;
 
   ActiveWindow.BeginScene;
   fLoadScreen.Draw;
