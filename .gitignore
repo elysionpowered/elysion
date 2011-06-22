@@ -52,6 +52,7 @@ bin/*.a
 bin/*.dbg
 bin/*.or
 bin/main
+bin/myapp
 
 # Excluded files #
 ##################

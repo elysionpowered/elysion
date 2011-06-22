@@ -16,6 +16,8 @@ uses
 
     ElysionObject,
     ElysionApplication,
+    ElysionMath,
+    ElysionTypes,
     ElysionNode;
 
 
@@ -50,7 +52,7 @@ end;
 TelScene = class(TelObject)
   private
     fNodeList: TelNodeList;
-	  fInitialized, fAutoSave: Boolean;
+    fInitialized, fAutoSave: Boolean;
 
     fEditable: Boolean;
     procedure SetEditable(AValue: Boolean);
@@ -69,11 +71,15 @@ TelScene = class(TelObject)
     procedure Render(); virtual;
     procedure Update(dt: Double = 0.0); virtual;
     procedure HandleEvents(); virtual;
+
+    function Reload(): Boolean;
   published
     property AutoSave: Boolean read fAutoSave write fAutoSave;
 
     property Initialized: Boolean read fInitialized;
     property Editable: Boolean read fEditable write SetEditable;
+
+    property Entities: TelNodeList read fNodeList;
 
     property Modified: Boolean read GetModified;
 end;
@@ -295,6 +301,15 @@ begin
 
 end;
 
+function TelScene.Reload(): Boolean;
+begin
+  Result := false;
+
+  if Self <> nil then FreeAndNil(Self);
+  Self := TelScene
+
+end;
+
 { TelSceneList }
 
 constructor TelSceneList.Create;
@@ -415,7 +430,7 @@ begin
   // Create empty scene
   fNullScene := TelScene.Create('');
   
-  //fList := TelSceneList.Create;
+  fList := TelSceneList.Create;
   fActiveSceneID := -1;
 end;
 
