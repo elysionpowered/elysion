@@ -15,14 +15,21 @@ program myapplication;
 {$I Elysion.inc}
 
 uses
-  ElysionApplication, // in '../lib/ElysionCore/ElysionApplication.pas',
+  ElysionApplication  in '../lib/ElysionCore/ElysionApplication.pas',
   uGame in 'units/uGame.pas';
 
 var
   Game: TGame;
+  str : String;
+  ch : PChar;
 
 begin
   Randomize();
+
+  str := 'Bla'#0;
+  ch := @str;
+
+  exit;
 
   // Create game class
   Game := TGame.Create;

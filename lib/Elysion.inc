@@ -7,8 +7,10 @@
 {.$DEFINE USE_GLFW}
 
 // To use PNGs, JPGs, GIFs, etc. instead of just BMPs
-{.$DEFINE USE_SDL_IMAGE}
-{$DEFINE USE_VAMPYRE}
+{$DEFINE USE_SDL_IMAGE}
+{.$DEFINE USE_VAMPYRE}
+
+//{$I Dependencies/Besen/BESEN.inc }
 
 {$IFNDEF DARWIN}
   {$DEFINE USE_DGL_HEADER}

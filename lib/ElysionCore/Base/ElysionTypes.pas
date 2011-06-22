@@ -682,6 +682,7 @@ begin
 
   Result := tmpCol;
 end;
+
 function makeSize(aWidth, aHeight: Integer): TelSize;
 var
   tmpVec: TelSize;
@@ -867,7 +868,9 @@ constructor TelBorderSide.Create;
 begin
   fWidth := 0;
   fStyle := bsSolid;
-  Color := makeCol(0, 0, 0);
+  Color.R := 0;
+  Color.G := 0;
+  Color.B := 0;
 end;
 
 destructor TelBorderSide.Destroy;

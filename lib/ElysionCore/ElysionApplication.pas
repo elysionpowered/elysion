@@ -1040,6 +1040,7 @@ var
   tmpScreenshotCount: Integer;
   tmpFilename, formattedDateTime: String;
   searchResult: TSearchRec;
+  tmpPChar : PChar;
 begin
   if aFilename = '' then aFilename := ParamStr(0);
   DateTimeToString(formattedDateTime, 'yyyy-mm-dd_hh-nn-ss', Now);
@@ -1100,11 +1101,10 @@ begin
 
   SDL_UnlockSurface(tmpSurface);
 
-  // Saves image to file
   {$IFDEF USE_VAMPYRE}
   ImagingSDL.SaveSDLSurfaceToFile(tmpFilename, tmpSurface);
   {$ELSE}
-  SDL_SaveBMP(tmpSurface, PChar(tmpFile));
+  SDL_SaveBMP(tmpSurface, PChar(tmpFilename));
   {$ENDIF}
 
   SDL_FreeSurface(tmpSurface);
