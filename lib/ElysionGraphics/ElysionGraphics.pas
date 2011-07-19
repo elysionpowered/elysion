@@ -251,47 +251,12 @@ TelParticleEmitter = class
     property IsPaused: Boolean read fIsPaused;
 end;
 
-{ TelCamera }
-
-TelCamera = class(TelNode)
-    private
-      fWidth, fHeight: Integer;
-
-      function GetViewPort(): TelRect;
-      procedure SetViewPort(Value: TelRect);
-    public
-      constructor Create; Override;
-      destructor Destroy; Override;
-
-      procedure Draw; Override;
-      procedure Update(dt: Double); Override;
-
-      property ViewPort: TelRect read GetViewPort write SetViewPort;
-    published
-
-
-      property Width: Integer read fWidth write fWidth;
-      property Height: Integer read fHeight write fHeight;
-
-end;
 
   function convCol(S: TelWindow; Color: TelColor): Cardinal; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
   function convCol(S: TelWindow; R, G, B: Byte): Cardinal; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
   function convCol(Color: TelColor): TSDL_Color; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
   //function convCol(Color: TelColor): Cardinal; Overload;
   function convCol(R, G, B: Byte): Cardinal; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-  procedure DrawQuad(pX, pY, pW, pH, pZ: Single); Overload;
-  procedure DrawQuad(pX, pY, pW, pH, pZ: Single; Vertices: TColorVertices); Overload;
-  procedure DrawQuad(OrgX, OrgY, ClipX, ClipY, ClipW, ClipH, DrawX, DrawY, DrawW, DrawH, Z: Single); Overload;
-
-  procedure DrawLine(Src, Dst: TelVector2f; Color: TelColor); Overload;
-  procedure DrawLine(Points: array of TelVector2f; Color: TelColor); Overload;
-
-  function CollisionTest(RectOne, RectTwo: TelRect): Boolean; Overload;
-  function CollisionTest(SpriteOne, SpriteTwo: TelSprite): Boolean; Overload;
-  function PixelTest(SpriteOne, SpriteTwo: TelSprite): Boolean; Overload;
-  function PixelTest(Sprite: TelSprite; Rect: TelRect): Boolean; Overload;
 
 
 
@@ -325,192 +290,6 @@ begin
   Result.g := Color.G;
   Result.b := Color.B;
   Result.unused := 0;
-end;
-
-// TODO: Use VBOs instead of glBegin/glEnd calls
-procedure DrawQuad(pX, pY, pW, pH, pZ: Single);
-begin
-  glBegin(GL_QUADS);
-    glTexCoord2f(1, 0); glVertex3f(pX + pW, pY, -pZ);
-    glTexCoord2f(0, 0); glVertex3f(pX	  , pY, -pZ);
-    glTexCoord2f(0, 1); glVertex3f(pX	  , pY + pH, -pZ);
-    glTexCoord2f(1, 1); glVertex3f(pX + pW, pY + pH, -pZ);
-  glEnd();
-end;
-
-procedure DrawQuad(pX, pY, pW, pH, pZ: Single; Vertices: TColorVertices);
-begin
-  glBegin(GL_QUADS);
-    glColor4f(Vertices[0].R / 255, Vertices[0].G / 255, Vertices[0].B / 255, Vertices[0].A / 255); glTexCoord2f(1, 0); glVertex3f(pX + pW, pY, -pZ);
-    glColor4f(Vertices[1].R / 255, Vertices[1].G / 255, Vertices[1].B / 255, Vertices[1].A / 255); glTexCoord2f(0, 0); glVertex3f(pX	  , pY, -pZ);
-    glColor4f(Vertices[2].R / 255, Vertices[2].G / 255, Vertices[2].B / 255, Vertices[2].A / 255); glTexCoord2f(0, 1); glVertex3f(pX	  , pY + pH, -pZ);
-    glColor4f(Vertices[3].R / 255, Vertices[3].G / 255, Vertices[3].B / 255, Vertices[3].A / 255); glTexCoord2f(1, 1); glVertex3f(pX + pW, pY + pH, -pZ);
-  glEnd();
-end;
-
-procedure DrawQuad(OrgX, OrgY, ClipX, ClipY, ClipW, ClipH, DrawX, DrawY, DrawW, DrawH, Z: Single);
-//var tposx, tposy, row, col: single;
-var tposx, tposy, tposw, tposh: Single;
-begin
-  if (OrgX > 0) and (OrgY > 0) then
-  begin
-    if ClipX > 0 then tposx := ClipX / OrgX else tposx := 0;
-    if ClipY > 0 then tposy := ClipY / OrgY else tposy := 0;
-
-    tposw := ClipW / OrgX;
-    tposh := ClipH / OrgY;
-  end;
-
-  {row := OriginalSize.X / ClipRect.W;
-  col := OriginalSize.Y / ClipRect.H;
-
-  tposx := OriginalSize.X / ClipRect.X;
-  tposy := OriginalSize.Y / ClipRect.Y;}
-
-  // Use VBOs if OpenGL >= 1.5, else glBegin/glEnd
-
-  {$IFDEF USE_DGL_HEADER}
-  if (GL_VERSION_1_5) then
-  {$ELSE}
-  if (Load_GL_version_2_0) then
-  {$ENDIF}
-  begin
-
-  end else
-  begin
-
-  end;
-
-  glBegin(GL_QUADS);
-    glTexCoord2f(0 + tposx		  , 0 + tposy); 		glVertex3f(DrawX, DrawY, -Z);
-    glTexCoord2f(0 + tposx		  , 0 + tposy + tposh); glVertex3f(DrawX, DrawY + DrawH, -Z);
-    glTexCoord2f(0 + tposx + tposw, 0 + tposy + tposh); glVertex3f(DrawX + DrawW, DrawY + DrawH, -Z);
-    glTexCoord2f(0 + tposx + tposw, 0 + tposy); 		glVertex3f(DrawX + DrawW, DrawY, -Z);
-  glEnd;
-
-  {glBegin(GL_QUADS);
-    glTexCoord2f(0+1/tposx+1/row, 1-1/tposy);       glTexCoord2f(1, 0); glVertex3f(DrawRect.X + DrawRect.W, DrawRect.Y, -Z);
-    glTexCoord2f(0+1/tposx      , 1-1/tposy);       glTexCoord2f(0 + tposx, 0 + tposy); glVertex3f(DrawRect.X, DrawRect.Y, -Z);
-    glTexCoord2f(0+1/tposx      , 1-1/tposy-1/col); glTexCoord2f(0, 1); glVertex3f(DrawRect.X, DrawRect.Y + DrawRect.H, -Z);
-    glTexCoord2f(0+1/tposx+1/row, 1-1/tposy-1/col); glTexCoord2f(1, 1); glVertex3f(DrawRect.X + DrawRect.W, DrawRect.Y + DrawRect.H, -Z);
-  glEnd;}
-end;
-
-
-
-procedure DrawLine(Src, Dst: TelVector2f; Color: TelColor);
-begin
-  glColor3f(Color.R / 255, Color.G / 255, Color.B / 255);
-
-  // GL_LINE_STRIP instead of GL_LINES -> http://wiki.delphigl.com/index.php/glBegin
-  glBegin(GL_LINE_STRIP);
-    glVertex3f(Src.X * ActiveWindow.ResScale.X, Src.Y * ActiveWindow.ResScale.Y, 0);
-    glVertex3f(Dst.X * ActiveWindow.ResScale.X, Dst.Y * ActiveWindow.ResScale.Y, 0);
-  glEnd;
-end;
-
-procedure DrawLine(Points: array of TelVector2f; Color: TelColor);
-var
-  i: Integer;
-begin
-  glColor3f(Color.R / 255, Color.G / 255, Color.B / 255);
-
-  // GL_LINE_STRIP instead of GL_LINES -> http://wiki.delphigl.com/index.php/glBegin
-  glBegin(GL_LINE_STRIP);
-    for i := 0 to High(Points) - 1 do
-    begin
-      glVertex3f(Points[i].X * ActiveWindow.ResScale.X, Points[i].Y * ActiveWindow.ResScale.Y, 0);
-      glVertex3f(Points[i+1].X * ActiveWindow.ResScale.X, Points[i+1].Y * ActiveWindow.ResScale.Y, 0);
-    end;
-  glEnd;
-end;
-
-function CollisionTest(RectOne, RectTwo: TelRect): Boolean;
-
-  function OnPoint(Rect: TelRect; Coord: TelVector2f): Boolean;
-  begin
-    if (Coord.X >= Rect.X) and
-       (Coord.Y >= Rect.Y) and
-       (Coord.X < (Rect.X + Rect.W)) and
-       (Coord.Y < (Rect.Y + Rect.H)) then Result := true else Result := false;
-  end;
-
-begin
-  Result := False;
-  if OnPoint(RectOne, makeV2f(RectTwo.X, RectTwo.Y)) Or
-     OnPoint(RectTwo, makeV2f(RectOne.X, RectOne.Y)) Or
-     OnPoint(RectOne, makeV2f(RectTwo.X + RectTwo.W, RectTwo.Y)) Or
-     OnPoint(RectTwo, makeV2f(RectOne.X + RectOne.W, RectOne.Y)) Or
-     OnPoint(RectOne, makeV2f(RectTwo.X,                   RectTwo.Y + RectTwo.H)) Or
-     OnPoint(RectTwo, makeV2f(RectOne.X,                   RectOne.Y + RectOne.H)) Or
-     OnPoint(RectOne, makeV2f(RectTwo.X + RectTwo.W, RectTwo.Y + RectTwo.H)) Or
-     OnPoint(RectTwo, makeV2f(RectOne.X + RectOne.W, RectOne.Y + RectOne.H)) Then Result := True;
-end;
-
-function CollisionTest(SpriteOne, SpriteTwo: TelSprite): Boolean;
-begin
-  Result := False;
-  if ((SpriteOne.Visible) and (SpriteTwo.Visible)) then
-  begin
-    If SpriteOne.OnPoint(makeV2f(SpriteTwo.Position.X, SpriteTwo.Position.Y)) Or
-       SpriteTwo.OnPoint(makeV2f(SpriteOne.Position.X, SpriteOne.Position.Y)) Or
-       SpriteOne.OnPoint(makeV2f(SpriteTwo.Position.X + SpriteTwo.Width, SpriteTwo.Position.Y)) Or
-       SpriteTwo.OnPoint(makeV2f(SpriteOne.Position.X + SpriteOne.Width, SpriteOne.Position.Y)) Or
-       SpriteOne.OnPoint(makeV2f(SpriteTwo.Position.X,                   SpriteTwo.Position.Y + SpriteTwo.Height)) Or
-       SpriteTwo.OnPoint(makeV2f(SpriteOne.Position.X,                   SpriteOne.Position.Y + SpriteOne.Height)) Or
-       SpriteOne.OnPoint(makeV2f(SpriteTwo.Position.X + SpriteTwo.Width, SpriteTwo.Position.Y + SpriteTwo.Height)) Or
-       SpriteTwo.OnPoint(makeV2f(SpriteOne.Position.X + SpriteOne.Width, SpriteOne.Position.Y + SpriteOne.Height)) Then Result := True;
-  end;
-end;
-
-function PixelTest(SpriteOne, SpriteTwo: TelSprite): Boolean;
-var
-  SpriteOneRect, SpriteTwoRect: TSDL_Rect;
-begin
-  Result := false;
-  if ((SpriteOne.Visible) and (SpriteTwo.Visible)) then
-  begin
-    if (not SpriteOne.Transparent) then SpriteOne.Transparent := true;
-    if (not SpriteTwo.Transparent) then SpriteTwo.Transparent := true;
-
-    SpriteOneRect.x := Trunc(SpriteOne.ClipRect.X);
-	SpriteOneRect.y := Trunc(SpriteOne.ClipRect.Y);
-	SpriteOneRect.w := Trunc(SpriteOne.ClipRect.W);
-	SpriteOneRect.h := Trunc(SpriteOne.ClipRect.H);
-
-	SpriteTwoRect.x := Trunc(SpriteTwo.ClipRect.X);
-	SpriteTwoRect.y := Trunc(SpriteTwo.ClipRect.Y);
-	SpriteTwoRect.w := Trunc(SpriteTwo.ClipRect.W);
-	SpriteTwoRect.h := Trunc(SpriteTwo.ClipRect.H);
-
-    if SDL_PixelTest(SpriteOne.Texture.TextureSurface, @SpriteOneRect,
-					 SpriteTwo.Texture.TextureSurface, @SpriteTwoRect,
-					 Trunc(SpriteOne.Position.X), Trunc(SpriteOne.Position.Y), Trunc(SpriteTwo.Position.X), Trunc(SpriteTwo.Position.Y)) then Result := true;
-  end;
-end;
-
-function PixelTest(Sprite: TelSprite; Rect: TelRect): Boolean;
-var
-  SpriteRect, CRect: TSDL_Rect;
-begin
-  Result := false;
-
-  if (Sprite.Visible) then
-  begin
-    if (not Sprite.Transparent) then Sprite.Transparent := true;
-
-    SpriteRect.x := Trunc(Sprite.ClipRect.X);
-    SpriteRect.y := Trunc(Sprite.ClipRect.Y);
-    SpriteRect.w := Trunc(Sprite.ClipRect.W);
-    SpriteRect.h := Trunc(Sprite.ClipRect.H);
-
-    CRect.x := Trunc(Rect.X);
-    CRect.y := Trunc(Rect.Y);
-    CRect.w := Trunc(Rect.W);
-    CRect.h := Trunc(Rect.H);
-
-    if SDL_PixelTestSurfaceVsRect(Sprite.Texture.TextureSurface, @SpriteRect, @CRect, Trunc(Sprite.Position.X), Trunc(Sprite.Position.Y), Trunc(Rect.X), Trunc(Rect.Y)) then Result := true;
-  end;
 end;
 
 constructor TelSprite.Create;
@@ -863,87 +642,14 @@ end;
 
 function TelSprite.Collides(Other: TelSprite): Boolean;
 begin
-  if Self.BoundingBox = Other.BoundingBox then
-  begin
-    case BoundingBox of
-      bbDefault: Result := CollisionTest(Self, Other);
-      bbCustom: Result := CollisionTest(Self.CustomBBox, Other.CustomBBox);
-      bbPixel: Result := PixelTest(Self, Other);
-    end;
-  end else
-  begin
-    // Default bounding box <-> Custom bounding box
-    if ((Self.BoundingBox = bbDefault) and (Other.BoundingBox = bbCustom)) then Result := CollisionTest(Self.ClipRect, Other.CustomBBox);
-    if ((Self.BoundingBox = bbCustom) and (Other.BoundingBox = bbDefault)) then Result := CollisionTest(Other.CustomBBox, Self.ClipRect);
 
-    // Default bounding box <-> Pixel
-    if ((Self.BoundingBox = bbDefault) and (Other.BoundingBox = bbPixel)) then Result := PixelTest(Other, Self);
-    if ((Self.BoundingBox = bbPixel) and (Other.BoundingBox = bbDefault)) then Result := PixelTest(Self, Other);
-
-    // Custom bounding box <-> Pixel
-    if ((Self.BoundingBox = bbCustom) and (Other.BoundingBox = bbPixel)) then Result := PixelTest(Other, Self.CustomBBox);
-    if ((Self.BoundingBox = bbPixel) and (Other.BoundingBox = bbCustom)) then Result := PixelTest(Self, Other.CustomBBox);
-  end;
 end;
 
 procedure TelSprite.Draw;
 var
   IsTexture: Boolean;
 begin
-  IsTexture := False;
 
-  {$IFNDEF USE_DGL_HEADER}
-    if glIsTexture(Self.Texture.TextureID) = GL_TRUE then IsTexture := true;
-  {$ELSE}
-    IsTexture := glIsTexture(Self.Texture.TextureID);
-  {$ENDIF}
-
-  if ((Visible) and (IsTexture)) then
-  begin
-    glColor4f(1.0, 1.0, 1.0, 1.0);
-    glEnable(GL_TEXTURE_2D);
-
-    glPushMatrix;
-      glColor3f(1, 1, 1);
-      glBindTexture(GL_TEXTURE_2D, Self.Texture.TextureID);
-      if Transparent then
-      begin
-        glEnable(GL_ALPHA_TEST);
-        glAlphaFunc(GL_GREATER, 0.1);
-      end;
-
-  	glTranslatef((Position.X - Margin.Left - Border.Left.Width - Padding.Left + Origin.X) * ActiveWindow.ResScale.X,
-                     (Position.Y - Margin.Top - Border.Top.Width - Padding.Top + Origin.Y) * ActiveWindow.ResScale.Y, 0);
-
-  	if Abs(Rotation.Angle) >= 360.0 then Rotation.Angle := 0.0;
-
-  	if Rotation.Angle <> 0.0 then glRotatef(Rotation.Angle, Rotation.Vector.X, Rotation.Vector.Y, Rotation.Vector.Z);
-
-      case BlendMode of
-        bmAdd: glBlendFunc(GL_ONE, GL_ONE);
-        bmNormal: glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        bmSub: glBlendFunc(GL_ZERO, GL_ONE);
-      end;
-      glEnable(GL_BLEND);
-
-  	glColor4f(Color.R / 255, Color.G / 255, Color.B / 255, Alpha / 255);
-  	glScalef(Scale.X * ActiveWindow.ResScale.X, Scale.Y * ActiveWindow.ResScale.Y, 1);
-
-        DrawQuad(Texture.Width, Texture.Height,
-                 fClipRect.X, fClipRect.Y, fClipRect.W, fClipRect.H,
-                 -Origin.X, -Origin.Y, Self.Width, Self.Height,
-                 Position.Z);
-      //DrawQuad(TelVector2i.Create(TextureWidth, TextureHeight), FClipRect, TelRect.Create(-Offset.Rotation.X, -Offset.Rotation.Y, Width, Height), Position.Z);
-
-      //DrawQuad(200, 200, 200, 200, 0);
-
-      glDisable(GL_BLEND);
-      if Transparent then glDisable(GL_ALPHA_TEST);
-    glPopMatrix;
-
-    glBindTexture(GL_TEXTURE_2D, 0);
-
-    glDisable(GL_TEXTURE_2D);
   end;
 end;
 
@@ -1290,49 +996,6 @@ procedure TelParticle.Update(dt: Double = 0.0);
 begin
   inherited;
 end;
-
-{
-  #############################################################################
-  # TelCamera                                                                 #
-  #############################################################################
-
-  Description:
-    Inserts a camera
-
-  Additional Notes: -
-
-}
-
-function TelCamera.GetViewPort(): TelRect;
-begin
-
-end;
-
-procedure TelCamera.SetViewPort(Value: TelRect);
-begin
-
-end;
-
-constructor TelCamera.Create;
-begin
-  inherited;
-end;
-
-destructor TelCamera.Destroy;
-begin
-  inherited Destroy;
-end;
-
-procedure TelCamera.Draw;
-begin
-  inherited Draw;
-end;
-
-procedure TelCamera.Update(dt: Double);
-begin
-  inherited Update(dt);
-end;
-
 
 
 { TelParallaxSprite }

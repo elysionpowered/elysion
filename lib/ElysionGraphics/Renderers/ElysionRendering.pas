@@ -110,6 +110,173 @@ uses
   OpenURLUtil,
   Classes;
 
+type
+
+        
+        {* Saves all important information for an graphics device initialization *}
+        TelGraphicsFormat = record
+        
+                        FDeviceIdentifier : String;
+                        FPlatformGLRequirements : String;
+                        FDevicePlatforms : Array of String;
+                        FDeviceHasGLRequirements : Boolean;
+                        FMinGLVersionMinor : Integer;
+                        FMinGLVersionMajor : Integer;
+                        
+                        FAutoSwapBuffer : Boolean;
+                        FAutoFillBackground : Boolean;
+                        FUseDoubleBuffering : Boolean;
+                        FUseAdvancedRendering : Boolean;
+                        FUseStereoRendering : Boolean;
+                        FUseOffscreenRendering : Boolean;        
+                        
+                        FConfigurationFile : String;
+                        
+                        FHasMinResolution : Boolean;
+                        FHasMaxResolution : Boolean;
+                        FMinResolution : TelVector2i;
+                        FMaxResolution : TelVector2i;
+
+        end;
+
+
+        TelGraphicsDevice = class
+                protected  
+                        
+                        {* Rendering Properties *}
+                        FDoClearStencilBuffer : Boolean;
+                        FDoClearDepthBuffer : Boolean;
+                        FDoClearColorBuffer : Boolean;
+                        FClearColor : TelColor;
+                        FClearStencil : Integer;
+                        FClearDepth : Integer;
+                        
+                        FSyncedFramerate : Integer;
+                        FHasSyncedFramerate : Boolean;
+                        
+                        
+                        {* Format Properties *}
+                        FDeviceIdentifier : String;
+                        FPlatformGLRequirements : String;
+                        FDevicePlatforms : Array of String;
+                        FDeviceHasGLRequirements : Boolean;
+                        FMinGLVersionMinor : Integer;
+                        FMinGLVersionMajor : Integer;
+                        
+                        FAutoSwapBuffer : Boolean;
+                        FAutoFillBackground : Boolean;
+                        FUseDoubleBuffering : Boolean;
+                        FUseAdvancedRendering : Boolean;
+                        FUseStereoRendering : Boolean;
+                        FUseOffscreenRendering : Boolean;        
+                        
+                        FConfigurationFile : String;
+                        
+                        FHasMinResolution : Boolean;
+                        FHasMaxResolution : Boolean;
+                        FMinResolution : TelVector2i;
+                        FMaxResolution : TelVector2i;
+                        
+                        
+                        {* Screen Properties *}
+                        FScreenResolution : TelVector2i;
+                        FMountedToScreen : Boolean;
+                        FMountedToOffscreen : Boolean;
+                        FCurrentContext : Boolean;
+                        
+                        
+                        {* Setter *}
+                        procedure setDeviceIdentifier( dev : String );
+                        procedure setPlatformGLRequirements( dev : String );
+                        procedure addDevicePlattforms( dev : String );
+                        procedure setDeviceHasGLRequirements( a : Boolean );
+                        procedure setMinGLVersionMinor( a : Integer );
+                        procedure setMinGLVersionMajor( a : Integer );
+                        procedure setAutoSwapBuffer( a : Boolean );
+                        procedure setAutoFillBackground( a : Boolean );
+                        procedure setUseDoubleBuffering( a : Boolean );
+                        procedure setUseAdvancedRendering( a : Boolean );
+                        procedure setUseStereoRendering( a : Boolean );
+                        procedure setUseOffscreenRendering( a : Boolean );
+                        procedure setConfigurationFile( a : String );
+                        procedure setHasMinResolution( a : Boolean );
+                        procedure setHasMaxResolution( a : Boolean );
+                        procedure setMinResolution( a : TelVector2i );
+                        procedure setMaxResolution( a : TelVector2i );
+     
+                        
+                public
+                
+                        {* Simple Geometry Rendering *}
+                        procedure drawLine( AWidth : Single; AFrom : TelVector2i; ATo : TelVector2i );virtual;
+                        procedure drawRay( AWidth : Single; Origin : TelVector2i; Direction : TelVector2i );virtual;
+                        procedure drawBox( ABox : TRect );virtual;
+                        procedure drawEllipse( ARadius :Single; AOrigin : TelVector2i ); virtual;
+                        
+                
+                        {* General Pixel-Based Operations *}
+                        procedure setStencilRect( fRect : TRect );
+                        procedure setStencilPolygon( P01 : TelVector2f; P02 : TelVector2f; P03 : TelVector2f );
+                        procedure addStencilRect( fRect : TRect );
+                        procedure addStencilPolygon(  P01 : TelVector2f; P02 : TelVector2f; P03 : TelVector2f );
+                        procedure clearStencilOperations;
+                        
+                        function grabFrameBuffer : TelTexture;
+                        function saveFrameBuffer( APath : String ): Boolean;
+                        
+                        
+                        {* Buffer Clear *}
+                        procedure clearScreen;virtual;
+                        procedure clearColor( R,G,B : Byte );virtual;
+                        procedure clearColor( R,G,B : Single );virtual;
+                        procedure clearStencil( Stencil : Integer );virtual;
+                        procedure clearDepth( Depth : Integer );virtual;
+                        
+                        procedure setClearColor( R,G,B : Byte );
+                        procedure setStencilValue( Stencil : Integer );
+                        procedure setDepthValue( Depth : Integer );
+                        
+                        function getClearColor : TelColor;
+                        function getStencilValue : Integer;
+                        function getDepthValue : Integer;
+                        
+                        {* Format Management *}
+                        procedure setFormat( format : TelGraphicsFormat );
+                        function getFormat(): TelGraphicsFormat;
+                        function validFormat( a : TelGraphicsFormat ): Boolean; virtual;
+                        
+                        
+                        {* Getter *}
+                        function getDeviceIdentifier() : String;
+                        function getPlatformGLRequirements() : String;
+                        function getDevicePlatform( index : Integer ): String;
+                        function getHasGLRequirements(): Boolean;
+                        function getMinGLVersionMinor() : Integer;
+                        function getMinGLVersionMajor() : Integer;
+                        function getAutoSwapBuffer() : Boolean;
+                        function getAutoFillBackground(): Boolean;
+                        function getUseDoubleBuffering(): Boolean;
+                        function getUseAdvancedRendering(): Boolean;
+                        function getUseStereoRendering() : Boolean;
+                        function getOffscreenRendering(): Boolean;
+                        function getConfigurationFile(): String;
+                        function getHasMinResolution(): Boolean;
+                        function getHasMaxResolution(): Boolean;
+                        function getMinResolution(): TelVector2i;
+                        function getMaxResolution(): TelVector2i;
+                        
+                        function getScreenResolution(): TelVector2i;
+                        function getMountedToScreen(): Boolean;
+                        function getMountedToOffscreen(): Boolean;
+                        function getCurrentContext(): Boolean;
+                
+                
+        end;
+
+
+
+
+end;
 
 
 

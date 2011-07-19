@@ -1034,80 +1034,9 @@ begin
 end;
 
 procedure TelWindow.TakeScreenshot(aFilename: String = '');
-var
-  tmpSurface: PSDL_Surface;
-  rmask, gmask, bmask, amask: Uint32;
-  tmpScreenshotCount: Integer;
-  tmpFilename, formattedDateTime: String;
-  searchResult: TSearchRec;
-  tmpPChar : PChar;
 begin
-  if aFilename = '' then aFilename := ParamStr(0);
-  DateTimeToString(formattedDateTime, 'yyyy-mm-dd_hh-nn-ss', Now);
-
-  tmpScreenshotCount := 1;
-  tmpFilename := aFilename + '_' + formattedDateTime;
-
-  // If someone is spamming the screenshot button key it should not overwrite older files
-  if FindFirst(aFilename + '_' + formattedDateTime + '*.png', faAnyFile, searchResult) = 0 then
-  begin
-    repeat
-      tmpScreenshotCount := tmpScreenshotCount + 1;
-    until FindNext(searchResult) <> 0;
-
-    // Must free up resources used by these successful finds
-    FindClose(searchResult);
-
-    if tmpScreenshotCount >= 2 then
-      tmpFilename := aFilename + '_' + formattedDateTime + ' ' + IntToStr(tmpScreenshotCount);
-  end;
-
-  if UpperCase(ExtractFileExt(tmpFilename)) <> '.PNG' then
-  begin
-    tmpFilename := tmpFilename + '.png';
-  end;
-
-  if SDL_BYTEORDER = SDL_BIG_ENDIAN then
-  begin
-    rmask:=$ff000000;
-    gmask:=$00ff0000;
-    bmask:=$0000ff00;
-    //amask:=$000000ff;
-    amask := 0;
-  end else
-  begin
-    rmask:=$000000ff;
-    gmask:=$0000ff00;
-    bmask:=$00ff0000;
-    //amask:=$ff000000;
-    amask := 0;
-  end;
-
-  tmpSurface := SDL_CreateRGBSurface(SDL_SWSURFACE, Self.Width, Self.Height, 24, rmask, gmask, bmask, amask);
-
-  if not Assigned(tmpSurface) then Exit;
-
-  SDL_LockSurface(tmpSurface);
-
-  //glReadPixels(0, 0, Self.Width, Self.Height, GL_BGR, GL_UNSIGNED_BYTE, tmpSurface^.pixels);
-
-  // Saves OpenGL context into tmpSurface
-  glReadPixels(0, 0, Self.Width, Self.Height, GL_RGB, GL_UNSIGNED_BYTE, tmpSurface^.pixels);
-
-  // By default Elysion's origin is at the top-left corner which is not the
-  // default setting of OpenGL (default setting of OpenGL: bottom-left)
-  // So we need to flip the image (That's all that's happenin' here)
-  SDL_FlipRectV(tmpSurface, PSDLRect(0, 0, Self.Width, Self.Height));
-
-  SDL_UnlockSurface(tmpSurface);
-
-  {$IFDEF USE_VAMPYRE}
-  ImagingSDL.SaveSDLSurfaceToFile(tmpFilename, tmpSurface);
-  {$ELSE}
-  SDL_SaveBMP(tmpSurface, PChar(tmpFilename));
-  {$ENDIF}
-
-  SDL_FreeSurface(tmpSurface);
+                // DEPRACTED
+                // Use GraphicsDevice.GrabFrameBuffer(); 
 end;
 
 function TelWindow.OnPoint(Coord: TelVector2i; Rect: TelRect): Boolean; 

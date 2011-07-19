@@ -14,17 +14,18 @@ program myapplication;
 
 {$I Elysion.inc}
 
+
 uses
-  ElysionApplication  in '../lib/ElysionCore/ElysionApplication.pas',
-  uGame in 'units/uGame.pas';
-  //Besen in '../lib/Dependencies/Besen/BESEN.pas';
+  //ElysionApplication  in '../lib/ElysionCore/ElysionApplication.pas',
+  //uGame in 'units/uGame.pas';
+  PythonEngine in '../lib/Dependencies/P4D/PythonEngine.pas';
 
 var
-  Game: TGame;
+  //Game: TGame;
 
 begin
   Randomize();
-
+{
   // Create game class
   Game := TGame.Create;
 
@@ -49,5 +50,5 @@ begin
     // Flip surface
     ActiveWindow.EndScene;
   end;
-  
+ } 
 end.
