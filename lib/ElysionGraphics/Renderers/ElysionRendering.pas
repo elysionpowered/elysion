@@ -116,30 +116,220 @@ type
         {* Saves all important information for an graphics device initialization *}
         TelGraphicsFormat = record
         
-                        FDeviceIdentifier : String;
-                        FPlatformGLRequirements : String;
-                        FDevicePlatforms : Array of String;
-                        FDeviceHasGLRequirements : Boolean;
+                        {* OpenGL Core Format Information *}
+                        FDeviceIdentifier : String; // The Device Id e.g "Android" or "Linux"
+                        FPlatformGLRequirements : String; //Min Requirements for the platform's gl implementation
+                        FDevicePlatforms : Array of String; //All functional platforms for this device
+                        
+                        {* OpenGL Version Requirements *}
+                        FDeviceHasGLRequirements : Boolean; // Flag for GL-Requirements
                         FMinGLVersionMinor : Integer;
                         FMinGLVersionMajor : Integer;
                         
+                        {* Rendering Options *}
                         FAutoSwapBuffer : Boolean;
                         FAutoFillBackground : Boolean;
                         FUseDoubleBuffering : Boolean;
-                        FUseAdvancedRendering : Boolean;
-                        FUseStereoRendering : Boolean;
-                        FUseOffscreenRendering : Boolean;        
+                        FUseAdvancedRendering : Boolean; // Use advanced features like shaders
+                        FUseStereoRendering : Boolean; // Use stereo rendering
+                        FUseOffscreenRendering : Boolean; // render into an offscreen context
                         
-                        FConfigurationFile : String;
+                        FConfigurationFile : String; // Config File
                         
-                        FHasMinResolution : Boolean;
+                        {* Resolutions *}
+                        FHasMinResolution : Boolean; 
                         FHasMaxResolution : Boolean;
                         FMinResolution : TelVector2i;
                         FMaxResolution : TelVector2i;
 
         end;
-
-
+        
+  
+        {* The TelGraphicsRessource holds information about an abstract ressource based on a texture, a size and position vector
+           and some multithreading flags like the lock-flag. The ressource class is the base for all higher-level graphics
+           systems like sprites or particles *}
+        TelGraphicsRessource = class
+                protected
+                        
+                      FPosition : TelVector2f;
+                      FSize : TelVector2f;
+                      FInitialized : Boolean;
+                      FRessource : TelTexture;
+                      FIsLocked : Boolean; 
+                      
+                        
+                public
+                        { State Management *}
+                        procedure resetProperties;
+                        procedure resetRessource;
+                
+                        {* Ressource Management *}
+                        procedure setPosition( APos : TelVector2f );
+                        procedure setSize( ASize : TelVector2f );
+                        procedure setRessource( ARes : TelTexture );
+                        
+                        {* Useful tools for multithreading *}
+                        procedure lock;
+                        procedure unlock;      
+                        
+                        {* State Informations *}
+                        function getInitialized : Boolean;
+                        function getRessource : TelTexture;
+                        function getIsLocked : Boolean;
+                        function getPosition : TelVector2f;
+                        function getSize : TelVector2f;
+        
+        end;
+        
+        PelGraphicsRessource = ^TelGraphicsRessource;
+        
+        
+        {* The RenderRessource is a base class for every texture ressource that can act 
+           as an screen buffer *}
+        TelRenderRessource = class(TelGraphicsRessource)    
+                public
+                
+                        function create( AWidth, AHeight : Integer ): Boolean;virtual;
+                        function create( AWidth, AHeight : Integer; AFormat : GLuint; AType : GLuint ): Boolean;virtual;
+                        
+                        function freeRessource : Boolean;virtual;
+                
+        end;
+        
+        
+        {* TelRenderBuffer is a abstract base class for every render buffer *}
+        TelRenderBuffer = class(TelGraphicsRessource)
+                protected
+                
+                        FBuffer : GLuint;
+                
+                public
+                
+                        function create( AWidth, AHeight : Integer ): Boolean;virtual;
+                        function create( AWidth, AHeight : Integer; AFormat : GLuint; AType : GLuint ): Boolean;virtual;
+                        
+                        function freeRessource : Boolean;virtual;
+        end;
+        
+        
+        {* The RenderTarget is a base class for every render target in the scene. *}
+        TelRenderTarget = class(TelGraphicsRessource)
+                protected
+                
+                        FBuffer : GLuint;
+                        FRenderBuffers : Array of TelRenderBuffer;
+                        FRenderRessource : Array of TelRenderRessource;
+        
+                public
+                
+                
+                        function create( AWidth, AHeight : Integer ): Boolean;virtual;
+                        function create( AWidth, AHeight : Integer; AFormat : GLuint; AType : GLuint ): Boolean;virtual;
+                        
+                        function freeRessource : Boolean;virtual;
+        
+        end;
+                
+                
+        
+        
+        
+        {* The TelGraphicsProgramOptions determine which use has the current graphics program and
+           in which way it's executed:
+                * RenderOnlyOffscreen is suited for offscreen contexts. It prevents the program from
+                  rendering into the screen buffer and renders only, if a render target is specified
+                  by the graphics device.
+                * RenderOnlyHardware specifies a program that is only executed on hardware on not so
+                  portable. On unknown systems and systems with unknown capatibilities this option will
+                  be automatically ignored by the graphics device to prevent the shader from execution
+                  in an unsuited environment.
+                * RenderOnlyEmulated is the flag that specifies that a program runs always on the cpu
+                  and is kinda emulated by the cpu. This flag is always useful for better backward
+                  compatibility and compatiblity to lower spec platforms, but the results are not so good. *}
+        TelGraphicsProgramOptions = ( RenderOnlyOffscreen, RenderOnlyHardware, RenderOnlyEmulated );
+        
+        
+        {* The TelGraphicsProgram is a abstract interface to any kind of rendering effect. The graphics program only acts
+           as an base class for gpu shaders or cpu driven effects and has no deeper functionality. *}
+        TelGraphicsProgram = class
+                protected
+                        
+                        {* Hardware Flags and Capatibilities *}
+                        FIsEmulated : Boolean;
+                        FRunsOnHardware : Boolean;
+                        FMultithreaded : Boolean;
+                        FMinGLVersionMinor : Integer;
+                        FMinGLVersionMajor : Integer;
+                        FActive : Boolean;                                               
+                        FOption : TelGraphicsProgramOptions;
+                        
+                        {* The Setter *}
+                        procedure setIsEmulated( val : Boolean );
+                        procedure setRunsOnHardware( val : Boolean );
+                        procedure setMultithreaded( val : Boolean );
+                        procedure setMinGLVersionMinor( val : Integer );
+                        procedure setMinGLVersionMajor( val : Integer );
+                        procedure setActive( val : Boolean );                                    
+                                        
+                public
+                        
+                        {* Option Management *}
+                        procedure setOptions( opts : TelGraphicsProgramOptions );virtual;
+                        function getOptions : TelGraphicsProgramOptions;
+                        
+                        {* Ressource Handling *}
+                        function createFromFile( ARessource : String ): Boolean; virtual;
+                        function createFromString( ARessource : String ): Boolean; virtual;
+                        function createFromMemory( AMemory : PByte ): Boolean; virtual;
+                        function bindProgram : Boolean; virtual;
+                        function unbindProgram : Boolean; virtual;
+                        function renderProgram( ARessource : PelGraphicsRessource ): boolean; virtual;
+                        
+                        {* Ressources *}
+                        procedure setDefaultRessource( ARessource : PelGraphicsRessource ): Boolean; virtual;
+                        function getDefaultRessource : PelGraphicsRessource;
+                        
+                        {* Getter *}
+                        function getIsEmulated : Boolean;
+                        function getRunsOnHardware : Boolean;
+                        function getMinGLVersionMinor : Integer;
+                        function getMinGLVersionMajor : Integer;
+                        function getActive : Boolean;
+                
+        end;
+        
+        
+        {* The GraphicsContext creates, initializes and destroys a direct api context. It's also only a base class *}
+        TelGraphicsContext = class
+                protected
+                
+                        FCurrent : Boolean;
+                        FLocked : Boolean;
+                
+                public
+                
+                        function initialize : Boolean;virtual;
+                        function initialize( fFormat : TelGraphicsFormat ): Boolean;virtual;
+                        
+                        function shutdown : Boolean; virtual;
+                        
+                        procedure reset; virtual;
+                        procedure update; virtual;
+                
+                        procedure lock;
+                        procedure unlock;
+                
+        end;
+        
+        PelGraphicsContext = ^TelGraphicsContext;
+        
+        
+        {* The TelGraphicsDevice is the core of the hole graphics system. The class is a direct layer to 
+           the lowlevel graphics api provided by the os. The device has a lot of functionality and it's also
+           used for every rendering operation in the hole graphics system. 
+           
+           But also this class is only a base class and comes with no functionality, but it gives you the power of
+           platform-indiependant rendering and easy porting to other platforms. *}
         TelGraphicsDevice = class
                 protected  
                         
@@ -154,6 +344,9 @@ type
                         FSyncedFramerate : Integer;
                         FHasSyncedFramerate : Boolean;
                         
+                        {* Context *}
+                        FCurrentContext : PelGraphicsContext;
+                        FHasContext : Boolean;
                         
                         {* Format Properties *}
                         FDeviceIdentifier : String;
@@ -207,11 +400,30 @@ type
                         
                 public
                 
+                        {* Context Management *}
+                        procedure makeCurrent( AContext : PelGraphicsContext );
+                        function getCurrent : PelGraphicsContext;
+                        
+                        function hasContext : Boolean;
+                
                         {* Simple Geometry Rendering *}
                         procedure drawLine( AWidth : Single; AFrom : TelVector2i; ATo : TelVector2i );virtual;
                         procedure drawRay( AWidth : Single; Origin : TelVector2i; Direction : TelVector2i );virtual;
                         procedure drawBox( ABox : TRect );virtual;
                         procedure drawEllipse( ARadius :Single; AOrigin : TelVector2i ); virtual;
+                        
+                        
+                        {* RenderTarget Management *}
+                        procedure setActiveRenderTarget( ATarget : TelRenderTarget );
+                        procedure setActiveRenderTargetChannel( AChannel : Integer );
+                        procedure setActiveRenderTargetStencilChannel( AChannel : Integer );
+                        
+                        function getActiveRenderTarget : TelRenderTarget;
+                        function getActiveRenderTargetChannel : Integer;
+                        function getActiveRenderTargetStencilChannel : Integer;
+                        
+                        function usesDefaultRenderTarget : Boolean; //Render To Screen?
+                        procedure setDefaultRenderTarget;
                         
                 
                         {* General Pixel-Based Operations *}
@@ -226,6 +438,9 @@ type
                         
                         
                         {* Buffer Clear *}
+                        procedure swapCurrentBuffer; virtual;
+                        procedure swapScreenBuffer; virtual;
+                        
                         procedure clearScreen;virtual;
                         procedure clearColor( R,G,B : Byte );virtual;
                         procedure clearColor( R,G,B : Single );virtual;
