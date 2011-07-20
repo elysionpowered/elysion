@@ -580,8 +580,6 @@ type
   function makeRect(aX, aY, aW, aH: Single): TelRect; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
   function makeCol(aR, aG, aB: Byte; anA: Byte = 255): TelColor; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  function makeCol(aR, aG, aB: Single; anA: Single = 1.0): TelColor; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
   function makeKey(KeyName, KeyValue: String): TKeyIdent; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
   function makeKey(KeyName: String; KeyValue: Integer): TKeyIdent; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
   function makeKey(KeyName: String; KeyValue: Single): TKeyIdent; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}

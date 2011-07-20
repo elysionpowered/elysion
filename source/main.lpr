@@ -16,9 +16,9 @@ program myapplication;
 
 
 uses
-  //ElysionApplication  in '../lib/ElysionCore/ElysionApplication.pas',
-  //uGame in 'units/uGame.pas';
-  PythonEngine in '../lib/Dependencies/P4D/PythonEngine.pas';
+  ElysionApplication  in '../lib/ElysionCore/ElysionApplication.pas',
+  ElysionRendering in '../lib/ElysionGraphics/Renderers/ElysionRendering.pas',
+  uGame in 'units/uGame.pas';
 
 var
   //Game: TGame;

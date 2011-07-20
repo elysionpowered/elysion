@@ -84,6 +84,8 @@
 unit ElysionRendering;
 
 
+interface
+
 uses
   ElysionUtils,
   ElysionObject,
@@ -96,6 +98,7 @@ uses
   ElysionTexture,
   ElysionContent,
   ElysionLogger,
+  ElysionMath,
 
   {$IFDEF USE_DGL_HEADER}
   dglOpenGL,
@@ -139,8 +142,8 @@ type
                         {* Resolutions *}
                         FHasMinResolution : Boolean; 
                         FHasMaxResolution : Boolean;
-                        FMinResolution : TelVector2i;
-                        FMaxResolution : TelVector2i;
+                        FMinResolution : TelVector2f;
+                        FMaxResolution : TelVector2f;
 
         end;
         
@@ -187,10 +190,14 @@ type
         {* The RenderRessource is a base class for every texture ressource that can act 
            as an screen buffer *}
         TelRenderRessource = class(TelGraphicsRessource)    
+                protected
+                        
+                        FTextureId : gluInt;
+                        
                 public
                 
-                        function create( AWidth, AHeight : Integer ): Boolean;virtual;
-                        function create( AWidth, AHeight : Integer; AFormat : GLuint; AType : GLuint ): Boolean;virtual;
+                        function create( AWidth, AHeight : Integer ): Boolean;overload;virtual;
+                        function create( AWidth, AHeight : Integer; AFormat : GLuint; AType : GLuint ): Boolean;overload;virtual;
                         
                         function freeRessource : Boolean;virtual;
                 
@@ -204,9 +211,8 @@ type
                         FBuffer : GLuint;
                 
                 public
-                
-                        function create( AWidth, AHeight : Integer ): Boolean;virtual;
-                        function create( AWidth, AHeight : Integer; AFormat : GLuint; AType : GLuint ): Boolean;virtual;
+                        function create( AWidth, AHeight : Integer ): Boolean;overload;virtual;
+                        function create( AWidth, AHeight : Integer; AFormat : GLuint; AType : GLuint ): Boolean;overload;virtual;
                         
                         function freeRessource : Boolean;virtual;
         end;
@@ -222,9 +228,8 @@ type
         
                 public
                 
-                
-                        function create( AWidth, AHeight : Integer ): Boolean;virtual;
-                        function create( AWidth, AHeight : Integer; AFormat : GLuint; AType : GLuint ): Boolean;virtual;
+                        function create( AWidth, AHeight : Integer ): Boolean;overload;virtual;
+                        function create( AWidth, AHeight : Integer; AFormat : GLuint; AType : GLuint ): Boolean;overload;virtual;
                         
                         function freeRessource : Boolean;virtual;
         
@@ -286,8 +291,8 @@ type
                         function renderProgram( ARessource : PelGraphicsRessource ): boolean; virtual;
                         
                         {* Ressources *}
-                        procedure setDefaultRessource( ARessource : PelGraphicsRessource ): Boolean; virtual;
-                        function getDefaultRessource : PelGraphicsRessource;
+                        function setDefaultRessource( ARessource : PelGraphicsRessource ): Boolean; virtual;
+                        function getDefaultRessource() : PelGraphicsRessource;
                         
                         {* Getter *}
                         function getIsEmulated : Boolean;
@@ -308,8 +313,8 @@ type
                 
                 public
                 
-                        function initialize : Boolean;virtual;
-                        function initialize( fFormat : TelGraphicsFormat ): Boolean;virtual;
+                        function initialize : Boolean;overload;virtual;
+                        function initialize( fFormat : TelGraphicsFormat ): Boolean;overload;virtual;
                         
                         function shutdown : Boolean; virtual;
                         
@@ -367,15 +372,14 @@ type
                         
                         FHasMinResolution : Boolean;
                         FHasMaxResolution : Boolean;
-                        FMinResolution : TelVector2i;
-                        FMaxResolution : TelVector2i;
+                        FMinResolution : TelVector2f;
+                        FMaxResolution : TelVector2f;
                         
                         
                         {* Screen Properties *}
-                        FScreenResolution : TelVector2i;
+                        FScreenResolution : TelVector2f;
                         FMountedToScreen : Boolean;
                         FMountedToOffscreen : Boolean;
-                        FCurrentContext : Boolean;
                         
                         
                         {* Setter *}
@@ -394,8 +398,8 @@ type
                         procedure setConfigurationFile( a : String );
                         procedure setHasMinResolution( a : Boolean );
                         procedure setHasMaxResolution( a : Boolean );
-                        procedure setMinResolution( a : TelVector2i );
-                        procedure setMaxResolution( a : TelVector2i );
+                        procedure setMinResolution( a : TelVector2f );
+                        procedure setMaxResolution( a : TelVector2f );
      
                         
                 public
@@ -407,10 +411,10 @@ type
                         function hasContext : Boolean;
                 
                         {* Simple Geometry Rendering *}
-                        procedure drawLine( AWidth : Single; AFrom : TelVector2i; ATo : TelVector2i );virtual;
-                        procedure drawRay( AWidth : Single; Origin : TelVector2i; Direction : TelVector2i );virtual;
+                        procedure drawLine( AWidth : Single; AFrom : TelVector2f; ATo : TelVector2f );virtual;
+                        procedure drawRay( AWidth : Single; Origin : TelVector2f; Direction : TelVector2f );virtual;
                         procedure drawBox( ABox : TRect );virtual;
-                        procedure drawEllipse( ARadius :Single; AOrigin : TelVector2i ); virtual;
+                        procedure drawEllipse( ARadius :Single; AOrigin : TelVector2f ); virtual;
                         
                         
                         {* RenderTarget Management *}
@@ -442,8 +446,8 @@ type
                         procedure swapScreenBuffer; virtual;
                         
                         procedure clearScreen;virtual;
-                        procedure clearColor( R,G,B : Byte );virtual;
-                        procedure clearColor( R,G,B : Single );virtual;
+                        procedure clearColor( R,G,B : Byte );overload;virtual;
+                        procedure clearColor( R,G,B : Single );overload;virtual;
                         procedure clearStencil( Stencil : Integer );virtual;
                         procedure clearDepth( Depth : Integer );virtual;
                         
@@ -477,10 +481,10 @@ type
                         function getConfigurationFile(): String;
                         function getHasMinResolution(): Boolean;
                         function getHasMaxResolution(): Boolean;
-                        function getMinResolution(): TelVector2i;
-                        function getMaxResolution(): TelVector2i;
+                        function getMinResolution(): TelVector2f;
+                        function getMaxResolution(): TelVector2f;
                         
-                        function getScreenResolution(): TelVector2i;
+                        function getScreenResolution(): TelVector2f;
                         function getMountedToScreen(): Boolean;
                         function getMountedToOffscreen(): Boolean;
                         function getCurrentContext(): Boolean;
@@ -488,10 +492,157 @@ type
                 
         end;
 
+implementation
 
 
+        {* TelRenderBuffer is a abstract base class for every render buffer *}
+        TelRenderBuffer = class(TelGraphicsRessource)
+                protected
+                
+                        FBuffer : GLuint;
+                
+                public
+                        function create( AWidth, AHeight : Integer ): Boolean;overload;virtual;
+                        function create( AWidth, AHeight : Integer; AFormat : GLuint; AType : GLuint ): Boolean;overload;virtual;
+                        
+                        function freeRessource : Boolean;virtual;
+        end;
+        
+        
+        
+{* TelRenderBuffer *}        
+
+function TelRenderBuffer.create( AWidth, AHeight : Integer ): Boolean;
+begin
 
 end;
+
+function TelRenderBuffer.create( AWidth, AHeight : Integer; AFormat : GLuint; AType : GLuint ): Boolean;
+begin
+
+end;
+
+function TelRenderBuffer.freeRessource : Boolean;
+begin
+
+end;
+
+{* TelRenderRessource *}
+function TelRenderRessource.create(AWidth, AHeight : Integer ): Boolean;
+begin
+
+        glGenTextures(1,@FTextureId);
+        glBindTexture(GL_TEXTURE_2D, FTextureId);
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, AWidth, AHeight, 0, GL_RGBA8, GL_UNSIGNED_BYTE, nil );
+        
+        
+        glBindTexture(GL_TEXTURE_2D,0);
+
+        result := true;
+end;
+
+function TelRenderRessource.create(  AWidth, AHeight : Integer; AFormat : GLuint; AType : GLuint ): Boolean;
+begin
+
+        glGenTextures(1,@FTextureId);
+        glBindTexture(GL_TEXTURE_2D, FTextureId);
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, AWidth, AHeight, 0, AFormat, AType, nil );
+        
+        
+        glBindTexture(GL_TEXTURE_2D,0);
+
+        result := true;
+end;
+
+function TelRenderRessource.freeRessource : Boolean;
+begin
+        glDeleteTextures(1,@FTextureId);
+        result := true;
+end;
+
+{* TelGraphicsRessource *}
+
+function TelGraphicsRessource.getInitialized: Boolean;
+begin
+        result := FInitialized;
+end;        
+
+function TelGraphicsRessource.getRessource : TelTexture;
+begin
+        result := FRessource;
+end;
+
+function TelGraphicsRessource.getIsLocked : Boolean;
+begin
+        result := FIsLocked;
+end;
+
+function TelGraphicsRessource.getPosition : TelVector2f;
+begin
+        result := FPosition;
+end;
+
+function TelGraphicsRessource.getSize : TelVector2f;
+begin
+        result := FSize;
+end;
+        
+procedure TelGraphicsRessource.lock;
+begin
+        FIsLocked := true;
+end;        
+
+procedure TelGraphicsRessource.unlock;
+begin
+        FIsLocked := false;
+end;
+
+procedure TelGraphicsRessource.setRessource( ARes : TelTexture );
+begin
+        if ( FIsLocked <> true ) and ( FInitialized = True ) then
+                FRessource := ARes;
+end;        
+        
+procedure TelGraphicsRessource.setSize( ASize : TelVector2f );
+begin
+        if ( FIsLocked <> true ) then
+                FSize := ASize;
+end;        
+        
+procedure TelGraphicsRessource.setPosition(APos : TelVector2f );
+begin
+        if ( FIsLocked <> true ) then
+                FPosition := APos;
+end;        
+
+
+        
+procedure TelGraphicsRessource.resetRessource;
+begin
+        if ( FInitialized ) and (FIsLocked = False) then
+                FRessource.reload();
+end;        
+       
+procedure TelGraphicsRessource.resetProperties;
+begin
+        if ( FIsLocked = True ) then
+                exit;
+
+        FPosition.X := 0;
+        FPosition.Y := 0;
+        FSize.X := 0;
+        FSize.Y := 0;
+        
+        FInitialized := true;
+end;
+
+
+
+end.
 
 
 

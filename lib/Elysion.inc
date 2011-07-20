@@ -10,8 +10,6 @@
 {.$DEFINE USE_SDL_IMAGE}
 {$DEFINE USE_VAMPYRE}
 
-{$I Dependencies/P4D/Definition.Inc}
-
 
 {$IFNDEF DARWIN}
   {$DEFINE USE_DGL_HEADER}
