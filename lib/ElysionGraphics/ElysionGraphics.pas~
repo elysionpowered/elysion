@@ -650,6 +650,7 @@ var
   IsTexture: Boolean;
 begin
 
+  end;
 end;
 
 procedure TelSprite.Update(dt: Double = 0.0);
