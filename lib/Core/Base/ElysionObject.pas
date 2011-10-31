@@ -18,7 +18,6 @@ uses
   ElysionInterfaces,
 
   ElysionUtils,
-  ElysionMath,
   ElysionTypes,
   ElysionLogger,
   SysUtils;
@@ -46,12 +45,12 @@ private
     *)
   function GetUniqueID(): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 protected
-  FName: String;      //< Privileged: Name of an object -> Access (read/write) through published properties (TelObject.Name)
-  FNote: String;      //< Privileged: Note of an object -> Access (read/write) through published properties (TelObject.Note)
-  FDrawable: Boolean; //< Privileged: Draw flag of an object -> Read-only
-  FID: Integer;       //< Privileged: ID of an object -> Access (read/write) through published properties (TelObject.ID)
-  FTag: Cardinal;     //< Privileged: Tag of an object -> Access (read/write) through published properties (TelObject.Tag)
-  FDebug: Boolean;    //< Privileged: Debug flag -> Access (read/write) though published properties (TelObject.Debug)
+  fName: String;          //< Privileged: Name of an object -> Access (read/write) through published properties (TelObject.Name)
+  fNote: String;          //< Privileged: Note of an object -> Access (read/write) through published properties (TelObject.Note)
+  fID: Integer;           //< Privileged: ID of an object -> Access (read/write) through published properties (TelObject.ID)
+  fTag: Cardinal;         //< Privileged: Tag of an object -> Access (read/write) through published properties (TelObject.Tag)
+  fDebug: Boolean;        //< Privileged: Debug flag -> Access (read/write) though published properties (TelObject.Debug)
+  fIgnoreLogger: Boolean; //< Privileged: Ignore logging -> Won't log when object is created or destroyed (TelObject.IgnoreLogger)
 public
   (**
     * constructor TelObject.Create @br
@@ -101,14 +100,15 @@ public
     *)
   procedure Log(Msg: Single; LogMessageType: TLogMessageType = ltError); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 published
-  property Debug: Boolean read FDebug write FDebug default false; //< Debug flag
+  property Debug: Boolean read fDebug write fDebug default false; //< Debug flag
 
-  property Drawable: Boolean read FDrawable;             //< Determines if object can be drawn on the screen
-  property Name: String read FName write FName;          //< Name of an object
-  property ID: Integer read FID write FID default 0;     //< ID of an object
+  property Name: String read fName write fName;          //< Name of an object
+  property ID: Integer read fID write fID default 0;     //< ID of an object
   property UniqueID: String read GetUniqueID;            //< Unique ID of an object; can't be changed
-  property Note: String read FNote write FNote;          //< Note of an object: For example to be used for description, tooltip, etc.
-  property Tag: Cardinal read FTag write FTag default 0; //< Tag of an object
+  property Note: String read fNote write fNote;          //< Note of an object: For example to be used for description, tooltip, etc.
+  property Tag: Cardinal read fTag write fTag default 0; //< Tag of an object
+
+  property IgnoreLogger: Boolean read fIgnoreLogger write fIgnoreLogger default false; //< Ignores sending passive messages
 end;
 	
 //TelObjectList = class(TList)
@@ -129,18 +129,18 @@ TelFontContainer = class(TelObject)
 protected
   fText: String;
 
-  function GetHeight(): Integer; virtual; abstract;
-  function GetWidth(): Integer; virtual; abstract;
+  function GetHeight: Integer; virtual;
+  function GetWidth: Integer; virtual;
 
-  function GetSize(): Integer; virtual; abstract;
-  procedure SetSize(Value: Integer); virtual; abstract; //< May be empty depending on the implementation
+  function GetSize: Integer; virtual;
+  procedure SetSize(Value: Integer); virtual; //< May be empty depending on the implementation
 
   procedure SetText(aText: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
   function GetText: String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 public
   procedure LoadFromFile(const aFilename: String); virtual; abstract;
 
-  function GetWidth_Text(Text: String): Integer; virtual; abstract;
+  function GetWidth_Text(Text: String): Integer; virtual;
 
   procedure TextOut(aPoint: TelVector3f; aText: String = ''; LineBreak: Boolean = true); virtual; abstract;
 published
@@ -163,29 +163,24 @@ var
 // TelObject
 //
 
-constructor TelObject.Create();
+constructor TelObject.Create;
 begin
-  inherited;
-	
-  fDrawable := false;
+  inherited Create;
+
   fObjectCount := ObjectCount;
-  
-  if isLoggerActive then
-  begin
-    if ltNote in TelLogger.GetInstance.Priorities then
-      TelLogger.GetInstance.WriteLog('<i>Object created:</i> ' + Self.UniqueID, 'Initialization', ltNote, true);
-  end;
+  fIgnoreLogger := false;
+
+
+  if ltNote in TelLogger.GetInstance.Priorities then
+    TelLogger.GetInstance.WriteLog('<i>Object created:</i> ' + Self.UniqueID, 'Initialization', ltNote, true);
 
   ObjectCount := ObjectCount + 1;
 end;
 
 destructor TelObject.Destroy;
 begin
-  if isLoggerActive then
-  begin
-    if ltNote in TelLogger.GetInstance.Priorities then
-      TelLogger.GetInstance.WriteLog('<i>Object destroyed:</i> ' + Self.UniqueID, 'Finalization', ltNote, true);
-  end;
+  if ltNote in TelLogger.GetInstance.Priorities then
+    TelLogger.GetInstance.WriteLog('<i>Object destroyed:</i> ' + Self.UniqueID, 'Finalization', ltNote, true);
 	
   inherited;
 end;
@@ -224,6 +219,31 @@ end;
 function TelFontContainer.GetText: String;
 begin
   Result := fText;
+end;
+
+function TelFontContainer.GetSize: Integer;
+begin
+  Result := 0;
+end;
+
+procedure TelFontContainer.SetSize(Value: Integer);
+begin
+  ;
+end;
+
+function TelFontContainer.GetHeight: Integer;
+begin
+  Result := 0;
+end;
+
+function TelFontContainer.GetWidth: Integer;
+begin
+  Result := 0;
+end;
+
+function TelFontContainer.GetWidth_Text(Text: String): Integer;
+begin
+  Result := 0;
 end;
 
 end.

@@ -7,7 +7,7 @@ interface
 uses
   ElysionObject,
   ElysionTexture,
-  ElysionGraphics,
+  ElysionSprite,
   ElysionGUI;
 
 type
@@ -145,4 +145,4 @@ finalization
   Assets.Destroy;
 {$ENDIF}
 
-end.
+end.

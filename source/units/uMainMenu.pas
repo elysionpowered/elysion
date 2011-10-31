@@ -9,9 +9,10 @@ uses
   ElysionGraphics,
   ElysionAudio,
   ElysionApplication,
+  ElysionMenu,
+  ElysionLabel,
   ElysionGUI,
   ElysionInput,
-  ElysionMath,
   ElysionAnimator,
   ElysionAssets,
 
@@ -105,7 +106,7 @@ begin
   begin
     //GameState := gsGame;
     SceneDirector.SwitchTo('game');
-    fNewGameClick := true;
+    //fNewGameClick := true;
   end;
 
 
@@ -123,9 +124,8 @@ begin
   end;
 
   if Menu.ButtonClick('Quit') or Input.XBox360Controller.B() then
-  begin
     Application.Quit;
-  end;
+
 end;
 
 end.

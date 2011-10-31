@@ -32,7 +32,7 @@ private
   FVolume: ShortInt;
   procedure SetVolume(Value: ShortInt); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 public
-  constructor Create(); Override;
+  constructor Create; Override;
   destructor Destroy(); Override;
 
   procedure SetPosition(Position: Double); {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -110,9 +110,9 @@ begin
     if FileExists(Directory+Content.RootDirectory+FileName) then
       fMusic := Mix_LoadMUS(PChar(Directory+Content.RootDirectory+FileName))
     else
-      if IsLoggerActive then TelLogger.GetInstance.WriteLog('File not found: '+Directory+Content.RootDirectory+FileName, ltError);
+      TelLogger.GetInstance.WriteLog('File not found: '+Directory+Content.RootDirectory+FileName, ltError);
 
-  end else if IsLoggerActive then TelLogger.GetInstance.WriteLog('No filename specifies.', ltError);
+  end else TelLogger.GetInstance.WriteLog('No filename specifies.', ltError);
 end;
 
 procedure TelMusic.SetVolume(Value: ShortInt); 
@@ -176,8 +176,8 @@ begin
     if FileExists(Directory+Content.RootDirectory+FileName) then
       fSound := Mix_LoadWAV(PChar(Directory+Content.RootDirectory+FileName))
     else
-      if IsLoggerActive then TelLogger.GetInstance.WriteLog('File not found: '+Directory+Content.RootDirectory+FileName, ltError);
-  end else if IsLoggerActive then TelLogger.GetInstance.WriteLog('No filename specifies.', ltError);
+      TelLogger.GetInstance.WriteLog('File not found: '+Directory+Content.RootDirectory+FileName, ltError);
+  end else TelLogger.GetInstance.WriteLog('No filename specifies.', ltError);
 end;
 
 Procedure TelSound.Play; 

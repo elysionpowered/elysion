@@ -16,7 +16,6 @@ uses
   ElysionApplication,
   ElysionGraphics,
   ElysionLogger,
-  ElysionMath,
   ElysionContent,
   ElysionUtils,
 
@@ -80,7 +79,7 @@ TelTrueTypeFont = class(TelFontContainer)
     function GetWidth(): Integer; Override;
     function GetHeight(): Integer; Override;
   public
-    constructor Create(); Override;
+    constructor Create; Override;
     destructor Destroy; Override;
 
     procedure LoadFromFile(const aFilename: String); Overload;
@@ -139,7 +138,7 @@ begin
   if TTF_Init <> 0 then
   begin
     Result := false;
-    if isLoggerActive then TelLogger.GetInstance.WriteLog('Could not initialize SDL_TTF');
+    TelLogger.GetInstance.WriteLog('Could not initialize SDL_TTF');
     Exit;
   end;
 
@@ -194,7 +193,7 @@ end;
 constructor TelTrueTypeFont.Create();
 begin
   inherited Create;
-  fColor := makeCol(0, 0, 0);
+  fColor := makeCol(0, 0, 0, 255);
 
   fChange := true;
   fFont := nil;
@@ -239,10 +238,10 @@ begin
       fTextStyle := tsNormal;
       fFontRender := rtSolid;
 
-      if isLoggerActive then TelLogger.GetInstance.WriteLog('<i>' + Self.UniqueID + '</i><br /> File loaded: ' + aFilename, ltNote, true);
+      TelLogger.GetInstance.WriteLog('<i>' + Self.UniqueID + '</i><br /> File loaded: ' + aFilename, ltNote, true);
 
-    end else if isLoggerActive then TelLogger.GetInstance.WriteLog('File not found: '+Directory+Content.RootDirectory+aFileName, ltError);
-  end else if isLoggerActive then TelLogger.GetInstance.WriteLog('No filename specifies.', ltError);
+    end else TelLogger.GetInstance.WriteLog('File not found: '+Directory+Content.RootDirectory+aFileName, ltError);
+  end else TelLogger.GetInstance.WriteLog('No filename specifies.', ltError);
 end;
 
 procedure TelTrueTypeFont.SetFontStyle(aFontStyles: TFontStyles);

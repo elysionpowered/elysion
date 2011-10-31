@@ -11,15 +11,16 @@ uses
   ElysionTypes,
   ElysionInput,
   ElysionNode,
-  ElysionGraphics,
+  ElysionSprite,
   ElysionGUI,
   ElysionTimer,
   ElysionScene,
   ElysionColor,
   ElysionTrueTypeFont,
   ElysionAnimator,
-  ElysionMath,
   ElysionStorage,
+  ElysionLayer,
+  ElysionCamera,
   uGlobal,
   uBasic,
   uConfig;
@@ -27,11 +28,12 @@ uses
 type
   TGameScreen = class(TelScene)
   private
-    fSprite: TelSprite;
+    fSprite: TelMovingSprite;
 
     fFont: TelTrueTypeFont;
 
-    fPaused, fGameOver: Boolean;
+    fGameOver: Boolean;
+
 
     procedure DrawDialog(Title, Text: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
   public
@@ -46,10 +48,9 @@ type
   published
     property Font: TelTrueTypeFont read fFont write fFont;
 
-    property Paused: Boolean read fPaused write fPaused;
     property GameOver: Boolean read fGameOver;
     
-    property Sprite: TelSprite read fSprite write fSprite;
+    property Sprite: TelMovingSprite read fSprite write fSprite;
   end;
 
 implementation
@@ -75,7 +76,7 @@ begin
 
 
   // Create Sprite
-  Sprite := TelSprite.Create;
+  Sprite := TelMovingSprite.Create;
 
   // Load logo image from disk
   Sprite.LoadFromFile(GetResImgPath + 'logo.png');
@@ -84,6 +85,10 @@ begin
   Sprite.Position := makeV3f(64, 64);
 
   Self.Add(Sprite);
+
+
+  Self.SetPauseKey(Key.P());
+
   (**
     * Add sprite to the scene. We don't need to call Sprite.Draw or Sprite.Update(dt)
     * ourselves, the scene will take care of it if we call the inherited method.
@@ -133,7 +138,6 @@ end;
 procedure TGameScreen.Reset;
 begin
   // Reset game values
-  fPaused := false;
   fGameOver := false;
 end;
 
@@ -169,18 +173,7 @@ begin
     
     if Sprite.Click then Sprite.Color := makeCol(Random(255), Random(255), Random(255));
 
-    if Input.Keyboard.IsKeyDown(Key.Left()) or Input.XBox360Controller.LStick.Left then Sprite.Rotate(7.5 * dt);
-    if Input.Keyboard.IsKeyDown(Key.Right()) or Input.XBox360Controller.LStick.Right then Sprite.Rotate(-7.5 * dt);
 
-
-    // Stoney's Drag - n - Drop - Playground (unstable)
-    (*if Sprite.DragStart then Sprite.Color := makeCol(255, 0, 0)
-    else Sprite.Color := makeCol(255, 255, 255);
-
-    if Sprite.Dragging then Sprite.Alpha := 128
-    else Sprite.Alpha := 255;
-
-    if Sprite.DragEnd then Sprite.Color := makeCol(0, 0, 255);*)
 
   end;
 
@@ -189,7 +182,7 @@ end;
 procedure TGameScreen.HandleEvents;
 begin
   // Pause game when P has been pressed
-  if Input.Keyboard.isKeyHit(Key.P) then Paused := not Paused;
+  //if Input.Keyboard.isKeyHit(Key.P) then Paused := not Paused;
 
   // Reset game when hitting the 'R' key or Start on the XBox controller
   if Input.Keyboard.isKeyHit(Key.R) or Input.XBox360Controller.Start() then Self.Reset;

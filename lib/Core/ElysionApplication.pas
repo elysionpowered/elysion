@@ -15,7 +15,6 @@ interface
 uses
   ElysionTypes,
   ElysionObject,
-  ElysionMath,
   ElysionColor,
   ElysionContent,
   ElysionLogger,
@@ -42,6 +41,15 @@ uses
   Classes;
 
 type
+
+// TelVideoFlags
+TelVideoFlag =
+  (vfNull,      //< vfNull: Use for console applications, no video surface will be created
+   vfAuto,      //< vfAuto: Automatically checks if hardware or software render mode are available
+   vfHardware,  //< vfHardware: Use hardware surface
+   vfSoftware); //< vfSoftware: Use software surface
+
+TelProjectionMode = (pmPerspective, pmOrtho);
 
 {
     @classname @br
@@ -180,6 +188,7 @@ TelWindow = class(TelObject)
     fFPSTimer, fDeltaTimer, fCursorReset: TelTimer;
 
     fMouseDownCount, fMouseUpCount, fMouseMotionCount: Integer;
+    fProjection: TelProjectionMode;
 
     fDeltaTime: Double;
 
@@ -210,6 +219,11 @@ TelWindow = class(TelObject)
 
     function GetDisplayOrientation(): TDisplayOrientation; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     function GetWideScreen(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    // Set projection matrix
+    // Expert function: Automatically Ortho mode is being called, this function needs to be used
+    // if you want to display 3d objects on the screen, you need to call perspective mode
+    procedure SetProjection(ProjectionMode: TelProjectionMode); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
   public
 
@@ -264,11 +278,6 @@ TelWindow = class(TelObject)
 
       // Use EndScene last thing before the end of the game loop
       procedure EndScene(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-      // Set projection matrix
-      // Expert function: Automatically Ortho mode is being called, this function needs to be used
-      // if you want to display 3d objects on the screen, you need to call perspective mode
-      procedure SetProjection(ProjectionMode: TelProjectionMode); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
 
       // Expert function: Use background image instead of a color
@@ -344,6 +353,7 @@ TelWindow = class(TelObject)
     property FPS: Single read GetFPS write SetFPS;
     property LimitFPS: Boolean read fLimitFPS write fLimitFPS;
 
+    property Projection: TelProjectionMode read fProjection write SetProjection;
 
     // Values for experts
     property FoVY: Double read FFoVY write FFoVY;
@@ -442,6 +452,9 @@ destructor TAppContainer.Destroy;
 begin
   Finalize();
 
+
+  if Self.Debug then TelLogger.GetInstance.Dump();
+
   inherited Destroy;
 
   Halt(0);
@@ -454,7 +467,7 @@ begin
   if SDL_Init(SDL_INIT_EVERYTHING) <> 0 then
   begin
     Result := false;
-    if isLoggerActive then TelLogger.GetInstance.WriteLog('Error initializing SDL', ltError);
+    TelLogger.GetInstance.WriteLog('Error initializing SDL', ltError);
     Exit;
   end else FInitialized := true;
 
@@ -702,11 +715,11 @@ begin
       if VideoInfo^.hw_available <> 0  then
       begin
         FVideoFlag := vfHardware;
-	if isLoggerActive then TelLogger.GetInstance.WriteLog('Using hardware surface.', ltNote);
+	TelLogger.GetInstance.WriteLog('Using hardware surface.', ltNote);
       end else
       begin
         FVideoFlag := vfSoftware;
-	if isLoggerActive then TelLogger.GetInstance.WriteLog('Using software surface.', ltNote);
+	TelLogger.GetInstance.WriteLog('Using software surface.', ltNote);
       end;
 
       VideoInfo := nil;
@@ -748,21 +761,23 @@ begin
 
     glClearDepth(1.0);                                    // Depth Buffer Setup
     glEnable(GL_DEPTH_TEST);                        // Aktiviert Depth Testing
-    glDepthFunc(GL_LEQUAL);                        // Bestimmt den Typ des Depth Testing
+    glDepthFunc(GL_ALWAYS);                        // Bestimmt den Typ des Depth Testing
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);// Qualitativ bessere Koordinaten Interpolation
 
     TextureManager.ReloadAllTextures();
 
     SetBackgroundColor(Color.clFreezeDevBlue);
 
-    glViewport(0, 0, FResolution.X, FResolution.Y);
+    //glViewport(0, 0, FResolution.X, FResolution.Y);
+    //SetProjection(pmOrtho);
     SetProjection(pmOrtho);
+
     glTranslatef(0, 0, 0);
 
     if not Assigned(Self.SDL_Surface) then
     begin
       Result := false;
-	    if isLoggerActive then TelLogger.GetInstance.WriteLog('Surface not assigned', ltError);
+      TelLogger.GetInstance.WriteLog('Surface not assigned', ltError);
             Exit;
             Destroy;
     end else
@@ -802,9 +817,9 @@ begin
   fResScale.Y := FResolution.Y / NativeRes.Y;
 
 
-  if isLoggerActive then TelLogger.GetInstance.WriteLog('Resolution: %d x %d pixels', [FResolution.X, FResolution.Y], ltNote);
-  if isLoggerActive then TelLogger.GetInstance.WriteLog('Native Resolution: %d x %d pixels', [FNativeResolution.X, FNativeResolution.Y], ltNote);
-  if isLoggerActive then TelLogger.GetInstance.WriteLog('Scale.X: %f  Scale.Y: %f', [ResScale.X, ResScale.Y], ltNote);
+  TelLogger.GetInstance.WriteLog('Resolution: %d x %d pixels', [FResolution.X, FResolution.Y], ltNote);
+  TelLogger.GetInstance.WriteLog('Native Resolution: %d x %d pixels', [FNativeResolution.X, FNativeResolution.Y], ltNote);
+  TelLogger.GetInstance.WriteLog('Scale.X: %f  Scale.Y: %f', [ResScale.X, ResScale.Y], ltNote);
 end;
 
 function TelWindow.GetNativeResolution: TelVector2i;
@@ -838,6 +853,8 @@ end;
 
 procedure TelWindow.SetProjection(ProjectionMode: TelProjectionMode); 
 begin
+  fProjection := ProjectionMode;
+
   glMatrixMode(GL_PROJECTION);
 
   glLoadIdentity;
@@ -946,8 +963,8 @@ begin
         fBackgroundImage := LoadSDLSurfaceFromFile(Directory+Content.RootDirectory+FileName);
       {$ENDIF}
 
-    end else if IsLoggerActive then TelLogger.GetInstance.WriteLog('File not found: '+Directory+Content.RootDirectory+FileName, ltError);
-  end else if IsLoggerActive then TelLogger.GetInstance.WriteLog('No filename specifies.', ltError);
+    end else TelLogger.GetInstance.WriteLog('File not found: '+Directory+Content.RootDirectory+FileName, ltError);
+  end else TelLogger.GetInstance.WriteLog('No filename specifies.', ltError);
 end;
 
 procedure TelWindow.SetBackgroundColor(Color: TelColor); 
@@ -987,8 +1004,8 @@ begin
       FIcon := PChar(Filename);
       SDL_WM_SetIcon(TMP_Icon, 0);
     end
-      else if IsLoggerActive then TelLogger.GetInstance.WriteLog('File not found: ' + Directory + Content.RootDirectory + FileName, ltError);
-  end else if IsLoggerActive then TelLogger.GetInstance.WriteLog('No filename specified.', ltError);
+      else TelLogger.GetInstance.WriteLog('File not found: ' + Directory + Content.RootDirectory + FileName, ltError);
+  end else TelLogger.GetInstance.WriteLog('No filename specified.', ltError);
 
   if TMP_Icon <> nil then SDL_FreeSurface(TMP_Icon);
 end;
@@ -1015,8 +1032,8 @@ begin
 
       FIcon := PChar(Filename);
       SDL_WM_SetIcon(TMP_Icon, 0);
-    end else if IsLoggerActive then TelLogger.GetInstance.WriteLog('File not found: '+Directory+Content.RootDirectory+FileName, ltError);
-  end else if IsLoggerActive then TelLogger.GetInstance.WriteLog('No filename specified.', ltError);
+    end else TelLogger.GetInstance.WriteLog('File not found: '+Directory+Content.RootDirectory+FileName, ltError);
+  end else TelLogger.GetInstance.WriteLog('No filename specified.', ltError);
 
   if TMP_Icon <> nil then SDL_FreeSurface(TMP_Icon);
 end;

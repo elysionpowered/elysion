@@ -19,6 +19,8 @@ uses
   ElysionTrueTypeFont,
   ElysionAnimator,
   ElysionStorage,
+  ElysionLayer,
+  ElysionCamera,
   uGlobal,
   uBasic,
   uConfig;
@@ -26,11 +28,16 @@ uses
 type
   TGameScreen = class(TelScene)
   private
-    fSprite: TelSprite;
+    fSprite: TelMovingSprite;
 
     fFont: TelTrueTypeFont;
 
     fPaused, fGameOver: Boolean;
+    fCamera: TelCamera;
+    fLayer: TelLayer;
+
+    fAnimator: TelAnimator;
+
 
     procedure DrawDialog(Title, Text: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
   public
@@ -48,7 +55,7 @@ type
     property Paused: Boolean read fPaused write fPaused;
     property GameOver: Boolean read fGameOver;
     
-    property Sprite: TelSprite read fSprite write fSprite;
+    property Sprite: TelMovingSprite read fSprite write fSprite;
   end;
 
 implementation
@@ -73,8 +80,11 @@ begin
   Font.RenderStyle := rtBlended;
 
 
+  fCamera := TelCamera.Create;
+  //fCamera.Viewport := makeRect(0, 0, 1024, 600);
+
   // Create Sprite
-  Sprite := TelSprite.Create;
+  Sprite := TelMovingSprite.Create;
 
   // Load logo image from disk
   Sprite.LoadFromFile(GetResImgPath + 'logo.png');
@@ -82,7 +92,20 @@ begin
   // Set position to
   Sprite.Position := makeV3f(64, 64);
 
-  Self.Add(Sprite);
+  fCamera.Add(Sprite);
+
+  Self.Add(fCamera);
+
+  fAnimator := TelAnimator.Create(fSprite);
+  fAnimator.FadeOutEffect();
+
+  //fLayer := TelLayer.Create;
+  //fLayer.Add(Sprite);
+
+  //Self.Add(fLayer);
+
+  //Self.Add(Sprite);
+
   (**
     * Add sprite to the scene. We don't need to call Sprite.Draw or Sprite.Update(dt)
     * ourselves, the scene will take care of it if we call the inherited method.
@@ -140,6 +163,8 @@ procedure TGameScreen.Render;
 begin
   inherited;
 
+  fCamera.Draw;
+
   // Draw game paused overlay
   if Paused then
   begin
@@ -168,9 +193,32 @@ begin
     
     if Sprite.Click then Sprite.Color := makeCol(Random(255), Random(255), Random(255));
 
-    if Input.Keyboard.IsKeyDown(Key.Left()) or Input.XBox360Controller.LStick.Left then Sprite.Rotate(7.5 * dt);
-    if Input.Keyboard.IsKeyDown(Key.Right()) or Input.XBox360Controller.LStick.Right then Sprite.Rotate(-7.5 * dt);
+    Sprite.Velocity.Clear();
 
+    (*if Input.XBox360Controller.DPad.Left() then Sprite.Velocity.X := - 100 * dt;
+    if Input.XBox360Controller.DPad.Right() then Sprite.Velocity.X := 100 * dt;
+    if Input.XBox360Controller.DPad.Up() then Sprite.Velocity.Y := - 100 * dt;
+    if Input.XBox360Controller.DPad.Down() then Sprite.Velocity.X := 100 * dt; *)
+
+    if Input.XBox360Controller.LStick.Up then Sprite.Top := Sprite.Top - 1;
+
+    (*Sprite.Velocity := Input.XBox360Controller.LStick.ToVector2f(500000 * dt);
+    Self.Log(Sprite.Left);
+    Self.Log(Sprite.Top);*)
+
+    //if Input.Keyboard.IsKeyDown(Key.Left()) or Input.XBox360Controller.LStick.Left then Sprite.Rotate(7.5, dt);
+    //if Input.Keyboard.IsKeyDown(Key.Right()) or Input.XBox360Controller.LStick.Right then Sprite.Rotate(-7.5, dt);
+
+    //fCamera.Velocity.Clear();
+    if Input.Keyboard.IsKeyDown(Key.Left) then fCamera.Viewport.X := fCamera.Viewport.X + 1;
+
+    if Input.Keyboard.IsKeyHit(Key.Space()) then fAnimator.Start();
+
+    fAnimator.Update(dt);
+
+    //Sprite.Velocity.Clear;
+
+    //Sprite.Velocity := Input.XBox360Controller.LStick.ToVector2f(100 * dt);
 
     // Stoney's Drag - n - Drop - Playground (unstable)
     (*if Sprite.DragStart then Sprite.Color := makeCol(255, 0, 0)
@@ -180,6 +228,8 @@ begin
     else Sprite.Alpha := 255;
 
     if Sprite.DragEnd then Sprite.Color := makeCol(0, 0, 255);*)
+
+    //if Input.Keyboard.IsKeyDown(Key.Left()) then fCamera.Left := fCamera.Left + 10;
 
   end;
 

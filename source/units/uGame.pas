@@ -8,11 +8,10 @@ uses
   ElysionScene,
   ElysionLogger,
   ElysionColor,
-  ElysionGraphics,
+  ElysionSprite,
   ElysionTrueTypeFont,
   ElysionTimer,
   ElysionInput,
-  ElysionMath,
   ElysionUtils,
 
   SysUtils,
@@ -91,7 +90,6 @@ begin
   if (ForceWindow) and (not ForceFullscreen) then tmpFullscreen := false
     else tmpFullscreen := true;
 
-
   // Super
   if ((Environment.Width = 1024) and (Environment.Height = 600)) then
     inherited Create(Environment.Width, Environment.Height, AppConfig.Bits, true)
@@ -111,8 +109,11 @@ begin
 end;
 
 procedure TGame.Initialize;
-var I : integer;
 begin
+
+  // Initialize Audio here if you have any sound/music
+  //Audio.Initialize();
+
 
   ActiveWindow.BeginScene;
   fLoadScreen.Draw;

@@ -15,7 +15,7 @@ program myapplication;
 {$I Elysion.inc}
 
 uses
-  ElysionApplication  in '../lib/ElysionCore/ElysionApplication.pas',
+  ElysionApplication in '../lib/ElysionApplication.pas',
   uGame in 'units/uGame.pas';
 
 var
@@ -29,7 +29,7 @@ begin
 
   // Loads images and config files and everything else
   Game.Initialize();
-
+  
   // Game Loop
   while Application.Run do
   begin
@@ -49,4 +49,4 @@ begin
     ActiveWindow.EndScene;
   end;
   
-end.
+end.

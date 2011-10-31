@@ -16,10 +16,6 @@
 *.app
 *.rst
 
-# Backup #
-##########
-*.bak
-
 # Packages #
 ############
 # it's better to unpack these files and commit the raw source
@@ -52,7 +48,6 @@ bin/*.a
 bin/*.dbg
 bin/*.or
 bin/main
-bin/myapp
 
 # Excluded files #
 ##################

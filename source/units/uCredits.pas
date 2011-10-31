@@ -10,8 +10,8 @@ uses
   ElysionScene,
   ElysionGraphics,
   ElysionInput,
+  ElysionButton,
   ElysionGUI,
-  ElysionMath,
   ElysionTrueTypeFont,
 
   uBasic,

@@ -22,14 +22,18 @@ interface
 uses
   ElysionObject,
   ElysionTypes,
+  ElysionAnimTypes,
   ElysionTimer,
   ElysionNode,
   ElysionMath,
 
-  Classes,
-  Math;
+  Classes;
 
 type
+  // lmDefault = Use forward or inverse animation as specified
+  // lmPulsating = Use forward or inverse animation first, then the other animation
+  TelLoopMode = (lmDefault, lmPulsating);
+
   (**
    * Class: TelAnimator @br
    * Group: Optional @br
@@ -43,9 +47,11 @@ type
       fTimer: TelTimer;
       fTarget: TelNode;
       fTransition: TelAnimationTransition;
-      fFinished: Boolean;
+      fFinished, fInverse: Boolean;
 
       fDelay, fMaxLoopCount, fCurrentLoop: Integer;
+      fTolerance: Single;
+      fLoopMode: TelLoopMode;
 
       function GetActive(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
@@ -96,8 +102,13 @@ type
 
       property Finished: Boolean read GetFinished;
 
+      property Inverse: Boolean read fInverse write fInverse;
+
       property CurrentLoop: Integer read fCurrentLoop;
+
+
       property LoopCount: Integer read fMaxLoopCount write fMaxLoopCount;
+      property LoopMode: TelLoopMode read fLoopMode write fLoopMode;
 
       //property KeyFrame[Index: Integer]
 
@@ -105,6 +116,7 @@ type
 
       property Target: TelNode read fTarget write fTarget;
       property Transition: TelAnimationTransition read fTransition write fTransition;
+      property Tolerance: Single read fTolerance write fTolerance;
   end;
 
   (**
@@ -173,8 +185,11 @@ begin
 
   Duration := 1000;
   LoopCount := 1;
+  LoopMode := lmDefault;
   fCurrentLoop := 0;
   Delay := 0;
+
+  fTolerance := 0.05;
 
   fFinished := false;
 end;
@@ -183,8 +198,9 @@ constructor TelAnimator.Create(aTarget: TelNode);
 begin
   Create();
 
-  if aTarget = nil then
-    Self.Log('Action ' + Self.UniqueID + ' needs viable node object.')
+  // TODO: Check if aTarget is instance of TelNode
+  if (aTarget = nil) then
+    Self.Log('Animator ' + Self.UniqueID + ' needs viable node object.')
   else fTarget := aTarget;
 end;
 
@@ -475,7 +491,7 @@ procedure TelAnimator.Update(dt: Double = 0.0);
               fTarget.Position.Y := Lerp(AnimProperty.StartPosition.Y, AnimProperty.EndPosition.Y, Step);
           end;
 
-          // Usually you don't need to worry about the Z position unless you are using Horde 3D
+          // Usually you don't need to worry about the Z position unless you are using Horde 3D or 3D in general
           if AnimProperty.StartPosition.Z <> AnimProperty.EndPosition.Z then
           begin
             if AnimProperty.StartPosition.Z > AnimProperty.EndPosition.Z then

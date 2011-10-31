@@ -15,10 +15,12 @@ uses
     Classes,
 
     ElysionObject,
+    ElysionEvents,
     ElysionApplication,
-    ElysionMath,
-    ElysionTypes,
-    ElysionNode;
+    ElysionInput,
+    ElysionNode,
+    ElysionEntity,
+    ElysionLayer;
 
 
 type
@@ -30,7 +32,7 @@ TelGame = class(TelObject)
   public
     // Creates TelScene with no strings attached
     // A window needs to be created manually if not done yet
-    constructor Create(); Overload; Override;
+    constructor Create; Overload; Override;
     
     // Creates TelScene and creates a window
     constructor Create(Width, Height, BPP: Integer; Fullscreen: Boolean); Overload;
@@ -49,39 +51,66 @@ TelGame = class(TelObject)
     property Height: Integer read GetHeight;
 end;
 
+{ TelScene }
+
 TelScene = class(TelObject)
   private
     fNodeList: TelNodeList;
-    fInitialized, fAutoSave: Boolean;
+    fGUILayer: TelLayer;
+
+    fInitialized, fAutoSave, fPaused, fPauseKeyDefined: Boolean;
+    fPauseKey: Cardinal;
 
     fEditable: Boolean;
-    procedure SetEditable(AValue: Boolean);
 
+    fOnPause, fOnResume: TelEvent;
+
+    procedure SetEditable(AValue: Boolean);
     function GetModified(): Boolean;
   public
     constructor Create; Override; Overload;
     constructor Create(aName: String); Overload;
 
     destructor Destroy; Override;
+
+    procedure Reset(); virtual;
 	
 	//procedure Initialize(); virtual; abstract;
 
-    procedure Add(aNode: TelNode); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure Add(aNode: TelNode); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure Add(anEntity: TelEntity); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    procedure SetPauseKey(aKey: Cardinal);
+    procedure DisablePauseKey();
 
     procedure Render(); virtual;
     procedure Update(dt: Double = 0.0); virtual;
     procedure HandleEvents(); virtual;
-
-    function Reload(): Boolean;
   published
     property AutoSave: Boolean read fAutoSave write fAutoSave;
 
     property Initialized: Boolean read fInitialized;
     property Editable: Boolean read fEditable write SetEditable;
 
-    property Entities: TelNodeList read fNodeList;
-
     property Modified: Boolean read GetModified;
+
+    property GUILayer: TelLayer read fGUILayer write fGUILayer;
+
+    property Paused: Boolean read fPaused write fPaused;
+
+    // Pause / Resume events
+    property OnPause: TelEvent read fOnPause write fOnPause;
+    property OnResume: TelEvent read fOnResume write fOnResume;
+end;
+
+{ Tel3DScene }
+
+Tel3DScene = class(TelScene)
+  public
+    procedure Render2D(); virtual;
+    procedure Render3D(); virtual;
+
+    procedure Render(); Override;
 end;
 
 TelSceneList = class(TelObject)
@@ -158,7 +187,37 @@ var
 
 implementation
 
-constructor TelGame.Create();
+{ Tel3DScene }
+
+procedure Tel3DScene.Render2D();
+var
+  i: Integer;
+begin
+  for i := 0 to fNodeList.Count - 1 do
+  begin
+    if (fNodeList.Items[i] <> nil) then fNodeList.Items[i].Draw;
+  end;
+end;
+
+procedure Tel3DScene.Render3D();
+begin
+  // 3D stuff goes here
+end;
+
+procedure Tel3DScene.Render();
+begin
+  ActiveWindow.Projection := pmPerspective;
+  ActiveWindow.BeginScene();
+  Self.Render3D();
+  ActiveWindow.EndScene();
+
+  ActiveWindow.Projection := pmOrtho;
+  ActiveWindow.BeginScene();
+  Self.Render2D();
+  ActiveWindow.EndScene();
+end;
+
+constructor TelGame.Create;
 begin
   inherited;
 end;
@@ -225,10 +284,13 @@ constructor TelScene.Create;
 begin
   inherited;
 
-  fEditable := false;
-  fAutoSave := true;
+  fOnPause := nil;
+  fOnResume := nil;
 
   fNodeList := TelNodeList.Create;
+  GUILayer := TelLayer.Create;
+
+    fAutoSave := true;
 end;
 
 constructor TelScene.Create(aName: String);
@@ -246,6 +308,12 @@ begin
   end;
 
   inherited;
+end;
+
+procedure TelScene.Reset();
+begin
+  fEditable := false;
+  fPaused := false;
 end;
 
 procedure TelScene.SetEditable(AValue: Boolean);
@@ -276,37 +344,59 @@ begin
   fNodeList.Add(aNode);
 end;
 
-procedure TelScene.Render();
-var
-  i: Integer;
+procedure TelScene.Add(anEntity: TelEntity);
 begin
-  for i := 0 to fNodeList.Count - 1 do
-  begin
-    if fNodeList.Items[i] <> nil then if fNodeList.Items[i].Drawable then fNodeList.Items[i].Draw;
-  end;
+  // ADD IT!
+end;
+
+procedure TelScene.SetPauseKey(aKey: Cardinal);
+begin
+  fPauseKeyDefined := true;
+
+  fPauseKey := aKey;
+end;
+
+procedure TelScene.DisablePauseKey();
+begin
+  fPauseKeyDefined := false;
+end;
+
+procedure TelScene.Render();
+begin
+  fNodeList.Draw();
+
+  if GUILayer.Count > 0 then GUILayer.Draw();
 end;
 
 procedure TelScene.Update(dt: Double = 0.0);
-var
-  i: Integer;
 begin
-  for i := 0 to fNodeList.Count - 1 do
+  if fPauseKeyDefined then
   begin
-    if fNodeList.Items[i] <> nil then fNodeList.Items[i].Update;
+    if Input.Keyboard.IsKeyHit(fPauseKey) then
+    begin
+      if Self.Paused then
+      begin
+        Self.Paused := false;
+        if Assigned(fOnResume) then fOnResume;
+      end else
+      begin
+        Self.Paused := true;
+        if Assigned(fOnPause) then fOnPause;
+      end;
+
+    end;
+  end;
+
+  if not Self.Paused then
+  begin
+    fNodeList.Update(dt);
+
+    fGUILayer.Update(dt);
   end;
 end;
 
 procedure TelScene.HandleEvents();
 begin
-
-end;
-
-function TelScene.Reload(): Boolean;
-begin
-  Result := false;
-
-  if Self <> nil then FreeAndNil(Self);
-  Self := TelScene
 
 end;
 

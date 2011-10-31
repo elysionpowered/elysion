@@ -14,9 +14,7 @@ uses
   ElysionTypes,
   ElysionApplication,
   ElysionLogger,
-  ElysionTimer,
   ElysionKeyCode,
-  ElysionMath,
 
   SDL,
   SysUtils,
@@ -29,7 +27,13 @@ type
   Relevance: Boolean;
 end;*)
 
+{ TelAnalogStick }
+
+{$IFDEF FPC}
+TelAnalogStick = object
+{$ELSE}
 TelAnalogStick = record
+{$ENDIF}
   AxisH: Single; //< Horizontal axis
   AxisV: Single; //< Vertical axis
 
@@ -38,6 +42,10 @@ TelAnalogStick = record
   Motion: Boolean;
   
   Left, Right, Up, Down: Boolean;
+
+  {$IFDEF CAN_METHODS}
+  function ToVector2f(aMultiplicator: Single = 1.0): TelVector2f;
+  {$ENDIF}
 end;
 
 TelKeyboardHelper = class
@@ -77,10 +85,14 @@ TelJoystickHelper = class
     property LastUsedButton: LongWord read GetLastUsedButton;
 end;
 
+
 // DPad for GamePads
 TelDPad = class
+  private
+    fUseJoyHat: Boolean;
+    fSticky: Boolean;
   public
-    constructor Create;
+    constructor Create(UseJoyHat: Boolean = true);
     destructor Destroy; Override;
 
     function Centered(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -92,12 +104,16 @@ TelDPad = class
     function RightDown(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     function LeftUp(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     function LeftDown(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  published
+    property Sticky: Boolean read fSticky write fSticky;
 end;
+
+{ TelXBox360Controller }
 
 TelXBox360Controller = class
   private
     fControllerName: String;
-    fDPad: TelDPad;
+    //fDPad: TelDPad;
 
     function GetConnected(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     function GetLStick(): TelAnalogStick; {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -112,6 +128,8 @@ TelXBox360Controller = class
     function X(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     function Y(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
+    function BigButton(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
     function Start(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     function Back(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
@@ -124,12 +142,13 @@ TelXBox360Controller = class
     property LStick: TelAnalogStick read GetLStick;
     property RStick: TelAnalogStick read GetRStick;
   published
-    property DPad: TelDPad read fDPad write fDPad;
+    // DPad currently not working - temporarily deactivated
+    //property DPad: TelDPad read fDPad write fDPad;
 
     property IsConnected: Boolean read GetConnected;
 end;
 
-TelPlaystationController = class
+(*TelPlaystationController = class
   private
     fDPad: TelDPad;
   public
@@ -177,7 +196,7 @@ TelGP2XController = class
     property IsConnected: Boolean read GetConnected;
 
     property DPad: TelDPad read fDPad write fDPad;
-end;
+end;*)
 
 TelMouseHelper = class
   private
@@ -285,7 +304,7 @@ TelKeyCode = class
     function Colon(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     function SemiColon(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     function Less(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Equals(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function Equals(): Cardinal; Overload;
     function Greater(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     function Question(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     function At(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -407,6 +426,15 @@ var
 
 implementation
 
+{ TelAnalogStick }
+
+{$IFDEF CAN_METHODS}
+function TelAnalogStick.ToVector2f(aMultiplicator: Single = 1.0): TelVector2f;
+begin
+  Result := makeV2f(Self.AxisH * aMultiplicator, Self.AxisV * aMultiplicator);
+end;
+{$ENDIF}
+
 constructor TelKeyboardHelper.Create;
 begin
   inherited Create;
@@ -499,9 +527,10 @@ begin
   Result := ActiveWindow.JoyButtonUp[Button];
 end;
 
-constructor TelDPad.Create;
+constructor TelDPad.Create(UseJoyHat: Boolean = true);
 begin
-  inherited;
+  fSticky := true;
+  fUseJoyHat := UseJoyHat;
 end;
 
 destructor TelDPad.Destroy;
@@ -511,82 +540,247 @@ end;
 
 function TelDPad.Centered(): Boolean;
 begin
-  if ActiveWindow.JoyHat[HAT_CENTERED] then Result := true
-    else Result := false;
+  Result := false;
+
+  (*if fUseJoyHat then
+  begin
+    if not Sticky then
+    begin
+      if ActiveWindow.JoyHat[HAT_CENTERED] then
+      begin
+        Result := true;
+        ActiveWindow.JoyHat[HAT_CENTERED] := false;
+      end;
+    end else
+      Result := ActiveWindow.JoyHat[HAT_CENTERED];
+  end;*)
 end;
 
 function TelDPad.Up(): Boolean;
 begin
-  if ActiveWindow.JoyHat[HAT_UP] then Result := true
-    else Result := false;
+  Result := false;
+
+  (*if fUseJoyHat then
+  begin
+    if not Sticky then
+    begin
+      if ActiveWindow.JoyHat[HAT_UP] then
+      begin
+        Result := true;
+        ActiveWindow.JoyHat[HAT_UP] := false;
+      end;
+    end else
+      Result := ActiveWindow.JoyHat[HAT_UP];
+  end else
+  begin
+    if Sticky then Result := Input.Joystick.IsButtonDown(0)
+  else Result := Input.Joystick.IsButtonHit(0);
+  end;*)
 end;
 
 function TelDPad.Right(): Boolean;
 begin
-  if ActiveWindow.JoyHat[HAT_RIGHT] then Result := true
-    else Result := false;
+  Result := false;
+
+  (*if fUseJoyHat then
+  begin
+    if not Sticky then
+    begin
+      if ActiveWindow.JoyHat[HAT_RIGHT] then
+      begin
+        Result := true;
+        ActiveWindow.JoyHat[HAT_RIGHT] := false;
+      end;
+    end else
+      Result := ActiveWindow.JoyHat[HAT_RIGHT];
+  end else
+  begin
+    if Sticky then Result := Input.Joystick.IsButtonDown(3)
+    else Result := Input.Joystick.IsButtonHit(3);
+  end;*)
 end;
 
 function TelDPad.Down(): Boolean;
 begin
-  if ActiveWindow.JoyHat[HAT_DOWN] then Result := true
-    else Result := false;
+  Result := false;
+
+  (*if fUseJoyHat then
+  begin
+    if not Sticky then
+    begin
+      if ActiveWindow.JoyHat[HAT_DOWN] then
+      begin
+        Result := true;
+        ActiveWindow.JoyHat[HAT_DOWN] := false;
+      end;
+    end else
+      Result := ActiveWindow.JoyHat[HAT_DOWN];
+  end else
+  begin
+    if Sticky then Result := Input.Joystick.IsButtonDown(1)
+    else Result := Input.Joystick.IsButtonHit(1);
+  end;*)
 end;
 
 function TelDPad.Left(): Boolean;
 begin
-  if ActiveWindow.JoyHat[HAT_LEFT] then Result := true
-    else Result := false;
+  Result := false;
+
+  (*if fUseJoyHat then
+  begin
+    if not Sticky then
+    begin
+      if ActiveWindow.JoyHat[HAT_LEFT] then
+      begin
+        Result := true;
+        ActiveWindow.JoyHat[HAT_LEFT] := false;
+      end;
+    end else
+      Result := ActiveWindow.JoyHat[HAT_LEFT];
+  end else
+  begin
+    if Sticky then Result := Input.Joystick.IsButtonDown(2)
+    else Result := Input.Joystick.IsButtonHit(2);
+  end;*)
 end;
 
 function TelDPad.RightUp(): Boolean;
 begin
-  if ActiveWindow.JoyHat[HAT_RIGHTUP] then Result := true
-    else Result := false;
+  Result := false;
+
+  (*if fUseJoyHat then
+  begin
+    if not Sticky then
+    begin
+      if ActiveWindow.JoyHat[HAT_RIGHTUP] then
+      begin
+        Result := true;
+        ActiveWindow.JoyHat[HAT_RIGHTUP] := false;
+      end;
+    end else
+      Result := ActiveWindow.JoyHat[HAT_RIGHTUP];
+  end;*)
 end;
 
 function TelDPad.RightDown(): Boolean;
 begin
-  if ActiveWindow.JoyHat[HAT_RIGHTDOWN] then Result := true
-    else Result := false;
+  Result := false;
+
+  (*if fUseJoyHat then
+  begin
+    if not Sticky then
+    begin
+      if ActiveWindow.JoyHat[HAT_RIGHTDOWN] then
+      begin
+        Result := true;
+        ActiveWindow.JoyHat[HAT_RIGHTDOWN] := false;
+      end;
+    end else
+      Result := ActiveWindow.JoyHat[HAT_RIGHTDOWN];
+  end;*)
 end;
 
 function TelDPad.LeftUp(): Boolean;
 begin
-  if ActiveWindow.JoyHat[HAT_LEFTUP] then Result := true
-    else Result := false;
+  Result := false;
+
+  (*if fUseJoyHat then
+  begin
+    if not Sticky then
+    begin
+      if ActiveWindow.JoyHat[HAT_LEFTUP] then
+      begin
+        Result := true;
+        ActiveWindow.JoyHat[HAT_LEFTUP] := false;
+      end;
+    end else
+      Result := ActiveWindow.JoyHat[HAT_LEFTUP];
+  end;*)
 end;
 
 function TelDPad.LeftDown(): Boolean;
 begin
-  if ActiveWindow.JoyHat[HAT_LEFTDOWN] then Result := true
-    else Result := false;
+  Result := false;
+
+  (*if fUseJoyHat then
+  begin
+    if not Sticky then
+    begin
+      if ActiveWindow.JoyHat[HAT_LEFTDOWN] then
+      begin
+        Result := true;
+        ActiveWindow.JoyHat[HAT_LEFTDOWN] := false;
+      end;
+    end else
+      Result := ActiveWindow.JoyHat[HAT_LEFTDOWN];
+  end;*)
 end;
 
 constructor TelXBox360Controller.Create;
 begin
   inherited;
 
-  DPad := TelDPad.Create;
+  //fDPad := TelDPad.Create({$IFDEF WINDOWS} true {$ELSE} false {$ENDIF});
+
+  // You cannot define variables for keycodes and axis! It will result in evil access violations
+  // Keycodes/Axis have to be constants!
   
   {$IFDEF WINDOWS}
   fControllerName := 'XBOX';
+
+  (*fKeyCodeA := 0;
+  fKeyCodeB := 1;
+  fKeyCodeX := 2;
+  fKeyCodeY := 3;
+  fKeyCodeStart := 7;
+  fKeyCodeBack := 6;
+  fKeyCodeLB := 4;
+  fKeyCodeRB := 5;
+  fKeyCodeBigButton := 10;
+
+  fLAxisH := 0;
+  fLAxisV := 1;
+  fRAxisH := 4;
+  fRAxisV := 3;
+
+  fAxisTrigger := 2;
+  fLStickClick := 8;
+  fRStickClick := 9;*)
   {$ELSE}
-  fControllerName := 'X-BOX';
+  fControllerName := 'Controller';
+
+  // Mac OS X (needs Tattle Bogle Drivers)
+  (*fKeyCodeA := 16;
+  fKeyCodeB := 17;
+  fKeyCodeX := 18;
+  fKeyCodeY := 19;
+  fKeyCodeStart := 9;
+  fKeyCodeBack := 10;
+  fKeyCodeLB := 13;
+  fKeyCodeRB := 14;
+  fKeyCodeBigButton := 15;
+
+  fLAxisH := 0;
+  fLAxisV := 1;
+  fRAxisH := 3;
+  fRAxisV := 4;
+
+  fAxisTrigger := 2;
+  fLStickClick := 11;
+  fRStickClick := 12;*)
   {$ENDIF}
 end;
 
 destructor TelXBox360Controller.Destroy;
 begin
-  DPad.Destroy;
+  //fDPad.Destroy;
 
   inherited;
 end;
 
 function TelXBox360Controller.GetConnected(): Boolean;
 begin
-  if AnsiPos(fControllerName, UpperCase(Input.JoystickName)) > 0 then Result := true
-    else Result := false;
+  Result := (AnsiPos(fControllerName, UpperCase(Input.JoystickName)) > 0);
 end;
 
 function TelXBox360Controller.GetLStick(): TelAnalogStick;
@@ -612,7 +806,11 @@ begin
     
   tmpStick.Motion := tmpStick.Left or tmpStick.Right or tmpStick.Up or tmpStick.Down;
 
+  {$IFDEF WINDOWS}
   tmpStick.Click := Input.Joystick.IsButtonHit(8);
+  {$ELSE}
+  tmpStick.Click := Input.Joystick.IsButtonHit(6);
+  {$ENDIF}
 
   Result := tmpStick;
 end;
@@ -625,8 +823,8 @@ begin
   tmpStick.AxisH := ActiveWindow.JoyAxis[4] / AXIS_MAX;
   tmpStick.AxisV := ActiveWindow.JoyAxis[3] / AXIS_MAX;
   {$ELSE}
-  tmpStick.AxisH := ActiveWindow.JoyAxis[3] / AXIS_MAX;
-  tmpStick.AxisV := ActiveWindow.JoyAxis[4] / AXIS_MAX;
+  tmpStick.AxisH := ActiveWindow.JoyAxis[2] / AXIS_MAX;
+  tmpStick.AxisV := ActiveWindow.JoyAxis[3] / AXIS_MAX;
   {$ENDIF}
 
   if (tmpStick.AxisH < -0.25) then tmpStick.Left := true
@@ -645,7 +843,11 @@ begin
     
   tmpStick.Motion := tmpStick.Left or tmpStick.Right or tmpStick.Up or tmpStick.Down;
 
+  {$IFDEF WINDOWS}
   tmpStick.Click := Input.Joystick.IsButtonHit(9);
+  {$ELSE}
+  tmpStick.Click := Input.Joystick.IsButtonHit(7);
+  {$ENDIF}
 
   Result := tmpStick;
 end;
@@ -654,7 +856,12 @@ function TelXBox360Controller.GetTrigger(): TelAnalogStick;
 var
   tmpStick: TelAnalogStick;
 begin
+  {$IFDEF WINDOWS}
   tmpStick.AxisH := ActiveWindow.JoyAxis[2] / AXIS_MAX;
+  {$ELSE}
+  tmpStick.AxisH := ActiveWindow.JoyAxis[4] / AXIS_MAX;
+  tmpStick.AxisV := ActiveWindow.JoyAxis[5] / AXIS_MAX;
+  {$ENDIF}
 
   if (tmpStick.AxisH < -0.25) then tmpStick.Left := true
     else tmpStick.Left := false;
@@ -685,37 +892,74 @@ end;
 
 function TelXBox360Controller.A(): Boolean;
 begin
+  {$IFDEF WINDOWS}
   Result := Input.Joystick.IsButtonHit(0);
+  {$ELSE}
+  Result := Input.Joystick.IsButtonHit(11);
+  {$ENDIF}
 end;
 
 function TelXBox360Controller.B(): Boolean;
 begin
+  {$IFDEF WINDOWS}
   Result := Input.Joystick.IsButtonHit(1);
+  {$ELSE}
+  Result := Input.Joystick.IsButtonHit(12);
+  {$ENDIF}
 end;
 
 function TelXBox360Controller.X(): Boolean;
 begin
+  {$IFDEF WINDOWS}
   Result := Input.Joystick.IsButtonHit(2);
+  {$ELSE}
+  Result := Input.Joystick.IsButtonHit(13);
+  {$ENDIF}
 end;
 
 function TelXBox360Controller.Y(): Boolean;
 begin
+  {$IFDEF WINDOWS}
   Result := Input.Joystick.IsButtonHit(3);
+  {$ELSE}
+  Result := Input.Joystick.IsButtonHit(14);
+  {$ENDIF}
+end;
+
+function TelXBox360Controller.BigButton(): Boolean;
+begin
+  {$IFDEF WINDOWS}
+  Result := Input.Joystick.IsButtonHit(10);
+  {$ELSE}
+  Result := Input.Joystick.IsButtonHit(10);
+  {$ENDIF}
 end;
 
 function TelXBox360Controller.Start(): Boolean;
 begin
-  Result := Input.Joystick.IsButtonHit(7);
+  {$IFDEF WINDOWS}
+  Result := Input.Joystick.IsButtonHit(9);
+  {$ELSE}
+  Result := Input.Joystick.IsButtonHit(4);
+  {$ENDIF}
 end;
 
 function TelXBox360Controller.Back(): Boolean;
 begin
-  Result := Input.Joystick.IsButtonHit(6);
+  {$IFDEF WINDOWS}
+  Result := Input.Joystick.IsButtonHit(10);
+  {$ELSE}
+  Result := Input.Joystick.IsButtonHit(5);
+  {$ENDIF}
 end;
 
 function TelXBox360Controller.LButton(): Boolean;
 begin
+  {$IFDEF WINDOWS}
   Result := Input.Joystick.IsButtonHit(4);
+  {$ELSE}
+  Result := Input.Joystick.IsButtonHit(8);
+  {$ENDIF}
 end;
 
 function TelXBox360Controller.LTrigger(): Boolean;
@@ -726,7 +970,11 @@ end;
 
 function TelXBox360Controller.RButton(): Boolean;
 begin
+  {$IFDEF WINDOWS}
   Result := Input.Joystick.IsButtonHit(5);
+  {$ELSE}
+  Result := Input.Joystick.IsButtonHit(9);
+  {$ENDIF}
 end;
 
 function TelXBox360Controller.RTrigger(): Boolean;
@@ -735,7 +983,7 @@ begin
     else Result := false;
 end;
 
-constructor TelPlaystationController.Create;
+(*constructor TelPlaystationController.Create;
 begin
   inherited;
 
@@ -858,7 +1106,7 @@ end;
 function TelGP2XController.RButton(): Boolean;
 begin
 
-end;
+end;*)
 
 
 
@@ -1020,8 +1268,8 @@ end;
 
 procedure TelInputHelper.DebugInfo();
 begin
-  if IsLoggerActive then TelLogger.GetInstance.WriteLog('Joystick Count: ' + IntToStr(GetJoystickCount()), ltNote);
-  if IsLoggerActive then TelLogger.GetInstance.WriteLog('Joystick Name: ' + GetJoystickName(), ltNote);
+  TelLogger.GetInstance.WriteLog('Joystick Count: ' + IntToStr(GetJoystickCount()), ltNote);
+  TelLogger.GetInstance.WriteLog('Joystick Name: ' + GetJoystickName(), ltNote);
 end;
 
 constructor TelKeyCode.Create;

@@ -21,6 +21,7 @@ uses
   ElysionApplication,
   ElysionLogger,
   ElysionTypes,
+  ElysionKeyList,
 
   Classes,
   SysUtils;
@@ -119,8 +120,8 @@ end;
 
 procedure TelStorage.DebugInfo();
 begin
-  if isLoggerActive then TelLogger.GetInstance.WriteLog('Default storage directory: ' + fDirectory, ltNote);
-  if isLoggerActive then TelLogger.GetInstance.WriteLog('Default storage filename: ' + fFilename, ltNote);
+  TelLogger.GetInstance.WriteLog('Default storage directory: ' + fDirectory, ltNote);
+  TelLogger.GetInstance.WriteLog('Default storage filename: ' + fFilename, ltNote);
 end;
 
 procedure TelStorage.SetKey(KeyName, KeyValue: String);
@@ -233,7 +234,7 @@ begin
     end;
   end;
 
-  if isLoggerActive then TelLogger.GetInstance.WriteLog('Saved storage to: ' + fDirectory + fFilename, ltNote);
+  TelLogger.GetInstance.WriteLog('Saved storage to: ' + fDirectory + fFilename, ltNote);
 
   tmpStringList.Free;
 end;
@@ -258,7 +259,7 @@ begin
     end
       else FileFormat := ffPlain;
 
-  if isLoggerActive then TelLogger.GetInstance.WriteLog('Storage file loaded: ' + fDirectory + fFilename, ltNote);
+  TelLogger.GetInstance.WriteLog('Storage file loaded: ' + fDirectory + fFilename, ltNote);
 
   case FileFormat of
     ffPlain:

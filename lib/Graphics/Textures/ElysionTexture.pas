@@ -10,7 +10,6 @@ interface
 uses
   ElysionTypes,
   ElysionObject,
-  ElysionMath,
 
   {$IFDEF USE_VAMPYRE}   ImagingSDL, {$ENDIF}
   {$IFDEF USE_SDL_IMAGE} SDL_image,  {$ENDIF}
@@ -42,6 +41,8 @@ type
       function GetColorKey: TelColor; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       function GetAspectRatio(): Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+      function IsEmpty(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     public
       TextureSurface: PSDL_Surface;
       TextureID: GLuInt;
@@ -62,6 +63,8 @@ type
       property ColorKey: TelColor read GetColorKey write SetColorKeyProperty;
     published
       property AspectRatio: Single read GetAspectRatio;
+
+      property Empty: Boolean read IsEmpty;
 
       property ImageType: String read fImageType;
 
@@ -218,6 +221,16 @@ procedure TelTexture.SetAutoColorKey(Value: Boolean);
 begin
   fTransparent := Value;
   if fTransparent then SetColorKey(makeV2i(0, 0));
+end;
+
+function TelTexture.IsEmpty(): Boolean;
+begin
+  {$IFNDEF USE_DGL_HEADER}
+    if glIsTexture(Self.TextureID) = GL_TRUE then Result := false
+    else Result := true;
+  {$ELSE}
+    Result := (not glIsTexture(Self.TextureID));
+  {$ENDIF}
 end;
 
 procedure TelTexture.SetColorKey(aColor: TelColor); 

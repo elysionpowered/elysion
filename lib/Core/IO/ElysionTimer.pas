@@ -11,6 +11,7 @@ interface
 
 uses
   ElysionTypes,
+  ElysionEvents,
   ElysionObject,
   ElysionInterfaces,
   SDL;

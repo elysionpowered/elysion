@@ -8,56 +8,16 @@ uses
   Classes,
   SysUtils,
   ElysionTypes,
+  ElysionBorder,
+  ElysionBounds,
+  ElysionAnimTypes,
   ElysionApplication,
   ElysionInterfaces,
   ElysionTimer,
   ElysionObject,
-  ElysionMath,
   ElysionUtils;
 
 type
-  // Property data types for nodes
-  // This is primarily used for Stylesheets and animators
-  // but can and should be integrated into a scripting engine
-  // This is primarily for determing how strings will be mapped to properties
-
-                    // Simple data types
-  TelNodeProperty = (npUnknown, npLeft, npTop, npRight, npBottom, npVisible, npAlpha, npWidth, npHeight,
-                    // Semi-advanced data types ("Wrapper" for advanced data types, such as "Position.X", "Scale.X" or "padding-left")
-                    // Position
-                    npPosX, npPosY, npPosZ,
-                    // Scale
-                    npScaleX, npScaleY,
-                    // Border
-                    npBorderL, //< Left border
-                    npBorderT, //< Top border
-                    npBorderR, //< Right border
-                    npBorderB, //< Bottom border
-                    // Padding
-                    npPaddingL, //< Left padding
-                    npPaddingT, //< Top padding
-                    npPaddingR, //< Right padding
-                    npPaddingB, //< Bottom padding
-                    // Margin
-                    npMarginL, //< Left padding
-                    npMarginT, //< Top padding
-                    npMarginR, //< Right padding
-                    npMarginB, //< Bottom padding
-                    // Rotation
-                    npRotX, npRotY, npRotZ,
-                    // Shadow
-                    npShadowBlur,
-                    npShadowPosX, npShadowPosY,
-                    npShadowColorR, npShadowColorG, npShadowColorB,
-                    // Color
-                    npColorR, npColorG, npColorB,
-                    // Origin
-                    npOriginX, npOriginY,
-                    // Advanced data types
-                    npPosition, npScale, npBorder, npPadding, npMargin, npRotation, npShadow, npColor, npOrigin);
-  TelNodeProperties = set of TelNodeProperty;
-
-
   // If TelNode.Editable is turned on, it allows you to edit the node according
   // to TelNode.EditModes -> Practically this allows you edit nodes in your
   // application. If you are developing a game you don't need to develop
@@ -66,27 +26,63 @@ type
   TelNodeEditModes = set of TelNodeEditMode;
 
   TelNode = class; //< forward declaration
+  TelNodeArray = array of TelNode;
 
-  // Event types
-  // This is used to determine how strings will be mapped to events
-  TelNodeEventType = (etUnknown, etCustom, etMouseDown, etMouseUp, etMouseMove, etMouseOver, etMouseOut, etDragStart, etDragging, etDragEnd, etClick, etDblClick);
-  TelNodeEventTypes = set of TelNodeEventType;
+  // Node event types
+  TelNodeEvent = procedure(Sender: TelNode; EventArgs: TelObject = nil) of object;
 
-  TelNodeEvent = procedure(aNode: TelNode; EventArgs: TelObject = nil) of object;
+  TelNodeEventObject = record
+    Event: TelNodeEvent;
+    Name: String;
+    Enabled: Boolean;
+  end;
+
+  TelNodeEventObjectArray = array of TelNodeEventObject;
+
+  { TelNodeEventListener }
+
+  TelNodeEventListener = class(TelObject)
+  protected
+    fCount, fArrayLength: Integer;
+    fEventArray: TelNodeEventObjectArray;
+
+    function FindPos(aName: String): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  public
+    constructor Create; Override;
+    destructor Destroy; Override;
+
+    function Add(anEvent: TelNodeEvent; anEventName: String = ''): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure Delete(Index: Integer); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure Delete(Index: String); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    procedure EnableEvent(Index: String); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure EnableEvent(Index: Integer); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    procedure DisableEvent(Index: String); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure DisableEvent(Index: Integer); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    procedure Execute(Sender: TelNode; EventArgs: TelObject = nil); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  published
+    property Count: Integer read fCount;
+  end;
+
+
+  TelNodeList = class;
 
   { TelNode }
 
-  TelNode = class(TelObject, INode)
+  TelNode = class(TelObject, INode, IWritableData, IReadableData)
   protected
     fAlign: TelAlignment;
+    fChildren: TelNodeList;
 
     fDecorations: TelElementDecorations;
-    fReadProps, fWriteProps: TelNodeProperties;
-    fEventTypes: TelNodeEventTypes;
 
     fBorder: TelBorder;
-    fMargin: TelExtValue;
-    fPadding: TelExtValue;
+    fMargin: TelBounds;
+    fPadding: TelBounds;
+
+    fColor: TelColor;
 
       fParent: TelNode;
 
@@ -101,16 +97,23 @@ type
       fOnClick: TelNodeEvent;
       fOnDblClick: TelNodeEvent;
 
-      fVisible, fLocked, fDraggable, fDidDragStart, fDidDragging, fIsAnimated, fDrawable, fEditable: Boolean;
+    fWidth, fHeight: Integer;
+
+      fVisible, fLocked, fDraggable, fDidDragStart, fDidDragging, fIsAnimated, fEditable, fEnabled: Boolean;
 
       fEditModes: TelNodeEditModes;
 
       function GetAbsolutePosition(): TelVector3f; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function GetParentPosition(): TelVector3f; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function GetParentSize(): TelSize; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       function GetAlpha(): Byte; {$IFDEF CAN_INLINE} inline; {$ENDIF}
       procedure SetAlpha(anAlpha: Byte); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       procedure SetAlign(Value: TelAlignment); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+      function GetColor(): TelColor; virtual;
+      procedure SetColor(AValue: TelColor); virtual;
 
       function GetInnerWidth(): Integer; virtual;
       function GetInnerHeight(): Integer; virtual;
@@ -119,6 +122,8 @@ type
 
       function GetWidth(): Integer; virtual;
       function GetHeight(): Integer; virtual;
+      procedure SetWidth(aValue: Integer); virtual;
+      procedure SetHeight(aValue: Integer); virtual;
 
       function GetMouseDown(): Boolean; virtual;
       function GetMouseUp(): Boolean; virtual;
@@ -145,31 +150,34 @@ type
 
       function GetRelCursor(): TelVector2i;
 
-      function IsPropertyValid(aPropName: String): TelNodeProperties;
-      function IsEventValid(anEventName: String): TelNodeEventTypes;
-
       function GetModified(): Boolean;
     public
       // Public methods
       constructor Create; Override;
       destructor Destroy; Override;
 
-      procedure Add(aNode: TelNode); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function Add(aNode: TelNode): Integer; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function Add(NodeArray: TelNodeArray): Integer; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure Delete(Index: Integer); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-      procedure Move(Delta: TelVector3f); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure Move(Delta: TelVector2i); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure Move(aPoint: TelVector3f; dt: Double = 0.0); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure Move(aPoint: TelVector2f; dt: Double = 0.0); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure Move(aPoint: TelVector2i; dt: Double = 0.0); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       function GetOuterWidth(Value: TelElementDecorations): Integer;
       function GetOuterHeight(Value: TelElementDecorations): Integer;
 
-      procedure Draw; virtual; abstract;
+      procedure Draw(DrawChildren: Boolean = true); virtual;
+
+      function LoadFromXML(aData: TStringList): Boolean;
+      function LoadFromJSON(aData: TStringList): Boolean;
 
       function WriteToXML(): TStringList;
       function WriteToJSON(): TStringList;
 
       procedure Hover(MouseOverEvent, MouseOutEvent: TelNodeEvent);
 
-      procedure Rotate(DeltaAngle: Single); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure Rotate(DeltaAngle: Single; dt: Double = 0.0); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       // Simple Animation, for more complex animations (espacially key frame animations, multiple animations triggered at the same time and such) use ElysionAnimators.pas
       procedure Animate(AnimProperty: TelAnimationProperty; Duration: Integer = 1000; Delay: Integer = 0; Transition: TelAnimationTransition = atLinear);
@@ -184,31 +192,32 @@ type
       Position: TelVector3f;
       Origin: TelVector2f;
       Rotation: TelImageRotation;
-      Color: TelColor;
       Scale: TelVector2f;
 
       Shadow: TelShadow;
 
       property AbsolutePosition: TelVector3f read GetAbsolutePosition;
+      property ParentPosition: TelVector3f read GetParentPosition;
+      property ParentSize: TelSize read GetParentSize;
+
       property Align: TelAlignment read fAlign write SetAlign;
       property RelCursor: TelVector2i read GetRelCursor;
 
-      property ReadProps: TelNodeProperties read fReadProps write fReadProps;
-      property WriteProps: TelNodeProperties read fWriteProps write fWriteProps;
-
-      property EventTypes: TelNodeEventTypes read fEventTypes write fEventTypes;
+      property Color: TelColor read GetColor write SetColor;
     published
       property Alpha: Byte read GetAlpha write SetAlpha default 255;
 
       property Border: TelBorder read fBorder write fBorder;
-      property Margin: TelExtValue read fMargin write fMargin;
-      property Padding: TelExtValue read fPadding write fPadding;
+      property Margin: TelBounds read fMargin write fMargin;
+      property Padding: TelBounds read fPadding write fPadding;
 
       property Decorations: TelElementDecorations read fDecorations write fDecorations;
 
       property EditModes: TelNodeEditModes read fEditModes write fEditModes;
 
       property Modified: Boolean read GetModified;
+
+      property Enabled: Boolean read fEnabled write fEnabled;
 
       // Event methods
       property OnMouseDown: TelNodeEvent read fOnMouseDown write fOnMouseDown;
@@ -222,6 +231,7 @@ type
       property OnClick: TelNodeEvent read fOnClick write fOnClick;
       property OnDblClick: TelNodeEvent read fOnDblClick write fOnDblClick;
 
+      property Children: TelNodeList read fChildren write fChildren;
       property Parent: TelNode read fParent write fParent;
 
       // Event properties
@@ -240,8 +250,8 @@ type
       property IsAnimated: Boolean read fIsAnimated;
       property Draggable: Boolean read fDraggable;
 
-      property Width: Integer read GetWidth;
-      property Height: Integer read GetHeight;
+      property Width: Integer read GetWidth write SetWidth;
+      property Height: Integer read GetHeight write SetHeight;
 
       property InnerWidth: Integer read GetInnerWidth;
       property InnerHeight: Integer read GetInnerHeight;
@@ -249,7 +259,6 @@ type
       property OuterHeight: Integer read GetOuterHeightProp;
 
       property Editable: Boolean read fEditable write fEditable default false;
-      property Drawable: Boolean read fDrawable default false;
       property Locked: Boolean read fLocked write SetLocked default false;
 
       // Here is some alternative positionin' for ya (Use for UI elements)
@@ -310,8 +319,6 @@ type
     property Style: TelNodeStyle read fStyle write fStyle;
   end;
 
-  TelNodeArray = array of TelNode;
-
   TelNodeList = class(TelObject)
      private
       fNodeList: TList;
@@ -332,6 +339,12 @@ type
       function Add(NodeArray: TelNodeArray): Integer; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
       procedure Delete(Index: Integer); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
+      // Draws all drawable nodes in the list
+      procedure Draw(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+      // Updates all nodes in the list
+      procedure Update(dt: Double = 0.0); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
       property Items[Index: Integer]: TelNode read Get write Put; default;
       property Find[Index: String]: TelNode read GetS write PutS;
     published
@@ -341,10 +354,6 @@ type
   procedure CopyNodeValues(aNode, bNode: TelNode);
   procedure ForceNodeCopy(aNode, bNode: TelNode);
   function Center(aNode: TelNode): TelVector2f; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-  function GetSimpleProperties(): TelNodeProperties; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  function GetSemiAdvProperties(): TelNodeProperties; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  function GetAdvProperties(): TelNodeProperties; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
 implementation
 
@@ -398,8 +407,6 @@ begin
   aNode.OnClick := bNode.OnClick;
   aNode.OnDblClick := bNode.OnDblClick;
 
-  aNode.Parent := bNode.Parent;
-
   aNode.Visible := bNode.Visible;
 end;
 
@@ -408,23 +415,90 @@ begin
   Result := makeV2f(aNode.Width / 2, aNode.Height / 2);
 end;
 
-function GetSimpleProperties(): TelNodeProperties;
+{ TelNodeEventListener }
+
+constructor TelNodeEventListener.Create;
 begin
-  Result := [npLeft, npTop, npRight, npBottom, npVisible, npAlpha, npWidth, npHeight];
+  inherited Create;
+
+  fCount := 0;
+  fArrayLength := 0;
 end;
 
-function GetSemiAdvProperties(): TelNodeProperties;
+destructor TelNodeEventListener.Destroy;
 begin
-  Result := [npPosX, npPosY, npPosZ, npScaleX, npScaleY, npBorderL, npBorderT,
-    npBorderR, npBorderB, npPaddingL, npPaddingT, npPaddingR, npPaddingB, npMarginL,
-    npMarginT, npMarginR, npMarginB, npRotX, npRotY, npRotZ, npShadowBlur, npShadowPosX,
-    npShadowPosY, npShadowColorR, npShadowColorG, npShadowColorB, npColorR, npColorG,
-    npColorB, npOriginX, npOriginY];
+  inherited Destroy;
+
 end;
 
-function GetAdvProperties(): TelNodeProperties;
+function TelNodeEventListener.FindPos(aName: String): Integer;
+var
+  i: Integer;
 begin
-  Result := [npPosition, npScale, npBorder, npPadding, npMargin, npRotation, npShadow, npColor, npOrigin];
+  for i := 0 to fArrayLength - 1 do
+  begin
+
+    // Yeah, yeah, string comparisons are evil and slow... I know
+    if (fEventArray[i].Name = aName) then
+    begin
+      Result := i;
+      Exit;
+    end;
+  end;
+end;
+
+function TelNodeEventListener.Add(anEvent: TelNodeEvent; anEventName: String = ''): Integer;
+begin
+  fArrayLength := fArrayLength + 1;
+  fCount := fCount + 1;
+  SetLength(fEventArray, fArrayLength);
+
+  fEventArray[fCount - 1].Event := anEvent;
+  fEventArray[fCount - 1].Name := anEventName;
+  fEventArray[fCount - 1].Enabled := true;
+end;
+
+procedure TelNodeEventListener.Delete(Index: Integer);
+begin
+  fEventArray[Index].Event := nil;
+  fEventArray[Index].Name := '';
+  fEventArray[Index].Enabled := false;
+  fCount := fCount - 1;
+end;
+
+procedure TelNodeEventListener.Delete(Index: String);
+begin
+  Delete(FindPos(Index));
+end;
+
+procedure TelNodeEventListener.EnableEvent(Index: Integer);
+begin
+  fEventArray[Index].Enabled := true;
+end;
+
+procedure TelNodeEventListener.EnableEvent(Index: String);
+begin
+  EnableEvent(FindPos(Index));
+end;
+
+procedure TelNodeEventListener.DisableEvent(Index: Integer);
+begin
+  fEventArray[Index].Enabled := false;
+end;
+
+procedure TelNodeEventListener.DisableEvent(Index: String);
+begin
+  DisableEvent(FindPos(Index));
+end;
+
+procedure TelNodeEventListener.Execute(Sender: TelNode; EventArgs: TelObject);
+var
+  i: Integer;
+begin
+  for i := 0 to Count - 1 do
+  begin
+    if (fEventArray[i].Enabled) then fEventArray[i].Event(Sender, EventArgs);
+  end;
 end;
 
 { TelNodeStyle }
@@ -524,8 +598,8 @@ begin
   Position.Clear;
   Origin.Clear();
 
-  fMargin := TelExtValue.Create;
-  fPadding := TelExtValue.Create;
+  fMargin := TelBounds.Create;
+  fPadding := TelBounds.Create;
   fBorder := TelBorder.Create;
 
   Shadow.Clear();
@@ -546,20 +620,16 @@ begin
   fLocked := false;
   fIsAnimated := false;
 
-  fDrawable := false;
   fEditable := false;
 
   fEditModes := [emMove, emRotate, emScale, emColor, emOrigin];
 
-  fReadProps := GetSimpleProperties() + GetSemiAdvProperties() + GetAdvProperties();
-  fWriteProps := GetSimpleProperties() + GetSemiAdvProperties();
-
-  fEventTypes := [etMouseDown, etMouseUp, etMouseMove, etMouseOver, etMouseOut, etDragStart, etDragging, etDragEnd, etClick, etDblClick];
 
   fDidDragStart := false;
   fDidDragging := false;
 
   fParent := nil;
+  fChildren := TelNodeList.Create;
 
   OnMouseDown := nil;
   OnMouseUp := nil;
@@ -586,6 +656,9 @@ begin
   OnClick := nil;
   OnDblClick := nil;
 
+  fParent := nil;
+  fChildren.Destroy;
+
   fMargin.Destroy;
   fPadding.Destroy;
   fBorder.Destroy;
@@ -598,54 +671,39 @@ begin
   Result := makeV2i(Trunc(Self.Left - ActiveWindow.Cursor.X), Trunc(Self.Top - ActiveWindow.Cursor.Y));
 end;
 
-function TelNode.IsPropertyValid(aPropName: String): TelNodeProperties;
-begin
-
-end;
-
-function TelNode.IsEventValid(anEventName: String): TelNodeEventTypes;
-begin
-
-end;
-
 function TelNode.GetModified(): Boolean;
 begin
 
 end;
 
-function IsValidProperty(aPropName: String): TelNodeProperties;
-var
-  tmpString: String;
-  tmpStringList: TStringList;
-begin
-  tmpString := LowerCase(aPropName);
-
-  tmpStringList := Split(tmpString, ',', true);
-end;
-
 function TelNode.GetMouseDown(): Boolean;
 begin
   Result := false;
+  if not Enabled then Exit;
 end;
 
 function TelNode.GetMouseUp(): Boolean;
 begin
   Result := false;
+  if not Enabled then Exit;
 end;
 
 function TelNode.GetMouseMove(): Boolean;
 begin
   Result := false;
+  if not Enabled then Exit;
 end;
 
 function TelNode.GetMouseOver(): Boolean;
 begin
   Result := false;
+  if not Enabled then Exit;
 end;
 
 function TelNode.GetMouseOut(): Boolean;
 begin
   Result := false;
+  if not Enabled then Exit;
 end;
 
 function TelNode.GetDragStart(): Boolean;
@@ -657,13 +715,13 @@ end;
 function TelNode.GetDragging(): Boolean;
 begin
   Result := false;
-  if (not Draggable) then Exit;
+  if (not Draggable) or (not Enabled) then Exit;
 end;
 
 function TelNode.GetDragEnd(): Boolean;
 begin
   Result := false;
-  if (not Draggable) then Exit;
+  if (not Draggable) or (not Enabled) then Exit;
 end;
 
 function TelNode.GetClick(): Boolean;
@@ -682,37 +740,24 @@ begin
 end;
 
 procedure TelNode.SetAlign(Value: TelAlignment);
-var
-  parentWidth, parentHeight: Integer;
 begin
   fAlign := Value;
 
-  parentWidth := 0;
-  parentHeight := 0;
-
   if fAlign.Horizontal <> ahNone then
   begin
-
-    if (fParent = nil) then parentWidth := WindowManager.CurrentWindow.Width
-      else parentWidth := Parent.Width;
-
     case fAlign.Horizontal of
-      ahLeft: Position.X := 0;
-      ahCenter: Position.X := (parentWidth - Self.Width) div 2;
-      ahRight: Position.X := parentWidth - Self.Width;
+      ahLeft: Left := 0;
+      ahCenter: Position.X := (ParentSize.Width - Self.Width) div 2;
+      ahRight: Right := 0;
     end;
   end;
 
   if fAlign.Vertical <> avNone then
   begin
-
-    if (fParent = nil) then parentHeight := WindowManager.CurrentWindow.Height
-      else parentHeight := Parent.Height;
-
     case fAlign.Vertical of
-      avTop: Position.Y := 0;
-      avCenter: Position.Y := (parentHeight - Self.Height) div 2;
-      avBottom: Position.Y := parentHeight - Self.Height;
+      avTop: Top := 0;
+      avCenter: Position.Y := (ParentSize.Height - Self.Height) div 2;
+      avBottom: Bottom := 0;
     end;
   end;
 end;
@@ -747,10 +792,58 @@ begin
   Result := 0;
 end;
 
+procedure TelNode.SetWidth(aValue: Integer);
+begin
+  fWidth := aValue;
+end;
+
+procedure TelNode.SetHeight(aValue: Integer);
+begin
+  fHeight := aValue;
+end;
+
+function TelNode.GetColor(): TelColor;
+begin
+  Result := fColor;
+end;
+
+procedure TelNode.SetColor(AValue: TelColor);
+begin
+  fColor := AValue;
+end;
+
 function TelNode.GetAbsolutePosition(): TelVector3f;
+var
+  curPos: TelVector3f;
 begin
   if (fParent = nil) then Result := Self.Position
-    else Result := fParent.GetAbsolutePosition();
+    else begin
+      (*if fParent.InheritsFrom(TelCamera) then
+      begin
+        curPos := Self.Position;
+        curPos.X := curPos.X + TelCamera(fParent).Viewport.X;
+        curPos.Y := curPos.Y + TelCamera(fParent).Viewport.Y;
+
+        //Result := Position.Add(makeV3f(, TelCamera(fParent).Viewport.Y, 0));
+        Result := curPos;
+      end else*)
+        Result := makeV3f(Self.Position.X + Parent.AbsolutePosition.X,
+                          Self.Position.Y + Parent.AbsolutePosition.Y,
+                          Self.Position.Z + Parent.AbsolutePosition.Z);
+
+    end;
+end;
+
+function TelNode.GetParentPosition(): TelVector3f;
+begin
+  if (Parent = nil) then Result := makeV3f(0.0, 0.0, 0.0)
+  else Result := Parent.GetAbsolutePosition();
+end;
+
+function TelNode.GetParentSize(): TelSize;
+begin
+  if (Parent = nil) then Result := makeSize(WindowManager.CurrentWindow.Width, WindowManager.CurrentWindow.Height)
+  else Result := makeSize(Parent.Width, Parent.Height);
 end;
 
 function TelNode.GetLeft(): Single;
@@ -764,23 +857,13 @@ begin
 end;
 
 function TelNode.GetRight(): Single;
-var
-  parentWidth: Integer;
 begin
-  if (Self.Parent = nil) then parentWidth := ActiveWindow.Width
-    else parentWidth := Self.Parent.Width;
-
-  Result := (parentWidth - Self.Width - Position.X);
+  Result := (ParentSize.Width - Self.Width - Position.X);
 end;
 
 function TelNode.GetBottom(): Single;
-var
-  parentHeight: Integer;
 begin
-  if (Self.Parent = nil) then parentHeight := ActiveWindow.Height
-    else parentHeight := Self.Parent.Height;
-
-  Result := (parentHeight - Self.Height - Position.Y);
+  Result := (ParentSize.Height - Self.Height - Position.Y);
 end;
 
 procedure TelNode.SetLeft(Value: Single);
@@ -794,23 +877,13 @@ begin
 end;
 
 procedure TelNode.SetRight(Value: Single);
-var
-  parentWidth: Integer;
 begin
-  if (Self.Parent = nil) then parentWidth := ActiveWindow.Width
-    else parentWidth := Self.Parent.Width;
-
-  Position.X := parentWidth - Self.Width - Value;
+  Position.X := ParentSize.Width - Self.Width - Value;
 end;
 
 procedure TelNode.SetBottom(Value: Single);
-var
-  parentHeight: Integer;
 begin
-  if (Self.Parent = nil) then parentHeight := ActiveWindow.Width
-    else parentHeight := Self.Parent.Width;
-
-  Position.Y := parentHeight - Self.Height - Value;
+  Position.Y := ParentSize.Height - Self.Height - Value;
 end;
 
 procedure TelNode.SetLocked(Value: Boolean);
@@ -820,14 +893,29 @@ begin
 end;
 
 
-procedure TelNode.Rotate(DeltaAngle: Single);
+procedure TelNode.Rotate(DeltaAngle: Single; dt: Double = 0.0);
 begin
-  Rotation.Angle := Rotation.Angle + DeltaAngle;
+  if dt = 0.0 then
+    Rotation.Angle := Rotation.Angle + DeltaAngle
+  else
+    Rotation.Angle := Rotation.Angle + DeltaAngle * dt;
 end;
 
-procedure TelNode.Add(aNode: TelNode);
+function TelNode.Add(aNode: TelNode): Integer;
 begin
   aNode.Parent := Self;
+
+  Result := fChildren.Add(aNode);
+end;
+
+function TelNode.Add(NodeArray: TelNodeArray): Integer;
+begin
+  Result := fChildren.Add(NodeArray);
+end;
+
+procedure TelNode.Delete(Index: Integer);
+begin
+  fChildren.Delete(Index);
 end;
 
 procedure TelNode.Lock();
@@ -936,31 +1024,58 @@ begin
   Result := Trunc(tmpHeight + marTop + marBottom + borTop + borBottom + padTop + padBottom);
 end;
 
-procedure TelNode.Move(Delta: TelVector3f);
+procedure TelNode.Move(aPoint: TelVector2f; dt: Double = 0.0);
 begin
-  Position.X := Position.X + Delta.X;
-  Position.Y := Position.Y + Delta.Y;
-  Position.Z := Position.Z + Delta.Z;
+  if dt = 0.0 then
+    Position.Add(makeV3f(aPoint.X, aPoint.Y, 0.0))
+  else
+    Position.Add(makeV3f(aPoint.X * dt, aPoint.Y * dt, 0.0));
 end;
 
-procedure TelNode.Move(Delta: TelVector2i);
+procedure TelNode.Move(aPoint: TelVector2i; dt: Double = 0.0);
 begin
-  Position.X := Position.X + Delta.X;
-  Position.Y := Position.Y + Delta.Y;
+  if dt = 0.0 then
+    Position.Add(makeV3f(aPoint.X, aPoint.Y, 0.0))
+  else
+    Position.Add(makeV3f(aPoint.X * dt, aPoint.Y * dt, 0.0));
+end;
+
+procedure TelNode.Move(aPoint: TelVector3f; dt: Double = 0.0);
+begin
+  if dt = 0.0 then
+    Position.Add(aPoint)
+  else
+    Position.Add(makeV3f(aPoint.X * dt, aPoint.Y * dt, aPoint.Z * dt));
+end;
+
+function TelNode.LoadFromXML(aData: TStringList): Boolean;
+begin
+  if aData = nil then
+  begin
+    Result := false;
+    Exit;
+  end;
+end;
+
+function TelNode.LoadFromJSON(aData: TStringList): Boolean;
+begin
+  if aData = nil then
+  begin
+    Result := false;
+    Exit;
+  end;
 end;
 
 function TelNode.WriteToXML(): TStringList;
 var
   tmpStringList: TStringList;
-  tmpIdentPos, tmpIdentColor, tmpIdentScale : TKeyIdent;
 begin
-
   tmpStringList := TStringList.Create;
   tmpStringList.Add('<' + Self.ClassName + '>');
 
-  tmpStringList.Add( FromVector3f('position',Position).ToXML() );
-  tmpStringList.Add( Color.ToKey('color').ToXML()  );
-  tmpStringList.Add( FromVector2f('scale',Scale).ToXML());
+  tmpStringList.Add(Position.ToKey('position')^.ToXML());
+  tmpStringList.Add(Color.ToKey('color')^.ToXML());
+  tmpStringList.Add(Scale.ToKey('scale')^.ToXML());
 
   tmpStringList.Add('</' + Self.ClassName + '>');
 
@@ -974,9 +1089,9 @@ begin
   tmpStringList := TStringList.Create;
   tmpStringList.Add(Self.ClassName + ': {');
 
-  tmpStringList.Add( FromVector3f('position',Position).ToJSON() + ',');
-  tmpStringList.Add( Color.ToKey('color').ToJSON()  + ',');
-  tmpStringList.Add( FromVector2f('scale',Scale).ToJSON());
+  tmpStringList.Add(Position.ToKey('position')^.ToJSON() + ',');
+  tmpStringList.Add(Color.ToKey('color')^.ToJSON() + ',');
+  tmpStringList.Add(Scale.ToKey('scale')^.ToJSON());
 
   tmpStringList.Add('}');
 
@@ -997,7 +1112,15 @@ begin
   
 end;
 
+procedure TelNode.Draw(DrawChildren: Boolean = true);
+begin
+  if DrawChildren then
+    Children.Draw();
+end;
+
 procedure TelNode.Update(dt: Double = 0.0);
+var
+  i: Integer;
 begin
   if Locked then Exit; //< Again: Locking means no Update :)
 
@@ -1011,6 +1134,8 @@ begin
   if (Assigned(OnDragEnd)) then if DragEnd then OnDragEnd(Self);
   if (Assigned(OnClick)) then if Click then OnClick(Self);
   if (Assigned(OnDblClick)) then if DblClick then OnDblClick(Self);
+
+  Children.Update(dt);
 end;
 
 constructor TelNodeList.Create;
@@ -1130,5 +1255,25 @@ begin
 
 end;
 
+procedure TelNodeList.Draw();
+var
+  i: Integer;
+begin
+  if Count > 0 then
+  begin
+    for i := 0 to Count - 1 do
+      if (Items[i] <> nil) then Items[i].Draw;
+  end;
+end;
+
+procedure TelNodeList.Update(dt: Double = 0.0);
+var
+  i: Integer;
+begin
+  if Count > 0 then
+  begin
+    for i := 0 to Count - 1 do Items[i].Update(dt);
+  end;
+end;
 
 end.

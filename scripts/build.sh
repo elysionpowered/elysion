@@ -83,12 +83,22 @@ then
     SDL_NET_PATH="~/Library/Frameworks/SDL_net.framework"
   fi
 
-  if [ [ -d "/Developer/SDKs/MacOSX10.6.sdk" ] || [ -d "/Developer/SDKs/MacOSX10.5.sdk" ] || [ -d "/Developer/SDKs/MacOSX10.4u.sdk" ] ]
+  if [ [ -d /Developer/SDKs/MacOSX10.7.sdk ] || [ -d /Developer/SDKs/MacOSX10.6.sdk ] || [ -d /Developer/SDKs/MacOSX10.5.sdk ] || [ -d /Developer/SDKs/MacOSX10.4u.sdk ] ]
   then
     echo "At least one Mac OS X SDK found"
   else
     echo "XCode does not seem be installed. Please install XCode."
     exit 1
+  fi
+
+  if [ -d "/Developer/SDKs/MacOSX10.7.sdk" ]
+  then
+    DEV_LINK_PPC=
+    DEV_LINK_INTEL32="/Developer/SDKs/MacOSX10.7.sdk"
+    DEV_LINK_INTEL64="/Developer/SDKs/MacOSX10.7.sdk"
+
+    MIN_INTEL32="10.7.0"
+    MIN_INTEL64="10.7.0"
   fi
 
   if [ -d "/Developer/SDKs/MacOSX10.6.sdk" ]

@@ -6,7 +6,9 @@ interface
 
 uses
   ElysionTypes,
-  ElysionMath,
+  ElysionEvents,
+  ElysionAnimTypes,
+
   Classes;
 
 type
@@ -19,13 +21,13 @@ type
   end;
   
   IReadableData = interface
-    function LoadFromXML(): Boolean;
-	function LoadFromJSON(): Boolean;
+    function LoadFromXML(aData: TStringList): Boolean;
+    function LoadFromJSON(aData: TStringList): Boolean;
   end;
   
   IWritableData = interface
     function WriteToXML(): TStringList;
-	function WriteToJSON(): TStringList;
+    function WriteToJSON(): TStringList;
   end;
 
   // General module container
@@ -42,54 +44,48 @@ type
     procedure DrawTexture(Texture: ITexture);
 	procedure DrawShape(Rect: TelRect; Style: TShapeStyle);
 	procedure DrawLine(StartPoint, EndPoint: TelVector3f);
-  end;
-  
-  IComponent = interface(IContainer, IReadableData, IWritableData)
-    procedure Update(dt: Double = 0.0);
-
-	procedure SendMessage(Message: String); Overload;
-	procedure SendMessage(Message: String; Receiver: IComponent); Overload;
   end;}
   
-  //IEventListener = interface(IComponent)
+  IComponent = interface(IContainer)
+    procedure Update(dt: Double = 0.0);
+
+    procedure SendMessage(Message: String); Overload;
+    procedure SendMessage(Message: String; Receiver: IComponent); Overload;
+
+    function DidReceiveMessage(Message: String): Boolean;
+    function ReceivedMessages: TStringList;
+  end;
+
+
   IEventListener = interface(IObject)
     function AddEventListener(anEventName: String; anEvent: TelEvent): Boolean;
-	function RemoveEventListener(anEvent: TelEvent): Boolean;
-	function HasEventListener(anEventName: String): Boolean;
-	procedure DispatchEvent(anEvent: TelEvent);
+    function RemoveEventListener(anEvent: TelEvent): Boolean;
+    function HasEventListener(anEventName: String): Boolean;
+    procedure DispatchEvent(anEvent: TelEvent);
 
-  procedure RegisterEvent();
+    procedure RegisterEvent();
   end;
   
   IEntity = interface(IObject) 
-    (*procedure Attach(Component: IComponent); Overload;
-	procedure Attach(Components: array of IComponent); Overload;
-	
-	procedure Detach(Component: IComponent); Overload;
-	procedure Detach(Components: array of IComponent); Overload;
-	
-	procedure OnEnterFrame();
-	
-	procedure UpdateComponent(Components: array of IComponent);*)
-	
-	procedure Update(dt: Double = 0.0);
+    {procedure Add(Component: IComponent); Overload;
+    procedure Add(Components: array of IComponent); Overload;
+
+    procedure Remove(Component: IComponent); Overload;
+    procedure Remove(Components: array of IComponent); Overload;}
+
+    procedure Update(dt: Double = 0.0);
   end;
 
-  INode = interface(IEntity)
-	{procedure Attach(Node: INode); Overload;
-	procedure Attach(Nodes: array of INode); Overload;
-	
-	procedure Detach(Node: INode); Overload;
-	procedure Detach(Nodes: array of INode); Overload;}
-  
-    procedure Move(Delta: TelVector3f); Overload;
-    procedure Move(Delta: TelVector2i); Overload;
+  INode = interface(IObject)
+    procedure Move(aPoint: TelVector3f; dt: Double = 0.0); Overload;
+    procedure Move(aPoint: TelVector2i; dt: Double = 0.0); Overload;
+    procedure Move(aPoint: TelVector2f; dt: Double = 0.0); Overload;
 
-    procedure Rotate(DeltaAngle: Single);
+    procedure Rotate(DeltaAngle: Single; dt: Double = 0.0);
 
     procedure Animate(AnimProperty: TelAnimationProperty; Duration: Integer = 1000; Delay: Integer = 0; Transition: TelAnimationTransition = atLinear);
 
-    procedure Draw;
+    procedure Draw(DrawChildren: Boolean = true);
   end;
 
   //ITimer = interface(IComponent)
