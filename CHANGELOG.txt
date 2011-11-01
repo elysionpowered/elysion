@@ -27,6 +27,6 @@ New features:
 - Better support for Mac OS X 10.4 Tiger (Shell scripts automatically detects installed SDKs and compiles against the earliest possible SDK)
 - Added a key management system
 - Added a storage system similar to HTML5 LocalStorage (based on the key management system)
-
+ 
 V11-04 and older:
 Sorry guys, didn't really keep track of the changelogs.

@@ -15,6 +15,7 @@ interface
 uses
   ElysionTypes,
   ElysionObject,
+  ElysionMath,
   ElysionColor,
   ElysionContent,
   ElysionLogger,
@@ -41,15 +42,6 @@ uses
   Classes;
 
 type
-
-// TelVideoFlags
-TelVideoFlag =
-  (vfNull,      //< vfNull: Use for console applications, no video surface will be created
-   vfAuto,      //< vfAuto: Automatically checks if hardware or software render mode are available
-   vfHardware,  //< vfHardware: Use hardware surface
-   vfSoftware); //< vfSoftware: Use software surface
-
-TelProjectionMode = (pmPerspective, pmOrtho);
 
 {
     @classname @br
@@ -188,7 +180,6 @@ TelWindow = class(TelObject)
     fFPSTimer, fDeltaTimer, fCursorReset: TelTimer;
 
     fMouseDownCount, fMouseUpCount, fMouseMotionCount: Integer;
-    fProjection: TelProjectionMode;
 
     fDeltaTime: Double;
 
@@ -219,11 +210,6 @@ TelWindow = class(TelObject)
 
     function GetDisplayOrientation(): TDisplayOrientation; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     function GetWideScreen(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    // Set projection matrix
-    // Expert function: Automatically Ortho mode is being called, this function needs to be used
-    // if you want to display 3d objects on the screen, you need to call perspective mode
-    procedure SetProjection(ProjectionMode: TelProjectionMode); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
   public
 
@@ -278,6 +264,11 @@ TelWindow = class(TelObject)
 
       // Use EndScene last thing before the end of the game loop
       procedure EndScene(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+      // Set projection matrix
+      // Expert function: Automatically Ortho mode is being called, this function needs to be used
+      // if you want to display 3d objects on the screen, you need to call perspective mode
+      procedure SetProjection(ProjectionMode: TelProjectionMode); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
 
       // Expert function: Use background image instead of a color
@@ -353,7 +344,6 @@ TelWindow = class(TelObject)
     property FPS: Single read GetFPS write SetFPS;
     property LimitFPS: Boolean read fLimitFPS write fLimitFPS;
 
-    property Projection: TelProjectionMode read fProjection write SetProjection;
 
     // Values for experts
     property FoVY: Double read FFoVY write FFoVY;
@@ -452,9 +442,6 @@ destructor TAppContainer.Destroy;
 begin
   Finalize();
 
-  Self.IgnoreLogger := true;
-  //if isLoggerActive then TelLogger.GetInstance.Destroy;
-
   inherited Destroy;
 
   Halt(0);
@@ -503,8 +490,6 @@ begin
   begin
     SDL_Quit;
   end;
-
-  if isLoggerActive then TelLogger.GetInstance.Free;
 end;
 
 function TAppContainer.CreateWindow(aName: String; Width, Height, Bits: Integer; Fullscreen: Boolean; VideoFlag: TelVideoFlag): Boolean; 
@@ -763,7 +748,7 @@ begin
 
     glClearDepth(1.0);                                    // Depth Buffer Setup
     glEnable(GL_DEPTH_TEST);                        // Aktiviert Depth Testing
-    glDepthFunc(GL_ALWAYS);                        // Bestimmt den Typ des Depth Testing
+    glDepthFunc(GL_LEQUAL);                        // Bestimmt den Typ des Depth Testing
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);// Qualitativ bessere Koordinaten Interpolation
 
     TextureManager.ReloadAllTextures();
@@ -853,8 +838,6 @@ end;
 
 procedure TelWindow.SetProjection(ProjectionMode: TelProjectionMode); 
 begin
-  fProjection := ProjectionMode;
-
   glMatrixMode(GL_PROJECTION);
 
   glLoadIdentity;
@@ -1118,10 +1101,14 @@ begin
 
   SDL_UnlockSurface(tmpSurface);
 
+  tmpFilename := tmpFilename + #0;
+  //tmpPChar := @tmpFilename;
+  // Saves image to file
   {$IFDEF USE_VAMPYRE}
   ImagingSDL.SaveSDLSurfaceToFile(tmpFilename, tmpSurface);
   {$ELSE}
-  SDL_SaveBMP(tmpSurface, PChar(tmpFilename));
+  //tmpFilename := 'A'#0;
+  //SDL_SaveBMP(tmpSurface, tmpPChar);
   {$ENDIF}
 
   SDL_FreeSurface(tmpSurface);
