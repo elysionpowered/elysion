@@ -37,17 +37,27 @@
 
 # OS generated files #
 ######################
-.DS_Store?
+*.DS_Store
 ehthumbs.db
 Thumbs.db
 
 # Additional stuff #
 ####################
+*.lock
+*.swp
+*.out
 bin/*.html
 bin/*.a
 bin/*.dbg
 bin/*.or
 bin/main
+bin/myapp
+
+# Backup #
+##########
+backup
+*.bak
+*~
 
 # Excluded files #
 ##################

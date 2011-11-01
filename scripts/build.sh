@@ -7,7 +7,7 @@
 FPC_BIN=`which fpc`
 
 BIN_FOLDER="../bin"
-LIB_FOLDER="../lib  ../lib/ElysionCore      ../lib/ElysionCore/Base      ../lib/ElysionCore/IO      ../lib/ElysionCore/Audio      ../lib/ElysionCore/Math      ../lib/ElysionGraphics      ../lib/ElysionGraphics/Effects      ../lib/ElysionGraphics/Renderers      ../lib/ElysionGraphics/Fonts      ../lib/ElysionGraphics/Animations      ../lib/ElysionGraphics/Textures      ../lib/ElysionGraphics/Shaders      ../lib/ElysionFoundation      ../lib/ElysionFoundation/GUI      ../lib/ElysionFoundation/Network      ../lib/ElysionFoundation/Pipeline      ../lib/ElysionFoundation/Scene      ../lib/ElysionFoundation/Scripting"
+LIB_FOLDER="../lib"
 RES_FOLDER="../resources"
 SRC_FOLDER="../source"
 

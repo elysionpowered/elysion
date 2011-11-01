@@ -21,6 +21,7 @@ uses
   ElysionStorage,
   ElysionLayer,
   ElysionCamera,
+  ElysionGraphics,
   uGlobal,
   uBasic,
   uConfig;
@@ -80,6 +81,8 @@ begin
 
   // Load logo image from disk
   Sprite.LoadFromFile(GetResImgPath + 'logo.png');
+
+  Sprite.BoundingBox := bbPixel;
 
   // Set position to
   Sprite.Position := makeV3f(64, 64);

@@ -17,7 +17,6 @@ program myapplication;
 uses
   ElysionApplication in '../lib/ElysionApplication.pas',
   uGame in 'units/uGame.pas';
-  //Besen in '../lib/Dependencies/Besen/BESEN.pas';
 
 var
   Game: TGame;

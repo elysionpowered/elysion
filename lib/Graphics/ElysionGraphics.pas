@@ -252,10 +252,10 @@ function PixelTest(SpriteOne, SpriteTwo: TelSprite; AllowInvisibleObjects: Boole
     SpriteTwoRect.w := Trunc(SpriteTwo.ClipRect.W * SpriteTwo.Scale.X);
     SpriteTwoRect.h := Trunc(SpriteTwo.ClipRect.H * SpriteOne.Scale.Y);
 
-    if SpriteOne.Mask.Empty then SurfaceOne := SpriteOne.Mask.TextureSurface
+    if not SpriteOne.Mask.Empty then SurfaceOne := SpriteOne.Mask.TextureSurface
       else SurfaceOne := SpriteOne.Texture.TextureSurface;
 
-    if SpriteTwo.Mask.Empty then SurfaceTwo := SpriteTwo.Mask.TextureSurface
+    if not SpriteTwo.Mask.Empty then SurfaceTwo := SpriteTwo.Mask.TextureSurface
       else SurfaceTwo := SpriteTwo.Texture.TextureSurface;
 
     if SDL_PixelTest(SurfaceOne, @SpriteOneRect,
@@ -294,7 +294,7 @@ function PixelTest(Sprite: TelSprite; Rect: TelRect; AllowInvisibleObjects: Bool
     CRect.w := Trunc(Rect.W);
     CRect.h := Trunc(Rect.H);
 
-    if Sprite.Mask.Empty then Surface := Sprite.Mask.TextureSurface
+    if not Sprite.Mask.Empty then Surface := Sprite.Mask.TextureSurface
       else Surface := Sprite.Texture.TextureSurface;
 
     if SDL_PixelTestSurfaceVsRect(Surface,
