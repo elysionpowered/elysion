@@ -56,9 +56,12 @@ bin/myapp
 # Backup #
 ##########
 backup
+__history
 *.bak
 *~
+*.old
 
 # Excluded files #
 ##################
 !lib/MacOSX/libSDLMain.a
+!main.res
