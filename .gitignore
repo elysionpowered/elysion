@@ -64,4 +64,4 @@ __history
 # Excluded files #
 ##################
 !lib/MacOSX/libSDLMain.a
-!main.res
+!source/main.res
