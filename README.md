@@ -1,5 +1,5 @@
-Elysion Framework
-=================
+Elysion Game Framework
+======================
 
 What is this?
 -------------
@@ -22,12 +22,16 @@ framework would not exist in its current form without those people:
 - Arthur Baude  
 - Dominique Louis (He made SDL bindings for Object Pascal)  
 - Sam Lantinga (The creator of SDL)  
+And of course thanks to everyone else who used this framework or gave it a shot.
+
 
 Also thanks to these pieces of software which inspired me:  
-- Irrlicht 3D Engine  
-- Horde 3D / Horde 3D GameEngine  
-- Gosu  
-- Unity3D  
+- [Irrlicht 3D Engine](http://irrlicht.sourceforge.net)  
+- [Horde 3D](http://horde3d.org) / Horde 3D GameEngine  
+- [Gosu](http://libgosu.org)  
+- [Unity3D](http://unity3d.com)  
+- [Flashpunk](http://flashpunk.net/)
+- [Sparrow Framework](http://www.sparrow-framework.org/)
 
 What does it look like?
 -----------------------
@@ -63,12 +67,18 @@ Getting Started
 For detailed information please visit the Elysion wiki: https://github.com/freezedev/elysion/wiki
 
 
+Getting some help
+-----------------
+
+You have some questions or hit road block during development. Check out the official forums: http://www.pascalgamedevelopment.com/forumdisplay.php?67-Elysion-Game-Framework
+
+
 License
 -------
 
 Elysion is dual-licensed under the MIT and MPL license. Choose which one
 you like the most or use both if you feel like it.  
-You are allowed to use in any project of any kind, be it open-source, commercial, closed-source or a combination those.  
-You don't even need to acknowledge that you used Elysion in your application, but it is greatly appreciated.  
+You are allowed to use Elysion in any project of any kind, be it open-source, commercial, closed-source or a combination those.
+You don't even need to acknowledge that you used Elysion in your application, but it is greatly appreciated if you do.
 
 Hint: Other third-party libraries included in this package (in /lib/Dependencies) may use a different license.  
