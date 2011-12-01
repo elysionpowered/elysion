@@ -81,6 +81,9 @@ constructor TelMenu.Create;
 begin
   inherited Create;
 
+  ImageSplit := false;
+  HoverSplit := false;
+
   Animator := TelAnimator.Create;
 
   // Default animator, can be replaced though, but only if you really want it
@@ -292,7 +295,7 @@ begin
   end;
 end;
 
-procedure TelMenu.Draw;
+procedure TelMenu.Draw(DrawChildren: Boolean = true);
 var
   i: Integer;
 begin
@@ -304,7 +307,7 @@ begin
   end;
 end;
 
-procedure TelMenu.Update(dt: Double);
+procedure TelMenu.Update(dt: Double = 0.0);
 
   function SaveFocus(): Integer;
   var
@@ -339,30 +342,44 @@ begin
     end;
   end else
   begin
-    Reset(tmpFocus);
+    //Reset(tmpFocus);
 
     (*if tmpFocus <> -1 then
       Animator.Target := Items[tmpFocus];
 
     Animator.Update(dt); *)
 
-    if tmpFocus <> -1 then
+    for i := 0 to fButtonList.Count - 1 do
     begin
-      Animator.Target := Items[tmpFocus];
+      (TelButton(fButtonList.Items[i])).Color := makeCol(180, 180, 180);
+
+      if (TelButton(fButtonList.Items[i])).MouseOver then
+      begin
+        Animator.Target := TelButton(Items[i]);
+
+        if Animator.Active then
+          Animator.Update(dt)
+        else
+        begin
+          if not Animator.Finished then Animator.Reset();
+          Animator.Start();
+        end;
+      end;
+    end;
+
+    //if tmpFocus <> -1 then
+    //begin
+      //Animator.Target := Items[tmpFocus];
 
       //if not Animator.Finished then
       //begin
-      if Animator.Active then
-        Animator.Update(dt)
-      else
-        Animator.Start();
+      //if Animator.Active then
+        //Animator.Update(dt)
+      //else
+        //Animator.Start();
 
       //end;
 
-    end else
-    begin
-      if Animator.Active then
-        Animator.Stop();
     end;
 
     (*if ((StandardColor.R <> HoverColor.R) or
@@ -387,7 +404,7 @@ begin
           end else (TelButton(fButtonList.Items[i])).Color := StandardColor;
       end;}
     end;*)
-  end;
+  //end;
 
 end;
 

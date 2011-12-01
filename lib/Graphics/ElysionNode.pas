@@ -107,9 +107,6 @@ type
       function GetParentPosition(): TelVector3f; {$IFDEF CAN_INLINE} inline; {$ENDIF}
       function GetParentSize(): TelSize; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-      function GetAlpha(): Byte; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure SetAlpha(anAlpha: Byte); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
       procedure SetAlign(Value: TelAlignment); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       function GetColor(): TelColor; virtual;
@@ -171,16 +168,18 @@ type
 
       function LoadFromXML(aData: TStringList): Boolean;
       function LoadFromJSON(aData: TStringList): Boolean;
+      function LoadFromPlain(aData: TStringList): Boolean;
 
       function WriteToXML(): TStringList;
       function WriteToJSON(): TStringList;
+      function WriteToPlain(): TStringList;
 
       procedure Hover(MouseOverEvent, MouseOutEvent: TelNodeEvent);
 
       procedure Rotate(DeltaAngle: Single; dt: Double = 0.0); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       // Simple Animation, for more complex animations (espacially key frame animations, multiple animations triggered at the same time and such) use ElysionAnimators.pas
-      procedure Animate(AnimProperty: TelAnimationProperty; Duration: Integer = 1000; Delay: Integer = 0; Transition: TelAnimationTransition = atLinear);
+      procedure Animate(AnimProperty: String; TargetValue: Single; Duration: Integer = 1000; Delay: Integer = 0; Transition: TelAnimationTransition = atLinear);
 
       procedure Lock(); {$IFDEF CAN_INLINE} inline; {$ENDIF} //< Locks this node -> Update won't be called
       procedure UnLock(); {$IFDEF CAN_INLINE} inline; {$ENDIF} //< Unlocks this node
@@ -203,9 +202,9 @@ type
       property Align: TelAlignment read fAlign write SetAlign;
       property RelCursor: TelVector2i read GetRelCursor;
 
-      property Color: TelColor read GetColor write SetColor;
+      property Color: TelColor read fColor write fColor;
     published
-      property Alpha: Byte read GetAlpha write SetAlpha default 255;
+      property Alpha: Byte read fColor.A write fColor.A;
 
       property Border: TelBorder read fBorder write fBorder;
       property Margin: TelBounds read fMargin write fMargin;
@@ -928,16 +927,6 @@ begin
   if (Locked) then fLocked := false;
 end;
 
-function TelNode.GetAlpha(): Byte;
-begin
-  Result := Color.A;
-end;
-
-procedure TelNode.SetAlpha(anAlpha: Byte);
-begin
-  Color.A := anAlpha;
-end;
-
 function TelNode.GetOuterWidth(Value: TelElementDecorations): Integer;
 var
   tmpWidth: Integer;
@@ -1066,6 +1055,11 @@ begin
   end;
 end;
 
+function TelNode.LoadFromPlain(aData: TStringList): Boolean;
+begin
+
+end;
+
 function TelNode.WriteToXML(): TStringList;
 var
   tmpStringList: TStringList;
@@ -1098,14 +1092,20 @@ begin
   Result := tmpStringList;
 end;
 
+function TelNode.WriteToPlain(): TStringList;
+begin
+
+end;
+
 procedure TelNode.Hover(MouseOverEvent, MouseOutEvent: TelNodeEvent);
 begin
   OnMouseOver := MouseOverEvent;
   OnMouseOut := MouseOutEvent;
 end;
 
-procedure TelNode.Animate(AnimProperty: TelAnimationProperty;
-  Duration: Integer; Delay: Integer; Transition: TelAnimationTransition);
+procedure TelNode.Animate(AnimProperty: String; TargetValue: Single;
+  Duration: Integer = 1000; Delay: Integer = 0;
+  Transition: TelAnimationTransition = atLinear);
 begin
   if IsAnimated then Exit; //< Already animated? Exit here...
   

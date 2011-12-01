@@ -125,6 +125,10 @@ published
   property DriverName: String read fDriverName;
 end;
 
+// In the next release, TelModuleContainer is going to be renamed to TelContainer
+// I backported some code, that's why this type definition is here
+TelContainer = TelModuleContainer;
+
 TelFontContainer = class(TelObject)
 protected
   fText: String;

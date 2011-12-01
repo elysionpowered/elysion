@@ -14,48 +14,31 @@ interface
 uses
     Classes,
 
+    ElysionTypes,
     ElysionObject,
     ElysionEvents,
     ElysionApplication,
     ElysionInput,
     ElysionNode,
     ElysionEntity,
+    ElysionUtils,
     ElysionLayer;
 
 
 type
 
-TelGame = class(TelObject)
-  private
-    function GetWidth: Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function GetHeight: Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  public
-    // Creates TelScene with no strings attached
-    // A window needs to be created manually if not done yet
-    constructor Create; Overload; Override;
-    
-    // Creates TelScene and creates a window
-    constructor Create(Width, Height, BPP: Integer; Fullscreen: Boolean); Overload;
-
-    destructor Destroy(); Override;
-  
-    procedure Initialize(); virtual; abstract;
-    
-    procedure Render(); virtual;
-    procedure Update(dt: Double = 0.0); virtual;
-    procedure HandleEvents(); virtual;
-
-    function Param(aParam: String): Boolean;
-  published
-    property Width: Integer read GetWidth;
-    property Height: Integer read GetHeight;
-end;
+// Forward decleration
+TelSceneDirector = class;
 
 { TelScene }
 
 TelScene = class(TelObject)
   private
     fNodeList: TelNodeList;
+    fEntityList: TelEntityList;
+
+    fParent: TelSceneDirector;
+
     fGUILayer: TelLayer;
 
     fInitialized, fAutoSave, fPaused, fPauseKeyDefined: Boolean;
@@ -69,7 +52,7 @@ TelScene = class(TelObject)
     function GetModified(): Boolean;
   public
     constructor Create; Override; Overload;
-    constructor Create(aName: String); Overload;
+    constructor Create(aName: AnsiString); Overload;
 
     destructor Destroy; Override;
 
@@ -77,8 +60,10 @@ TelScene = class(TelObject)
 	
 	//procedure Initialize(); virtual; abstract;
 
-    procedure Add(aNode: TelNode); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure Add(anEntity: TelEntity); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure Add(aNode: TelNode); Overload; inline;
+    procedure Add(anEntity: TelEntity); Overload; inline;
+	procedure Add(aNodeArray: array of TelNode); Overload;
+	procedure Add(anEntityArray: array of TelEntity); Overload;
 
     procedure SetPauseKey(aKey: Cardinal);
     procedure DisablePauseKey();
@@ -98,42 +83,34 @@ TelScene = class(TelObject)
 
     property Paused: Boolean read fPaused write fPaused;
 
+    property Parent: TelSceneDirector read fParent write fParent;
+
     // Pause / Resume events
     property OnPause: TelEvent read fOnPause write fOnPause;
     property OnResume: TelEvent read fOnResume write fOnResume;
-end;
-
-{ Tel3DScene }
-
-Tel3DScene = class(TelScene)
-  public
-    procedure Render2D(); virtual;
-    procedure Render3D(); virtual;
-
-    procedure Render(); Override;
 end;
 
 TelSceneList = class(TelObject)
    private
     fSceneList: TList;
 
-    function Get(Index: Integer): TelScene; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function GetPos(Index: String): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure Put(Index: Integer; const Item: TelScene); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure PutS(Index: String; const Item: TelScene); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function GetS(Index: String): TelScene; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function Get(Index: Integer): TelScene; inline;
+    function GetPos(Index: AnsiString): Integer; inline;
+    procedure Put(Index: Integer; const Item: TelScene); inline;
+    procedure PutS(Index: AnsiString; const Item: TelScene); inline;
+    function GetS(Index: AnsiString): TelScene; inline;
 
-    function GetCount: Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetCount: Integer; inline;
   public
     constructor Create; Override;
     destructor Destroy; Override;
 
-    procedure Insert(Index: Integer; Scene: TelScene); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Add(Scene: TelScene): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure Delete(Index: Integer); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure Insert(Index: Integer; Scene: TelScene); inline;
+    function Add(Scene: TelScene): Integer; inline;
+    procedure Delete(Index: Integer); inline;
 
     property Items[Index: Integer]: TelScene read Get write Put; default;
-    property Find[Index: String]: TelScene read GetS write PutS;
+    property Find[Index: AnsiString]: TelScene read GetS write PutS;
   published
     property Count: Integer read GetCount;
 end;
@@ -146,137 +123,41 @@ TelSceneDirector = class(TelObject)
     fNullScene: TelScene;
 
     fActiveSceneID: Integer;
-    
-    function GetCount(): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function GetCurrentScene(): TelScene; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-    function Get(Index: Integer): TelScene; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure Put(Index: Integer; const Item: TelScene); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure PutS(Index: String; const Item: TelScene); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function GetS(Index: String): TelScene; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetCount(): Integer; inline;
+    function GetCurrentScene(): TelScene; inline;
+
+    function Get(Index: Integer): TelScene; inline;
+    procedure Put(Index: Integer; const Item: TelScene); inline;
+    procedure PutS(Index: AnsiString; const Item: TelScene); inline;
+    function GetS(Index: AnsiString): TelScene; inline;
   public
     constructor Create; Override;
     destructor Destroy; Override;
-	
-    procedure Insert(Index: Integer; Scene: TelScene); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-    function Add(aScene: TelScene): Integer; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Add(aScene: TelScene; aName: String): Integer; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure Insert(Index: Integer; Scene: TelScene); inline;
 
-    procedure Delete(Index: Integer); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function Add(aScene: TelScene): Integer; Overload; inline;
+    function Add(aScene: TelScene; aName: AnsiString): Integer; Overload; inline;
+
+    procedure Delete(Index: Integer); inline;
 
     procedure SwitchTo(Index: Integer); Overload;
-    procedure SwitchTo(aSceneName: String); Overload;
+    procedure SwitchTo(aSceneName: AnsiString); Overload;
 
-    procedure Render(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure Update(dt: Double = 0.0); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure HandleEvents(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure Render(); inline;
+    procedure Update(dt: Double = 0.0); inline;
+    procedure HandleEvents(); inline;
 
     property Items[Index: Integer]: TelScene read Get write Put; default;
-    property Find[Index: String]: TelScene read GetS write PutS;
+    property Find[Index: AnsiString]: TelScene read GetS write PutS;
   published
     property Count: Integer read GetCount;
 
     property CurrentScene: TelScene read GetCurrentScene;
 end;
 
-{$IFDEF AUTO_INIT}
-var
-  SceneDirector: TelSceneDirector;
-{$ENDIF}
-
 implementation
-
-{ Tel3DScene }
-
-procedure Tel3DScene.Render2D();
-var
-  i: Integer;
-begin
-  for i := 0 to fNodeList.Count - 1 do
-  begin
-    if (fNodeList.Items[i] <> nil) then fNodeList.Items[i].Draw;
-  end;
-end;
-
-procedure Tel3DScene.Render3D();
-begin
-  // 3D stuff goes here
-end;
-
-procedure Tel3DScene.Render();
-begin
-  ActiveWindow.Projection := pmPerspective;
-  ActiveWindow.BeginScene();
-  Self.Render3D();
-  ActiveWindow.EndScene();
-
-  ActiveWindow.Projection := pmOrtho;
-  ActiveWindow.BeginScene();
-  Self.Render2D();
-  ActiveWindow.EndScene();
-end;
-
-constructor TelGame.Create;
-begin
-  inherited;
-end;
-
-constructor TelGame.Create(Width, Height, BPP: Integer; Fullscreen: Boolean);
-begin
-  inherited Create;
-
-  Application.Initialize(Width, Height, BPP, Fullscreen);
-end;
-
-destructor TelGame.Destroy();
-begin
-  inherited;
-end;
-
-procedure TelGame.Render();
-begin
-  SceneDirector.Render();
-end;
-
-procedure TelGame.Update(dt: Double = 0.0);
-begin
-  SceneDirector.Update(dt);
-end;
-
-procedure TelGame.HandleEvents();
-begin
-  SceneDirector.HandleEvents();
-end;
-
-function TelGame.Param(aParam: String): Boolean;
-var
-  i: Integer;
-begin
-  Result := false;
-
-  if ParamCount >= 1 then
-  begin
-    for i := 1 to ParamCount - 1 do
-    begin
-      if ParamStr(i) = aParam then
-      begin
-        Result := true;
-        Exit;
-      end;
-    end;
-  end;
-end;
-
-function TelGame.GetWidth: Integer;
-begin
-  if ActiveWindow <> nil then Result := ActiveWindow.Width;
-end;
-
-function TelGame.GetHeight: Integer;
-begin
-  if ActiveWindow <> nil then Result := ActiveWindow.Height;
-end;
 
 { TelScene }
 
@@ -287,13 +168,17 @@ begin
   fOnPause := nil;
   fOnResume := nil;
 
+  fParent := nil;
+
   fNodeList := TelNodeList.Create;
+  fEntityList := TelEntityList.Create;
+
   GUILayer := TelLayer.Create;
 
     fAutoSave := true;
 end;
 
-constructor TelScene.Create(aName: String);
+constructor TelScene.Create(aName: AnsiString);
 begin
   Create;
 
@@ -306,6 +191,11 @@ begin
   begin
     // TODO: Save scene content if modified
   end;
+
+  GUILayer.Destroy;
+
+  fNodeList.Destroy;
+  fEntityList.Destroy;
 
   inherited;
 end;
@@ -346,7 +236,23 @@ end;
 
 procedure TelScene.Add(anEntity: TelEntity);
 begin
-  // ADD IT!
+  fEntityList.Add(anEntity);
+end;
+
+procedure TelScene.Add(aNodeArray: array of TelNode);
+var
+  i: Integer;
+begin
+  for i := 0 to Length(aNodeArray) - 1 do
+    fNodeList.Add(aNodeArray[i]);
+end;
+
+procedure TelScene.Add(anEntityArray: array of TelEntity); Overload;
+var
+  i: Integer;
+begin
+  for i := 0 to Length(anEntityArray) - 1 do
+    fEntityList.Add(anEntityArray[i]);
 end;
 
 procedure TelScene.SetPauseKey(aKey: Cardinal);
@@ -364,6 +270,7 @@ end;
 procedure TelScene.Render();
 begin
   fNodeList.Draw();
+  fEntityList.Draw;
 
   if GUILayer.Count > 0 then GUILayer.Draw();
 end;
@@ -390,6 +297,7 @@ begin
   if not Self.Paused then
   begin
     fNodeList.Update(dt);
+    fEntityList.Update(dt);
 
     fGUILayer.Update(dt);
   end;
@@ -432,7 +340,7 @@ begin
   if ((Index >= 0) and (Index <= fSceneList.Count - 1)) then Result := TelScene(fSceneList[Index]);
 end;
 
-function TelSceneList.GetPos(Index: String): Integer;
+function TelSceneList.GetPos(Index: AnsiString): Integer;
 Var a, TMP: Integer;
 Begin
   Try
@@ -463,7 +371,7 @@ begin
 
 end;
 
-procedure TelSceneList.PutS(Index: String; const Item: TelScene);
+procedure TelSceneList.PutS(Index: AnsiString; const Item: TelScene);
 var
   TMP: Integer;
   TmpScene: TelScene;
@@ -480,7 +388,7 @@ Begin
    end;
 end;
 
-function TelSceneList.GetS(Index: String): TelScene;
+function TelSceneList.GetS(Index: AnsiString): TelScene;
 Var TMP: Integer;
 Begin
   TMP := GetPos(Index);
@@ -519,7 +427,7 @@ begin
 
   // Create empty scene
   fNullScene := TelScene.Create('');
-  
+
   fList := TelSceneList.Create;
   fActiveSceneID := -1;
 end;
@@ -546,12 +454,12 @@ begin
   fList.Items[Index] := Item;
 end;
 
-procedure TelSceneDirector.PutS(Index: String; const Item: TelScene);
+procedure TelSceneDirector.PutS(Index: AnsiString; const Item: TelScene);
 begin
   fList.Find[Index] := Item;
 end;
 
-function TelSceneDirector.GetS(Index: String): TelScene;
+function TelSceneDirector.GetS(Index: AnsiString): TelScene;
 begin
   Result := fList.Find[Index];
 end;
@@ -572,16 +480,16 @@ var
   newSceneID: Integer;
 begin
   newSceneID := fList.Add(aScene);
+  aScene.Parent := Self;
 
   fActiveSceneID := newSceneID;
   Result := newSceneID;
 end;
 
-function TelSceneDirector.Add(aScene: TelScene; aName: String): Integer;
+function TelSceneDirector.Add(aScene: TelScene; aName: AnsiString): Integer;
 begin
   aScene.Name := aName;
-
-  Result := Self.Add(aScene);
+  Add(aScene);
 end;
 
 procedure TelSceneDirector.Delete(Index: Integer);
@@ -594,7 +502,7 @@ begin
   fActiveSceneID := Index;
 end;
 
-procedure TelSceneDirector.SwitchTo(aSceneName: String);
+procedure TelSceneDirector.SwitchTo(aSceneName: AnsiString);
 Var a, TMP: Integer;
 Begin
   Try
@@ -630,13 +538,5 @@ begin
   else CurrentScene.HandleEvents();
 end;
 
-{$IFDEF AUTO_INIT}
-initialization
-  SceneDirector := TelSceneDirector.Create;
-
-finalization
-  // TODO: Fix this here. If uncommented -> access violation
-  //SceneDirector.Free;
-{$ENDIF}
 
 end.

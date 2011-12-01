@@ -17,7 +17,6 @@ unit ElysionTypes;
 interface
 
 uses
-  ElysionMath,
   Classes,
   SDLUtils,
   SysUtils;
@@ -113,6 +112,9 @@ type
     {$ENDIF}
   end;
 
+  TelColorArray = array of TelColor;
+
+
   {%endregion}
 
   {$IFDEF FPC}
@@ -152,6 +154,8 @@ type
     {$ENDIF}
   end;
 
+  TelVector2fArray = array of TelVector2f;
+
 
   {$IFDEF FPC}
   TelVector2i = object
@@ -189,6 +193,9 @@ type
     function Equals(aVector: TelVector2i): Boolean;
     {$ENDIF}
   end;
+
+  TelVector2iArray = array of TelVector2i;
+
 
   {$IFDEF FPC}
   TelVector3f = object
@@ -236,6 +243,9 @@ type
     {$ENDIF}
   end;
 
+  TelVector3fArray = array of TelVector3f;
+
+
   {$IFDEF FPC}
   TelVector3i = object
   {$ELSE}
@@ -281,6 +291,8 @@ type
     function Equals(aVector: TelVector3i): Boolean;
     {$ENDIF}
   end;
+
+  TelVector3iArray = array of TelVector3i;
 
 
   // A vertex is basically just a position vector with a color attached to it
@@ -329,6 +341,9 @@ type
     {$ENDIF}
   end;
 
+  TelSizeArray = array of TelSize;
+
+
   { TelRect }
 
   {$IFDEF FPC}
@@ -363,6 +378,9 @@ type
     function IsEmpty(): Boolean;
     {$ENDIF}
   end;
+
+  TelRectArray = array of TelRect;
+
 
   // Display orientation (will be renamed in the future)
   TDisplayOrientation = (doLandscape, doPortrait);
@@ -656,27 +674,27 @@ end;
 
 function VectorEquals(VecOne, VecTwo: TelVector2f): Boolean;
 begin
-  Result := ((VecOne.X = VecTwo.X) or (VecOne.Y = VecTwo.Y));
+  Result := ((VecOne.X = VecTwo.X) and (VecOne.Y = VecTwo.Y));
 end;
 
 function VectorEquals(VecOne, VecTwo: TelVector2i): Boolean;
 begin
-  Result := ((VecOne.X = VecTwo.X) or (VecOne.Y = VecTwo.Y));
+  Result := ((VecOne.X = VecTwo.X) and (VecOne.Y = VecTwo.Y));
 end;
 
 function VectorEquals(VecOne, VecTwo: TelVector3f): Boolean;
 begin
-  Result := ((VecOne.X = VecTwo.X) or (VecOne.Y = VecTwo.Y) or (VecOne.Z = VecTwo.Z));
+  Result := ((VecOne.X = VecTwo.X) and (VecOne.Y = VecTwo.Y) and (VecOne.Z = VecTwo.Z));
 end;
 
 function VectorEquals(VecOne, VecTwo: TelVector3i): Boolean;
 begin
-  Result := ((VecOne.X = VecTwo.X) or (VecOne.Y = VecTwo.Y) or (VecOne.Z = VecTwo.Z));
+  Result := ((VecOne.X = VecTwo.X) and (VecOne.Y = VecTwo.Y) and (VecOne.Z = VecTwo.Z));
 end;
 
 function ColorEquals(ColorOne, ColorTwo: TelColor): Boolean;
 begin
-  Result := ((ColorOne.R = ColorTwo.R) or (ColorOne.G = ColorTwo.G) or (ColorOne.B = ColorTwo.B) or (ColorOne.A = ColorOne.A));
+  Result := ((ColorOne.R = ColorTwo.R) and (ColorOne.G = ColorTwo.G) and (ColorOne.B = ColorTwo.B) and (ColorOne.A = ColorTwo.A));
 end;
 
 function IsInRange(Min, Max, Value: Integer): Boolean;

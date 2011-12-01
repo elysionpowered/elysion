@@ -118,101 +118,6 @@ type
       property Height: Integer read GetHeight;
   end;
 
-  { TelParallaxSprite }
-
-  TelParallaxDirection = (dtUp, dtDown, dtLeft, dtRight);
-
-  TelParallaxSprite = class(TelSprite)
-    private
-      fSpeed: Single;
-      fPaused: Boolean;
-      fDirection: TelParallaxDirection;
-      fInternalPosition: TelVector3f;
-    public
-      constructor Create; Override;
-      destructor Destroy; Override;
-
-      procedure Start(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure Stop(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure Pause(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure UnPause(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-      procedure Draw(DrawChildren: Boolean = true); Override;
-      procedure Update(dt: Double = 0.0); Override;
-    published
-      property Direction: TelParallaxDirection read fDirection write fDirection;
-      property Speed: Single read fSpeed write fSpeed;
-  end;
-
-  { TelMovingSprite }
-
-  TelMovingSprite = class(TelSprite)
-  private
-    fPaused: Boolean;
-  public
-    procedure Update(dt: Double = 0.0); Override;
-  public
-    Velocity: TelVector2f;
-  published
-    property Paused: Boolean read fPaused write fPaused;
-  end;
-
-  { TelSpriteSheet }
-
-  TelSpriteSheet = class(TelSprite)
-    private
-      fMaxFrames, fFrame: Integer;
-      fTimer: TelTimer;
-      fFrameSize: TelSize;
-      fLoop: Boolean;
-
-      fAnimationList: TStringList;
-      fAnimFrames: array of Integer;
-
-      function GetColumns: Integer;
-      function GetMaxFrames: Integer;
-      function GetRows: Integer;
-      procedure SetColumns(AValue: Integer);
-      procedure SetRows(AValue: Integer);
-
-      procedure UpdateSpritesheet;
-    public
-      constructor Create; Override;
-      destructor Destroy; Override;
-
-      // Define animation in pixels
-      procedure Define(AnimName: String; aRect: TelRect); Overload;
-      // Define animation in frames
-      procedure Define(AnimName: String; StartFrame, EndFrame: Integer); Overload;
-      // Define specific frames
-      procedure Define(AnimName: String; Frammes: array of Integer); Overload;
-
-      // Plays complete sprite sheet
-      procedure Play(Length: Integer = 1000); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-      // Plays specific sprite sheet animations
-      procedure Play(AnimName: String; Length: Integer = 1000); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure Stop(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure Pause(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure UnPause(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-      procedure Draw(DrawChildren: Boolean = true); Override;
-      procedure Update(dt: Double = 0.0); Override;
-
-      procedure RandomFrame();
-
-      property FrameSize: TelSize read fFrameSize write fFrameSize;
-    published
-      property Frame: Integer read fFrame write fFrame;
-
-      property MaxFrames: Integer read GetMaxFrames;
-
-      property Columns: Integer read GetColumns write SetColumns;
-      property Rows: Integer read GetRows write SetRows;
-
-      property Loop: Boolean read fLoop write fLoop;
-  end;
-
 TelSpriteList = class(TelObject)
   private
     FSpriteList: TList;
@@ -247,15 +152,6 @@ implementation
 
 uses
   ElysionGraphics;
-
-{ TelMovingSprite }
-
-procedure TelMovingSprite.Update(dt: Double = 0.0);
-begin
-  inherited;
-
-  if not Self.Paused then Self.Move(Velocity, dt);
-end;
 
 constructor TelSprite.Create;
 begin
@@ -716,7 +612,7 @@ begin
     glEnable(GL_TEXTURE_2D);
 
     glPushMatrix;
-      glColor3f(1, 1, 1);
+      glColor4f(1.0, 1.0, 1.0, 1.0);
       glBindTexture(GL_TEXTURE_2D, Self.Texture.TextureID);
       if Transparent then
       begin
@@ -724,27 +620,28 @@ begin
         glAlphaFunc(GL_GREATER, 0.1);
       end;
 
-  	glTranslatef((ParentPosition.X + Position.X - Margin.Left - Border.Left.Width - Padding.Left + Origin.X) * ActiveWindow.ResScale.X,
-                     (ParentPosition.Y + Position.Y - Margin.Top - Border.Top.Width - Padding.Top + Origin.Y) * ActiveWindow.ResScale.Y, ParentPosition.Z);
+      glTranslatef((ParentPosition.X + Position.X - Margin.Left - Border.Left.Width - Padding.Left + Origin.X) * ActiveWindow.ResScale.X,
+                   (ParentPosition.Y + Position.Y - Margin.Top - Border.Top.Width - Padding.Top + Origin.Y) * ActiveWindow.ResScale.Y, ParentPosition.Z);
 
-  	if Abs(Rotation.Angle) >= 360.0 then Rotation.Angle := 0.0;
+      if Abs(Rotation.Angle) >= 360.0 then Rotation.Angle := 0.0;
 
-  	if Rotation.Angle <> 0.0 then glRotatef(Rotation.Angle, Rotation.Vector.X, Rotation.Vector.Y, Rotation.Vector.Z);
+      if Rotation.Angle <> 0.0 then glRotatef(Rotation.Angle, Rotation.Vector.X, Rotation.Vector.Y, Rotation.Vector.Z);
 
+      glEnable(GL_BLEND);
       case BlendMode of
         bmAdd: glBlendFunc(GL_ONE, GL_ONE);
         bmNormal: glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         bmSub: glBlendFunc(GL_ZERO, GL_ONE);
       end;
-      glEnable(GL_BLEND);
 
-  	glColor4f(Color.R / 255, Color.G / 255, Color.B / 255, Alpha / 255);
-  	glScalef(Scale.X * ActiveWindow.ResScale.X, Scale.Y * ActiveWindow.ResScale.Y, 1);
 
-        DrawQuad(Texture.Width, Texture.Height,
-                 fClipRect.X, fClipRect.Y, fClipRect.W, fClipRect.H,
-                 -Origin.X, -Origin.Y, Self.Width, Self.Height,
-                 Position.Z);
+      glColor4f(Color.R / 255, Color.G / 255, Color.B / 255, Color.A / 255);
+      glScalef(Scale.X * ActiveWindow.ResScale.X, Scale.Y * ActiveWindow.ResScale.Y, 1);
+
+      DrawQuad(Texture.Width, Texture.Height,
+               fClipRect.X, fClipRect.Y, fClipRect.W, fClipRect.H,
+               -Origin.X, -Origin.Y, Self.Width, Self.Height,
+               Position.Z);
       //DrawQuad(TelVector2i.Create(TextureWidth, TextureHeight), FClipRect, TelRect.Create(-Offset.Rotation.X, -Offset.Rotation.Y, Width, Height), Position.Z);
 
       //DrawQuad(200, 200, 200, 200, 0);
@@ -769,126 +666,6 @@ begin
   if (HyperLink <> '') and GetClick then OpenURL(HyperLink);
 end;
 
-
-constructor TelSpriteSheet.Create;
-begin
-  inherited;
-
-  fTimer := TelTimer.Create;
-  fFrame := 0;
-
-  fAnimationList := TStringList.Create;
-  fAnimationList.NameValueSeparator := ':';
-
-  fTimer.OnEvent := Self.UpdateSpritesheet;
-  fLoop := false;
-end;
-
-function TelSpriteSheet.GetMaxFrames: Integer;
-begin
-  Result := Columns * Rows;
-end;
-
-function TelSpriteSheet.GetColumns: Integer;
-begin
-  Result := Self.TextureWidth div Self.FrameSize.Width;
-end;
-
-function TelSpriteSheet.GetRows: Integer;
-begin
-  Result := Self.TextureHeight div Self.FrameSize.Height;
-end;
-
-procedure TelSpriteSheet.SetColumns(AValue: Integer);
-begin
-  Self.FrameSize.Width := Self.TextureWidth div AValue;
-end;
-
-procedure TelSpriteSheet.SetRows(AValue: Integer);
-begin
-  Self.FrameSize.Height := Self.TextureHeight div AValue;
-end;
-
-procedure TelSpriteSheet.UpdateSpritesheet;
-begin
-
-end;
-
-destructor TelSpriteSheet.Destroy;
-begin
-  fTimer.Destroy;
-
-  inherited;
-end;
-
-procedure TelSpriteSheet.Define(AnimName: String; aRect: TelRect);
-var
-  tmpStartFrame, tmpEndFrame: Integer;
-begin
-  tmpStartFrame := (Trunc(aRect.X) * Columns) + (Trunc(aRect.Y) * Rows);
-  tmpEndFrame := Trunc(aRect.X + aRect.W) * Columns + Trunc(aRect.Y + aRect.H) * Rows;
-
-  fAnimationList.Add(AnimName + ':' + IntToStr(tmpStartFrame) + ' ' + IntToStr(tmpEndFrame));
-end;
-
-procedure TelSpriteSheet.Define(AnimName: String; StartFrame, EndFrame: Integer);
-begin
-  fAnimationList.Add(AnimName + ':' + IntToStr(StartFrame) + ' ' + IntToStr(EndFrame));
-end;
-
-procedure TelSpriteSheet.Define(AnimName: String; Frammes: array of Integer);
-begin
-
-end;
-
-procedure TelSpriteSheet.Play(Length: Integer = 1000);
-begin
-  //fAnimFrames := [0];
-  //fEndFrame := GetMaxFrames;
-
-  fTimer.Interval := Length div GetMaxFrames;
-end;
-
-procedure TelSpriteSheet.Play(AnimName: String; Length: Integer = 1000);
-begin
-  fAnimationList.Values[AnimName];
-
-  Self.Log(fAnimationList.Values[AnimName]);
-  //fTimer.Interval := ;
-end;
-
-procedure TelSpriteSheet.Stop();
-begin
-  fTimer.Stop();
-end;
-
-procedure TelSpriteSheet.Pause();
-begin
-  fTimer.Pause();
-end;
-
-procedure TelSpriteSheet.UnPause();
-begin
-  fTimer.UnPause();
-end;
-
-procedure TelSpriteSheet.Draw();
-begin
-  inherited Draw();
-end;
-
-procedure TelSpriteSheet.Update(dt: Double);
-begin
-  inherited Update(dt);
-
-  fTimer.Update(dt);
-  Self.ClipImage(makeRect(fFrame div Columns, fFrame mod Rows, FrameSize.Width, FrameSize.Height));
-end;
-
-procedure TelSpriteSheet.RandomFrame();
-begin
-  fFrame := Random(GetMaxFrames) + 1;
-end;
 
 //
 // TelSpriteList
@@ -1097,48 +874,6 @@ begin
   loadFromStream(FileHndl);
 
   FileHndl.Free;
-end;
-
-{ TelParallaxSprite }
-
-constructor TelParallaxSprite.Create;
-begin
-  inherited Create;
-end;
-
-destructor TelParallaxSprite.Destroy;
-begin
-  inherited Destroy;
-end;
-
-procedure TelParallaxSprite.Start();
-begin
-
-end;
-
-procedure TelParallaxSprite.Stop();
-begin
-
-end;
-
-procedure TelParallaxSprite.Pause();
-begin
-
-end;
-
-procedure TelParallaxSprite.UnPause();
-begin
-
-end;
-
-procedure TelParallaxSprite.Draw();
-begin
-  inherited Draw();
-end;
-
-procedure TelParallaxSprite.Update(dt: Double);
-begin
-  inherited Update(dt);
 end;
 
 end.

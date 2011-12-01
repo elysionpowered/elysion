@@ -5,6 +5,7 @@ interface
 uses
   ElysionTypes,
   ElysionApplication,
+  ElysionGame,
   ElysionScene,
   ElysionLogger,
   ElysionColor,
@@ -83,6 +84,11 @@ begin
   // Get ya priorities straight
 
   tmpFullscreen := false;
+
+  // Change application container debug flag
+  // (only if this is set, the logger will not be written to file)
+  Application.Debug := Self.Debug;
+
   if Debug then
     TelLogger.getInstance.Priorities := [ltNote, ltWarning, ltError]
   else tmpFullscreen := true;

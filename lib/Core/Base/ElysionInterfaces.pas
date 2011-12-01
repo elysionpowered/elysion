@@ -21,18 +21,24 @@ type
   end;
   
   IReadableData = interface
+    function LoadFromPlain(aData: TStringList): Boolean;
     function LoadFromXML(aData: TStringList): Boolean;
     function LoadFromJSON(aData: TStringList): Boolean;
   end;
   
   IWritableData = interface
+    function WriteToPlain(): TStringList;
     function WriteToXML(): TStringList;
     function WriteToJSON(): TStringList;
   end;
 
   // General module container
-  IContainer = interface(IObject)
+  IContainer = interface(IObject) ['{131D9EBF-615D-49C8-9C02-61AE1C50E5E2}']
     function Initialize(): Boolean;
+
+    //function IsInitialized(): Boolean;
+    //function IsFinalized(): Boolean;
+
     procedure Finalize();
   end;
   
@@ -49,29 +55,22 @@ type
   IComponent = interface(IContainer)
     procedure Update(dt: Double = 0.0);
 
-    procedure SendMessage(Message: String); Overload;
-    procedure SendMessage(Message: String; Receiver: IComponent); Overload;
+    procedure SendMessage(Message: AnsiString);
 
-    function DidReceiveMessage(Message: String): Boolean;
-    function ReceivedMessages: TStringList;
+    function DidReceiveMessage(Message: AnsiString): Boolean;
   end;
 
 
   IEventListener = interface(IObject)
-    function AddEventListener(anEventName: String; anEvent: TelEvent): Boolean;
+    function AddEventListener(anEventName: AnsiString; anEvent: TelEvent): Boolean;
     function RemoveEventListener(anEvent: TelEvent): Boolean;
-    function HasEventListener(anEventName: String): Boolean;
+    function HasEventListener(anEventName: AnsiString): Boolean;
     procedure DispatchEvent(anEvent: TelEvent);
 
     procedure RegisterEvent();
   end;
   
   IEntity = interface(IObject) 
-    {procedure Add(Component: IComponent); Overload;
-    procedure Add(Components: array of IComponent); Overload;
-
-    procedure Remove(Component: IComponent); Overload;
-    procedure Remove(Components: array of IComponent); Overload;}
 
     procedure Update(dt: Double = 0.0);
   end;
@@ -83,7 +82,7 @@ type
 
     procedure Rotate(DeltaAngle: Single; dt: Double = 0.0);
 
-    procedure Animate(AnimProperty: TelAnimationProperty; Duration: Integer = 1000; Delay: Integer = 0; Transition: TelAnimationTransition = atLinear);
+    procedure Animate(AnimProperty: String; TargetValue: Single; Duration: Integer = 1000; Delay: Integer = 0; Transition: TelAnimationTransition = atLinear);
 
     procedure Draw(DrawChildren: Boolean = true);
   end;

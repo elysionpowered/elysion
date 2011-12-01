@@ -587,7 +587,11 @@ procedure TelAnimator.Update(dt: Double = 0.0);
 
   procedure AnimColor(dt: Double = 0.0);
   begin
+    {$IFDEF CAN_METHODS}
+    if not AnimProperty.StartColor.Equals(AnimProperty.EndColor) then
+    {$ELSE}
     if not ColorEquals(AnimProperty.StartColor, AnimProperty.EndColor) then
+    {$ENDIF}
     begin
       case Transition of
         atLinear:
@@ -656,6 +660,8 @@ procedure TelAnimator.Update(dt: Double = 0.0);
   end;
 
 begin
+  // We don't need deltatime here, as it's all timer-based
+
   if (fTarget <> nil) and (Self.Active) and (not fTimer.Paused) then
   begin
     if fTimer.GetTicks() >= Delay then

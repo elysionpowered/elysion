@@ -16,60 +16,92 @@ uses
     Classes,
 
     ElysionObject,
-    ElysionApplication,
-    ElysionScene;
+    ElysionTypes,
+    ElysionUtils,
+    ElysionScene,
+    ElysionApplication;
 
 
 type
-// TODO: Merge TelGame and TelScene somehow
 
-TelGame = class(TelObject)
-  private
-    function GetWidth: Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function GetHeight: Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+{ TelGame }
+
+  TelGame = class(TelObject)
+  protected
+    fResolutions: TelSizeArray;
+    fSceneDirector: TelSceneDirector;
+
+    function GetWidth: Integer; inline;
+    function GetHeight: Integer; inline;
+
+    procedure GetOptiomalResolution(out Size: TelSize; out Fullscreen: Boolean);
   public
     // Creates TelScene with no strings attached
     // A window needs to be created manually if not done yet
-    constructor Create(); Overload; Override;
-    
+    constructor Create; Overload; Override;
+
     // Creates TelScene and creates a window
     constructor Create(Width, Height, BPP: Integer; Fullscreen: Boolean); Overload;
 
     destructor Destroy(); Override;
-  
+
     procedure Initialize(); virtual; abstract;
-    
-    procedure Render(); virtual; abstract;
-    procedure Update(dt: Double = 0.0); virtual; abstract;
 
-    procedure HandleEvents(); virtual; abstract;
+    procedure Render(); virtual;
+    procedure Update(dt: Double = 0.0); virtual;
+    procedure HandleEvents(); virtual;
 
-    function Param(aParam: String): Boolean;
+    function Param(aParam: AnsiString): Boolean;
+  public
+    property Resolutions: TelSizeArray read fResolutions write fResolutions;
   published
+    property SceneDirector: TelSceneDirector read fSceneDirector write fSceneDirector;
+
     property Width: Integer read GetWidth;
     property Height: Integer read GetHeight;
 end;
 
 implementation
 
-constructor TelGame.Create();
+constructor TelGame.Create;
 begin
   inherited;
+
+  if Length(fResolutions) = 0 then fResolutions := PopulateArray([makeSize(1024, 600)]);
 end;
 
 constructor TelGame.Create(Width, Height, BPP: Integer; Fullscreen: Boolean);
 begin
   inherited Create;
 
-  Application.Initialize(Width, Height, BPP, Fullscreen);
+  WindowManager.CreateWindow('', Width, Height, BPP, Fullscreen);
+  
+  fSceneDirector := TelSceneDirector.Create;
 end;
 
 destructor TelGame.Destroy();
 begin
+  fSceneDirector.Destroy;
+
   inherited;
 end;
 
-function TelGame.Param(aParam: String): Boolean;
+procedure TelGame.Render();
+begin
+  SceneDirector.Render();
+end;
+
+procedure TelGame.Update(dt: Double = 0.0);
+begin
+  SceneDirector.Update(dt);
+end;
+
+procedure TelGame.HandleEvents();
+begin
+  SceneDirector.HandleEvents();
+end;
+
+function TelGame.Param(aParam: AnsiString): Boolean;
 var
   i: Integer;
 begin
@@ -90,12 +122,56 @@ end;
 
 function TelGame.GetWidth: Integer;
 begin
-  if ActiveWindow <> nil then Result := ActiveWindow.Width;
+  if WindowManager.CurrentWindow <> nil then
+    Result := WindowManager.CurrentWindow.Width;
 end;
 
 function TelGame.GetHeight: Integer;
 begin
-  if ActiveWindow <> nil then Result := ActiveWindow.Height;
+  if WindowManager.CurrentWindow <> nil then
+    Result := WindowManager.CurrentWindow.Height;
+end;
+
+procedure TelGame.GetOptiomalResolution(out Size: TelSize; out
+  Fullscreen: Boolean);
+var
+  i: Integer;
+  prevWidth, prevHeight: Integer;
+  prevFullscreen: Boolean;
+begin
+  prevWidth := 0;
+  prevHeight := 0;
+  prevFullscreen := false;
+
+  // Use the native desktop resolution if possible
+  for i := 0 to Length(fResolutions) do
+  begin
+    if ((fResolutions[i].Width = Environment.Width) and (fResolutions[i].Height = Environment.Height)) then
+    begin
+      prevWidth := fResolutions[i].Width;
+      prevHeight := fResolutions[i].Height;
+
+      prevFullscreen := true;
+
+      Break;
+    end else
+    begin
+      if Environment.AspectRatio = fResolutions[i].GetAspectRatio then
+      begin
+        if ((prevWidth < fResolutions[i].Width) and (prevHeight < fResolutions[i].Height)) then
+        begin
+          prevWidth := fResolutions[i].Width;
+          prevHeight := fResolutions[i].Height;
+
+          prevFullscreen := false;
+        end;
+      end;
+    end;
+  end;
+
+  Size.Width := prevWidth;
+  Size.Height := prevHeight;
+  Fullscreen := prevFullscreen;
 end;
 
 end.

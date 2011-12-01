@@ -30,7 +30,7 @@
         <LaunchingApplication PathPlusParams="\usr\X11R6\bin\xterm -T 'Lazarus Run Output' -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <Units Count="77">
+    <Units Count="83">
       <Unit0>
         <Filename Value="main.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -46,25 +46,29 @@
         <WindowIndex Value="0"/>
         <TopLine Value="51"/>
         <CursorPos X="11" Y="65"/>
-        <UsageCount Value="100"/>
+        <UsageCount Value="99"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit1>
       <Unit2>
         <Filename Value="units\uGame.pas"/>
         <UnitName Value="uGame"/>
+        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="16" Y="11"/>
+        <TopLine Value="15"/>
+        <CursorPos X="6" Y="89"/>
         <UsageCount Value="101"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit2>
       <Unit3>
         <Filename Value="units\uMainMenu.pas"/>
         <UnitName Value="uMainMenu"/>
+        <EditorIndex Value="10"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="76"/>
-        <CursorPos X="22" Y="25"/>
+        <TopLine Value="60"/>
+        <CursorPos X="16" Y="53"/>
         <UsageCount Value="101"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit3>
       <Unit4>
@@ -72,8 +76,8 @@
         <UnitName Value="uGameScreen"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="55"/>
-        <CursorPos X="16" Y="85"/>
+        <TopLine Value="158"/>
+        <CursorPos X="8" Y="174"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -84,7 +88,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="15"/>
         <CursorPos X="1" Y="26"/>
-        <UsageCount Value="137"/>
+        <UsageCount Value="136"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit5>
       <Unit6>
@@ -93,7 +97,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="183"/>
         <CursorPos X="14" Y="206"/>
-        <UsageCount Value="72"/>
+        <UsageCount Value="71"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit6>
       <Unit7>
@@ -102,7 +106,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="145"/>
         <CursorPos X="53" Y="122"/>
-        <UsageCount Value="46"/>
+        <UsageCount Value="45"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit7>
       <Unit8>
@@ -111,7 +115,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="275"/>
         <CursorPos X="18" Y="314"/>
-        <UsageCount Value="72"/>
+        <UsageCount Value="71"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit8>
       <Unit9>
@@ -120,7 +124,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="13"/>
         <CursorPos X="52" Y="86"/>
-        <UsageCount Value="72"/>
+        <UsageCount Value="71"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit9>
       <Unit10>
@@ -129,7 +133,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="26" Y="3"/>
-        <UsageCount Value="17"/>
+        <UsageCount Value="16"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit10>
       <Unit11>
@@ -138,7 +142,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="29"/>
         <CursorPos X="60" Y="35"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="11"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit11>
       <Unit12>
@@ -147,7 +151,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="327"/>
         <CursorPos X="161" Y="359"/>
-        <UsageCount Value="99"/>
+        <UsageCount Value="98"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit12>
       <Unit13>
@@ -156,7 +160,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="92"/>
         <CursorPos X="57" Y="121"/>
-        <UsageCount Value="99"/>
+        <UsageCount Value="98"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit13>
       <Unit14>
@@ -165,7 +169,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="42"/>
         <CursorPos X="5" Y="43"/>
-        <UsageCount Value="99"/>
+        <UsageCount Value="98"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit14>
       <Unit15>
@@ -174,7 +178,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="459"/>
         <CursorPos X="15" Y="496"/>
-        <UsageCount Value="99"/>
+        <UsageCount Value="98"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit15>
       <Unit16>
@@ -183,7 +187,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="17" Y="14"/>
-        <UsageCount Value="101"/>
+        <UsageCount Value="100"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit16>
       <Unit17>
@@ -192,7 +196,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="89" Y="188"/>
-        <UsageCount Value="46"/>
+        <UsageCount Value="45"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit17>
       <Unit18>
@@ -201,7 +205,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="61"/>
         <CursorPos X="105" Y="75"/>
-        <UsageCount Value="101"/>
+        <UsageCount Value="100"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit18>
       <Unit19>
@@ -210,7 +214,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="2"/>
         <CursorPos X="16" Y="14"/>
-        <UsageCount Value="99"/>
+        <UsageCount Value="98"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit19>
       <Unit20>
@@ -219,7 +223,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="15"/>
         <CursorPos X="28" Y="35"/>
-        <UsageCount Value="99"/>
+        <UsageCount Value="98"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit20>
       <Unit21>
@@ -228,7 +232,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="25" Y="15"/>
-        <UsageCount Value="67"/>
+        <UsageCount Value="66"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit21>
       <Unit22>
@@ -237,7 +241,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="78"/>
         <CursorPos X="9" Y="144"/>
-        <UsageCount Value="59"/>
+        <UsageCount Value="58"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit22>
       <Unit23>
@@ -246,7 +250,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="69" Y="31"/>
-        <UsageCount Value="72"/>
+        <UsageCount Value="71"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit23>
       <Unit24>
@@ -255,7 +259,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1063"/>
         <CursorPos X="20" Y="13"/>
-        <UsageCount Value="103"/>
+        <UsageCount Value="102"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit24>
       <Unit25>
@@ -264,7 +268,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="20" Y="20"/>
-        <UsageCount Value="100"/>
+        <UsageCount Value="99"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit25>
       <Unit26>
@@ -273,7 +277,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="5"/>
         <CursorPos X="156" Y="14"/>
-        <UsageCount Value="101"/>
+        <UsageCount Value="100"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit26>
       <Unit27>
@@ -282,7 +286,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="197"/>
         <CursorPos X="61" Y="210"/>
-        <UsageCount Value="99"/>
+        <UsageCount Value="98"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit27>
       <Unit28>
@@ -291,7 +295,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="16"/>
         <CursorPos X="46" Y="6"/>
-        <UsageCount Value="72"/>
+        <UsageCount Value="71"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit28>
       <Unit29>
@@ -300,7 +304,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="312"/>
         <CursorPos X="38" Y="349"/>
-        <UsageCount Value="46"/>
+        <UsageCount Value="45"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit29>
       <Unit30>
@@ -309,7 +313,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="73"/>
         <CursorPos X="65" Y="98"/>
-        <UsageCount Value="51"/>
+        <UsageCount Value="50"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit30>
       <Unit31>
@@ -318,7 +322,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="20" Y="10"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="101"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit31>
       <Unit32>
@@ -327,7 +331,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="15" Y="93"/>
-        <UsageCount Value="99"/>
+        <UsageCount Value="98"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit32>
       <Unit33>
@@ -335,7 +339,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="87" Y="34"/>
-        <UsageCount Value="100"/>
+        <UsageCount Value="99"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit33>
       <Unit34>
@@ -344,7 +348,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="12"/>
         <CursorPos X="10" Y="10"/>
-        <UsageCount Value="67"/>
+        <UsageCount Value="66"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit34>
       <Unit35>
@@ -353,7 +357,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="96" Y="39"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="101"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit35>
       <Unit36>
@@ -362,7 +366,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="11"/>
         <CursorPos X="14" Y="19"/>
-        <UsageCount Value="100"/>
+        <UsageCount Value="99"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit36>
       <Unit37>
@@ -371,7 +375,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="14"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="101"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit37>
       <Unit38>
@@ -380,7 +384,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="15" Y="16"/>
-        <UsageCount Value="100"/>
+        <UsageCount Value="99"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit38>
       <Unit39>
@@ -389,7 +393,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="55" Y="1"/>
-        <UsageCount Value="79"/>
+        <UsageCount Value="78"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit39>
       <Unit40>
@@ -398,16 +402,18 @@
         <WindowIndex Value="0"/>
         <TopLine Value="178"/>
         <CursorPos X="19" Y="201"/>
-        <UsageCount Value="73"/>
+        <UsageCount Value="72"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit40>
       <Unit41>
         <Filename Value="units\uCredits.pas"/>
         <UnitName Value="uCredits"/>
+        <EditorIndex Value="12"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="14" Y="14"/>
+        <TopLine Value="35"/>
+        <CursorPos X="16" Y="85"/>
         <UsageCount Value="101"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit41>
       <Unit42>
@@ -416,7 +422,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="7"/>
         <CursorPos X="18" Y="24"/>
-        <UsageCount Value="110"/>
+        <UsageCount Value="109"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit42>
       <Unit43>
@@ -425,7 +431,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="15" Y="22"/>
-        <UsageCount Value="100"/>
+        <UsageCount Value="99"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit43>
       <Unit44>
@@ -434,7 +440,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="13"/>
         <CursorPos X="2" Y="37"/>
-        <UsageCount Value="41"/>
+        <UsageCount Value="40"/>
       </Unit44>
       <Unit45>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\rtl\win\sysutils.pp"/>
@@ -442,7 +448,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="21"/>
         <CursorPos X="3" Y="47"/>
-        <UsageCount Value="27"/>
+        <UsageCount Value="26"/>
       </Unit45>
       <Unit46>
         <Filename Value="..\lib\ElysionAssets.pas"/>
@@ -450,7 +456,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="35"/>
-        <UsageCount Value="99"/>
+        <UsageCount Value="98"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit46>
       <Unit47>
@@ -459,16 +465,18 @@
         <WindowIndex Value="0"/>
         <TopLine Value="327"/>
         <CursorPos X="33" Y="347"/>
-        <UsageCount Value="101"/>
+        <UsageCount Value="100"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit47>
       <Unit48>
         <Filename Value="units\uOptions.pas"/>
         <UnitName Value="uOptions"/>
+        <EditorIndex Value="13"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="14" Y="12"/>
+        <TopLine Value="40"/>
+        <CursorPos X="98" Y="80"/>
         <UsageCount Value="119"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit48>
       <Unit49>
@@ -477,7 +485,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="220"/>
         <CursorPos X="95" Y="228"/>
-        <UsageCount Value="104"/>
+        <UsageCount Value="103"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit49>
       <Unit50>
@@ -486,7 +494,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="364"/>
         <CursorPos X="23" Y="371"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit50>
       <Unit51>
@@ -495,7 +503,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="351"/>
         <CursorPos X="29" Y="375"/>
-        <UsageCount Value="99"/>
+        <UsageCount Value="98"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit51>
       <Unit52>
@@ -504,7 +512,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="802"/>
         <CursorPos X="1" Y="829"/>
-        <UsageCount Value="30"/>
+        <UsageCount Value="29"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit52>
       <Unit53>
@@ -513,7 +521,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="19"/>
-        <UsageCount Value="22"/>
+        <UsageCount Value="21"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit53>
       <Unit54>
@@ -522,7 +530,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="92"/>
         <CursorPos X="71" Y="71"/>
-        <UsageCount Value="26"/>
+        <UsageCount Value="25"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit54>
       <Unit55>
@@ -531,7 +539,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit55>
       <Unit56>
@@ -540,7 +548,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="43"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit56>
       <Unit57>
@@ -549,7 +557,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="11" Y="6"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit57>
       <Unit58>
@@ -558,7 +566,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="16" Y="6"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit58>
       <Unit59>
@@ -567,7 +575,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="16" Y="6"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit59>
       <Unit60>
@@ -576,7 +584,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="11" Y="6"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit60>
       <Unit61>
@@ -585,45 +593,52 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="115" Y="16"/>
-        <UsageCount Value="13"/>
+        <UsageCount Value="12"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit61>
       <Unit62>
         <Filename Value="..\lib\Graphics\ElysionNode.pas"/>
         <UnitName Value="ElysionNode"/>
+        <EditorIndex Value="17"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="15" Y="16"/>
-        <UsageCount Value="13"/>
+        <TopLine Value="166"/>
+        <CursorPos X="56" Y="205"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit62>
       <Unit63>
         <Filename Value="..\lib\Graphics\ElysionSprite.pas"/>
         <UnitName Value="ElysionSprite"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="76"/>
-        <CursorPos X="36" Y="103"/>
-        <UsageCount Value="13"/>
+        <TopLine Value="607"/>
+        <CursorPos X="77" Y="638"/>
+        <UsageCount Value="20"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit63>
       <Unit64>
         <Filename Value="..\lib\Foundation\Pipeline\ElysionAssets.pas"/>
         <UnitName Value="ElysionAssets"/>
+        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="5"/>
-        <CursorPos X="16" Y="10"/>
-        <UsageCount Value="12"/>
+        <TopLine Value="1"/>
+        <CursorPos X="22" Y="12"/>
+        <UsageCount Value="19"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit64>
       <Unit65>
         <Filename Value="..\lib\Graphics\GUI\ElysionMenu.pas"/>
         <UnitName Value="ElysionMenu"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="11"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="3" Y="13"/>
-        <UsageCount Value="12"/>
+        <TopLine Value="344"/>
+        <CursorPos X="56" Y="364"/>
+        <UsageCount Value="13"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit65>
       <Unit66>
@@ -632,7 +647,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="15" Y="10"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="11"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit66>
       <Unit67>
@@ -641,7 +656,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="15" Y="9"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="11"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit67>
       <Unit68>
@@ -650,16 +665,18 @@
         <WindowIndex Value="0"/>
         <TopLine Value="99"/>
         <CursorPos X="41" Y="28"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="11"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit68>
       <Unit69>
         <Filename Value="..\lib\Core\ElysionApplication.pas"/>
         <UnitName Value="ElysionApplication"/>
+        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1020"/>
+        <TopLine Value="432"/>
         <CursorPos X="12" Y="1036"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="17"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit69>
       <Unit70>
@@ -668,16 +685,18 @@
         <WindowIndex Value="0"/>
         <TopLine Value="393"/>
         <CursorPos X="1" Y="411"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit70>
       <Unit71>
         <Filename Value="..\lib\Core\Base\ElysionObject.pas"/>
         <UnitName Value="ElysionObject"/>
+        <EditorIndex Value="15"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="159"/>
-        <CursorPos X="57" Y="170"/>
-        <UsageCount Value="10"/>
+        <TopLine Value="103"/>
+        <CursorPos X="45" Y="118"/>
+        <UsageCount Value="17"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit71>
       <Unit72>
@@ -686,7 +705,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1256"/>
         <CursorPos X="3" Y="1272"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit72>
       <Unit73>
@@ -695,7 +714,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="219"/>
         <CursorPos X="12" Y="244"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit73>
       <Unit74>
@@ -704,7 +723,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="155"/>
         <CursorPos X="12" Y="180"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit74>
       <Unit75>
@@ -713,39 +732,212 @@
         <WindowIndex Value="0"/>
         <TopLine Value="237"/>
         <CursorPos X="51" Y="249"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit75>
       <Unit76>
         <Filename Value="..\lib\Core\Base\ElysionTypes.pas"/>
         <UnitName Value="ElysionTypes"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="385"/>
-        <CursorPos X="3" Y="412"/>
-        <UsageCount Value="10"/>
+        <TopLine Value="1543"/>
+        <CursorPos X="75" Y="507"/>
+        <UsageCount Value="17"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit76>
+      <Unit77>
+        <Filename Value="..\lib\Foundation\Scene\ElysionScene.pas"/>
+        <UnitName Value="ElysionScene"/>
+        <EditorIndex Value="9"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="131"/>
+        <CursorPos X="1" Y="159"/>
+        <UsageCount Value="17"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit77>
+      <Unit78>
+        <Filename Value="..\lib\Foundation\ElysionEntity.pas"/>
+        <UnitName Value="ElysionEntity"/>
+        <EditorIndex Value="14"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="103"/>
+        <CursorPos X="7" Y="115"/>
+        <UsageCount Value="17"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit78>
+      <Unit79>
+        <Filename Value="..\lib\Core\Base\ElysionInterfaces.pas"/>
+        <UnitName Value="ElysionInterfaces"/>
+        <EditorIndex Value="16"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="74"/>
+        <CursorPos X="157" Y="85"/>
+        <UsageCount Value="17"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit79>
+      <Unit80>
+        <Filename Value="..\lib\Foundation\ElysionGame.pas"/>
+        <UnitName Value="ElysionGame"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="105"/>
+        <CursorPos X="88" Y="138"/>
+        <UsageCount Value="17"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit80>
+      <Unit81>
+        <Filename Value="..\lib\Core\ElysionUtils.pas"/>
+        <UnitName Value="ElysionUtils"/>
+        <EditorIndex Value="5"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="52"/>
+        <CursorPos X="67" Y="67"/>
+        <UsageCount Value="17"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit81>
+      <Unit82>
+        <Filename Value="..\lib\Foundation\Animations\ElysionAnimator.pas"/>
+        <UnitName Value="ElysionAnimator"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="283"/>
+        <CursorPos X="17" Y="93"/>
+        <UsageCount Value="16"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit82>
     </Units>
-    <JumpHistory Count="3" HistoryIndex="2">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="units\uGameScreen.pas"/>
-        <Caret Line="35" Column="24" TopLine="25"/>
+        <Filename Value="..\lib\Foundation\ElysionGame.pas"/>
+        <Caret Line="132" Column="15" TopLine="99"/>
       </Position1>
       <Position2>
-        <Filename Value="units\uGameScreen.pas"/>
-        <Caret Line="85" Column="16" TopLine="55"/>
+        <Filename Value="..\lib\Foundation\ElysionGame.pas"/>
+        <Caret Line="149" Column="83" TopLine="122"/>
       </Position2>
       <Position3>
-        <Filename Value="..\lib\Graphics\ElysionSprite.pas"/>
-        <Caret Line="103" Column="36" TopLine="76"/>
+        <Filename Value="..\lib\Foundation\ElysionGame.pas"/>
+        <Caret Line="159" Column="55" TopLine="123"/>
       </Position3>
+      <Position4>
+        <Filename Value="..\lib\Foundation\ElysionGame.pas"/>
+        <Caret Line="139" Column="33" TopLine="123"/>
+      </Position4>
+      <Position5>
+        <Filename Value="units\uMainMenu.pas"/>
+        <Caret Line="25" Column="22" TopLine="76"/>
+      </Position5>
+      <Position6>
+        <Filename Value="units\uCredits.pas"/>
+        <Caret Line="14" Column="14" TopLine="1"/>
+      </Position6>
+      <Position7>
+        <Filename Value="units\uOptions.pas"/>
+        <Caret Line="12" Column="14" TopLine="1"/>
+      </Position7>
+      <Position8>
+        <Filename Value="units\uGameScreen.pas"/>
+        <Caret Line="177" Column="17" TopLine="154"/>
+      </Position8>
+      <Position9>
+        <Filename Value="..\lib\Graphics\ElysionNode.pas"/>
+        <Caret Line="5" Column="58" TopLine="1"/>
+      </Position9>
+      <Position10>
+        <Filename Value="..\lib\Graphics\ElysionNode.pas"/>
+        <Caret Line="110" Column="24" TopLine="85"/>
+      </Position10>
+      <Position11>
+        <Filename Value="..\lib\Graphics\ElysionNode.pas"/>
+        <Caret Line="111" Column="33" TopLine="86"/>
+      </Position11>
+      <Position12>
+        <Filename Value="..\lib\Graphics\ElysionNode.pas"/>
+        <Caret Line="210" Column="56" TopLine="185"/>
+      </Position12>
+      <Position13>
+        <Filename Value="..\lib\Graphics\ElysionNode.pas"/>
+        <Caret Line="378" Column="29" TopLine="353"/>
+      </Position13>
+      <Position14>
+        <Filename Value="..\lib\Graphics\ElysionNode.pas"/>
+        <Caret Line="399" Column="29" TopLine="374"/>
+      </Position14>
+      <Position15>
+        <Filename Value="..\lib\Graphics\ElysionNode.pas"/>
+        <Caret Line="210" Column="54" TopLine="188"/>
+      </Position15>
+      <Position16>
+        <Filename Value="..\lib\Foundation\Animations\ElysionAnimator.pas"/>
+        <Caret Line="288" Column="50" TopLine="258"/>
+      </Position16>
+      <Position17>
+        <Filename Value="units\uGameScreen.pas"/>
+        <Caret Line="185" Column="79" TopLine="147"/>
+      </Position17>
+      <Position18>
+        <Filename Value="units\uGameScreen.pas"/>
+        <Caret Line="189" Column="2" TopLine="171"/>
+      </Position18>
+      <Position19>
+        <Filename Value="units\uGameScreen.pas"/>
+        <Caret Line="50" Column="31" TopLine="35"/>
+      </Position19>
+      <Position20>
+        <Filename Value="units\uGameScreen.pas"/>
+        <Caret Line="185" Column="7" TopLine="162"/>
+      </Position20>
+      <Position21>
+        <Filename Value="units\uGameScreen.pas"/>
+        <Caret Line="176" Column="66" TopLine="165"/>
+      </Position21>
+      <Position22>
+        <Filename Value="..\lib\Foundation\Animations\ElysionAnimator.pas"/>
+        <Caret Line="574" Column="96" TopLine="547"/>
+      </Position22>
+      <Position23>
+        <Filename Value="units\uMainMenu.pas"/>
+        <Caret Line="53" Column="16" TopLine="45"/>
+      </Position23>
+      <Position24>
+        <Filename Value="..\lib\Graphics\GUI\ElysionMenu.pas"/>
+        <Caret Line="361" Column="73" TopLine="333"/>
+      </Position24>
+      <Position25>
+        <Filename Value="..\lib\Foundation\Animations\ElysionAnimator.pas"/>
+        <Caret Line="591" Column="18" TopLine="579"/>
+      </Position25>
+      <Position26>
+        <Filename Value="..\lib\Core\Base\ElysionTypes.pas"/>
+        <Caret Line="496" Column="121" TopLine="473"/>
+      </Position26>
+      <Position27>
+        <Filename Value="..\lib\Core\Base\ElysionTypes.pas"/>
+        <Caret Line="499" Column="23" TopLine="474"/>
+      </Position27>
+      <Position28>
+        <Filename Value="..\lib\Foundation\Animations\ElysionAnimator.pas"/>
+        <Caret Line="605" Column="26" TopLine="570"/>
+      </Position28>
+      <Position29>
+        <Filename Value="units\uGameScreen.pas"/>
+        <Caret Line="193" Column="71" TopLine="152"/>
+      </Position29>
+      <Position30>
+        <Filename Value="..\lib\Graphics\GUI\ElysionMenu.pas"/>
+        <Caret Line="365" Column="19" TopLine="332"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
-    <Version Value="10"/>
+    <Version Value="11"/>
     <PathDelim Value="\"/>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir);..\lib;..\lib\Dependencies\SDL;..\lib\Dependencies\DirectX;..\lib\Dependencies\Vampyre"/>
@@ -776,7 +968,6 @@ if TargetOS = 'darwin' then
     </CodeGeneration>
     <Linking>
       <Debugging>
-        <GenerateDebugInfo Value="True"/>
         <DebugInfoType Value="dsStabs"/>
         <StripSymbols Value="True"/>
         <UseExternalDbgSyms Value="True"/>

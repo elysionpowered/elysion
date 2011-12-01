@@ -22,6 +22,7 @@ uses
   ElysionLayer,
   ElysionCamera,
   ElysionGraphics,
+  ElysionMovingSprite,
   uGlobal,
   uBasic,
   uConfig;
@@ -34,6 +35,7 @@ type
     fFont: TelTrueTypeFont;
 
     fGameOver: Boolean;
+    fAnimator: TelAnimator;
 
 
     procedure DrawDialog(Title, Text: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -45,7 +47,7 @@ type
     procedure Update(dt: Double); Override;
     procedure HandleEvents; Override;
 
-    procedure Reset;
+    procedure Reset; Override;
   published
     property Font: TelTrueTypeFont read fFont write fFont;
 
@@ -88,6 +90,9 @@ begin
   Sprite.Position := makeV3f(64, 64);
 
   Self.Add(Sprite);
+
+  fAnimator := TelAnimator.Create(Sprite);
+
 
 
   Self.SetPauseKey(Key.P());
@@ -163,20 +168,35 @@ end;
 
 procedure TGameScreen.Update(dt: Double);
 begin
+  inherited;
 
   if not Paused and not GameOver then
   begin
-    inherited;
 
     // This is called if game is running and not paused and game is not over
     //      -> Update game-related stuff here
     
-    if Sprite.MouseOver then Sprite.Alpha := 128
+    if Sprite.MouseOver then
+      Sprite.Alpha := 128
     else Sprite.Alpha := 255;
     
     if Sprite.Click then Sprite.Color := makeCol(Random(255), Random(255), Random(255));
 
+    if Input.Keyboard.IsKeyHit(Key.Space) then
+    begin
+      // Look, some example animator effects for you to play with
 
+      fAnimator.RotationEffect(0, 360);
+      //fAnimator.ColorEffect(makeCol(0, 0, 0), makeCol(255, 255, 255));
+      //fAnimator.ScaleEffect(makeV2f(0.5, 0.5), makeV2f(3.0, 3.0));
+      //fAnimator.MoveEffect(makeV3f(64, 64), makeV3f(600, 256));
+
+      // You need to call TelAnimator.Start for the animation to begin
+      fAnimator.Start;
+    end;
+
+
+    fAnimator.Update(dt);
 
   end;
 
@@ -184,9 +204,6 @@ end;
 
 procedure TGameScreen.HandleEvents;
 begin
-  // Pause game when P has been pressed
-  //if Input.Keyboard.isKeyHit(Key.P) then Paused := not Paused;
-
   // Reset game when hitting the 'R' key or Start on the XBox controller
   if Input.Keyboard.isKeyHit(Key.R) or Input.XBox360Controller.Start() then Self.Reset;
 end;

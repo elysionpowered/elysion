@@ -8,6 +8,8 @@ uses
   ElysionObject,
   ElysionTexture,
   ElysionSprite,
+  ElysionParallaxSprite,
+  ElysionSpriteSheet,
   ElysionGUI;
 
 type
@@ -145,4 +147,4 @@ finalization
   Assets.Destroy;
 {$ENDIF}
 
-end.
+end.

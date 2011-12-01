@@ -104,23 +104,18 @@ procedure TMainMenu.HandleEvents;
 begin
   if Menu.ButtonClick('New game') or Input.XBox360Controller.Start() then
   begin
-    //GameState := gsGame;
-    SceneDirector.SwitchTo('game');
-    //fNewGameClick := true;
+    Self.Parent.SwitchTo('game');
   end;
 
 
-  //if Menu.OnButtonClick('How to play') then GameState := gsInstructions;
   if Menu.ButtonClick('Credits') then
   begin
-    //GameState := gsCredits;
-    SceneDirector.SwitchTo('credits');
+    Self.Parent.SwitchTo('credits');
   end;
 
   if Menu.ButtonClick('Options') then
   begin
-    //GameState := gsOptions;
-    SceneDirector.SwitchTo('options');
+    Self.Parent.SwitchTo('options');
   end;
 
   if Menu.ButtonClick('Quit') or Input.XBox360Controller.B() then
