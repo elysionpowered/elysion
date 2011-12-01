@@ -109,10 +109,6 @@ type
       property Count: Integer read GetCount;
   end;
 
-  TelTextureAtlas = class(TelObject)
-
-  end;
-
   // Factory
   TelTextureManager = class(TelObject)
     private

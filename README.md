@@ -30,7 +30,7 @@ Also thanks to these pieces of software which inspired me:
 - [Horde 3D](http://horde3d.org) / Horde 3D GameEngine  
 - [Gosu](http://libgosu.org)  
 - [Unity3D](http://unity3d.com)  
-- [Flashpunk](http://flashpunk.net/)
+- [Flashpunk](http://flashpunk.net/)  
 - [Sparrow Framework](http://www.sparrow-framework.org/)
 
 What does it look like?

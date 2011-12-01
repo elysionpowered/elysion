@@ -1,0 +1,766 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+<meta name="GENERATOR" content="PasDoc 0.12.1">
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<title>ElysionApplication: Class TelWindow</title>
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body bgcolor="#ffffff" text="#000000" link="#0000ff" vlink="#800080" alink="#FF0000">
+<a name="TelWindow"></a><h1 class="cio">Class TelWindow</h1>
+<table class="sections wide_list">
+<tr>
+<td><a class="section"  href="#%40Description">Description</a></td><td><a class="section"  href="#%40Hierarchy">Hierarchy</a></td><td><a class="section"  href="#%40Fields">Fields</a></td><td><a class="section"  href="#%40Methods">Methods</a></td><td><a class="section"  href="#%40Properties">Properties</a></td></tr></table>
+<a name="%40Description"></a><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a   href="ElysionApplication.html">ElysionApplication</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TelWindow = class(<a class="normal"  href="ElysionObject.TelObject.html">TelObject</a>)</code></p>
+<h2 class="description">Description</h2>
+<div class="nodescription">no description available, TelObject description follows</div><p>
+TelObject</p>
+<a name="%40Hierarchy"></a><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TInterfacedObject</li>
+<li class="ancestor"><a class="normal"  href="ElysionObject.TelObject.html">TelObject</a></li>
+<li class="thisitem">TelWindow</li></ul><h2 class="overview">Overview</h2>
+<a name="%40Fields"></a><h3 class="summary">Fields</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionApplication.TelWindow.html#SDL_Surface">SDL_Surface</a></b>: PSDL_Surface;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionApplication.TelWindow.html#KeyDown">KeyDown</a></b>: array[0..<a   href="ElysionKeyCode.html#K_EURO">K_EURO</a>] of Boolean;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionApplication.TelWindow.html#KeyUp">KeyUp</a></b>: array[0..<a   href="ElysionKeyCode.html#K_EURO">K_EURO</a>] of Boolean;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionApplication.TelWindow.html#ModKeyDown">ModKeyDown</a></b>: array[KMOD_NONE..KMOD_META] of Boolean;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionApplication.TelWindow.html#ModKeyUp">ModKeyUp</a></b>: array[KMOD_NONE..KMOD_META] of Boolean;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionApplication.TelWindow.html#MouseButtonDown">MouseButtonDown</a></b>: array[BUTTON_LEFT..BUTTON_WHEELDOWN] of Boolean;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionApplication.TelWindow.html#MouseButtonUp">MouseButtonUp</a></b>: array[BUTTON_LEFT..BUTTON_WHEELDOWN] of Boolean;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionApplication.TelWindow.html#JoyButtonDown">JoyButtonDown</a></b>: array[0..<a   href="ElysionKeyCode.html#MAX_BUTTONS">MAX_BUTTONS</a>] of Boolean;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionApplication.TelWindow.html#JoyButtonUp">JoyButtonUp</a></b>: array[0..<a   href="ElysionKeyCode.html#MAX_BUTTONS">MAX_BUTTONS</a>] of Boolean;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionApplication.TelWindow.html#JoyAxis">JoyAxis</a></b>: array[0..<a   href="ElysionKeyCode.html#MAX_AXES">MAX_AXES</a>] of Integer;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionApplication.TelWindow.html#JoyHat">JoyHat</a></b>: array[HAT_CENTERED..255] of Boolean;</code></td>
+</tr>
+</table>
+<a name="%40Methods"></a><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a   href="ElysionApplication.TelWindow.html#Create">Create</a></b>; Override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a   href="ElysionApplication.TelWindow.html#Destroy">Destroy</a></b>; Override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a   href="ElysionApplication.TelWindow.html#SetVideoMode">SetVideoMode</a></b>(_Width, _Height, _ColorBits: Integer; _Fullscreen: Boolean; _VideoFlag: <a   href="ElysionApplication.html#TelVideoFlag">TelVideoFlag</a>): Boolean; Overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a   href="ElysionApplication.TelWindow.html#SetVideoMode">SetVideoMode</a></b>(_Width, _Height, _ColorBits: Integer; _Fullscreen: Boolean = False): Boolean; Overload;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionApplication.TelWindow.html#ToggleFullscreen">ToggleFullscreen</a></b>();</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionApplication.TelWindow.html#BeginScene">BeginScene</a></b>();</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionApplication.TelWindow.html#EndScene">EndScene</a></b>();</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionApplication.TelWindow.html#SetBackgroundImage">SetBackgroundImage</a></b>(Surface: PSDL_Surface); Overload;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionApplication.TelWindow.html#SetBackgroundImage">SetBackgroundImage</a></b>(const Filename: String); Overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionApplication.TelWindow.html#SetBackgroundColor">SetBackgroundColor</a></b>(Color: <a   href="ElysionTypes.TelColor.html">TelColor</a>);</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionApplication.TelWindow.html#SetIcon">SetIcon</a></b>(Filename: String); Overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionApplication.TelWindow.html#SetIcon">SetIcon</a></b>(Filename: String; Mask: <a   href="ElysionTypes.TelColor.html">TelColor</a>); Overload;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionApplication.TelWindow.html#HideCursor">HideCursor</a></b>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionApplication.TelWindow.html#ShowCursor">ShowCursor</a></b>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>Procedure <b><a   href="ElysionApplication.TelWindow.html#TakeScreenshot">TakeScreenshot</a></b>(aFilename: String = '');</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>Function <b><a   href="ElysionApplication.TelWindow.html#OnPoint">OnPoint</a></b>(Coord: <a   href="ElysionTypes.TelVector2i.html">TelVector2i</a>; Rect: <a   href="ElysionTypes.TelRect.html">TelRect</a>): Boolean;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a   href="ElysionApplication.TelWindow.html#IsActive">IsActive</a></b>: Boolean;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a   href="ElysionApplication.TelWindow.html#GetTicks">GetTicks</a></b>(): Cardinal;</code></td>
+</tr>
+</table>
+<a name="%40Properties"></a><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#BackgroundColor">BackgroundColor</a></b>: <a   href="ElysionTypes.TelColor.html">TelColor</a> read fBackgroundColor write fBackgroundColor;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#JoyBall">JoyBall</a></b>: <a   href="ElysionTypes.TelVector2i.html">TelVector2i</a> read fJoyBall;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#Cursor">Cursor</a></b>: <a   href="ElysionTypes.TelVector2i.html">TelVector2i</a> read fCursor;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#RelCursor">RelCursor</a></b>: <a   href="ElysionTypes.TelVector2i.html">TelVector2i</a> read fRelCursor;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#ResScale">ResScale</a></b>: <a   href="ElysionTypes.TelVector2f.html">TelVector2f</a> read fResScale write fResScale;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#NativeResolution">NativeResolution</a></b>: <a   href="ElysionTypes.TelVector2i.html">TelVector2i</a> read GetNativeResolution write SetNativeResolution;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#AspectRatio">AspectRatio</a></b>: Single read GetAspectRatio;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#MouseButtonDownEventList">MouseButtonDownEventList</a></b>: TList read fMouseButtonDownEventList;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#MouseButtonUpEventList">MouseButtonUpEventList</a></b>: TList read fMouseButtonUpEventList;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#DisplayOrientation">DisplayOrientation</a></b>: <a   href="ElysionTypes.html#TDisplayOrientation">TDisplayOrientation</a> read GetDisplayOrientation;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#WideScreen">WideScreen</a></b>: Boolean read GetWideScreen;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#Width">Width</a></b>: Integer read GetWidth;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#Height">Height</a></b>: Integer read GetHeight;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#Bits">Bits</a></b>: Integer read GetBitsPerPixel;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#Fullscreen">Fullscreen</a></b>: Boolean read FFullscreen;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#MouseDownCount">MouseDownCount</a></b>: Integer read fMouseDownCount write fMouseDownCount;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#MouseUpCount">MouseUpCount</a></b>: Integer read fMouseUpCount write fMouseUpCount;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#MouseMotionCount">MouseMotionCount</a></b>: Integer read fMouseMotionCount write fMouseMotionCount;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#Caption">Caption</a></b>: String read GetCaption write SetCaption;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#DeltaTime">DeltaTime</a></b>: Double read GetDeltaTime;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#JoystickCount">JoystickCount</a></b>: Integer read GetJoystickCount;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#FPS">FPS</a></b>: Single read GetFPS write SetFPS;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#LimitFPS">LimitFPS</a></b>: Boolean read fLimitFPS write fLimitFPS;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#Projection">Projection</a></b>: <a   href="ElysionApplication.html#TelProjectionMode">TelProjectionMode</a> read fProjection write SetProjection;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#FoVY">FoVY</a></b>: Double read FFoVY write FFoVY;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#ZNear">ZNear</a></b>: Double read FZNear write FZNear;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionApplication.TelWindow.html#ZFar">ZFar</a></b>: Double read FZFar write FZFar;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Fields</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="SDL_Surface"></a><code><b>SDL_Surface</b>: PSDL_Surface;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+You can access the SDL surface directly if you wish</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="KeyDown"></a><code><b>KeyDown</b>: array[0..<a   href="ElysionKeyCode.html#K_EURO">K_EURO</a>] of Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Maybe fix: Move input arrays to Input class True, if key is pressed down</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="KeyUp"></a><code><b>KeyUp</b>: array[0..<a   href="ElysionKeyCode.html#K_EURO">K_EURO</a>] of Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+True, if key is pressed up again</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="ModKeyDown"></a><code><b>ModKeyDown</b>: array[KMOD_NONE..KMOD_META] of Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+True, if key is pressed down</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="ModKeyUp"></a><code><b>ModKeyUp</b>: array[KMOD_NONE..KMOD_META] of Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+True, if key is pressed up again</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="MouseButtonDown"></a><code><b>MouseButtonDown</b>: array[BUTTON_LEFT..BUTTON_WHEELDOWN] of Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+True, if mouse button is pressed down</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="MouseButtonUp"></a><code><b>MouseButtonUp</b>: array[BUTTON_LEFT..BUTTON_WHEELDOWN] of Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+True, if mouse button is pressed up again</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="JoyButtonDown"></a><code><b>JoyButtonDown</b>: array[0..<a   href="ElysionKeyCode.html#MAX_BUTTONS">MAX_BUTTONS</a>] of Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+True, if mouse button is pressed down</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="JoyButtonUp"></a><code><b>JoyButtonUp</b>: array[0..<a   href="ElysionKeyCode.html#MAX_BUTTONS">MAX_BUTTONS</a>] of Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+True, if mouse button is pressed up again</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="JoyAxis"></a><code><b>JoyAxis</b>: array[0..<a   href="ElysionKeyCode.html#MAX_AXES">MAX_AXES</a>] of Integer;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="JoyHat"></a><code><b>JoyHat</b>: array[HAT_CENTERED..255] of Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Create"></a><code>constructor <b>Create</b>; Override;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Destroy"></a><code>destructor <b>Destroy</b>; Override;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="SetVideoMode"></a><code>function <b>SetVideoMode</b>(_Width, _Height, _ColorBits: Integer; _Fullscreen: Boolean; _VideoFlag: <a   href="ElysionApplication.html#TelVideoFlag">TelVideoFlag</a>): Boolean; Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="SetVideoMode"></a><code>function <b>SetVideoMode</b>(_Width, _Height, _ColorBits: Integer; _Fullscreen: Boolean = False): Boolean; Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Sets video mode for the surface. Use this if you want to change the resolution in-game.</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="ToggleFullscreen"></a><code>procedure <b>ToggleFullscreen</b>();</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Switches between windowed mode and fullscreen mode</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="BeginScene"></a><code>procedure <b>BeginScene</b>();</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Use BeginScene first thing in the game loop</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="EndScene"></a><code>procedure <b>EndScene</b>();</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Use EndScene last thing before the end of the game loop</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="SetBackgroundImage"></a><code>procedure <b>SetBackgroundImage</b>(Surface: PSDL_Surface); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Expert function: Use background image instead of a color</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="SetBackgroundImage"></a><code>procedure <b>SetBackgroundImage</b>(const Filename: String); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Sets background image with specifying a filename</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="SetBackgroundColor"></a><code>procedure <b>SetBackgroundColor</b>(Color: <a   href="ElysionTypes.TelColor.html">TelColor</a>);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Sets background color</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="SetIcon"></a><code>procedure <b>SetIcon</b>(Filename: String); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Sets a window icon</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="SetIcon"></a><code>procedure <b>SetIcon</b>(Filename: String; Mask: <a   href="ElysionTypes.TelColor.html">TelColor</a>); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Sets a window icon with color key</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="HideCursor"></a><code>procedure <b>HideCursor</b>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Hide the standard black/white cursor. Normally turned on</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="ShowCursor"></a><code>procedure <b>ShowCursor</b>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Show the cursor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="TakeScreenshot"></a><code>Procedure <b>TakeScreenshot</b>(aFilename: String = '');</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Saves the surface into an image</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="OnPoint"></a><code>Function <b>OnPoint</b>(Coord: <a   href="ElysionTypes.TelVector2i.html">TelVector2i</a>; Rect: <a   href="ElysionTypes.TelRect.html">TelRect</a>): Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Checks if a point is within a rect</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="IsActive"></a><code>function <b>IsActive</b>: Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Checks if surface is active</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="GetTicks"></a><code>function <b>GetTicks</b>(): Cardinal;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="BackgroundColor"></a><code>property <b>BackgroundColor</b>: <a   href="ElysionTypes.TelColor.html">TelColor</a> read fBackgroundColor write fBackgroundColor;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="JoyBall"></a><code>property <b>JoyBall</b>: <a   href="ElysionTypes.TelVector2i.html">TelVector2i</a> read fJoyBall;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Cursor"></a><code>property <b>Cursor</b>: <a   href="ElysionTypes.TelVector2i.html">TelVector2i</a> read fCursor;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="RelCursor"></a><code>property <b>RelCursor</b>: <a   href="ElysionTypes.TelVector2i.html">TelVector2i</a> read fRelCursor;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="ResScale"></a><code>property <b>ResScale</b>: <a   href="ElysionTypes.TelVector2f.html">TelVector2f</a> read fResScale write fResScale;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="NativeResolution"></a><code>property <b>NativeResolution</b>: <a   href="ElysionTypes.TelVector2i.html">TelVector2i</a> read GetNativeResolution write SetNativeResolution;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="AspectRatio"></a><code>property <b>AspectRatio</b>: Single read GetAspectRatio;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="MouseButtonDownEventList"></a><code>property <b>MouseButtonDownEventList</b>: TList read fMouseButtonDownEventList;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="MouseButtonUpEventList"></a><code>property <b>MouseButtonUpEventList</b>: TList read fMouseButtonUpEventList;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="DisplayOrientation"></a><code>property <b>DisplayOrientation</b>: <a   href="ElysionTypes.html#TDisplayOrientation">TDisplayOrientation</a> read GetDisplayOrientation;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="WideScreen"></a><code>property <b>WideScreen</b>: Boolean read GetWideScreen;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Width"></a><code>property <b>Width</b>: Integer read GetWidth;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Read-only, set values through SetVideoMode</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Height"></a><code>property <b>Height</b>: Integer read GetHeight;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Bits"></a><code>property <b>Bits</b>: Integer read GetBitsPerPixel;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Fullscreen"></a><code>property <b>Fullscreen</b>: Boolean read FFullscreen;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="MouseDownCount"></a><code>property <b>MouseDownCount</b>: Integer read fMouseDownCount write fMouseDownCount;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="MouseUpCount"></a><code>property <b>MouseUpCount</b>: Integer read fMouseUpCount write fMouseUpCount;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="MouseMotionCount"></a><code>property <b>MouseMotionCount</b>: Integer read fMouseMotionCount write fMouseMotionCount;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Caption"></a><code>property <b>Caption</b>: String read GetCaption write SetCaption;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Setting the caption</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="DeltaTime"></a><code>property <b>DeltaTime</b>: Double read GetDeltaTime;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="JoystickCount"></a><code>property <b>JoystickCount</b>: Integer read GetJoystickCount;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="FPS"></a><code>property <b>FPS</b>: Single read GetFPS write SetFPS;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="LimitFPS"></a><code>property <b>LimitFPS</b>: Boolean read fLimitFPS write fLimitFPS;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Projection"></a><code>property <b>Projection</b>: <a   href="ElysionApplication.html#TelProjectionMode">TelProjectionMode</a> read fProjection write SetProjection;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="FoVY"></a><code>property <b>FoVY</b>: Double read FFoVY write FFoVY;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Values for experts</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="ZNear"></a><code>property <b>ZNear</b>: Double read FZNear write FZNear;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="ZFar"></a><code>property <b>ZFar</b>: Double read FZFar write FZFar;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2011-12-01 21:54:18</em>
+</span>
+</body></html>

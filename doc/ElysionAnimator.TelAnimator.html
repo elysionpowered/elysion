@@ -1,0 +1,658 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+<meta name="GENERATOR" content="PasDoc 0.12.1">
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<title>ElysionAnimator: Class TelAnimator</title>
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body bgcolor="#ffffff" text="#000000" link="#0000ff" vlink="#800080" alink="#FF0000">
+<a name="TelAnimator"></a><h1 class="cio">Class TelAnimator</h1>
+<table class="sections wide_list">
+<tr>
+<td><a class="section"  href="#%40Description">Description</a></td><td><a class="section"  href="#%40Hierarchy">Hierarchy</a></td><td><a class="section"  href="#%40Fields">Fields</a></td><td><a class="section"  href="#%40Methods">Methods</a></td><td><a class="section"  href="#%40Properties">Properties</a></td></tr></table>
+<a name="%40Description"></a><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a   href="ElysionAnimator.html">ElysionAnimator</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TelAnimator = class(<a class="normal"  href="ElysionObject.TelObject.html">TelObject</a>)</code></p>
+<h2 class="description">Description</h2>
+<p>
+* * Class: TelAnimator <br> * Group: Optional <br> * Description: * Provides animators for nodes such as moving from one point to another</p>
+<a name="%40Hierarchy"></a><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TInterfacedObject</li>
+<li class="ancestor"><a class="normal"  href="ElysionObject.TelObject.html">TelObject</a></li>
+<li class="thisitem">TelAnimator</li></ul><h2 class="overview">Overview</h2>
+<a name="%40Fields"></a><h3 class="summary">Fields</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionAnimator.TelAnimator.html#fTimer">fTimer</a></b>: <a   href="ElysionTimer.TelTimer.html">TelTimer</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionAnimator.TelAnimator.html#fTarget">fTarget</a></b>: <a   href="ElysionNode.TelNode.html">TelNode</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionAnimator.TelAnimator.html#fTransition">fTransition</a></b>: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionAnimator.TelAnimator.html#fFinished">fFinished</a></b>: Boolean;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionAnimator.TelAnimator.html#fInverse">fInverse</a></b>: Boolean;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionAnimator.TelAnimator.html#fDelay">fDelay</a></b>: Integer;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionAnimator.TelAnimator.html#fMaxLoopCount">fMaxLoopCount</a></b>: Integer;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionAnimator.TelAnimator.html#fCurrentLoop">fCurrentLoop</a></b>: Integer;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionAnimator.TelAnimator.html#fTolerance">fTolerance</a></b>: Single;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionAnimator.TelAnimator.html#fLoopMode">fLoopMode</a></b>: <a   href="ElysionAnimator.html#TelLoopMode">TelLoopMode</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionAnimator.TelAnimator.html#AnimProperty">AnimProperty</a></b>: <a   href="ElysionAnimTypes.TelAnimationProperty.html">TelAnimationProperty</a>;</code></td>
+</tr>
+</table>
+<a name="%40Methods"></a><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a   href="ElysionAnimator.TelAnimator.html#GetActive">GetActive</a></b>(): Boolean;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a   href="ElysionAnimator.TelAnimator.html#GetDuration">GetDuration</a></b>(): Integer;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionAnimator.TelAnimator.html#SetDuration">SetDuration</a></b>(aValue: Integer);</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a   href="ElysionAnimator.TelAnimator.html#GetDelay">GetDelay</a></b>(): Integer;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionAnimator.TelAnimator.html#SetDelay">SetDelay</a></b>(aValue: Integer);</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionAnimator.TelAnimator.html#StopEvent">StopEvent</a></b>();</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a   href="ElysionAnimator.TelAnimator.html#GetFinished">GetFinished</a></b>(): Boolean;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a   href="ElysionAnimator.TelAnimator.html#GetPaused">GetPaused</a></b>(): Boolean;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a   href="ElysionAnimator.TelAnimator.html#Create">Create</a></b>; Override; Overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a   href="ElysionAnimator.TelAnimator.html#Create">Create</a></b>(aTarget: <a   href="ElysionNode.TelNode.html">TelNode</a>); Overload;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a   href="ElysionAnimator.TelAnimator.html#Destroy">Destroy</a></b>; Override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionAnimator.TelAnimator.html#FadeEffect">FadeEffect</a></b>(aStartValue, anEndValue: Byte; aDuration: Integer = 1000; aTransition: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> = atLinear);</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionAnimator.TelAnimator.html#MoveEffect">MoveEffect</a></b>(aStartValue, anEndValue: <a   href="ElysionTypes.TelVector3f.html">TelVector3f</a>; aDuration: Integer = 1000; aTransition: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> = atLinear); Overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionAnimator.TelAnimator.html#MoveEffect">MoveEffect</a></b>(aStartValue: <a   href="ElysionTypes.TelVector3f.html">TelVector3f</a>; anAngle, aDistance: Single; aDuration: Integer = 1000; aTransition: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> = atLinear); Overload;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionAnimator.TelAnimator.html#OriginEffect">OriginEffect</a></b>(aStartValue, anEndValue: <a   href="ElysionTypes.TelVector2f.html">TelVector2f</a>; aDuration: Integer = 1000; aTransition: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> = atLinear);</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionAnimator.TelAnimator.html#RotationEffect">RotationEffect</a></b>(aStartValue, anEndValue: <a   href="ElysionTypes.TelImageRotation.html">TelImageRotation</a>; aDuration: Integer = 1000; aTransition: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> = atLinear); Overload;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionAnimator.TelAnimator.html#RotationEffect">RotationEffect</a></b>(aStartValue, anEndValue: Single; aDuration: Integer = 1000; aTransition: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> = atLinear); Overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionAnimator.TelAnimator.html#ColorEffect">ColorEffect</a></b>(aStartValue, anEndValue: <a   href="ElysionTypes.TelColor.html">TelColor</a>; aDuration: Integer = 1000; aTransition: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> = atLinear);</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionAnimator.TelAnimator.html#ScaleEffect">ScaleEffect</a></b>(aStartValue, anEndValue: <a   href="ElysionTypes.TelVector2f.html">TelVector2f</a>; aDuration: Integer = 1000; aTransition: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> = atLinear);</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionAnimator.TelAnimator.html#FadeInEffect">FadeInEffect</a></b>(aDuration: Integer = 1000; aTransition: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> = atLinear);</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionAnimator.TelAnimator.html#FadeOutEffect">FadeOutEffect</a></b>(aDuration: Integer = 1000; aTransition: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> = atLinear);</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionAnimator.TelAnimator.html#Start">Start</a></b>();</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionAnimator.TelAnimator.html#Pause">Pause</a></b>();</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionAnimator.TelAnimator.html#UnPause">UnPause</a></b>();</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionAnimator.TelAnimator.html#Stop">Stop</a></b>();</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionAnimator.TelAnimator.html#Reset">Reset</a></b>();</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionAnimator.TelAnimator.html#Resume">Resume</a></b>();</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionAnimator.TelAnimator.html#Update">Update</a></b>(dt: Double = 0.0);</code></td>
+</tr>
+</table>
+<a name="%40Properties"></a><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionAnimator.TelAnimator.html#Active">Active</a></b>: Boolean read <a   href="ElysionAnimator.TelAnimator.html#GetActive">GetActive</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionAnimator.TelAnimator.html#Delay">Delay</a></b>: Integer read <a   href="ElysionAnimator.TelAnimator.html#GetDelay">GetDelay</a> write <a   href="ElysionAnimator.TelAnimator.html#SetDelay">SetDelay</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionAnimator.TelAnimator.html#Duration">Duration</a></b>: Integer read <a   href="ElysionAnimator.TelAnimator.html#GetDuration">GetDuration</a> write <a   href="ElysionAnimator.TelAnimator.html#SetDuration">SetDuration</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionAnimator.TelAnimator.html#Finished">Finished</a></b>: Boolean read <a   href="ElysionAnimator.TelAnimator.html#GetFinished">GetFinished</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionAnimator.TelAnimator.html#Inverse">Inverse</a></b>: Boolean read <a   href="ElysionAnimator.TelAnimator.html#fInverse">fInverse</a> write <a   href="ElysionAnimator.TelAnimator.html#fInverse">fInverse</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionAnimator.TelAnimator.html#CurrentLoop">CurrentLoop</a></b>: Integer read <a   href="ElysionAnimator.TelAnimator.html#fCurrentLoop">fCurrentLoop</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionAnimator.TelAnimator.html#LoopCount">LoopCount</a></b>: Integer read <a   href="ElysionAnimator.TelAnimator.html#fMaxLoopCount">fMaxLoopCount</a> write <a   href="ElysionAnimator.TelAnimator.html#fMaxLoopCount">fMaxLoopCount</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionAnimator.TelAnimator.html#LoopMode">LoopMode</a></b>: <a   href="ElysionAnimator.html#TelLoopMode">TelLoopMode</a> read <a   href="ElysionAnimator.TelAnimator.html#fLoopMode">fLoopMode</a> write <a   href="ElysionAnimator.TelAnimator.html#fLoopMode">fLoopMode</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionAnimator.TelAnimator.html#Paused">Paused</a></b>: Boolean read <a   href="ElysionAnimator.TelAnimator.html#GetPaused">GetPaused</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionAnimator.TelAnimator.html#Target">Target</a></b>: <a   href="ElysionNode.TelNode.html">TelNode</a> read <a   href="ElysionAnimator.TelAnimator.html#fTarget">fTarget</a> write <a   href="ElysionAnimator.TelAnimator.html#fTarget">fTarget</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionAnimator.TelAnimator.html#Transition">Transition</a></b>: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> read <a   href="ElysionAnimator.TelAnimator.html#fTransition">fTransition</a> write <a   href="ElysionAnimator.TelAnimator.html#fTransition">fTransition</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionAnimator.TelAnimator.html#Tolerance">Tolerance</a></b>: Single read <a   href="ElysionAnimator.TelAnimator.html#fTolerance">fTolerance</a> write <a   href="ElysionAnimator.TelAnimator.html#fTolerance">fTolerance</a>;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Fields</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="fTimer"></a><code><b>fTimer</b>: <a   href="ElysionTimer.TelTimer.html">TelTimer</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="fTarget"></a><code><b>fTarget</b>: <a   href="ElysionNode.TelNode.html">TelNode</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="fTransition"></a><code><b>fTransition</b>: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="fFinished"></a><code><b>fFinished</b>: Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="fInverse"></a><code><b>fInverse</b>: Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="fDelay"></a><code><b>fDelay</b>: Integer;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="fMaxLoopCount"></a><code><b>fMaxLoopCount</b>: Integer;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="fCurrentLoop"></a><code><b>fCurrentLoop</b>: Integer;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="fTolerance"></a><code><b>fTolerance</b>: Single;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="fLoopMode"></a><code><b>fLoopMode</b>: <a   href="ElysionAnimator.html#TelLoopMode">TelLoopMode</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="AnimProperty"></a><code><b>AnimProperty</b>: <a   href="ElysionAnimTypes.TelAnimationProperty.html">TelAnimationProperty</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="GetActive"></a><code>function <b>GetActive</b>(): Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="GetDuration"></a><code>function <b>GetDuration</b>(): Integer;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="SetDuration"></a><code>procedure <b>SetDuration</b>(aValue: Integer);</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="GetDelay"></a><code>function <b>GetDelay</b>(): Integer;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="SetDelay"></a><code>procedure <b>SetDelay</b>(aValue: Integer);</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="StopEvent"></a><code>procedure <b>StopEvent</b>();</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="GetFinished"></a><code>function <b>GetFinished</b>(): Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="GetPaused"></a><code>function <b>GetPaused</b>(): Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Create"></a><code>constructor <b>Create</b>; Override; Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Create"></a><code>constructor <b>Create</b>(aTarget: <a   href="ElysionNode.TelNode.html">TelNode</a>); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Destroy"></a><code>destructor <b>Destroy</b>; Override;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="FadeEffect"></a><code>procedure <b>FadeEffect</b>(aStartValue, anEndValue: Byte; aDuration: Integer = 1000; aTransition: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> = atLinear);</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="MoveEffect"></a><code>procedure <b>MoveEffect</b>(aStartValue, anEndValue: <a   href="ElysionTypes.TelVector3f.html">TelVector3f</a>; aDuration: Integer = 1000; aTransition: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> = atLinear); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="MoveEffect"></a><code>procedure <b>MoveEffect</b>(aStartValue: <a   href="ElysionTypes.TelVector3f.html">TelVector3f</a>; anAngle, aDistance: Single; aDuration: Integer = 1000; aTransition: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> = atLinear); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="OriginEffect"></a><code>procedure <b>OriginEffect</b>(aStartValue, anEndValue: <a   href="ElysionTypes.TelVector2f.html">TelVector2f</a>; aDuration: Integer = 1000; aTransition: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> = atLinear);</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="RotationEffect"></a><code>procedure <b>RotationEffect</b>(aStartValue, anEndValue: <a   href="ElysionTypes.TelImageRotation.html">TelImageRotation</a>; aDuration: Integer = 1000; aTransition: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> = atLinear); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="RotationEffect"></a><code>procedure <b>RotationEffect</b>(aStartValue, anEndValue: Single; aDuration: Integer = 1000; aTransition: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> = atLinear); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="ColorEffect"></a><code>procedure <b>ColorEffect</b>(aStartValue, anEndValue: <a   href="ElysionTypes.TelColor.html">TelColor</a>; aDuration: Integer = 1000; aTransition: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> = atLinear);</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="ScaleEffect"></a><code>procedure <b>ScaleEffect</b>(aStartValue, anEndValue: <a   href="ElysionTypes.TelVector2f.html">TelVector2f</a>; aDuration: Integer = 1000; aTransition: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> = atLinear);</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="FadeInEffect"></a><code>procedure <b>FadeInEffect</b>(aDuration: Integer = 1000; aTransition: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> = atLinear);</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="FadeOutEffect"></a><code>procedure <b>FadeOutEffect</b>(aDuration: Integer = 1000; aTransition: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> = atLinear);</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Start"></a><code>procedure <b>Start</b>();</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Pause"></a><code>procedure <b>Pause</b>();</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="UnPause"></a><code>procedure <b>UnPause</b>();</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Stop"></a><code>procedure <b>Stop</b>();</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Reset"></a><code>procedure <b>Reset</b>();</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Resume"></a><code>procedure <b>Resume</b>();</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Maybe find a better name for this</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Update"></a><code>procedure <b>Update</b>(dt: Double = 0.0);</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Active"></a><code>property <b>Active</b>: Boolean read <a   href="ElysionAnimator.TelAnimator.html#GetActive">GetActive</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Delay"></a><code>property <b>Delay</b>: Integer read <a   href="ElysionAnimator.TelAnimator.html#GetDelay">GetDelay</a> write <a   href="ElysionAnimator.TelAnimator.html#SetDelay">SetDelay</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Duration"></a><code>property <b>Duration</b>: Integer read <a   href="ElysionAnimator.TelAnimator.html#GetDuration">GetDuration</a> write <a   href="ElysionAnimator.TelAnimator.html#SetDuration">SetDuration</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Finished"></a><code>property <b>Finished</b>: Boolean read <a   href="ElysionAnimator.TelAnimator.html#GetFinished">GetFinished</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Inverse"></a><code>property <b>Inverse</b>: Boolean read <a   href="ElysionAnimator.TelAnimator.html#fInverse">fInverse</a> write <a   href="ElysionAnimator.TelAnimator.html#fInverse">fInverse</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="CurrentLoop"></a><code>property <b>CurrentLoop</b>: Integer read <a   href="ElysionAnimator.TelAnimator.html#fCurrentLoop">fCurrentLoop</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="LoopCount"></a><code>property <b>LoopCount</b>: Integer read <a   href="ElysionAnimator.TelAnimator.html#fMaxLoopCount">fMaxLoopCount</a> write <a   href="ElysionAnimator.TelAnimator.html#fMaxLoopCount">fMaxLoopCount</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="LoopMode"></a><code>property <b>LoopMode</b>: <a   href="ElysionAnimator.html#TelLoopMode">TelLoopMode</a> read <a   href="ElysionAnimator.TelAnimator.html#fLoopMode">fLoopMode</a> write <a   href="ElysionAnimator.TelAnimator.html#fLoopMode">fLoopMode</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Paused"></a><code>property <b>Paused</b>: Boolean read <a   href="ElysionAnimator.TelAnimator.html#GetPaused">GetPaused</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+property KeyFrame[Index: Integer]</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Target"></a><code>property <b>Target</b>: <a   href="ElysionNode.TelNode.html">TelNode</a> read <a   href="ElysionAnimator.TelAnimator.html#fTarget">fTarget</a> write <a   href="ElysionAnimator.TelAnimator.html#fTarget">fTarget</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Transition"></a><code>property <b>Transition</b>: <a   href="ElysionAnimTypes.html#TelAnimationTransition">TelAnimationTransition</a> read <a   href="ElysionAnimator.TelAnimator.html#fTransition">fTransition</a> write <a   href="ElysionAnimator.TelAnimator.html#fTransition">fTransition</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Tolerance"></a><code>property <b>Tolerance</b>: Single read <a   href="ElysionAnimator.TelAnimator.html#fTolerance">fTolerance</a> write <a   href="ElysionAnimator.TelAnimator.html#fTolerance">fTolerance</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2011-12-01 21:54:18</em>
+</span>
+</body></html>

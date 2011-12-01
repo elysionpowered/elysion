@@ -30,7 +30,7 @@
         <LaunchingApplication PathPlusParams="\usr\X11R6\bin\xterm -T 'Lazarus Run Output' -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <Units Count="83">
+    <Units Count="85">
       <Unit0>
         <Filename Value="main.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -52,7 +52,7 @@
       <Unit2>
         <Filename Value="units\uGame.pas"/>
         <UnitName Value="uGame"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="15"/>
         <CursorPos X="6" Y="89"/>
@@ -63,7 +63,7 @@
       <Unit3>
         <Filename Value="units\uMainMenu.pas"/>
         <UnitName Value="uMainMenu"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
         <TopLine Value="60"/>
         <CursorPos X="16" Y="53"/>
@@ -74,10 +74,11 @@
       <Unit4>
         <Filename Value="units\uGameScreen.pas"/>
         <UnitName Value="uGameScreen"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="158"/>
-        <CursorPos X="8" Y="174"/>
+        <CursorPos X="75" Y="166"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -408,7 +409,7 @@
       <Unit41>
         <Filename Value="units\uCredits.pas"/>
         <UnitName Value="uCredits"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
         <TopLine Value="35"/>
         <CursorPos X="16" Y="85"/>
@@ -471,7 +472,7 @@
       <Unit48>
         <Filename Value="units\uOptions.pas"/>
         <UnitName Value="uOptions"/>
-        <EditorIndex Value="13"/>
+        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
         <TopLine Value="40"/>
         <CursorPos X="98" Y="80"/>
@@ -599,46 +600,37 @@
       <Unit62>
         <Filename Value="..\lib\Graphics\ElysionNode.pas"/>
         <UnitName Value="ElysionNode"/>
-        <EditorIndex Value="17"/>
         <WindowIndex Value="0"/>
         <TopLine Value="166"/>
         <CursorPos X="56" Y="205"/>
-        <UsageCount Value="20"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="21"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit62>
       <Unit63>
         <Filename Value="..\lib\Graphics\ElysionSprite.pas"/>
         <UnitName Value="ElysionSprite"/>
-        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="607"/>
-        <CursorPos X="77" Y="638"/>
-        <UsageCount Value="20"/>
-        <Loaded Value="True"/>
+        <TopLine Value="338"/>
+        <CursorPos X="5" Y="364"/>
+        <UsageCount Value="21"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit63>
       <Unit64>
         <Filename Value="..\lib\Foundation\Pipeline\ElysionAssets.pas"/>
         <UnitName Value="ElysionAssets"/>
-        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="22" Y="12"/>
-        <UsageCount Value="19"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="20"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit64>
       <Unit65>
         <Filename Value="..\lib\Graphics\GUI\ElysionMenu.pas"/>
         <UnitName Value="ElysionMenu"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="11"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="344"/>
-        <CursorPos X="56" Y="364"/>
-        <UsageCount Value="13"/>
-        <Loaded Value="True"/>
+        <TopLine Value="296"/>
+        <CursorPos X="94" Y="375"/>
+        <UsageCount Value="14"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit65>
       <Unit66>
@@ -671,12 +663,10 @@
       <Unit69>
         <Filename Value="..\lib\Core\ElysionApplication.pas"/>
         <UnitName Value="ElysionApplication"/>
-        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
         <TopLine Value="432"/>
         <CursorPos X="12" Y="1036"/>
-        <UsageCount Value="17"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="18"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit69>
       <Unit70>
@@ -691,12 +681,10 @@
       <Unit71>
         <Filename Value="..\lib\Core\Base\ElysionObject.pas"/>
         <UnitName Value="ElysionObject"/>
-        <EditorIndex Value="15"/>
         <WindowIndex Value="0"/>
         <TopLine Value="103"/>
         <CursorPos X="45" Y="118"/>
-        <UsageCount Value="17"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="18"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit71>
       <Unit72>
@@ -738,210 +726,134 @@
       <Unit76>
         <Filename Value="..\lib\Core\Base\ElysionTypes.pas"/>
         <UnitName Value="ElysionTypes"/>
-        <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1543"/>
         <CursorPos X="75" Y="507"/>
-        <UsageCount Value="17"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="18"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit76>
       <Unit77>
         <Filename Value="..\lib\Foundation\Scene\ElysionScene.pas"/>
         <UnitName Value="ElysionScene"/>
-        <EditorIndex Value="9"/>
         <WindowIndex Value="0"/>
         <TopLine Value="131"/>
         <CursorPos X="1" Y="159"/>
-        <UsageCount Value="17"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="18"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit77>
       <Unit78>
         <Filename Value="..\lib\Foundation\ElysionEntity.pas"/>
         <UnitName Value="ElysionEntity"/>
-        <EditorIndex Value="14"/>
         <WindowIndex Value="0"/>
         <TopLine Value="103"/>
         <CursorPos X="7" Y="115"/>
-        <UsageCount Value="17"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="18"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit78>
       <Unit79>
         <Filename Value="..\lib\Core\Base\ElysionInterfaces.pas"/>
         <UnitName Value="ElysionInterfaces"/>
-        <EditorIndex Value="16"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="74"/>
+        <TopLine Value="50"/>
         <CursorPos X="157" Y="85"/>
-        <UsageCount Value="17"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="18"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit79>
       <Unit80>
         <Filename Value="..\lib\Foundation\ElysionGame.pas"/>
         <UnitName Value="ElysionGame"/>
-        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
         <TopLine Value="105"/>
         <CursorPos X="88" Y="138"/>
-        <UsageCount Value="17"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="18"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit80>
       <Unit81>
         <Filename Value="..\lib\Core\ElysionUtils.pas"/>
         <UnitName Value="ElysionUtils"/>
-        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="52"/>
         <CursorPos X="67" Y="67"/>
-        <UsageCount Value="17"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="18"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit81>
       <Unit82>
         <Filename Value="..\lib\Foundation\Animations\ElysionAnimator.pas"/>
         <UnitName Value="ElysionAnimator"/>
-        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="283"/>
         <CursorPos X="17" Y="93"/>
-        <UsageCount Value="16"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="17"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit82>
+      <Unit83>
+        <Filename Value="..\lib\Graphics\Textures\ElysionTexture.pas"/>
+        <UnitName Value="ElysionTexture"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="127"/>
+        <CursorPos X="7" Y="110"/>
+        <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit83>
+      <Unit84>
+        <Filename Value="..\lib\Graphics\Textures\ElysionTextureAtlas.pas"/>
+        <UnitName Value="ElysionTextureAtlas"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="37"/>
+        <CursorPos X="13" Y="62"/>
+        <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit84>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="10" HistoryIndex="9">
       <Position1>
-        <Filename Value="..\lib\Foundation\ElysionGame.pas"/>
-        <Caret Line="132" Column="15" TopLine="99"/>
-      </Position1>
-      <Position2>
-        <Filename Value="..\lib\Foundation\ElysionGame.pas"/>
-        <Caret Line="149" Column="83" TopLine="122"/>
-      </Position2>
-      <Position3>
-        <Filename Value="..\lib\Foundation\ElysionGame.pas"/>
-        <Caret Line="159" Column="55" TopLine="123"/>
-      </Position3>
-      <Position4>
-        <Filename Value="..\lib\Foundation\ElysionGame.pas"/>
-        <Caret Line="139" Column="33" TopLine="123"/>
-      </Position4>
-      <Position5>
-        <Filename Value="units\uMainMenu.pas"/>
-        <Caret Line="25" Column="22" TopLine="76"/>
-      </Position5>
-      <Position6>
         <Filename Value="units\uCredits.pas"/>
         <Caret Line="14" Column="14" TopLine="1"/>
-      </Position6>
-      <Position7>
+      </Position1>
+      <Position2>
         <Filename Value="units\uOptions.pas"/>
         <Caret Line="12" Column="14" TopLine="1"/>
+      </Position2>
+      <Position3>
+        <Filename Value="units\uGameScreen.pas"/>
+        <Caret Line="177" Column="17" TopLine="154"/>
+      </Position3>
+      <Position4>
+        <Filename Value="units\uGameScreen.pas"/>
+        <Caret Line="185" Column="79" TopLine="147"/>
+      </Position4>
+      <Position5>
+        <Filename Value="units\uGameScreen.pas"/>
+        <Caret Line="189" Column="2" TopLine="171"/>
+      </Position5>
+      <Position6>
+        <Filename Value="units\uGameScreen.pas"/>
+        <Caret Line="50" Column="31" TopLine="35"/>
+      </Position6>
+      <Position7>
+        <Filename Value="units\uGameScreen.pas"/>
+        <Caret Line="185" Column="7" TopLine="162"/>
       </Position7>
       <Position8>
         <Filename Value="units\uGameScreen.pas"/>
-        <Caret Line="177" Column="17" TopLine="154"/>
+        <Caret Line="176" Column="66" TopLine="165"/>
       </Position8>
       <Position9>
-        <Filename Value="..\lib\Graphics\ElysionNode.pas"/>
-        <Caret Line="5" Column="58" TopLine="1"/>
-      </Position9>
-      <Position10>
-        <Filename Value="..\lib\Graphics\ElysionNode.pas"/>
-        <Caret Line="110" Column="24" TopLine="85"/>
-      </Position10>
-      <Position11>
-        <Filename Value="..\lib\Graphics\ElysionNode.pas"/>
-        <Caret Line="111" Column="33" TopLine="86"/>
-      </Position11>
-      <Position12>
-        <Filename Value="..\lib\Graphics\ElysionNode.pas"/>
-        <Caret Line="210" Column="56" TopLine="185"/>
-      </Position12>
-      <Position13>
-        <Filename Value="..\lib\Graphics\ElysionNode.pas"/>
-        <Caret Line="378" Column="29" TopLine="353"/>
-      </Position13>
-      <Position14>
-        <Filename Value="..\lib\Graphics\ElysionNode.pas"/>
-        <Caret Line="399" Column="29" TopLine="374"/>
-      </Position14>
-      <Position15>
-        <Filename Value="..\lib\Graphics\ElysionNode.pas"/>
-        <Caret Line="210" Column="54" TopLine="188"/>
-      </Position15>
-      <Position16>
-        <Filename Value="..\lib\Foundation\Animations\ElysionAnimator.pas"/>
-        <Caret Line="288" Column="50" TopLine="258"/>
-      </Position16>
-      <Position17>
-        <Filename Value="units\uGameScreen.pas"/>
-        <Caret Line="185" Column="79" TopLine="147"/>
-      </Position17>
-      <Position18>
-        <Filename Value="units\uGameScreen.pas"/>
-        <Caret Line="189" Column="2" TopLine="171"/>
-      </Position18>
-      <Position19>
-        <Filename Value="units\uGameScreen.pas"/>
-        <Caret Line="50" Column="31" TopLine="35"/>
-      </Position19>
-      <Position20>
-        <Filename Value="units\uGameScreen.pas"/>
-        <Caret Line="185" Column="7" TopLine="162"/>
-      </Position20>
-      <Position21>
-        <Filename Value="units\uGameScreen.pas"/>
-        <Caret Line="176" Column="66" TopLine="165"/>
-      </Position21>
-      <Position22>
-        <Filename Value="..\lib\Foundation\Animations\ElysionAnimator.pas"/>
-        <Caret Line="574" Column="96" TopLine="547"/>
-      </Position22>
-      <Position23>
         <Filename Value="units\uMainMenu.pas"/>
         <Caret Line="53" Column="16" TopLine="45"/>
-      </Position23>
-      <Position24>
-        <Filename Value="..\lib\Graphics\GUI\ElysionMenu.pas"/>
-        <Caret Line="361" Column="73" TopLine="333"/>
-      </Position24>
-      <Position25>
-        <Filename Value="..\lib\Foundation\Animations\ElysionAnimator.pas"/>
-        <Caret Line="591" Column="18" TopLine="579"/>
-      </Position25>
-      <Position26>
-        <Filename Value="..\lib\Core\Base\ElysionTypes.pas"/>
-        <Caret Line="496" Column="121" TopLine="473"/>
-      </Position26>
-      <Position27>
-        <Filename Value="..\lib\Core\Base\ElysionTypes.pas"/>
-        <Caret Line="499" Column="23" TopLine="474"/>
-      </Position27>
-      <Position28>
-        <Filename Value="..\lib\Foundation\Animations\ElysionAnimator.pas"/>
-        <Caret Line="605" Column="26" TopLine="570"/>
-      </Position28>
-      <Position29>
+      </Position9>
+      <Position10>
         <Filename Value="units\uGameScreen.pas"/>
         <Caret Line="193" Column="71" TopLine="152"/>
-      </Position29>
-      <Position30>
-        <Filename Value="..\lib\Graphics\GUI\ElysionMenu.pas"/>
-        <Caret Line="365" Column="19" TopLine="332"/>
-      </Position30>
+      </Position10>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <SearchPaths>
-      <IncludeFiles Value="$(ProjOutDir);..\lib;..\lib\Dependencies\SDL;..\lib\Dependencies\DirectX;..\lib\Dependencies\Vampyre"/>
-      <OtherUnitFiles Value="..\lib;..\lib\Core;..\lib\Core\Base;..\lib\Core\IO;..\lib\Foundation;..\lib\Foundation\Animations;..\lib\Foundation\Audio;..\lib\Foundation\Network;..\lib\Foundation\Pipeline;..\lib\Foundation\Scene;..\lib\Foundation\Scripting;..\lib\Graphics;..\lib\Graphics\Effects;..\lib\Graphics\Fonts;..\lib\Graphics\GUI;..\lib\Graphics\Textures;..\lib\Dependencies\DirectX;..\lib\Dependencies\SDL;..\lib\Dependencies\OpenGL;..\lib\Dependencies\Vampyre;units"/>
+      <IncludeFiles Value="$(ProjOutDir);..\lib;..\lib\Dependencies\SDL;..\lib\Dependencies\DirectX;..\lib\Dependencies\Vampyre;..\modules"/>
+      <OtherUnitFiles Value="..\lib;..\lib\Core;..\lib\Core\Base;..\lib\Core\IO;..\lib\Foundation;..\lib\Foundation\Animations;..\lib\Foundation\Audio;..\lib\Foundation\Network;..\lib\Foundation\Pipeline;..\lib\Foundation\Scene;..\lib\Foundation\Scripting;..\lib\Graphics;..\lib\Graphics\Effects;..\lib\Graphics\Fonts;..\lib\Graphics\GUI;..\lib\Graphics\Textures;..\lib\Dependencies\DirectX;..\lib\Dependencies\SDL;..\lib\Dependencies\OpenGL;..\lib\Dependencies\Vampyre;..\modules;units"/>
       <UnitOutputDirectory Value="..\bin"/>
     </SearchPaths>
     <Conditionals Value="// Mac OS build macro
