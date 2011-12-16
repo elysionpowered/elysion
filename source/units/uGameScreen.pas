@@ -23,6 +23,7 @@ uses
   ElysionCamera,
   ElysionGraphics,
   ElysionMovingSprite,
+  ElysionSpriteSheet,
   uGlobal,
   uBasic,
   uConfig,
@@ -32,6 +33,7 @@ type
   TGameScreen = class(TelScene)
   private
     fSprite: TelMovingSprite;
+    fSpriteSheet: TelSpriteSheet;
 
     fFont: TelTrueTypeFont;
 
@@ -91,6 +93,22 @@ begin
   Sprite.Position := makeV3f(64, 64);
 
   Self.Add(Sprite);
+
+
+  fSpriteSheet := TelSpriteSheet.Create;
+  fSpriteSheet.LoadFromFile(GetResImgPath + 'zepellin.png');
+  fSpriteSheet.FrameSize := makeSize(128, 128);
+  fSpriteSheet.Frame := 0;
+  fSpriteSheet.Position := makeV3f(256, 256);
+  Self.Log(fSpriteSheet.TextureWidth);
+  Self.Log(fSpriteSheet.TextureHeight);
+
+  Self.Log(fSpriteSheet.Columns);
+  Self.Log(fSpriteSheet.Rows);
+
+  Self.Add(fSpriteSheet);
+
+
 
   fAnimator := TelAnimator.Create(Sprite);
 
@@ -194,6 +212,8 @@ begin
 
       // You need to call TelAnimator.Start for the animation to begin
       fAnimator.Start;
+
+      fSpriteSheet.Play();
     end;
 
 

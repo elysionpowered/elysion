@@ -29,8 +29,8 @@ type
 
     fFontContainer: TelTrueTypeFont;
 
-    function GetWidth(): Integer; Override;
-    function GetHeight(): Integer; Override;
+    function GetWidth(): Single; Override;
+    function GetHeight(): Single; Override;
 
     function GetMouseOver(): Boolean; Override;
     function GetClick(): Boolean; Override;
@@ -79,12 +79,12 @@ begin
   inherited;
 end;
 
-function TelLabel.GetWidth(): Integer;
+function TelLabel.GetWidth(): Single;
 begin
   Result := fFontContainer.GetWidth_Text(fCaption);
 end;
 
-function TelLabel.GetHeight(): Integer;
+function TelLabel.GetHeight(): Single;
 begin
   Result := fFontContainer.Height;
 end;

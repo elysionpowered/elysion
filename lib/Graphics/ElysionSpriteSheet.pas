@@ -17,24 +17,26 @@ type
 
   TelSpriteSheet = class(TelSprite)
   private
-    fMaxFrames, fFrame: Integer;
+    fFrame: Integer;
     fTimer: TelTimer;
     fFrameSize: TelSize;
     fLoop: Boolean;
 
     fAnimationList: TStringList;
-    fAnimFrames: array of Integer;
 
     function GetColumns: Integer;
     function GetMaxFrames: Integer;
     function GetRows: Integer;
     procedure SetColumns(AValue: Integer);
+    procedure SetFrame(AValue: Integer);
     procedure SetRows(AValue: Integer);
 
     procedure UpdateSpritesheet;
   public
     constructor Create; Override;
     destructor Destroy; Override;
+
+    function LoadFromFile(aFilename: String): Boolean;
 
     // Define animation in pixels
     procedure Define(AnimName: AnsiString; aRect: TelRect); Overload;
@@ -59,7 +61,7 @@ type
 
     property FrameSize: TelSize read fFrameSize write fFrameSize;
   published
-    property Frame: Integer read fFrame write fFrame;
+    property Frame: Integer read fFrame write SetFrame;
 
     property MaxFrames: Integer read GetMaxFrames;
 
@@ -76,7 +78,6 @@ begin
   inherited;
 
   fTimer := TelTimer.Create;
-  fFrame := 0;
 
   fAnimationList := TStringList.Create;
   fAnimationList.NameValueSeparator := ':';
@@ -88,6 +89,8 @@ begin
   {$ENDIF}*)
 
   fTimer.OnEvent := Self.UpdateSpritesheet;
+
+  FrameSize := makeSize(64, 64);
 
   fLoop := false;
 end;
@@ -112,6 +115,13 @@ begin
   Self.FrameSize.Width := Self.TextureWidth div AValue;
 end;
 
+procedure TelSpriteSheet.SetFrame(AValue: Integer);
+begin
+  if fFrame <> AValue then fFrame := AValue;
+
+  Self.ClipImage(makeRect(fFrame div GetColumns, fFrame mod GetRows, FrameSize.Width, FrameSize.Height));
+end;
+
 procedure TelSpriteSheet.SetRows(AValue: Integer);
 begin
   Self.FrameSize.Height := Self.TextureHeight div AValue;
@@ -119,7 +129,13 @@ end;
 
 procedure TelSpriteSheet.UpdateSpritesheet;
 begin
+  if fFrame = GetMaxFrames then
+  begin
+    if not Loop then fTimer.Stop()
+    else fFrame := 0
+  end else fFrame := fFrame + 1;
 
+  SetFrame(fFrame);
 end;
 
 destructor TelSpriteSheet.Destroy;
@@ -127,6 +143,12 @@ begin
   fTimer.Destroy;
 
   inherited;
+end;
+
+function TelSpriteSheet.LoadFromFile(aFilename: String): Boolean;
+begin
+  Result := inherited LoadFromFile(aFilename);
+  Frame := 0;
 end;
 
 procedure TelSpriteSheet.Define(AnimName: AnsiString; aRect: TelRect);
@@ -155,6 +177,8 @@ begin
   //fEndFrame := GetMaxFrames;
 
   fTimer.Interval := Length div GetMaxFrames;
+  Frame := 0;
+  fTimer.Start();
 end;
 
 procedure TelSpriteSheet.Play(AnimName: AnsiString; Length: Integer = 1000);
@@ -190,7 +214,6 @@ begin
   inherited Update(dt);
 
   fTimer.Update(dt);
-  Self.ClipImage(makeRect(fFrame div Columns, fFrame mod Rows, FrameSize.Width, FrameSize.Height));
 end;
 
 procedure TelSpriteSheet.RandomFrame();
@@ -198,4 +221,4 @@ begin
   fFrame := Random(GetMaxFrames) + 1;
 end;
 
-end.
+end.

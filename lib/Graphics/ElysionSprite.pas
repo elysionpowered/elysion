@@ -48,8 +48,8 @@ type
 
       function GetAspectRatio(): Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     protected
-      function GetWidth(): Integer; Override;
-      function GetHeight(): Integer; Override;
+      function GetWidth(): Single; Override;
+      function GetHeight(): Single; Override;
 
       function GetMouseDown(): Boolean; Override;
       function GetMouseUp(): Boolean; Override;
@@ -114,8 +114,8 @@ type
 
       property Transparent: Boolean read GetTransparent write SetTransparent;
 
-      property Width: Integer read GetWidth;
-      property Height: Integer read GetHeight;
+      property Width: Single read GetWidth;
+      property Height: Single read GetHeight;
   end;
 
 TelSpriteList = class(TelObject)
@@ -338,14 +338,14 @@ begin
   Result := Texture.AspectRatio;
 end;
 
-function TelSprite.GetWidth(): Integer;
+function TelSprite.GetWidth(): Single;
 begin
-  Result := Trunc(ClipRect.W);
+  Result := ClipRect.W;
 end;
 
-function TelSprite.GetHeight(): Integer;
+function TelSprite.GetHeight(): Single;
 begin
-  Result := Trunc(ClipRect.H);
+  Result := ClipRect.H;
 end;
 
 function TelSprite.LoadFromFile(const aFilename: String): Boolean;

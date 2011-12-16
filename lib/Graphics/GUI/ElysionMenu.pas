@@ -33,8 +33,8 @@ type
    fSpacing: Integer;
 
    function GetCount: Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-   function GetHeight: Integer; Override;
-   function GetWidth: Integer; Override;
+   function GetHeight: Single; Override;
+   function GetWidth: Single; Override;
    //procedure AnimateButton(dt: Double; aID: Integer);
 
    function GetButton(aID: Integer): TelButton; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -228,12 +228,12 @@ begin
   Result := fButtonList.Count;
 end;
 
-function TelMenu.GetHeight: Integer;
+function TelMenu.GetHeight: Single;
 begin
   Result := Self.Count * (TelButton(fButtonList.Items[0]).Height + Spacing);
 end;
 
-function TelMenu.getWidth: Integer;
+function TelMenu.GetWidth: Single;
 begin
   Result := (TelButton(fButtonList.Items[0])).Width;
 end;

@@ -36,8 +36,8 @@ type
     function GetHyperLink(): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     procedure SetHyperLink(Value: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-    function GetWidth(): Integer; Override;
-    function GetHeight(): Integer; Override;
+    function GetWidth(): Single; Override;
+    function GetHeight(): Single; Override;
 
     function GetMouseOver(): Boolean; Override;
     function GetClick(): Boolean; Override;
@@ -125,12 +125,12 @@ begin
   if fSprite <> nil then fSprite.ClipImage(Rect);
 end;
 
-function TelButton.GetWidth(): Integer;
+function TelButton.GetWidth(): Single;
 begin
   if fSprite <> nil then Result := fSprite.Width;
 end;
 
-function TelButton.GetHeight(): Integer;
+function TelButton.GetHeight(): Single;
 begin
   if fSprite <> nil then Result := fSprite.Height;
 end;

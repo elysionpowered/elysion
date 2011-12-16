@@ -44,8 +44,8 @@ TelRectangle = class(TelNode)
 protected
   fVertices: TColorVertices;
 
-  function GetWidth(): Integer; Override;
-  function GetHeight(): Integer; Override;
+  function GetWidth(): Single; Override;
+  function GetHeight(): Single; Override;
 
   procedure SetColor(AValue: TelColor); Override;
 
@@ -55,7 +55,7 @@ protected
   function GetClick(): Boolean; Override;
 public
   constructor Create; Overload; Override;
-  constructor Create(aWidth, aHeight: Integer); Overload;
+  constructor Create(aWidth, aHeight: Single); Overload;
   constructor Create(aSize: TelSize); Overload;
 
   destructor Destroy; Override;
@@ -230,12 +230,12 @@ end;
 
 { TelRectangle }
 
-function TelRectangle.GetWidth(): Integer;
+function TelRectangle.GetWidth(): Single;
 begin
   Result := fWidth;
 end;
 
-function TelRectangle.GetHeight(): Integer;
+function TelRectangle.GetHeight(): Single;
 begin
   Result := fHeight;
 end;
@@ -287,7 +287,7 @@ begin
   inherited Create;
 end;
 
-constructor TelRectangle.Create(aWidth, aHeight: Integer);
+constructor TelRectangle.Create(aWidth, aHeight: Single);
 begin
   Create;
 
@@ -307,11 +307,11 @@ begin
   inherited Destroy;
 end;
 
-procedure TelRectangle.Draw();
+procedure TelRectangle.Draw(DrawChildren: Boolean = true);
 var
   i: Integer;
 begin
-  inherited Draw;
+  inherited Draw(DrawChildren);
 
   if Visible then
   begin

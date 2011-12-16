@@ -97,7 +97,7 @@ type
       fOnClick: TelNodeEvent;
       fOnDblClick: TelNodeEvent;
 
-    fWidth, fHeight: Integer;
+    fWidth, fHeight: Single;
 
       fVisible, fLocked, fDraggable, fDidDragStart, fDidDragging, fIsAnimated, fEditable, fEnabled: Boolean;
 
@@ -117,10 +117,10 @@ type
       function GetOuterWidthProp(): Integer;
       function GetOuterHeightProp(): Integer;
 
-      function GetWidth(): Integer; virtual;
-      function GetHeight(): Integer; virtual;
-      procedure SetWidth(aValue: Integer); virtual;
-      procedure SetHeight(aValue: Integer); virtual;
+      function GetWidth(): Single; virtual;
+      function GetHeight(): Single; virtual;
+      procedure SetWidth(aValue: Single); virtual;
+      procedure SetHeight(aValue: Single); virtual;
 
       function GetMouseDown(): Boolean; virtual;
       function GetMouseUp(): Boolean; virtual;
@@ -249,8 +249,8 @@ type
       property IsAnimated: Boolean read fIsAnimated;
       property Draggable: Boolean read fDraggable;
 
-      property Width: Integer read GetWidth write SetWidth;
-      property Height: Integer read GetHeight write SetHeight;
+      property Width: Single read GetWidth write SetWidth;
+      property Height: Single read GetHeight write SetHeight;
 
       property InnerWidth: Integer read GetInnerWidth;
       property InnerHeight: Integer read GetInnerHeight;
@@ -746,7 +746,7 @@ begin
   begin
     case fAlign.Horizontal of
       ahLeft: Left := 0;
-      ahCenter: Position.X := (ParentSize.Width - Self.Width) div 2;
+      ahCenter: Position.X := (ParentSize.Width - Self.Width) / 2;
       ahRight: Right := 0;
     end;
   end;
@@ -755,7 +755,7 @@ begin
   begin
     case fAlign.Vertical of
       avTop: Top := 0;
-      avCenter: Position.Y := (ParentSize.Height - Self.Height) div 2;
+      avCenter: Position.Y := (ParentSize.Height - Self.Height) / 2;
       avBottom: Bottom := 0;
     end;
   end;
@@ -781,22 +781,22 @@ begin
   Result := GetOuterHeight(fDecorations);
 end;
 
-function TelNode.GetWidth(): Integer;
+function TelNode.GetWidth(): Single;
 begin
   Result := 0;
 end;
 
-function TelNode.GetHeight(): Integer;
+function TelNode.GetHeight(): Single;
 begin
   Result := 0;
 end;
 
-procedure TelNode.SetWidth(aValue: Integer);
+procedure TelNode.SetWidth(aValue: Single);
 begin
   fWidth := aValue;
 end;
 
-procedure TelNode.SetHeight(aValue: Integer);
+procedure TelNode.SetHeight(aValue: Single);
 begin
   fHeight := aValue;
 end;

@@ -136,7 +136,7 @@ procedure TelGame.GetOptiomalResolution(out Size: TelSize; out
   Fullscreen: Boolean);
 var
   i: Integer;
-  prevWidth, prevHeight: Integer;
+  prevWidth, prevHeight: Single;
   prevFullscreen: Boolean;
 begin
   prevWidth := 0;

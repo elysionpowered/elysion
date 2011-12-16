@@ -30,8 +30,8 @@ TelCamera = class(TelLayer)
     fOrgPos: array of TelVector3f;
     fEnablePixelCheck: Boolean;
   protected
-    function GetWidth(): Integer; Override;
-    function GetHeight(): Integer; Override;
+    function GetWidth(): Single; Override;
+    function GetHeight(): Single; Override;
   public
     constructor Create; Override;
     destructor Destroy; Override;
@@ -50,14 +50,14 @@ implementation
 
 { TelCamera }
 
-function TelCamera.GetWidth(): Integer;
+function TelCamera.GetWidth(): Single;
 begin
-  Result := Trunc(Viewport.W);
+  Result := Viewport.W;
 end;
 
-function TelCamera.GetHeight(): Integer;
+function TelCamera.GetHeight(): Single;
 begin
-  Result := Trunc(Viewport.H);
+  Result := Viewport.H;
 end;
 
 constructor TelCamera.Create;

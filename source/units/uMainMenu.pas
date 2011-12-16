@@ -54,7 +54,7 @@ begin
   Menu.setButtons(GetResImgPath + 'button.png', GetStdFont, 15, ['New game', 'Credits', 'Options', 'Quit']);
   Menu.Spacing := 16;
 
-  Menu.Position := makeV3f((ActiveWindow.Width - Menu.Width) - 32, (ActiveWindow.Height - Menu.Height) div 2);
+  Menu.Position := makeV3f((ActiveWindow.Width - Menu.Width) - 32, (ActiveWindow.Height - Menu.Height) / 2);
 
   for i := 0 to Menu.Count - 1 do
     Menu.Items[i].TextLabel.Color := makeCol(0, 0, 0);

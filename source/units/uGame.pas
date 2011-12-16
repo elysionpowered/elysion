@@ -67,7 +67,11 @@ constructor TGame.Create;
 var
   tmpFullscreen: Boolean;
 begin
-  Debug := true;
+  //{$ifdef Debug}
+    Debug := true;
+  //{$else}
+  //  Debug := false;
+  //{$endif}
 
 
   fForceFullscreen := false;

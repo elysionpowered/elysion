@@ -41,7 +41,7 @@ begin
   Menu := TelMenu.Create;
   Menu.setButtons(GetResImgPath + 'button.png', GetStdFont, 14, ['Music: On', 'Sound: On', 'Back']);
   Menu.Spacing := 16;
-  Menu.Position := makeV3f((ActiveWindow.Width - Menu.Width) div 2, (ActiveWindow.Height - Menu.Height) div 2);
+  Menu.Position := makeV3f((ActiveWindow.Width - Menu.Width) / 2, (ActiveWindow.Height - Menu.Height) / 2);
   //Menu.HoverAnimation := true;
 
   for i := 0 to Menu.Count - 1 do Menu.Items[i].TextLabel.Color := makeCol(0, 0, 0);

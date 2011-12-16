@@ -308,7 +308,7 @@ type
   {$ELSE}
   TelSize = record
   {$ENDIF}
-    Width, Height: Integer;
+    Width, Height: Single;
 
     {$IFDEF CAN_METHODS}
     procedure Clear();
@@ -470,7 +470,7 @@ type
   function makeV2i(aX, aY: Integer): TelVector2i; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
   function makeV3f(aX, aY: Single; aZ: Single = 0.0): TelVector3f; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
   function makeV3i(aX, aY: Integer; aZ: Integer = 0): TelVector3i; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  function makeSize(aWidth, aHeight: Integer): TelSize; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  function makeSize(aWidth, aHeight: Single): TelSize; {$IFDEF CAN_INLINE} inline; {$ENDIF}
   function makeRect(aX, aY, aW, aH: Single): TelRect; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
   function makeCol(aR, aG, aB: Byte; anA: Byte = 255): TelColor; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -614,7 +614,7 @@ begin
   Result := tmpVec;
 end;
 
-function makeSize(aWidth, aHeight: Integer): TelSize;
+function makeSize(aWidth, aHeight: Single): TelSize;
 var
   tmpVec: TelSize;
 begin
@@ -1286,7 +1286,7 @@ end;
 
 function TelSize.ToString(): String;
 begin
-  Result := Format('Width: %d Height: %d', [Width, Height])
+  Result := Format('Width: %f Height: %f', [Width, Height])
 end;
 
 function TelSize.ToVector2f(): PelVector2f;
@@ -1302,7 +1302,7 @@ function TelSize.ToVector2i(): PelVector2i;
 var
   tmpVec: TelVector2i;
 begin
-  tmpVec := makeV2i(Width, Height);
+  tmpVec := makeV2i(Trunc(Width), Trunc(Height));
 
   Result := @tmpVec;
 end;
@@ -1320,7 +1320,7 @@ function TelSize.ToVector3i(): PelVector3i;
 var
   tmpVec: TelVector3i;
 begin
-  tmpVec := makeV3i(Width, Height);
+  tmpVec := makeV3i(Trunc(Width), Trunc(Height));
 
   Result := @tmpVec;
 end;
@@ -1355,14 +1355,14 @@ end;
 
 procedure TelSize.Divide(Size: TelSize);
 begin
-  Self.Width := Trunc(Self.Width / Size.Width);
-  Self.Height := Trunc(Self.Height / Size.Height);
+  Self.Width := Self.Width / Size.Width;
+  Self.Height := Self.Height / Size.Height;
 end;
 
 procedure TelSize.Scale(Factor: Single);
 begin
-  Self.Width := Trunc(Self.Width * Factor);
-  Self.Height := Trunc(Self.Height * Factor);
+  Self.Width := Self.Width * Factor;
+  Self.Height := Self.Height * Factor;
 end;
 
 function TelSize.Center(): PelVector2f;

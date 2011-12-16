@@ -7,7 +7,7 @@ uses
   Unix;
 
 const
-  COMPILER_OPTIONS = ' -CX';
+  COMPILER_OPTIONS = ' -CX -dRelease';
 
   {$I config.inc}
 
