@@ -11,8 +11,10 @@ uses
   ElysionTypes,
   ElysionObject,
 
-  {$IFDEF USE_VAMPYRE}   ImagingSDL, {$ENDIF}
-  {$IFDEF USE_SDL_IMAGE} SDL_image,  {$ENDIF}
+  {$IFDEF USE_VAMPYRE}
+  ImagingSDL,
+  {$ENDIF}
+
   {$IFDEF USE_DGL_HEADER}
   dglOpenGL,
   {$ELSE}
@@ -50,7 +52,7 @@ type
       constructor Create; Override;
       destructor Destroy; Override;
 
-      function LoadFromFile(const aFilename: String): Boolean;
+      function LoadFromFile(const aFilename: String): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
       function LoadFromSDLSurface(aSurface: PSDL_Surface): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
       function LoadFromStream(aStream: TStream): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
       procedure SaveToStream(aStream: TStream); {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -159,30 +161,14 @@ end;
 function TelTexture.LoadFromFile(const aFilename: String): Boolean;
 begin
   fFilename := aFilename;
-
   fImageType := ExtractFileExt(aFilename);
 
-  {$IFDEF USE_SDL_IMAGE}
-    TextureSurface := IMG_Load(PChar(aFilename));
-  {$ENDIF}
-  {$IFDEF USE_VAMPYRE}
-    TextureSurface := LoadSDLSurfaceFromFile(aFilename);
-  {$ENDIF}
-
-  fWidth := TextureSurface^.w;
-  fHeight := TextureSurface^.h;
-
-  Result := LoadTexture(fFilename, TextureID);
+  Result := LoadTexture(fFilename, TextureID, fWidth, fHeight);
 end;
 
 function TelTexture.LoadFromSDLSurface(aSurface: PSDL_Surface): Boolean; 
 begin
-  TextureSurface := SDL_ConvertSurface(aSurface, aSurface^.format, aSurface^.flags);
-
-  fWidth := TextureSurface^.w;
-  fHeight := TextureSurface^.h;
-
-  Result := LoadTexture(TextureSurface, TextureID);
+  Result := LoadTexture(TextureSurface, TextureID, fWidth, fHeight);
 end;
 
 function TelTexture.LoadFromStream(aStream: TStream): Boolean; 
@@ -193,10 +179,7 @@ begin
     begin
       Result := true;
 
-      fWidth := TextureSurface^.w;
-      fHeight := TextureSurface^.h;
-
-      LoadTexture(TextureSurface, TextureID);
+      LoadTexture(TextureSurface, TextureID, fWidth, fHeight);
     end else Result := false;
   {$ENDIF}
 end;
@@ -238,7 +221,7 @@ begin
     SDL_SetColorKey(TextureSurface, SDL_SRCCOLORKEY or SDL_RLEACCEL or SDL_HWACCEL,
       SDL_MapRGB(TextureSurface^.Format, aColor.R, aColor.G, aColor.B));
 
-    LoadTexture(SDL_ConvertSurface(TextureSurface, TextureSurface^.format, TextureSurface^.flags), TextureID);
+    LoadTexture(SDL_ConvertSurface(TextureSurface, TextureSurface^.format, TextureSurface^.flags), TextureID, fWidth, fHeight);
   end;
 end;
 
@@ -267,7 +250,7 @@ begin
     // Need to check if that's correct - espacially when loading half-transparent PNGs
     if (fColorKey.A <> 255) then fColorKey.A := 255;
 
-    LoadTexture(SDL_ConvertSurface(TextureSurface, TextureSurface^.format, TextureSurface^.flags), TextureID);
+    LoadTexture(SDL_ConvertSurface(TextureSurface, TextureSurface^.format, TextureSurface^.flags), TextureID, fWidth, fHeight);
   end;
 end;
 

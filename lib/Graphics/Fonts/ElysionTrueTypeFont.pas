@@ -366,6 +366,7 @@ var
   TextList: TStringList;
   i: Integer;
   tmpTop, tmpTop2: Single;
+  tmpWidth, tmpHeight: Longint;
 begin
   if aText <> fText then fText := aText;
 
@@ -392,7 +393,7 @@ begin
       initial := RenderFont(TextList.Strings[i], fFontRender, fTextStyle);
       if initial = nil then Exit;
 
-      LoadTexture(initial, Texture[i]);
+      LoadTexture(initial, Texture[i], tmpWidth, tmpHeight);
 
       glColor3f(1.0, 1.0, 1.0);
       Bind(Texture[i]);

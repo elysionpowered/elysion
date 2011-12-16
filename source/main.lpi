@@ -30,13 +30,13 @@
         <LaunchingApplication PathPlusParams="\usr\X11R6\bin\xterm -T 'Lazarus Run Output' -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <Units Count="85">
+    <Units Count="87">
       <Unit0>
         <Filename Value="main.lpr"/>
         <IsPartOfProject Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
-        <CursorPos X="86" Y="22"/>
+        <CursorPos X="28" Y="36"/>
         <UsageCount Value="201"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit0>
@@ -52,10 +52,10 @@
       <Unit2>
         <Filename Value="units\uGame.pas"/>
         <UnitName Value="uGame"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="15"/>
-        <CursorPos X="6" Y="89"/>
+        <TopLine Value="6"/>
+        <CursorPos X="12" Y="10"/>
         <UsageCount Value="101"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -63,9 +63,9 @@
       <Unit3>
         <Filename Value="units\uMainMenu.pas"/>
         <UnitName Value="uMainMenu"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="60"/>
+        <TopLine Value="27"/>
         <CursorPos X="16" Y="53"/>
         <UsageCount Value="101"/>
         <Loaded Value="True"/>
@@ -74,11 +74,10 @@
       <Unit4>
         <Filename Value="units\uGameScreen.pas"/>
         <UnitName Value="uGameScreen"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="158"/>
-        <CursorPos X="75" Y="166"/>
+        <TopLine Value="7"/>
+        <CursorPos X="9" Y="29"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -302,10 +301,12 @@
       <Unit29>
         <Filename Value="..\lib\Dependencies\SDL\SDLTextures.pas"/>
         <UnitName Value="SDLTextures"/>
+        <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="312"/>
-        <CursorPos X="38" Y="349"/>
-        <UsageCount Value="45"/>
+        <TopLine Value="258"/>
+        <CursorPos X="38" Y="290"/>
+        <UsageCount Value="46"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit29>
       <Unit30>
@@ -339,7 +340,7 @@
         <Filename Value="..\lib\Elysion.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
-        <CursorPos X="87" Y="34"/>
+        <CursorPos X="1" Y="1"/>
         <UsageCount Value="99"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit33>
@@ -409,7 +410,7 @@
       <Unit41>
         <Filename Value="units\uCredits.pas"/>
         <UnitName Value="uCredits"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
         <TopLine Value="35"/>
         <CursorPos X="16" Y="85"/>
@@ -472,10 +473,10 @@
       <Unit48>
         <Filename Value="units\uOptions.pas"/>
         <UnitName Value="uOptions"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="40"/>
-        <CursorPos X="98" Y="80"/>
+        <TopLine Value="1"/>
+        <CursorPos X="35" Y="14"/>
         <UsageCount Value="119"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -591,10 +592,13 @@
       <Unit61>
         <Filename Value="..\lib\Graphics\ElysionGraphics.pas"/>
         <UnitName Value="ElysionGraphics"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="115" Y="16"/>
-        <UsageCount Value="12"/>
+        <TopLine Value="377"/>
+        <CursorPos X="14" Y="392"/>
+        <UsageCount Value="13"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit61>
       <Unit62>
@@ -673,9 +677,9 @@
         <Filename Value="..\lib\Core\IO\ElysionLogger.pas"/>
         <UnitName Value="ElysionLogger"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="393"/>
-        <CursorPos X="1" Y="411"/>
-        <UsageCount Value="9"/>
+        <TopLine Value="48"/>
+        <CursorPos X="47" Y="61"/>
+        <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit70>
       <Unit71>
@@ -700,9 +704,9 @@
         <Filename Value="..\lib\Graphics\Fonts\ElysionTrueTypeFont.pas"/>
         <UnitName Value="ElysionTrueTypeFont"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="219"/>
-        <CursorPos X="12" Y="244"/>
-        <UsageCount Value="9"/>
+        <TopLine Value="356"/>
+        <CursorPos X="59" Y="396"/>
+        <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit73>
       <Unit74>
@@ -789,10 +793,12 @@
       <Unit83>
         <Filename Value="..\lib\Graphics\Textures\ElysionTexture.pas"/>
         <UnitName Value="ElysionTexture"/>
+        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="127"/>
-        <CursorPos X="7" Y="110"/>
-        <UsageCount Value="11"/>
+        <TopLine Value="163"/>
+        <CursorPos X="35" Y="56"/>
+        <UsageCount Value="12"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit83>
       <Unit84>
@@ -804,48 +810,151 @@
         <UsageCount Value="11"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit84>
+      <Unit85>
+        <Filename Value="units\uWorld.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uWorld"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="20"/>
+        <CursorPos X="27" Y="15"/>
+        <UsageCount Value="22"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit85>
+      <Unit86>
+        <Filename Value="..\lib\Dependencies\SDL\sdlutils.pas"/>
+        <UnitName Value="sdlutils"/>
+        <EditorIndex Value="9"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="3161"/>
+        <CursorPos X="1" Y="3176"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit86>
     </Units>
-    <JumpHistory Count="10" HistoryIndex="9">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="units\uCredits.pas"/>
-        <Caret Line="14" Column="14" TopLine="1"/>
+        <Filename Value="units\uGameScreen.pas"/>
+        <Caret Line="185" Column="7" TopLine="162"/>
       </Position1>
       <Position2>
-        <Filename Value="units\uOptions.pas"/>
-        <Caret Line="12" Column="14" TopLine="1"/>
+        <Filename Value="units\uGameScreen.pas"/>
+        <Caret Line="176" Column="66" TopLine="165"/>
       </Position2>
       <Position3>
-        <Filename Value="units\uGameScreen.pas"/>
-        <Caret Line="177" Column="17" TopLine="154"/>
+        <Filename Value="units\uMainMenu.pas"/>
+        <Caret Line="53" Column="16" TopLine="45"/>
       </Position3>
       <Position4>
         <Filename Value="units\uGameScreen.pas"/>
-        <Caret Line="185" Column="79" TopLine="147"/>
+        <Caret Line="193" Column="71" TopLine="152"/>
       </Position4>
       <Position5>
-        <Filename Value="units\uGameScreen.pas"/>
-        <Caret Line="189" Column="2" TopLine="171"/>
+        <Filename Value="units\uGame.pas"/>
+        <Caret Line="10" Column="12" TopLine="6"/>
       </Position5>
       <Position6>
-        <Filename Value="units\uGameScreen.pas"/>
-        <Caret Line="50" Column="31" TopLine="35"/>
+        <Filename Value="units\uWorld.pas"/>
+        <Caret Line="15" Column="22" TopLine="1"/>
       </Position6>
       <Position7>
-        <Filename Value="units\uGameScreen.pas"/>
-        <Caret Line="185" Column="7" TopLine="162"/>
+        <Filename Value="units\uWorld.pas"/>
+        <Caret Line="5" Column="4" TopLine="1"/>
       </Position7>
       <Position8>
-        <Filename Value="units\uGameScreen.pas"/>
-        <Caret Line="176" Column="66" TopLine="165"/>
+        <Filename Value="units\uOptions.pas"/>
+        <Caret Line="80" Column="98" TopLine="40"/>
       </Position8>
       <Position9>
-        <Filename Value="units\uMainMenu.pas"/>
-        <Caret Line="53" Column="16" TopLine="45"/>
+        <Filename Value="..\lib\Graphics\Textures\ElysionTexture.pas"/>
+        <Caret Line="15" Column="46" TopLine="1"/>
       </Position9>
       <Position10>
-        <Filename Value="units\uGameScreen.pas"/>
-        <Caret Line="193" Column="71" TopLine="152"/>
+        <Filename Value="..\lib\Graphics\Textures\ElysionTexture.pas"/>
+        <Caret Line="43" Column="26" TopLine="22"/>
       </Position10>
+      <Position11>
+        <Filename Value="..\lib\Graphics\Textures\ElysionTexture.pas"/>
+        <Caret Line="148" Column="21" TopLine="127"/>
+      </Position11>
+      <Position12>
+        <Filename Value="..\lib\Graphics\Textures\ElysionTexture.pas"/>
+        <Caret Line="223" Column="31" TopLine="208"/>
+      </Position12>
+      <Position13>
+        <Filename Value="..\lib\Graphics\Textures\ElysionTexture.pas"/>
+        <Caret Line="16" Column="11" TopLine="4"/>
+      </Position13>
+      <Position14>
+        <Filename Value="..\lib\Graphics\Textures\ElysionTexture.pas"/>
+        <Caret Line="181" Column="1" TopLine="147"/>
+      </Position14>
+      <Position15>
+        <Filename Value="..\lib\Graphics\Textures\ElysionTexture.pas"/>
+        <Caret Line="15" Column="10" TopLine="1"/>
+      </Position15>
+      <Position16>
+        <Filename Value="..\lib\Graphics\Textures\ElysionTexture.pas"/>
+        <Caret Line="224" Column="109" TopLine="209"/>
+      </Position16>
+      <Position17>
+        <Filename Value="..\lib\Dependencies\SDL\SDLTextures.pas"/>
+        <Caret Line="93" Column="76" TopLine="70"/>
+      </Position17>
+      <Position18>
+        <Filename Value="..\lib\Dependencies\SDL\SDLTextures.pas"/>
+        <Caret Line="322" Column="13" TopLine="307"/>
+      </Position18>
+      <Position19>
+        <Filename Value="..\lib\Dependencies\SDL\SDLTextures.pas"/>
+        <Caret Line="320" Column="74" TopLine="305"/>
+      </Position19>
+      <Position20>
+        <Filename Value="..\lib\Dependencies\SDL\SDLTextures.pas"/>
+        <Caret Line="324" Column="62" TopLine="309"/>
+      </Position20>
+      <Position21>
+        <Filename Value="..\lib\Dependencies\SDL\SDLTextures.pas"/>
+        <Caret Line="92" Column="126" TopLine="60"/>
+      </Position21>
+      <Position22>
+        <Filename Value="..\lib\Graphics\Textures\ElysionTexture.pas"/>
+        <Caret Line="224" Column="5" TopLine="209"/>
+      </Position22>
+      <Position23>
+        <Filename Value="..\lib\Graphics\Textures\ElysionTexture.pas"/>
+        <Caret Line="224" Column="126" TopLine="202"/>
+      </Position23>
+      <Position24>
+        <Filename Value="..\lib\Dependencies\SDL\SDLTextures.pas"/>
+        <Caret Line="91" Column="80" TopLine="51"/>
+      </Position24>
+      <Position25>
+        <Filename Value="..\lib\Graphics\ElysionGraphics.pas"/>
+        <Caret Line="5" Column="9" TopLine="4"/>
+      </Position25>
+      <Position26>
+        <Filename Value="..\lib\Graphics\ElysionGraphics.pas"/>
+        <Caret Line="363" Column="18" TopLine="339"/>
+      </Position26>
+      <Position27>
+        <Filename Value="..\lib\Graphics\ElysionGraphics.pas"/>
+        <Caret Line="281" Column="75" TopLine="274"/>
+      </Position27>
+      <Position28>
+        <Filename Value="..\lib\Graphics\ElysionGraphics.pas"/>
+        <Caret Line="321" Column="28" TopLine="306"/>
+      </Position28>
+      <Position29>
+        <Filename Value="..\lib\Graphics\ElysionGraphics.pas"/>
+        <Caret Line="377" Column="14" TopLine="347"/>
+      </Position29>
+      <Position30>
+        <Filename Value="..\lib\Graphics\ElysionGraphics.pas"/>
+        <Caret Line="380" Column="39" TopLine="375"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

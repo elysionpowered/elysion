@@ -25,7 +25,8 @@ uses
   ElysionMovingSprite,
   uGlobal,
   uBasic,
-  uConfig;
+  uConfig,
+  uWorld;
 
 type
   TGameScreen = class(TelScene)

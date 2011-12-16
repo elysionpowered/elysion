@@ -3,8 +3,8 @@
 // Author        : Johannes Stein
 // Email         : johannesstein@freeze-dev.de
 // Website       : http://www.freeze-dev.de
-// Version 	     : 1.41
-// Last modified : 10-10-17
+// Version 	     : 1.5
+// Last modified : 11-12-04
 // 
 // Description   : Inspired by Jan Horn's Textures.pas I wrote a little
 //				   texture loader for SDL + OpenGL to load images or 
@@ -88,8 +88,8 @@ function SupportsRectangleTexture(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDI
 
 function SupportsFramebufferObject(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 	
-function LoadTexture(aFilename: String; var Texture: GLuint): Boolean; Overload;
-function LoadTexture(Surface: PSDL_Surface; var Texture: GLuint): Boolean; Overload;
+function LoadTexture(aFilename: String; var Texture: GLuint; var Width: Longint; var Height: Longint): Boolean; Overload;
+function LoadTexture(Surface: PSDL_Surface; var Texture: GLuint; var Width: Longint; var Height: Longint): Boolean; Overload;
 
 function SaveSDLTextureToTGA(aFilename: String; aSurface: PSDL_Surface): Boolean;
 
@@ -104,35 +104,35 @@ implementation
 
 function SupportsNonPowerOfTwo: Boolean;
 begin
-  if AnsiPos('GL_ARB_texture_non_power_of_two', glGetString(GL_EXTENSIONS)) <> 0 then Result := true else Result := false;
+  Result := (AnsiPos('GL_ARB_texture_non_power_of_two', glGetString(GL_EXTENSIONS)) <> 0);
 end;
 
 function SupportsARB_RectangleTexture(): Boolean;
 begin
-  if AnsiPos('GL_ARB_texture_rectangle', glGetString(GL_EXTENSIONS)) <> 0 then Result := true else Result := false;
+  Result := (AnsiPos('GL_ARB_texture_rectangle', glGetString(GL_EXTENSIONS)) <> 0);
 end;
 
 function SupportsEXT_RectangleTexture(): Boolean;
 begin
-  if AnsiPos('GL_EXT_texture_rectangle', glGetString(GL_EXTENSIONS)) <> 0 then Result := true else Result := false;
+  Result := (AnsiPos('GL_EXT_texture_rectangle', glGetString(GL_EXTENSIONS)) <> 0);
 end;
 
 function SupportsRectangleTexture(): Boolean;
 begin
-  if (SupportsARB_RectangleTexture or SupportsEXT_RectangleTexture) then Result := true else Result := false;
+  Result := (SupportsARB_RectangleTexture or SupportsEXT_RectangleTexture);
 end;
 
 function SupportsFramebufferObject(): Boolean;
 begin
-  if AnsiPos('GL_EXT_framebuffer_object', glGetString(GL_EXTENSIONS)) <> 0 then Result := true else Result := false;
+  Result := (AnsiPos('GL_EXT_framebuffer_object', glGetString(GL_EXTENSIONS)) <> 0);
 end;
 
 (*
  * See for more information: http://www.gamedev.net/community/forums/topic.asp?topic_id=284259
  *)
-function PowerOfTwo(Input: Integer): Integer;
+function PowerOfTwo(Input: Longint): Longint;
 var
-  Value: Integer;
+  Value: Longint;
 begin
   Value := 1;
 
@@ -141,7 +141,7 @@ begin
 end;
 
 // http://osdl.sourceforge.net/main/documentation/rendering/SDL-openGL-examples.html
-function CreateTexture(SDL_Surface: PSDL_Surface; BGR_Order: Boolean = false): GLuInt;
+function CreateTexture(SDL_Surface: PSDL_Surface; BGR_Order: Boolean = false; var Width: Longint = 0; var Height: Longint = 0): GLuInt;
 var
   NewSurface: PSDL_Surface;
   Texture: GLuInt;
@@ -183,6 +183,8 @@ begin
 
     // Create new surface, quit and show error if it fails
     NewSurface := SDL_CreateRGBSurface(SDL_SWSURFACE, SDL_Surface^.w, SDL_Surface^.h, 32, rmask, gmask, bmask, amask);
+    Width := NewSurface^.w;
+    Height := NewSurface^.h;
 
     if (NewSurface = nil) then
     begin
@@ -273,9 +275,10 @@ begin
   end else ErrorString := 'SDLTextures.CreateTexture: Input surface not assigned';
 end;
 
-function LoadTexture(aFilename: String; var Texture: GLuint): Boolean;
+function LoadTexture(aFilename: String; var Texture: GLuint; var Width: Longint; var Height: Longint): Boolean;
 var
   TargaFile: Boolean;
+  tmpWidth, tmpHeight: Longint;
 begin
   Result := false;
   if FileExists(aFilename) then
@@ -284,22 +287,31 @@ begin
        else TargaFile := false;
 
     {$IFDEF USE_SDL_IMAGE}
-	Texture := CreateTexture(IMG_Load(PChar(aFilename)));
+    Texture := CreateTexture(IMG_Load(PChar(aFilename)), TargaFile, tmpWidth, tmpHeight);
     {$ENDIF}
-	{$IFDEF USE_VAMPYRE}
-	Texture := CreateTexture(LoadSDLSurfaceFromFile(aFilename), TargaFile);
-        if (Texture = 0) then Texture := LoadGLTextureFromFile(aFilename);
-        {$ENDIF}
-	Result := true;
+    {$IFDEF USE_VAMPYRE}
+    Texture := CreateTexture(LoadSDLSurfaceFromFile(aFilename), TargaFile, tmpWidth, tmpHeight);
+    if (Texture = 0) then Texture := LoadGLTextureFromFile(aFilename, @tmpWidth, @tmpHeight);
+    {$ENDIF}
+
+    Width := tmpWidth;
+    Height := tmpHeight;
+
+    Result := true;
   end;
 end;
 
-function LoadTexture(Surface: PSDL_Surface; var Texture: GLuint): Boolean;
+function LoadTexture(Surface: PSDL_Surface; var Texture: GLuint; var Width: Longint; var Height: Longint): Boolean;
+var
+  tmpWidth, tmpHeight: Longint;
 begin
   Result := false;
   if Surface <> nil then
   begin
-    Texture := CreateTexture(Surface);
+    Texture := CreateTexture(Surface, false, tmpWidth, tmpHeight);
+    Width := tmpWidth;
+    Height := tmpHeight;
+
     Result := true;
   end;
 end;
@@ -321,7 +333,7 @@ begin
     exit;
   end;
 
-  if aSurface.format.BytesPerPixel < 3 then
+  if aSurface^.format^.BytesPerPixel < 3 then
   begin
     ErrorString := 'Color depth not supported.';
     exit;
@@ -341,13 +353,13 @@ begin
       tfColorMapSpec[i] := 0;
     tfOrigX := 0;
     tfOrigY := 0;
-    tfWidth := aSurface.w;
-    tfHeight := aSurface.h;
-    tfBpp := aSurface.format.BitsPerPixel;
+    tfWidth := aSurface^.w;
+    tfHeight := aSurface^.h;
+    tfBpp := aSurface^.format^.BitsPerPixel;
     tfImageDes := 0;
   end;
 
-  ImageSize := aSurface.w * aSurface.h * aSurface.format.BytesPerPixel;
+  ImageSize := aSurface^.w * aSurface^.h * aSurface^.format^.BytesPerPixel;
 
   rwop := SDL_RWfromFile(PChar(aFilename),'w+b');
   if rwop = nil then
@@ -362,7 +374,7 @@ begin
       exit;
     end;
 
-    if SDL_RWWrite(rwop, aSurface.pixels, ImageSize, 1) <> 1 then
+    if SDL_RWWrite(rwop, aSurface^.pixels, ImageSize, 1) <> 1 then
     begin
       ErrorString := 'Error while writing data.';
       exit;

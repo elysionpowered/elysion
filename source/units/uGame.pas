@@ -74,7 +74,6 @@ begin
   fForceWindow := false;
 
   fShowFPS := false;
-  //GameState := gsMainMenu;
 
   // Check for commandline parameters
   if Self.Param('-debug') then Debug := true;
@@ -86,7 +85,7 @@ begin
   tmpFullscreen := false;
 
   // Change application container debug flag
-  // (only if this is set, the logger will not be written to file)
+  // (only if debug is set to true, the logger will be written to file)
   Application.Debug := Self.Debug;
 
   if Debug then

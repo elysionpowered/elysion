@@ -18,6 +18,12 @@ uses
   ElysionLogger,
   ElysionSprite,
 
+  {$IFDEF USE_VAMPYRE}
+  ImagingSDL,
+  {$ENDIF}
+  {$IFDEF USE_SDL_IMAGE}
+  SDL_image,
+  {$ENDIF}
   {$IFDEF USE_DGL_HEADER}
   dglOpenGL,
   {$ELSE}
@@ -252,11 +258,70 @@ function PixelTest(SpriteOne, SpriteTwo: TelSprite; AllowInvisibleObjects: Boole
     SpriteTwoRect.w := Trunc(SpriteTwo.ClipRect.W * SpriteTwo.Scale.X);
     SpriteTwoRect.h := Trunc(SpriteTwo.ClipRect.H * SpriteOne.Scale.Y);
 
-    if not SpriteOne.Mask.Empty then SurfaceOne := SpriteOne.Mask.TextureSurface
-      else SurfaceOne := SpriteOne.Texture.TextureSurface;
+    // Loads pixeldata on-the-fly if not available
+    if not SpriteOne.Mask.Empty then
+    begin
+      if SpriteOne.Mask.TextureSurface = nil then
+      begin
+        {$IFDEF USE_VAMPYRE}
+          SpriteOne.Mask.TextureSurface := LoadSDLSurfaceFromFile(SpriteOne.Mask.Filename);
+        {$ENDIF}
+        {$IFDEF USE_SDL_IMAGE}
+          SpriteOne.Mask.TextureSurface := IMG_Load(PChar(SpriteOne.Mask.Filename));
+        {$ENDIF}
+      end;
 
-    if not SpriteTwo.Mask.Empty then SurfaceTwo := SpriteTwo.Mask.TextureSurface
-      else SurfaceTwo := SpriteTwo.Texture.TextureSurface;
+      if SpriteOne.Mask.TextureSurface = nil then Exit;
+
+      SurfaceOne := SpriteOne.Mask.TextureSurface;
+    end else
+    begin
+      if SpriteOne.Texture.TextureSurface = nil then
+      begin
+        {$IFDEF USE_VAMPYRE}
+          SpriteOne.Texture.TextureSurface := LoadSDLSurfaceFromFile(SpriteOne.Texture.Filename);
+        {$ENDIF}
+        {$IFDEF USE_SDL_IMAGE}
+          SpriteOne.Texture.TextureSurface := IMG_Load(PChar(SpriteOne.Texture.Filename));
+        {$ENDIF}
+      end;
+
+      if SpriteOne.Texture.TextureSurface = nil then Exit;
+
+      SurfaceOne := SpriteOne.Texture.TextureSurface;
+    end;
+
+    if not SpriteTwo.Mask.Empty then
+    begin
+      if SpriteTwo.Mask.TextureSurface = nil then
+      begin
+        {$IFDEF USE_VAMPYRE}
+          SpriteTwo.Mask.TextureSurface := LoadSDLSurfaceFromFile(SpriteTwo.Mask.Filename);
+        {$ENDIF}
+        {$IFDEF USE_SDL_IMAGE}
+          SpriteTwo.Mask.TextureSurface := IMG_Load(PChar(SpriteTwo.Mask.Filename));
+        {$ENDIF}
+      end;
+
+      if SpriteTwo.Mask.TextureSurface = nil then Exit;
+
+      SurfaceTwo := SpriteTwo.Mask.TextureSurface;
+    end else
+    begin
+      if SpriteTwo.Texture.TextureSurface = nil then
+      begin
+        {$IFDEF USE_VAMPYRE}
+          SpriteTwo.Texture.TextureSurface := LoadSDLSurfaceFromFile(SpriteTwo.Texture.Filename);
+        {$ENDIF}
+        {$IFDEF USE_SDL_IMAGE}
+          SpriteTwo.Texture.TextureSurface := IMG_Load(PChar(SpriteTwo.Texture.Filename));
+        {$ENDIF}
+      end;
+
+      if SpriteTwo.Texture.TextureSurface = nil then Exit;
+
+      SurfaceTwo := SpriteTwo.Texture.TextureSurface;
+    end;
 
     if SDL_PixelTest(SurfaceOne, @SpriteOneRect,
                      SurfaceTwo, @SpriteTwoRect,
@@ -294,8 +359,38 @@ function PixelTest(Sprite: TelSprite; Rect: TelRect; AllowInvisibleObjects: Bool
     CRect.w := Trunc(Rect.W);
     CRect.h := Trunc(Rect.H);
 
-    if not Sprite.Mask.Empty then Surface := Sprite.Mask.TextureSurface
-      else Surface := Sprite.Texture.TextureSurface;
+    // Loads pixeldata on-the-fly if not available
+    if not Sprite.Mask.Empty then
+    begin
+      if Sprite.Mask.TextureSurface = nil then
+      begin
+        {$IFDEF USE_VAMPYRE}
+          Sprite.Mask.TextureSurface := LoadSDLSurfaceFromFile(Sprite.Mask.Filename);
+        {$ENDIF}
+        {$IFDEF USE_SDL_IMAGE}
+          Sprite.Mask.TextureSurface := IMG_Load(PChar(Sprite.Mask.Filename));
+        {$ENDIF}
+      end;
+
+      if Sprite.Mask.TextureSurface = nil then Exit;
+
+      Surface := Sprite.Mask.TextureSurface;
+    end else
+    begin
+      if Sprite.Texture.TextureSurface = nil then
+      begin
+        {$IFDEF USE_VAMPYRE}
+          Sprite.Texture.TextureSurface := LoadSDLSurfaceFromFile(Sprite.Texture.Filename);
+        {$ENDIF}
+        {$IFDEF USE_SDL_IMAGE}
+          Sprite.Texture.TextureSurface := IMG_Load(PChar(Sprite.Texture.Filename));
+        {$ENDIF}
+      end;
+
+      if Sprite.Texture.TextureSurface = nil then Exit;
+
+      Surface := Sprite.Texture.TextureSurface;
+    end;
 
     if SDL_PixelTestSurfaceVsRect(Surface,
                                   @SpriteRect, @CRect,
