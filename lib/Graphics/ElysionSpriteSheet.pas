@@ -1,13 +1,14 @@
 unit ElysionSpriteSheet;
 
-{$I Elysion.inc}
-
 interface
+
+{$I Elysion.inc}
 
 uses
   ElysionTypes,
   ElysionSprite,
   ElysionTimer,
+  ElysionMath,
 
   Classes,
   SysUtils;
@@ -16,13 +17,19 @@ type
   { TelSpriteSheet }
 
   TelSpriteSheet = class(TelSprite)
-  private
-    fFrame: Integer;
+  protected
     fTimer: TelTimer;
     fFrameSize: TelSize;
+
+    fFinished: Boolean;
     fLoop: Boolean;
 
-    fAnimationList: TStringList;
+    fWaitUntilFinished: Boolean;
+
+    fFrameArray: array of Integer;
+
+    fFrame: Integer;
+    fFrameIndex: Integer;
 
     function GetColumns: Integer;
     function GetMaxFrames: Integer;
@@ -32,35 +39,48 @@ type
     procedure SetRows(AValue: Integer);
 
     procedure UpdateSpritesheet;
+
+    procedure StartFrameAnimation(aLength: Integer);
   public
     constructor Create; Override;
     destructor Destroy; Override;
 
-    function LoadFromFile(aFilename: String): Boolean;
-
-    // Define animation in pixels
-    procedure Define(AnimName: AnsiString; aRect: TelRect); Overload;
-    // Define animation in frames
-    procedure Define(AnimName: AnsiString; StartFrame, EndFrame: Integer); Overload;
-    // Define specific frames
-    procedure Define(AnimName: AnsiString; Frames: array of Integer); Overload;
+    function LoadFromFile(aFilename: String): Boolean; Overload;
+    function LoadFromFile(aFilename: String; aClipRect: TelRect): Boolean; Overload;
 
     // Plays complete sprite sheet
-    procedure Play(Length: Integer = 1000); Overload; inline;
+    procedure Play(aLength: Integer = 1000); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-    // Plays specific sprite sheet animations
-    procedure Play(AnimName: AnsiString; Length: Integer = 1000); Overload; inline;
-    procedure Stop(); inline;
-    procedure Pause(); inline;
-    procedure UnPause(); inline;
+    // Plays specific frames in a spritesheet
+    procedure PlayFrames(aFrameArray: array of Integer; aLength: Integer = 1000); Overload;
+    procedure PlayFrames(aStartFrame, anEndFrame: Integer; aLength: Integer = 1000); Overload;
+
+    // Plays specific column of a spritesheet (Stats at 0)
+    procedure PlayColumn(aColumn: Integer; aLength: Integer = 1000); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    // Plays specific row of a spritesheet (Starts at 0)
+    procedure PlayRow(aRow: Integer; aLength: Integer = 1000); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    // Stops spritesheet animation
+    procedure Stop(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    // Pauses spritesheet animation
+    procedure Pause(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    // Resumses spritesheet animation if paused
+    procedure UnPause(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
     procedure Draw(DrawChildren: Boolean = true); Override;
     procedure Update(dt: Double = 0.0); Override;
 
-    procedure RandomFrame();
-
+    // Sets a random frame of the spritesheet
+    procedure RandomFrame(); Overload;
+    procedure RandomFrame(aStartFrame, anEndFrame: Integer); Overload;
+  public
     property FrameSize: TelSize read fFrameSize write fFrameSize;
   published
+    property Finished: Boolean read fFinished;
+
     property Frame: Integer read fFrame write SetFrame;
 
     property MaxFrames: Integer read GetMaxFrames;
@@ -69,6 +89,9 @@ type
     property Rows: Integer read GetRows write SetRows;
 
     property Loop: Boolean read fLoop write fLoop;
+
+    // Bit verbose
+    property WaitUntilFinished: Boolean read fWaitUntilFinished write fWaitUntilFinished;
   end;
 
 implementation
@@ -79,19 +102,13 @@ begin
 
   fTimer := TelTimer.Create;
 
-  fAnimationList := TStringList.Create;
-  fAnimationList.NameValueSeparator := ':';
-
-  (*{$IFDEF DELPHI_COMPAT}
-  fTimer.OnEvent := Self.UpdateSpritesheet;
-  {$ELSE}
-  fTimer.OnEvent := @Self.UpdateSpritesheet;
-  {$ENDIF}*)
+  fWaitUntilFinished := false;
 
   fTimer.OnEvent := Self.UpdateSpritesheet;
 
   FrameSize := makeSize(64, 64);
 
+  fFinished := true;
   fLoop := false;
 end;
 
@@ -118,8 +135,9 @@ end;
 procedure TelSpriteSheet.SetFrame(AValue: Integer);
 begin
   if fFrame <> AValue then fFrame := AValue;
+  fFrame := Clamp(AValue, 0, GetMaxFrames - 1);
 
-  Self.ClipImage(makeRect(fFrame div GetColumns, fFrame mod GetRows, FrameSize.Width, FrameSize.Height));
+  Self.ClipImage(makeRect((fFrame mod GetColumns) * FrameSize.Width, (fFrame div GetRows) * FrameSize.Height, FrameSize.Width, FrameSize.Height));
 end;
 
 procedure TelSpriteSheet.SetRows(AValue: Integer);
@@ -129,13 +147,34 @@ end;
 
 procedure TelSpriteSheet.UpdateSpritesheet;
 begin
-  if fFrame = GetMaxFrames then
-  begin
-    if not Loop then fTimer.Stop()
-    else fFrame := 0
-  end else fFrame := fFrame + 1;
+  Self.Log(fFrame);
+  Self.Log(fFrameIndex);
+  Self.Log(Length(fFrameArray));
 
-  SetFrame(fFrame);
+  if Length(fFrameArray) = 0 then Exit;
+
+  if fFrameIndex = Length(fFrameArray) - 1 then
+  begin
+    if not Loop then
+    begin
+      fTimer.Stop();
+      fFinished := true;
+      Exit;
+    end else fFrameIndex := 0
+  end else fFrameIndex := fFrameIndex + 1;
+
+
+  SetFrame(fFrameArray[fFrameIndex]);
+end;
+
+procedure TelSpriteSheet.StartFrameAnimation(aLength: Integer);
+begin
+  fTimer.Interval := aLength div Length(fFrameArray);
+  fFrameIndex := 0;
+  Frame := fFrameArray[fFrameIndex];
+  fTimer.Start();
+
+  fFinished := false;
 end;
 
 destructor TelSpriteSheet.Destroy;
@@ -151,42 +190,89 @@ begin
   Frame := 0;
 end;
 
-procedure TelSpriteSheet.Define(AnimName: AnsiString; aRect: TelRect);
+function TelSpriteSheet.LoadFromFile(aFilename: String; aClipRect: TelRect
+  ): Boolean;
+begin
+  Result := inherited LoadFromFile(aFilename, aClipRect);
+  FrameSize := makeSize(aClipRect.W, aClipRect.H);
+
+  SetFrame((Trunc(aClipRect.X) div GetColumns) * (Trunc(aClipRect.Y) div GetRows));
+end;
+
+procedure TelSpriteSheet.Play(aLength: Integer = 1000);
+begin
+  PlayFrames(0, GetMaxFrames, aLength);
+end;
+
+procedure TelSpriteSheet.PlayFrames(aFrameArray: array of Integer;
+  aLength: Integer = 1000);
 var
-  tmpStartFrame, tmpEndFrame: Integer;
+  i: Integer;
 begin
-  tmpStartFrame := (Trunc(aRect.X) * Columns) + (Trunc(aRect.Y) * Rows);
-  tmpEndFrame := Trunc(aRect.X + aRect.W) * Columns + Trunc(aRect.Y + aRect.H) * Rows;
+  if WaitUntilFinished then
+    if not Self.Finished then Exit;
 
-  fAnimationList.Add(AnimName + ':' + IntToStr(tmpStartFrame) + ' ' + IntToStr(tmpEndFrame));
+
+  SetLength(fFrameArray, Length(aFrameArray));
+  for i := 0 to Length(aFrameArray) - 1 do
+    fFrameArray[i] := Clamp(aFrameArray[i], 0, GetMaxFrames);
+
+  StartFrameAnimation(aLength);
 end;
 
-procedure TelSpriteSheet.Define(AnimName: AnsiString; StartFrame, EndFrame: Integer);
+procedure TelSpriteSheet.PlayFrames(aStartFrame, anEndFrame: Integer;
+  aLength: Integer = 1000);
+var
+  tmpNumber, i: Integer;
 begin
-  fAnimationList.Add(AnimName + ':' + IntToStr(StartFrame) + ' ' + IntToStr(EndFrame));
+  if anEndFrame < aStartFrame then Exit;
+
+  if WaitUntilFinished then
+    if not Self.Finished then Exit;
+
+
+  aStartFrame := Clamp(aStartFrame, 0, GetMaxFrames);
+  anEndFrame := Clamp(anEndFrame, 0, GetMaxFrames);
+
+  SetLength(fFrameArray, anEndFrame - aStartFrame + 1);
+
+  tmpNumber := aStartFrame;
+  for i := 0 to Length(fFrameArray) do
+  begin
+    fFrameArray[i] := tmpNumber;
+    tmpNumber := tmpNumber + 1;
+  end;
+
+  StartFrameAnimation(aLength);
 end;
 
-procedure TelSpriteSheet.Define(AnimName: AnsiString; Frames: array of Integer);
+procedure TelSpriteSheet.PlayColumn(aColumn: Integer; aLength: Integer = 1000);
 begin
+  if WaitUntilFinished then
+    if not Self.Finished then Exit;
 
+
+  aColumn := Clamp(aColumn, 0, GetColumns - 1);
+
+
+  PlayFrames(aColumn * GetColumns, (aColumn + 1) * GetColumns - 1, aLength);
 end;
 
-procedure TelSpriteSheet.Play(Length: Integer = 1000);
+procedure TelSpriteSheet.PlayRow(aRow: Integer; aLength: Integer = 1000);
+var
+  i: Integer;
 begin
-  //fAnimFrames := [0];
-  //fEndFrame := GetMaxFrames;
+  if WaitUntilFinished then
+    if not Self.Finished then Exit;
 
-  fTimer.Interval := Length div GetMaxFrames;
-  Frame := 0;
-  fTimer.Start();
-end;
 
-procedure TelSpriteSheet.Play(AnimName: AnsiString; Length: Integer = 1000);
-begin
-  fAnimationList.Values[AnimName];
+  aRow := Clamp(aRow, 0, GetRows - 1);
 
-  Self.Log(fAnimationList.Values[AnimName]);
-  //fTimer.Interval := ;
+  SetLength(fFrameArray, GetRows);
+  for i := 0 to Length(fFrameArray) - 1 do
+    fFrameArray[i] := aRow + (i * GetRows);
+
+  StartFrameAnimation(aLength);
 end;
 
 procedure TelSpriteSheet.Stop();
@@ -218,7 +304,15 @@ end;
 
 procedure TelSpriteSheet.RandomFrame();
 begin
-  fFrame := Random(GetMaxFrames) + 1;
+  RandomFrame(0, GetMaxFrames - 1);
 end;
 
-end.
+procedure TelSpriteSheet.RandomFrame(aStartFrame, anEndFrame: Integer);
+begin
+  aStartFrame := Clamp(0, aStartFrame, GetMaxFrames - 1);
+  anEndFrame := Clamp(0, anEndFrame, GetMaxFrames - 1);
+
+  Frame := Random(Abs(anEndFrame - aStartFrame)) + 1;
+end;
+
+end.

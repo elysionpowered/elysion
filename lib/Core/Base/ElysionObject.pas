@@ -1,4 +1,4 @@
-{%region '--- Unit description ---'}
+{$region '--- Unit description ---'}
 (**
   *  Unit: ElysionObject
   *  Description: Contains basic class (TelObject)
@@ -6,7 +6,7 @@
   * @author(Johannes Stein and contributors <http://elysionpowered.org>)
   *
   *)
-{%endregion}
+{$endregion}
 
 unit ElysionObject;
 
@@ -250,4 +250,4 @@ begin
   Result := 0;
 end;
 
-end.
+end.

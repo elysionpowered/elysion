@@ -105,6 +105,7 @@ begin
   else
     inherited Create(AppConfig.Width, AppConfig.Height, AppConfig.Bits, false);
 
+
   fLoadScreen := TelSprite.Create;
   fLoadScreen.LoadFromFile(GetResImgPath + 'loadscreen.jpg');
 

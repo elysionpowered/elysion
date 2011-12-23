@@ -120,56 +120,6 @@ implementation
 { TelRoundedRectangle }
 
 procedure TelRoundedRectangle.Draw;
-
-  procedure DrawRoundedRect(Rect: TelRect; aRoundedRadius: Integer);
-  var
-    i: Single;
-  begin
-    glBegin(GL_POLYGON);
-
-    glVertex2f(Rect.X + aRoundedRadius, Rect.Y);
-    glVertex2f(Rect.X + Rect.W - aRoundedRadius, Rect.Y);
-
-    i := Pi * 1.5;
-    while i < (Pi * 2) do
-    begin
-      glVertex2f(Rect.X + Rect.W - aRoundedRadius + Cos(i)* aRoundedRadius, Rect.Y + aRoundedRadius + Sin(i) * aRoundedRadius);
-      i := i + 0.1;
-    end;
-
-    glVertex2f(Rect.X + Rect.W , Rect.Y + aRoundedRadius);
-    glVertex2f(Rect.X + Rect.W , Rect.Y + Rect.H - aRoundedRadius);
-
-    i := 0.0;
-    while i < (Pi * 0.5) do
-    begin
-      glVertex2f(Rect.X + Rect.W - aRoundedRadius + Cos(i)* aRoundedRadius, Rect.Y + Rect.H - aRoundedRadius + Sin(i) * aRoundedRadius);
-      i := i + 0.1;
-    end;
-
-    glVertex2f(Rect.X + Rect.W - aRoundedRadius , Rect.Y + Rect.H);
-    glVertex2f(Rect.X + aRoundedRadius , Rect.Y + Rect.H);
-
-    i := Pi * 0.5;
-    while i < Pi do
-    begin
-      glVertex2f(Rect.X + aRoundedRadius + Cos(i)* aRoundedRadius, Rect.Y + Rect.H - aRoundedRadius + Sin(i) * aRoundedRadius);
-      i := i + 0.1;
-    end;
-
-    glVertex2f(Rect.X , Rect.Y + Rect.H - aRoundedRadius);
-    glVertex2f(Rect.X , Rect.Y + aRoundedRadius);
-
-    i := Pi;
-    while i < (Pi * 1.5) do
-    begin
-      glVertex2f(Rect.X + aRoundedRadius + Cos(i)* aRoundedRadius, Rect.Y + aRoundedRadius + Sin(i) * aRoundedRadius);
-      i := i + 0.1;
-    end;
-
-    glEnd();
-  end;
-
 begin
   if Visible then
   begin
@@ -186,10 +136,10 @@ begin
 
       glColor4f(Color.R / 255, Color.G / 255, Color.B / 255, Color.A / 255);
 
-      DrawRoundedRect(makeRect((ParentPosition.X + Position.X) * ActiveWindow.ResScale.X,
-                               (ParentPosition.Y + Position.Y) * ActiveWindow.ResScale.Y,
-                               fWidth * ActiveWindow.ResScale.X,
-                               fHeight * ActiveWindow.ResScale.Y), RoundedRadius);
+      DrawRoundedRect((ParentPosition.X + Position.X) * ActiveWindow.ResScale.X,
+                      (ParentPosition.Y + Position.Y) * ActiveWindow.ResScale.Y,
+                      fWidth,
+                      fHeight, Position.Z, RoundedRadius);
 
 
       glDisable(GL_BLEND);
@@ -478,49 +428,9 @@ begin
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glColor4f(Color.R / 255, Color.G / 255, Color.B / 255, Color.A / 255);
 
-    glBegin(GL_POLYGON);
-
-      glVertex2f(Rect.X + RoundedRadius, Rect.Y);
-      glVertex2f(Rect.X + Rect.W - RoundedRadius, Rect.Y);
-
-      i := Pi * 1.5;
-      while i < (Pi * 2) do
-      begin
-        glVertex2f(Rect.X + Rect.W - RoundedRadius + Cos(i)* RoundedRadius, Rect.Y + RoundedRadius + Sin(i) * RoundedRadius);
-        i := i + 0.1;
-      end;
-
-      glVertex2f(Rect.X + Rect.W , Rect.Y + RoundedRadius);
-      glVertex2f(Rect.X + Rect.W , Rect.Y + Rect.H - RoundedRadius);
-
-      i := 0.0;
-      while i < (Pi * 0.5) do
-      begin
-        glVertex2f(Rect.X + Rect.W - RoundedRadius + Cos(i)* RoundedRadius, Rect.Y + Rect.H - RoundedRadius + Sin(i) * RoundedRadius);
-        i := i + 0.1;
-      end;
-
-      glVertex2f(Rect.X + Rect.W - RoundedRadius , Rect.Y + Rect.H);
-      glVertex2f(Rect.X + RoundedRadius , Rect.Y + Rect.H);
-
-      i := Pi * 0.5;
-      while i < Pi do
-      begin
-        glVertex2f(Rect.X + RoundedRadius + Cos(i)* RoundedRadius, Rect.Y + Rect.H - RoundedRadius + Sin(i) * RoundedRadius);
-        i := i + 0.1;
-      end;
-
-      glVertex2f(Rect.X , Rect.Y + Rect.H - RoundedRadius);
-      glVertex2f(Rect.X , Rect.Y + RoundedRadius);
-
-      i := Pi;
-      while i < (Pi * 1.5) do
-      begin
-        glVertex2f(Rect.X + RoundedRadius + Cos(i)* RoundedRadius, Rect.Y + RoundedRadius + Sin(i) * RoundedRadius);
-        i := i + 0.1;
-      end;
-
-    glEnd();
+    DrawRoundedRect(Rect.X, Rect.Y,
+                      Rect.W,
+                      Rect.H, 0, RoundedRadius);
 
 
     glDisable(GL_BLEND);
@@ -547,15 +457,7 @@ begin
 
   glPushMatrix;
 
-    glBegin(GL_POLYGON);
-
-      for i := 0 to High(Vertices) do
-      begin
-        glColor4f(Vertices[i].Color.R / 255, Vertices[i].Color.G / 255, Vertices[i].Color.B / 255, Vertices[i].Color.A / 255);
-        glVertex3f(Vertices[i].Vector.X, Vertices[i].Vector.Y, Vertices[i].Vector.Z);
-      end;
-
-    glEnd();
+  DrawPolygon(Vertices);
 
   glPopMatrix;
 end;

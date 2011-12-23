@@ -33,7 +33,6 @@ type
   TGameScreen = class(TelScene)
   private
     fSprite: TelMovingSprite;
-    fSpriteSheet: TelSpriteSheet;
 
     fFont: TelTrueTypeFont;
 
@@ -92,21 +91,9 @@ begin
   // Set position to
   Sprite.Position := makeV3f(64, 64);
 
+  Sprite.Position.Z := -10;
+
   Self.Add(Sprite);
-
-
-  fSpriteSheet := TelSpriteSheet.Create;
-  fSpriteSheet.LoadFromFile(GetResImgPath + 'zepellin.png');
-  fSpriteSheet.FrameSize := makeSize(128, 128);
-  fSpriteSheet.Frame := 0;
-  fSpriteSheet.Position := makeV3f(256, 256);
-  Self.Log(fSpriteSheet.TextureWidth);
-  Self.Log(fSpriteSheet.TextureHeight);
-
-  Self.Log(fSpriteSheet.Columns);
-  Self.Log(fSpriteSheet.Rows);
-
-  Self.Add(fSpriteSheet);
 
 
 
@@ -123,7 +110,7 @@ begin
     * You can add any class derived from TelNode to the scene such as TelMenu, TelSprite, TelLabel, TelButton and even custom nodes.
     *
     * Yes, this is very much like Flash or Cocos2D. :) It is intended to be that way.
-    * (Do you know how many hours due to thinking I added the Draw procedure for a sprite, but I didn't? Me neither. I lost count... :/ )
+    * (Do you know how many hours I lost due to thinking I added the Draw or Update procedure for a sprite, but I didn't? Me neither. I lost count... :/ )
     *
     *)
 
@@ -207,18 +194,15 @@ begin
 
       fAnimator.RotationEffect(0, 360);
       //fAnimator.ColorEffect(makeCol(0, 0, 0), makeCol(255, 255, 255));
-      //fAnimator.ScaleEffect(makeV2f(0.5, 0.5), makeV2f(3.0, 3.0));
+      //fAnimator.ScaleEffect(makeV2f(0.1, 0.1), makeV2f(3.0, 3.0));
       //fAnimator.MoveEffect(makeV3f(64, 64), makeV3f(600, 256));
 
       // You need to call TelAnimator.Start for the animation to begin
       fAnimator.Start;
-
-      fSpriteSheet.Play();
     end;
 
 
     fAnimator.Update(dt);
-
   end;
 
 end;

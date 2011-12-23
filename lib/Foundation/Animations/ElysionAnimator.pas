@@ -40,14 +40,18 @@ type
    * Description:
    *   Provides animators for nodes such as moving from one point to another
    *)
+
+  { TelAnimator }
+
   TelAnimator = class(TelObject)
-    private
       function Step(): Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     protected
       fTimer: TelTimer;
       fTarget: TelNode;
       fTransition: TelAnimationTransition;
       fFinished, fInverse: Boolean;
+
+      fWaitUntilFinished: Boolean;
 
       fDelay, fMaxLoopCount, fCurrentLoop: Integer;
       fTolerance: Single;
@@ -62,8 +66,6 @@ type
       procedure SetDelay(aValue: Integer); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       procedure StopEvent(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-      function GetFinished(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       function GetPaused(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     public
@@ -100,7 +102,7 @@ type
       property Delay: Integer read GetDelay write SetDelay;
       property Duration: Integer read GetDuration write SetDuration;
 
-      property Finished: Boolean read GetFinished;
+      property Finished: Boolean read fFinished;
 
       property Inverse: Boolean read fInverse write fInverse;
 
@@ -116,7 +118,8 @@ type
 
       property Target: TelNode read fTarget write fTarget;
       property Transition: TelAnimationTransition read fTransition write fTransition;
-      property Tolerance: Single read fTolerance write fTolerance;
+
+      property WaitUntilFinished: Boolean read fWaitUntilFinished write fWaitUntilFinished;
   end;
 
   (**
@@ -189,8 +192,7 @@ begin
   fCurrentLoop := 0;
   Delay := 0;
 
-  fTolerance := 0.05;
-
+  fWaitUntilFinished := false;
   fFinished := false;
 end;
 
@@ -241,11 +243,6 @@ begin
   fDelay := aValue;
 end;
 
-function TelAnimator.GetFinished(): Boolean;
-begin
-  Result := fFinished;
-end;
-
 function TelAnimator.GetPaused(): Boolean;
 begin
   Result := fTimer.Paused;
@@ -254,37 +251,50 @@ end;
 procedure TelAnimator.StopEvent();
 begin
   Self.Stop();
-  if fCurrentLoop = fMaxLoopCount then
+  if fCurrentLoop >= fMaxLoopCount then
   begin
     fCurrentLoop := 0;
     fFinished := true;
+
+    // Set value to end value
+    if fTarget <> nil then
+    begin
+      case AnimProperty.AnimType of
+        atAlpha: fTarget.Alpha := AnimProperty.EndAlpha;
+        atPosition: fTarget.Position := AnimProperty.EndPosition;
+        atOrigin: fTarget.Origin := AnimProperty.EndOrigin;
+        atRotation: fTarget.Rotation := AnimProperty.EndRotation;
+        atColor: fTarget.Color := AnimProperty.EndColor;
+        atScale: fTarget.Scale := AnimProperty.EndScale;
+      end;
+    end;
+
   end else
     Self.Start();
 end;
 
 procedure TelAnimator.Start();
 begin
-  if (not fTimer.Active) then
+  if WaitUntilFinished then
+    if (not Finished) then Exit;
+
+  if fTarget <> nil then
   begin
-
-    if fTarget <> nil then
-    begin
-      case AnimProperty.AnimType of
-        atAlpha: fTarget.Alpha := AnimProperty.StartAlpha;
-        atPosition: fTarget.Position := AnimProperty.StartPosition;
-        atOrigin: fTarget.Origin := AnimProperty.StartOrigin;
-        atRotation: fTarget.Rotation := AnimProperty.StartRotation;
-        atColor: fTarget.Color := AnimProperty.StartColor;
-        atScale: fTarget.Scale := AnimProperty.StartScale;
-      end;
+    case AnimProperty.AnimType of
+      atAlpha: fTarget.Alpha := AnimProperty.StartAlpha;
+      atPosition: fTarget.Position := AnimProperty.StartPosition;
+      atOrigin: fTarget.Origin := AnimProperty.StartOrigin;
+      atRotation: fTarget.Rotation := AnimProperty.StartRotation;
+      atColor: fTarget.Color := AnimProperty.StartColor;
+      atScale: fTarget.Scale := AnimProperty.StartScale;
     end;
-
-    fCurrentLoop := fCurrentLoop + 1;
-
-    fFinished := false;
-
-    fTimer.Start();
   end;
+
+  fCurrentLoop := fCurrentLoop + 1;
+
+  fTimer.Start();
+
+  fFinished := false;
 end;
 
 procedure TelAnimator.Pause();
@@ -446,10 +456,6 @@ begin
 end;
 
 procedure TelAnimator.Update(dt: Double = 0.0);
-
-  {$IFDEF FPC}
-  {$Note Add tolerance for animations}
-  {$ENDIF}
 
   procedure AnimAlpha(dt: Double = 0.0);
   begin

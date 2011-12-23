@@ -49,7 +49,7 @@ TelVideoFlag =
    vfHardware,  //< vfHardware: Use hardware surface
    vfSoftware); //< vfSoftware: Use software surface
 
-TelProjectionMode = (pmPerspective, pmOrtho);
+TelProjectionMode = (pmFrustum, pmOrtho);
 
 {
     @classname @br
@@ -144,6 +144,8 @@ TAppContainer = class(TelModuleContainer)
     property UnicodeSupport: Boolean read GetUnicodeSupport write SetUnicodeSupport;
 end;
 
+{ TelWindow }
+
 TelWindow = class(TelObject)
   private
     fJoystick: PSDL_Joystick;
@@ -189,6 +191,8 @@ TelWindow = class(TelObject)
 
     fMouseDownCount, fMouseUpCount, fMouseMotionCount: Integer;
     fProjection: TelProjectionMode;
+
+    fFocused: Boolean;
 
     fDeltaTime: Double;
 
@@ -309,6 +313,7 @@ TelWindow = class(TelObject)
 
       // Checks if surface is active
       function IsActive: Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function IsFocused: Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       function GetTicks(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
@@ -323,6 +328,9 @@ TelWindow = class(TelObject)
       property NativeResolution: TelVector2i read GetNativeResolution write SetNativeResolution;
 
   published
+    property Active: Boolean read IsActive;
+    property Focused: Boolean read IsFocused;
+
     property AspectRatio: Single read GetAspectRatio;
 
     property MouseButtonDownEventList: TList read fMouseButtonDownEventList;
@@ -381,6 +389,8 @@ end;
       property WindowCount: Integer read fWindowCount;
   end;
 
+  { TelEnvironment }
+
   TelEnvironment = class(TelObject)
     private
       fWidth: Integer;
@@ -389,6 +399,9 @@ end;
       fMobile: Boolean;
 
       function GetAspectRatio(): Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function GetBasename: AnsiString;
+      function GetWorkingPath: AnsiString;
+
     public
       constructor Create; Override;
       destructor Destroy; Override;
@@ -401,6 +414,9 @@ end;
       property ColorDepth: Byte read fColorDepth;
 
       property Mobile: Boolean read fMobile;
+
+      property Basename: AnsiString read GetBasename;
+      property WorkingPath: AnsiString read GetWorkingPath;
   end;
 
 {$IFDEF AUTO_INIT}
@@ -595,7 +611,8 @@ begin
 
   FBackgroundChange := False;
   FFoVY := 60.0;
-  FZNear := 0.1;
+
+  FZNear := 0.0;
   FZFar := 128.0;
 
   fMouseDownCount := 0;
@@ -763,13 +780,19 @@ begin
     glEnable(GL_DEPTH_TEST);                        // Aktiviert Depth Testing
     glDepthFunc(GL_ALWAYS);                        // Bestimmt den Typ des Depth Testing
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);// Qualitativ bessere Koordinaten Interpolation
+    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+    glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+
+    // Some minor performance improvements on older machines
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+
 
     TextureManager.ReloadAllTextures();
 
     SetBackgroundColor(Color.clFreezeDevBlue);
 
-    //glViewport(0, 0, FResolution.X, FResolution.Y);
-    //SetProjection(pmOrtho);
+    glViewport(0, 0, FResolution.X, FResolution.Y);
     SetProjection(pmOrtho);
 
     glTranslatef(0, 0, 0);
@@ -849,6 +872,9 @@ begin
   glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT);
 
   glLoadIdentity;
+
+  // Set resolution
+  glScalef(ResScale.X, ResScale.Y, 0.0);
 end;
 
 procedure TelWindow.SetProjection(ProjectionMode: TelProjectionMode); 
@@ -860,8 +886,8 @@ begin
   glLoadIdentity;
 
   case ProjectionMode of
-    pmOrtho: glOrtho(0, FResolution.X, FResolution.Y, 0,  0, FZFar);
-    pmPerspective: gluPerspective(FFoVY, FResolution.X / FResolution.Y, FZNear, FZFar);
+    pmOrtho: glOrtho(0, FResolution.X, FResolution.Y, 0, FZNear, FZFar);
+    pmFrustum: gluPerspective(FFoVY, FResolution.X / FResolution.Y, FZNear, FZFar);
   end;
 
   glMatrixMode(GL_MODELVIEW);
@@ -1050,7 +1076,7 @@ begin
   SDL_ShowCursor(1);
 end;
 
-procedure TelWindow.TakeScreenshot(aFilename: String = '');
+procedure TelWindow.TakeScreenshot(aFilename: String);
 var
   tmpSurface: PSDL_Surface;
   rmask, gmask, bmask, amask: Uint32;
@@ -1127,7 +1153,7 @@ begin
   SDL_FreeSurface(tmpSurface);
 end;
 
-function TelWindow.OnPoint(Coord: TelVector2i; Rect: TelRect): Boolean; 
+function TelWindow.OnPoint(Coord: TelVector2i; Rect: TelRect): Boolean;
 begin
   if (Coord.X >= Rect.X) and
      (Coord.X >= Rect.Y) and
@@ -1168,6 +1194,11 @@ begin
   begin
 
     case FEvent.type_ of
+    SDL_ACTIVEEVENT:
+      begin
+        fFocused := (FEvent.active.gain = 1);
+      end;
+
     SDL_QUITEV:
        begin
          if (Self.SDL_Surface <> nil) then Application.Quit;
@@ -1297,6 +1328,11 @@ begin
                                              else Result := false;
 end;
 
+function TelWindow.IsFocused: Boolean;
+begin
+  Result := fFocused;
+end;
+
 function TelWindow.GetTicks(): Cardinal;
 begin
   Result := SDL_GetTicks();
@@ -1401,6 +1437,16 @@ end;
 function TelEnvironment.GetAspectRatio(): Single;
 begin
   Result := (Self.Width / Self.Height);
+end;
+
+function TelEnvironment.GetBasename: AnsiString;
+begin
+  Result := ParamStr(0);
+end;
+
+function TelEnvironment.GetWorkingPath: AnsiString;
+begin
+  Result := ExtractFilePath(ParamStr(0));
 end;
 
 {$IFDEF AUTO_INIT}

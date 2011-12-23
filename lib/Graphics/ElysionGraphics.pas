@@ -49,8 +49,14 @@ uses
   procedure DrawQuad(pX, pY, pW, pH, pZ: Single; Vertices: TColorVertices); Overload;
   procedure DrawQuad(OrgX, OrgY, ClipX, ClipY, ClipW, ClipH, DrawX, DrawY, DrawW, DrawH, Z: Single); Overload;
 
-  procedure DrawLine(Src, Dst: TelVector2f; Color: TelColor); Overload;
-  procedure DrawLine(Points: array of TelVector2f; Color: TelColor); Overload;
+  procedure DrawRoundedRect(X, Y, W, H, Z: Single; aRoundedRadius: Single);
+
+
+  procedure DrawLine(Src, Dst: TelVector3f; Color: TelColor; LineWidth: Single = 1.0); Overload;
+  procedure DrawLine(Points: array of TelVector3f; Color: TelColor; LineWidth: Single = 1.0); Overload;
+
+  procedure DrawPolygon(Vertices: array of TelVertex);
+
 
   function CollisionTest(RectOne, RectTwo: TelRect): Boolean; Overload;
   function CollisionTest(SpriteOne, SpriteTwo: TelSprite; AllowInvisibleObjects: Boolean = false): Boolean; Overload;
@@ -91,24 +97,23 @@ begin
   Result.unused := 0;
 end;
 
-// TODO: Use VBOs instead of glBegin/glEnd calls
 procedure DrawQuad(pX, pY, pW, pH, pZ: Single);
 begin
-  glBegin(GL_QUADS);
+  glBegin(GL_TRIANGLE_STRIP);
+    glTexCoord2f(0, 0); glVertex3f(pX, pY, -pZ);
+    glTexCoord2f(0, 1); glVertex3f(pX, pY + pH, -pZ);
     glTexCoord2f(1, 0); glVertex3f(pX + pW, pY, -pZ);
-    glTexCoord2f(0, 0); glVertex3f(pX	  , pY, -pZ);
-    glTexCoord2f(0, 1); glVertex3f(pX	  , pY + pH, -pZ);
     glTexCoord2f(1, 1); glVertex3f(pX + pW, pY + pH, -pZ);
   glEnd();
 end;
 
 procedure DrawQuad(pX, pY, pW, pH, pZ: Single; Vertices: TColorVertices);
 begin
-  glBegin(GL_QUADS);
-    glColor4f(Vertices[0].R / 255, Vertices[0].G / 255, Vertices[0].B / 255, Vertices[0].A / 255); glTexCoord2f(1, 0); glVertex3f(pX + pW, pY, -pZ);
-    glColor4f(Vertices[1].R / 255, Vertices[1].G / 255, Vertices[1].B / 255, Vertices[1].A / 255); glTexCoord2f(0, 0); glVertex3f(pX	  , pY, -pZ);
-    glColor4f(Vertices[2].R / 255, Vertices[2].G / 255, Vertices[2].B / 255, Vertices[2].A / 255); glTexCoord2f(0, 1); glVertex3f(pX	  , pY + pH, -pZ);
-    glColor4f(Vertices[3].R / 255, Vertices[3].G / 255, Vertices[3].B / 255, Vertices[3].A / 255); glTexCoord2f(1, 1); glVertex3f(pX + pW, pY + pH, -pZ);
+  glBegin(GL_TRIANGLE_STRIP);
+    glColor4f(Vertices[0].R / 255, Vertices[0].G / 255, Vertices[0].B / 255, Vertices[0].A / 255); glTexCoord2f(0, 0); glVertex3f(pX, pY, pZ);
+    glColor4f(Vertices[1].R / 255, Vertices[1].G / 255, Vertices[1].B / 255, Vertices[1].A / 255); glTexCoord2f(0, 1); glVertex3f(pX, pY + pH, pZ);
+    glColor4f(Vertices[2].R / 255, Vertices[2].G / 255, Vertices[2].B / 255, Vertices[2].A / 255); glTexCoord2f(1, 0); glVertex3f(pX + pW, pY, pZ);
+    glColor4f(Vertices[3].R / 255, Vertices[3].G / 255, Vertices[3].B / 255, Vertices[3].A / 255); glTexCoord2f(1, 1); glVertex3f(pX + pW, pY + pH, pZ);
   glEnd();
 end;
 
@@ -131,25 +136,11 @@ begin
   tposx := OriginalSize.X / ClipRect.X;
   tposy := OriginalSize.Y / ClipRect.Y;}
 
-  // Use VBOs if OpenGL >= 1.5, else glBegin/glEnd
-
-  {$IFDEF USE_DGL_HEADER}
-  if (GL_VERSION_1_5) then
-  {$ELSE}
-  if (Load_GL_version_2_0) then
-  {$ENDIF}
-  begin
-
-  end else
-  begin
-
-  end;
-
-  glBegin(GL_QUADS);
-    glTexCoord2f(0 + tposx		  , 0 + tposy); 		glVertex3f(DrawX, DrawY, -Z);
-    glTexCoord2f(0 + tposx		  , 0 + tposy + tposh); glVertex3f(DrawX, DrawY + DrawH, -Z);
-    glTexCoord2f(0 + tposx + tposw, 0 + tposy + tposh); glVertex3f(DrawX + DrawW, DrawY + DrawH, -Z);
-    glTexCoord2f(0 + tposx + tposw, 0 + tposy); 		glVertex3f(DrawX + DrawW, DrawY, -Z);
+  glBegin(GL_TRIANGLE_STRIP);
+    glTexCoord2f(0 + tposx		  , 0 + tposy); 		glVertex3f(DrawX, DrawY, Z);
+    glTexCoord2f(0 + tposx		  , 0 + tposy + tposh); glVertex3f(DrawX, DrawY + DrawH, Z);
+    glTexCoord2f(0 + tposx + tposw, 0 + tposy); glVertex3f(DrawX + DrawW, DrawY, Z);
+    glTexCoord2f(0 + tposx + tposw, 0 + tposy + tposh); 		glVertex3f(DrawX + DrawW, DrawY + DrawH, Z);
   glEnd;
 
   {glBegin(GL_QUADS);
@@ -160,33 +151,93 @@ begin
   glEnd;}
 end;
 
-
-
-procedure DrawLine(Src, Dst: TelVector2f; Color: TelColor);
+procedure DrawRoundedRect(X, Y, W, H, Z: Single; aRoundedRadius: Single);
+var
+  i: Single;
 begin
-  glColor3f(Color.R / 255, Color.G / 255, Color.B / 255);
+  glBegin(GL_TRIANGLE_FAN);
 
-  // GL_LINE_STRIP instead of GL_LINES -> http://wiki.delphigl.com/index.php/glBegin
-  glBegin(GL_LINE_STRIP);
-    glVertex3f(Src.X * ActiveWindow.ResScale.X, Src.Y * ActiveWindow.ResScale.Y, 0);
-    glVertex3f(Dst.X * ActiveWindow.ResScale.X, Dst.Y * ActiveWindow.ResScale.Y, 0);
-  glEnd;
+  glVertex3f(X + W - aRoundedRadius , Y + H, Z);
+  glVertex3f(X + aRoundedRadius , Y + H, Z);
+
+  i := Pi * 0.5;
+  while i < Pi do
+  begin
+    glVertex3f(X + aRoundedRadius + Cos(i)* aRoundedRadius, Y + H - aRoundedRadius + Sin(i) * aRoundedRadius, Z);
+    i := i + 0.1;
+  end;
+
+  glVertex3f(X + W , Y + aRoundedRadius, Z);
+  glVertex3f(X + W , Y + H - aRoundedRadius, Z);
+
+  i := 0.0;
+  while i < (Pi * 0.5) do
+  begin
+    glVertex3f(X + W - aRoundedRadius + Cos(i)* aRoundedRadius, Y + H - aRoundedRadius + Sin(i) * aRoundedRadius, Z);
+    i := i + 0.1;
+  end;
+
+  glVertex3f(X , Y + H - aRoundedRadius, Z);
+  glVertex3f(X , Y + aRoundedRadius, Z);
+
+  i := Pi;
+  while i < (Pi * 1.5) do
+  begin
+    glVertex3f(X + aRoundedRadius + Cos(i)* aRoundedRadius, Y + aRoundedRadius + Sin(i) * aRoundedRadius, Z);
+    i := i + 0.1;
+  end;
+
+  glVertex3f(X + aRoundedRadius, Y, Z);
+  glVertex3f(X + W - aRoundedRadius, Y, Z);
+
+  i := Pi * 1.5;
+  while i < (Pi * 2) do
+  begin
+    glVertex3f(X + W - aRoundedRadius + Cos(i)* aRoundedRadius, Y + aRoundedRadius + Sin(i) * aRoundedRadius, Z);
+    i := i + 0.1;
+  end;
+
+  glEnd();
 end;
 
-procedure DrawLine(Points: array of TelVector2f; Color: TelColor);
+procedure DrawLine(Src, Dst: TelVector3f; Color: TelColor; LineWidth: Single = 1.0);
+begin
+  DrawLine([Src, Dst], Color, LineWidth);
+end;
+
+procedure DrawLine(Points: array of TelVector3f; Color: TelColor; LineWidth: Single = 1.0);
 var
   i: Integer;
 begin
-  glColor3f(Color.R / 255, Color.G / 255, Color.B / 255);
+  glColor4f(Color.R / 255, Color.G / 255, Color.B / 255, Color.A / 255);
+
+  if LineWidth <> 1.0 then glLineWidth(LineWidth);
 
   // GL_LINE_STRIP instead of GL_LINES -> http://wiki.delphigl.com/index.php/glBegin
   glBegin(GL_LINE_STRIP);
     for i := 0 to High(Points) - 1 do
     begin
-      glVertex3f(Points[i].X * ActiveWindow.ResScale.X, Points[i].Y * ActiveWindow.ResScale.Y, 0);
-      glVertex3f(Points[i+1].X * ActiveWindow.ResScale.X, Points[i+1].Y * ActiveWindow.ResScale.Y, 0);
+      glVertex3f(Points[i].X, Points[i].Y, Points[i].Z);
+      glVertex3f(Points[i + 1].X, Points[i + 1].Y, Points[i + 1].Z);
     end;
   glEnd;
+
+  if LineWidth <> 1.0 then glLineWidth(1.0);
+end;
+
+procedure DrawPolygon(Vertices: array of TelVertex);
+var
+  i: Integer;
+begin
+  glBegin(GL_TRIANGLE_FAN);
+
+    for i := 0 to High(Vertices) do
+    begin
+      glColor4f(Vertices[i].Color.R / 255, Vertices[i].Color.G / 255, Vertices[i].Color.B / 255, Vertices[i].Color.A / 255);
+      glVertex3f(Vertices[i].Vector.X, Vertices[i].Vector.Y, Vertices[i].Vector.Z);
+    end;
+
+    glEnd();
 end;
 
 function CollisionTest(RectOne, RectTwo: TelRect): Boolean;
