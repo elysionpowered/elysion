@@ -20,6 +20,7 @@ uses
   ElysionUtils,
   ElysionNode,
   ElysionTexture,
+  ElysionGraphicsProvider,
   ElysionTypes,
   ElysionAnimTypes,
   ElysionTimer,
@@ -90,7 +91,7 @@ type
       function Collides(Others: array of TelSprite; AllowInvisibleObjects: Boolean = false): Integer; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
       function Collides(Others: TelSpriteList; AllowInvisibleObjects: Boolean = false): Integer; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-      procedure Draw(DrawChildren: Boolean = true); Override;
+      procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); Override;
       procedure Update(dt: Double = 0.0); Override;
 
       property ClipRect: TelRect read fClipRect; // Use ClipImage to set ClipRect
@@ -603,7 +604,7 @@ begin
   end;
 end;
 
-procedure TelSprite.Draw;
+procedure TelSprite.Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
 begin
 
   if ((Visible) and (not Texture.Empty)) then
@@ -656,7 +657,7 @@ begin
   end;
 
   // Super is called here, because it should draw the object sprite before it draws its children
-  inherited;
+  inherited Draw(Graphics, DrawChildren);
 end;
 
 procedure TelSprite.Update(dt: Double = 0.0);

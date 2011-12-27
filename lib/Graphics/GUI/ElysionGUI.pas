@@ -7,6 +7,7 @@ interface
 uses
   ElysionNode,
   ElysionTypes,
+  ElysionGraphicsProvider,
   ElysionApplication,
   ElysionTexture,
   ElysionGraphics,
@@ -42,7 +43,7 @@ end;}
 
 TelRectangle = class(TelNode)
 protected
-  fVertices: TColorVertices;
+  fVertices: TelColorVertices;
 
   function GetWidth(): Single; Override;
   function GetHeight(): Single; Override;
@@ -60,9 +61,9 @@ public
 
   destructor Destroy; Override;
 
-  procedure Draw(DrawChildren: Boolean = true); Override;
+  procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); Override;
 public
-  property Vertices: TColorVertices read fVertices write fVertices;
+  property Vertices: TelColorVertices read fVertices write fVertices;
 end;
 
 { TelGradientRectangle }
@@ -83,7 +84,7 @@ TelRoundedRectangle = class(TelRectangle)
   protected
     fRoundedRadius: Integer;
   public
-    procedure Draw(DrawChildren: Boolean = true); Override;
+    procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); Override;
   published
     property RoundedRadius: Integer read fRoundedRadius write fRoundedRadius;
 end;
@@ -98,7 +99,7 @@ TelGUI = class
 
     procedure Box(Rect: TelRect; Color: TelColor); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     procedure Box(Rect: TelRect; Color: TelGradient); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure Box(Rect: TelRect; Vertices: TColorVertices); Overload;
+    procedure Box(Rect: TelRect; Vertices: TelColorVertices); Overload;
 
     procedure RoundedBox(Rect: TelRect; Color: TelColor; RoundedRadius: Integer = 5); Overload;
     //procedure RoundedBox(Rect: TelRect; Color: TelGradient; RoundedRadius: Integer = 5); Overload;
@@ -257,12 +258,10 @@ begin
   inherited Destroy;
 end;
 
-procedure TelRectangle.Draw(DrawChildren: Boolean = true);
+procedure TelRectangle.Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
 var
   i: Integer;
 begin
-  inherited Draw(DrawChildren);
-
   if Visible then
   begin
     glColor4f(1.0, 1.0, 1.0, 1.0);
@@ -301,6 +300,8 @@ begin
       glEnable(GL_TEXTURE_2D);
     glPopMatrix;
   end;
+
+  inherited Draw(Graphics, DrawChildren);
 end;
 
 //
@@ -347,7 +348,7 @@ end;
 
 procedure TelGUI.Box(Rect: TelRect; Color: TelGradient);
 var
-  Vertices: TColorVertices;
+  Vertices: TelColorVertices;
 begin
   case Color.GradientStyle of
     gsVertical:
@@ -382,7 +383,7 @@ begin
   glPopMatrix;*)
 end;
 
-procedure TelGUI.Box(Rect: TelRect; Vertices: TColorVertices);
+procedure TelGUI.Box(Rect: TelRect; Vertices: TelColorVertices);
 begin
   glColor4f(1.0, 1.0, 1.0, 1.0);
 

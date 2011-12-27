@@ -7,7 +7,8 @@ interface
 uses
     Classes,
 
-    ElysionNode;
+    ElysionNode,
+    ElysionGraphicsProvider;
 
 
 type
@@ -42,7 +43,7 @@ TelLayer = class(TelNode)
     function Add(aNode: TelNode): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     procedure Delete(Index: Integer); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-    procedure Draw(DrawChildren: Boolean = true); //Override;
+    procedure Draw(ctx: IGraphicsProvider; DrawChildren: Boolean = true); Override;
     procedure Update(dt: Double = 0.0); Override;
   published
     property Count: Integer read GetCount;
@@ -282,13 +283,13 @@ begin
   fNodeList.Delete(Index);
 end;
 
-procedure TelLayer.Draw();
+procedure TelLayer.Draw(ctx: IGraphicsProvider; DrawChildren: Boolean = true);
 begin
   if not Self.Visible then Exit;
 
-  fNodeList.Draw();
+  fNodeList.Draw(ctx, DrawChildren);
 
-  inherited;
+  inherited Draw(ctx, DrawChildren);
 end;
 
 procedure TelLayer.Update(dt: Double = 0.0);

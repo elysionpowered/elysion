@@ -9,6 +9,7 @@ uses
   ElysionTypes,
   ElysionScene,
   ElysionGraphics,
+  ElysionGraphicsProvider,
   ElysionInput,
   ElysionButton,
   ElysionGUI,
@@ -27,7 +28,7 @@ type
     constructor Create; Override;
     destructor Destroy; Override;
 	
-    procedure Render; Override;
+    procedure Render(Graphics: IGraphicsProvider); Override;
     procedure Update(dt: Double = 0.0); Override;
     procedure HandleEvents; Override;
   published
@@ -62,15 +63,15 @@ begin
   inherited;
 end;
 
-procedure TCredits.Render;
+procedure TCredits.Render(Graphics: IGraphicsProvider);
 begin
-  inherited;
+  inherited Render(Graphics);
 
   GUI.RoundedBox(makeRect(ActiveWindow.Width - 300 - 80 + 16, 60 + 16, 300, 450), makeCol(0, 0, 0, 128), 8);
 
   Font.TextOut(makeV3f(ActiveWindow.Width - 300 - 80 + 16 + 8, 60 + 16 + 8), 'Credits stuff');
 
-  Button.Draw();
+  Button.Draw(Graphics);
 end;
 
 procedure TCredits.Update(dt: Double = 0.0);

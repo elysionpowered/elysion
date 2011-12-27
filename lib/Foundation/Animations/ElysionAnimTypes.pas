@@ -20,7 +20,7 @@ type
       atAlpha: (Alpha: Byte);
       atPosition: (Position: TelVector3f);
       atOrigin: (Origin: TelVector2f);
-      atRotation: (Rotation: TelImageRotation);
+      atRotation: (Rotation: TelRotation);
       atColor: (Color: TelColor);
       atScale: (Scale: TelVector2f);
       atShadow: (Shadow: TelShadow);
@@ -32,7 +32,7 @@ type
       atAlpha: (StartAlpha, EndAlpha: Byte);
       atPosition: (StartPosition, EndPosition: TelVector3f);
       atOrigin: (StartOrigin, EndOrigin: TelVector2f);
-      atRotation: (StartRotation, EndRotation: TelImageRotation);
+      atRotation: (StartRotation, EndRotation: TelRotation);
       atColor: (StartColor, EndColor: TelColor);
       atScale: (StartScale, EndScale: TelVector2f);
       atShadow: (StartShadow, EndShadow: TelShadow);

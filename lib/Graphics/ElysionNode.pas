@@ -12,6 +12,7 @@ uses
   ElysionBounds,
   ElysionAnimTypes,
   ElysionApplication,
+  ElysionGraphicsProvider,
   ElysionInterfaces,
   ElysionTimer,
   ElysionObject,
@@ -164,7 +165,7 @@ type
       function GetOuterWidth(Value: TelElementDecorations): Integer;
       function GetOuterHeight(Value: TelElementDecorations): Integer;
 
-      procedure Draw(DrawChildren: Boolean = true); virtual;
+      procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); virtual;
 
       function LoadFromXML(aData: TStringList): Boolean;
       function LoadFromJSON(aData: TStringList): Boolean;
@@ -190,7 +191,7 @@ type
       // Public properties would be nicer though
       Position: TelVector3f;
       Origin: TelVector2f;
-      Rotation: TelImageRotation;
+      Rotation: TelRotation;
       Scale: TelVector2f;
 
       Shadow: TelShadow;
@@ -339,7 +340,7 @@ type
       procedure Delete(Index: Integer); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       // Draws all drawable nodes in the list
-      procedure Draw(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       // Updates all nodes in the list
       procedure Update(dt: Double = 0.0); {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -1112,10 +1113,10 @@ begin
   
 end;
 
-procedure TelNode.Draw(DrawChildren: Boolean = true);
+procedure TelNode.Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
 begin
   if DrawChildren then
-    Children.Draw();
+    Children.Draw(Graphics, DrawChildren);
 end;
 
 procedure TelNode.Update(dt: Double = 0.0);
@@ -1255,14 +1256,14 @@ begin
 
 end;
 
-procedure TelNodeList.Draw();
+procedure TelNodeList.Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
 var
   i: Integer;
 begin
   if Count > 0 then
   begin
     for i := 0 to Count - 1 do
-      if (Items[i] <> nil) then Items[i].Draw;
+      if (Items[i] <> nil) then Items[i].Draw(Graphics, DrawChildren);
   end;
 end;
 

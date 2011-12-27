@@ -7,6 +7,7 @@ uses
   ElysionTypes,
   ElysionScene,
   ElysionGraphics,
+  ElysionGraphicsProvider,
   ElysionInput,
   ElysionMenu,
   ElysionGUI,
@@ -23,7 +24,7 @@ type
     constructor Create; Override;
     destructor Destroy; Override;
 	
-    procedure Render; Override;
+    procedure Render(Graphics: IGraphicsProvider); Override;
     procedure Update(dt: Double); Override;
     procedure HandleEvents; Override;
   published
@@ -52,20 +53,20 @@ destructor TOptions.Destroy;
 begin
   Menu.Destroy;
 
-  inherited;
+  inherited Destroy;
 end;
 
-procedure TOptions.Render;
+procedure TOptions.Render(Graphics: IGraphicsProvider);
 begin
-  inherited;
+  inherited Render(Graphics);
 
   GUI.RoundedBox(makeRect(Menu.Position.X - 8, Menu.Position.Y - 8, Menu.Width + 16, Menu.Height), makeCol(0, 0, 0, 128), 8);
-  Menu.Draw;
+  Menu.Draw(Graphics);
 end;
 
 procedure TOptions.Update(dt: Double);
 begin
-  inherited;
+  inherited Update(dt);
 
   Menu.Update(dt);
 

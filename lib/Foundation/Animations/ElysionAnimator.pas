@@ -79,7 +79,7 @@ type
       procedure MoveEffect(aStartValue, anEndValue: TelVector3f; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear); Overload;
       procedure MoveEffect(aStartValue: TelVector3f; anAngle, aDistance: Single; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear); Overload;
       procedure OriginEffect(aStartValue, anEndValue: TelVector2f; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear);
-      procedure RotationEffect(aStartValue, anEndValue: TelImageRotation; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear); Overload;
+      procedure RotationEffect(aStartValue, anEndValue: TelRotation; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear); Overload;
       procedure RotationEffect(aStartValue, anEndValue: Single; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear); Overload;
       procedure ColorEffect(aStartValue, anEndValue: TelColor; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear);
       procedure ScaleEffect(aStartValue, anEndValue: TelVector2f; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear);
@@ -390,7 +390,7 @@ begin
   end;
 end;
 
-procedure TelAnimator.RotationEffect(aStartValue, anEndValue: TelImageRotation; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear);
+procedure TelAnimator.RotationEffect(aStartValue, anEndValue: TelRotation; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear);
 begin
   if Duration <> aDuration then Duration := aDuration;
   if Transition <> aTransition then Transition := aTransition;

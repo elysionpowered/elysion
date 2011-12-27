@@ -6,6 +6,7 @@ interface
 
 uses
   ElysionTypes,
+  ElysionGraphicsProvider,
   ElysionSprite,
   ElysionTimer,
   ElysionMath,
@@ -70,7 +71,7 @@ type
     // Resumses spritesheet animation if paused
     procedure UnPause(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-    procedure Draw(DrawChildren: Boolean = true); Override;
+    procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); Override;
     procedure Update(dt: Double = 0.0); Override;
 
     // Sets a random frame of the spritesheet
@@ -290,9 +291,9 @@ begin
   fTimer.UnPause();
 end;
 
-procedure TelSpriteSheet.Draw(DrawChildren: Boolean = true);
+procedure TelSpriteSheet.Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
 begin
-  inherited Draw(DrawChildren);
+  inherited Draw(Graphics, DrawChildren);
 end;
 
 procedure TelSpriteSheet.Update(dt: Double);
@@ -315,4 +316,4 @@ begin
   Frame := Random(Abs(anEndFrame - aStartFrame)) + 1;
 end;
 
-end.
+end.

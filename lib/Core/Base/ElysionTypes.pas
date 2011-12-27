@@ -36,6 +36,7 @@ type
 
   PKeyIdent = ^TKeyIdent;
 
+
   { TKeyIdent }
 
   {$IFDEF FPC}
@@ -351,13 +352,16 @@ type
   {$ELSE}
   TelRect = record
   {$ENDIF}
-    X, Y, W, H: Single;
+    X, Y, Z, W, H: Single;
 
     {$IFDEF CAN_METHODS}
     procedure Clear();
 
     procedure Make(aX, aY, aW, aH: Single); Overload;
+    procedure Make(aX, aY, aZ, aW, aH: Single); Overload;
     procedure Make(aX, aY, aW, aH: Integer); Overload;
+    procedure Make(aX, aY, aZ, aW, aH: Integer); Overload;
+
     procedure Make(aPosition: TelVector2f; aSize: TelSize); Overload;
     procedure Make(aPosition: TelVector2i; aSize: TelSize); Overload;
 
@@ -385,12 +389,14 @@ type
   // Display orientation (will be renamed in the future)
   TDisplayOrientation = (doLandscape, doPortrait);
 
-  TelImageOffset = record
+
+
+  TelOffset = record
     Position: TelVector2f;
     Rotation: TelVector2f;
   end;
 
-  TelImageRotation = record
+  TelRotation = record
     Angle: Single;
     Vector: TelVector3f;
   end;
@@ -425,7 +431,9 @@ type
     bmSub);   //< Sub blending
 
   TGradientStyle = SDLUtils.TGradientStyle;
-  TColorVertices = array[0..3] of TelColor;
+
+  TelColorVertices = array[0..3] of TelColor;
+  TelTexCoords = array[0..3] of TelVector2f;
 
   TelBoundingBox = (bbDefault, bbCustom, bbPixel);
 
@@ -444,6 +452,14 @@ type
     Vertical: TAlignVertical;
     Horizontal: TAlignHorizontal;
   end;
+
+  TelRenderOptions = record
+    Translation: TelVector3f;
+    Rotation: TelRotation;
+    Origin: TelVector2f;
+    Scale: TelVector2f;
+  end;
+  PelRenderOptions = ^TelRenderOptions;
 
   TelElementDecoration = (edMargin, edPadding, edBorder);
   TelElementDecorations = set of TelElementDecoration;
@@ -471,7 +487,9 @@ type
   function makeV3f(aX, aY: Single; aZ: Single = 0.0): TelVector3f; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
   function makeV3i(aX, aY: Integer; aZ: Integer = 0): TelVector3i; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
   function makeSize(aWidth, aHeight: Single): TelSize; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  function makeRect(aX, aY, aW, aH: Single): TelRect; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+  function makeRect(aX, aY, aW, aH: Single): TelRect; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  function makeRect(aX, aY, aZ, aW, aH: Single): TelRect; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
   function makeCol(aR, aG, aB: Byte; anA: Byte = 255): TelColor; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
   //function makeCol(aR, aG, aB: Single; anA: Single = 1.0): TelColor; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -509,7 +527,19 @@ type
   {$ENDIF}
 
 
+  function EmptyRenderOptions: TelRenderOptions;
+
+
 implementation
+
+function EmptyRenderOptions: TelRenderOptions;
+begin
+  Result.Translation := makeV3f(0, 0, 0);
+  Result.Rotation.Vector := makeV3f(0, 1, 0);
+  Result.Rotation.Angle := 0;
+  Result.Origin := makeV2f(0, 0);
+  Result.Scale := makeV2f(1, 1);
+end;
 
 function makeGradient(StartColor: TelColor; EndColor: TelColor; GradientStyle: TGradientStyle = gsVertical): TelGradient;
 var
@@ -630,6 +660,20 @@ var
 begin
   tmpRect.X := aX;
   tmpRect.Y := aY;
+  tmpRect.Z := 0;
+  tmpRect.W := aW;
+  tmpRect.H := aH;
+
+  Result := tmpRect;
+end;
+
+function makeRect(aX, aY, aZ, aW, aH: Single): TelRect;
+var
+  tmpRect: TelRect;
+begin
+  tmpRect.X := aX;
+  tmpRect.Y := aY;
+  tmpRect.Z := aZ;
   tmpRect.W := aW;
   tmpRect.H := aH;
 
@@ -1745,6 +1789,16 @@ procedure TelRect.Make(aX, aY, aW, aH: Integer);
 begin
   X := aX * 1.0;
   Y := aY * 1.0;
+  Z := 0.0;
+  W := aW * 1.0;
+  H := aH * 1.0;
+end;
+
+procedure TelRect.Make(aX, aY, aZ, aW, aH: Integer);
+begin
+  X := aX * 1.0;
+  Y := aY * 1.0;
+  Z := aZ * 1.0;
   W := aW * 1.0;
   H := aH * 1.0;
 end;
@@ -1753,6 +1807,16 @@ procedure TelRect.Make(aX, aY, aW, aH: Single);
 begin
   X := aX;
   Y := aY;
+  Z := 0;
+  W := aW;
+  H := aH;
+end;
+
+procedure TelRect.Make(aX, aY, aZ, aW, aH: Single);
+begin
+  X := aX;
+  Y := aY;
+  Z := aZ;
   W := aW;
   H := aH;
 end;

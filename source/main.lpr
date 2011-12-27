@@ -37,7 +37,7 @@ begin
     ActiveWindow.BeginScene;
     
     // Render procedure
-    Game.Render;
+    Game.Render(nil);
 	
     // Update procedure
     Game.Update(ActiveWindow.DeltaTime);

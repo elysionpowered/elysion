@@ -11,6 +11,8 @@ uses
   ElysionTypes,
   ElysionUtils,
 
+  ElysionGraphicsProvider,
+
   ElysionNode,
   ElysionTrueTypeFont,
 
@@ -46,7 +48,7 @@ type
     procedure LoadFromFile(const aFilename: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
     procedure LoadFromFontContainer(aFontContainer: TelTrueTypeFont); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-    procedure Draw(DrawChildren: Boolean = true); Override;
+    procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); Override;
     procedure Update(dt: Double = 0.0); Override;
   published
     property Caption: String read fCaption write SetCaption;
@@ -142,18 +144,20 @@ begin
     fFontContainer := aFontContainer;
 end;
 
-procedure TelLabel.Draw();
+procedure TelLabel.Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
 begin
   if (fFontContainer <> nil) then
   begin
     fFontContainer.Color := Self.Color;
     fFontContainer.TextOut(Self.Position, Self.Caption);
   end;
+
+  inherited Draw(Graphics, DrawChildren);
 end;
 
 procedure TelLabel.Update(dt: Double = 0.0);
 begin
-  inherited;
+  inherited Update(dt);
 
   if (HyperLink <> '') and GetClick then OpenURL(HyperLink);
 end;

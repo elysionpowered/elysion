@@ -8,6 +8,7 @@ uses
   Classes,
   SysUtils,
   ElysionApplication,
+  ElysionGraphicsProvider,
   ElysionTypes,
   ElysionInput,
   ElysionNode,
@@ -45,7 +46,7 @@ type
     constructor Create; Override;
     destructor Destroy; Override;
 
-    procedure Render; Override;
+    procedure Render(Graphics: IGraphicsProvider); Override;
     procedure Update(dt: Double); Override;
     procedure HandleEvents; Override;
 

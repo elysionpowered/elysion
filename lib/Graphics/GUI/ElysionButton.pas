@@ -11,6 +11,8 @@ uses
   ElysionUtils,
 
   ElysionTypes,
+  ElysionGraphicsProvider,
+
   ElysionTexture,
   ElysionApplication,
   ElysionInput,
@@ -53,7 +55,7 @@ type
 
     procedure ClipImage(Rect: TelRect); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-    procedure Draw(DrawChildren: Boolean = true); Override;
+    procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); Override;
     procedure Update(dt: Double = 0.0); Override;
 
     function OnRightClick(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -191,7 +193,7 @@ begin
   else Result := false;
 end;
 
-procedure TelButton.Draw;
+procedure TelButton.Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
 var
   TextNew: String;
   TextList: TStringList;
@@ -235,15 +237,17 @@ begin
                                      Self.Position.Z);
 
       // Draw stuff
-      fSprite.Draw();
-      fTextLabel.Draw();
+      fSprite.Draw(Graphics, DrawChildren);
+      fTextLabel.Draw(Graphics, DrawChildren);
     end;
   end;
+
+  inherited Draw(Graphics, DrawChildren);
 end;
 
 procedure TelButton.Update(dt: Double = 0.0);
 begin
-  inherited;
+  inherited Update(dt);
 
   if (HyperLink <> '') and GetClick then OpenURL(HyperLink);
 end;

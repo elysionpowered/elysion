@@ -8,6 +8,8 @@ uses
   Classes,
 
   ElysionTypes,
+  ElysionGraphicsProvider,
+
   ElysionNode,
   ElysionButton,
 
@@ -54,7 +56,7 @@ type
    function ButtonMouseOver(aID: Integer): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
    function ButtonMouseOver(Caption: String): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF} // Maybe improve => Runtime: O(n)
 
-   procedure Draw(DrawChildren: Boolean = true); Override;
+   procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); Override;
    procedure Update(dt: Double = 0.0); Override;
 
    procedure Reset(Exclusion: Integer = -1);
@@ -295,7 +297,7 @@ begin
   end;
 end;
 
-procedure TelMenu.Draw(DrawChildren: Boolean = true);
+procedure TelMenu.Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
 var
   i: Integer;
 begin
@@ -303,8 +305,10 @@ begin
   for i := 0 to fButtonList.Count - 1 do
   begin
     (TelButton(fButtonList.Items[i])).Position := makeV3f(Self.Position.X, Self.Position.Y + i * (TelButton(fButtonList.Items[i]).Height + Spacing), Self.Position.Z);
-    (TelButton(fButtonList.Items[i])).Draw;
+    (TelButton(fButtonList.Items[i])).Draw(Graphics, DrawChildren);
   end;
+
+  inherited Draw(Graphics, DrawChildren);
 end;
 
 procedure TelMenu.Update(dt: Double = 0.0);
@@ -328,7 +332,7 @@ var
   i: Integer;
   tmpFocus: Integer;
 begin
-  inherited;
+  inherited Update(dt);
 
   tmpFocus := SaveFocus();
 

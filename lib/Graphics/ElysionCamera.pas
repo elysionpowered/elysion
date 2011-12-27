@@ -15,6 +15,8 @@ uses
     {$ENDIF}
 
     ElysionTypes,
+    ElysionGraphicsProvider,
+
     ElysionObject,
     ElysionLayer,
     ElysionApplication,
@@ -36,7 +38,7 @@ TelCamera = class(TelLayer)
     constructor Create; Override;
     destructor Destroy; Override;
 
-    procedure Draw(); //Override;
+    procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); Override;
     procedure Update(dt: Double = 0.0); Override;
   public
     Viewport: TelRect;
@@ -75,7 +77,7 @@ end;
 destructor TelCamera.Destroy;
 begin
 
-  inherited;
+  inherited Destroy;
 end;
 
 procedure TelCamera.Draw();
@@ -101,7 +103,7 @@ begin
     begin
       if (fNodeList.Items[i] <> nil) then
       begin
-        fNodeList.Items[i].Draw;
+        fNodeList.Items[i].Draw(Graphics);
       end;
     end;
 

@@ -19,6 +19,7 @@ uses
     ElysionTypes,
     ElysionUtils,
     ElysionScene,
+    ElysionGraphicsProvider,
     ElysionApplication;
 
 
@@ -47,7 +48,7 @@ type
 
     procedure Initialize(); virtual; abstract;
 
-    procedure Render(); virtual;
+    procedure Render(Graphics: IGraphicsProvider); virtual;
     procedure Update(dt: Double = 0.0); virtual;
     procedure HandleEvents(); virtual;
 
@@ -86,9 +87,9 @@ begin
   inherited;
 end;
 
-procedure TelGame.Render();
+procedure TelGame.Render(Graphics: IGraphicsProvider);
 begin
-  SceneDirector.Render();
+  SceneDirector.Render(Graphics);
 end;
 
 procedure TelGame.Update(dt: Double = 0.0);

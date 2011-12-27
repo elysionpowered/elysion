@@ -11,6 +11,7 @@ uses
   ElysionColor,
   ElysionSprite,
   ElysionTrueTypeFont,
+  ElysionGraphicsProvider,
   ElysionTimer,
   ElysionInput,
   ElysionUtils,
@@ -43,7 +44,7 @@ type
     
     procedure Initialize(); Override;
 
-    procedure Render(); Override;
+    procedure Render(Graphics: IGraphicsProvider); Override;
     procedure Update(dt: Double = 0.0); Override;
     procedure HandleEvents(); Override;
   published
@@ -126,7 +127,7 @@ begin
 
 
   ActiveWindow.BeginScene;
-  fLoadScreen.Draw;
+  fLoadScreen.Draw(nil);
   ActiveWindow.EndScene;
 
   ActiveWindow.Caption := 'My Application';
@@ -159,10 +160,10 @@ begin
   SceneDirector.SwitchTo('mainmenu');
 end;
 
-procedure TGame.Render;
+procedure TGame.Render(Graphics: IGraphicsProvider);
 begin
   // This renders all scenes added to the scene director
-  inherited Render;
+  inherited Render(Graphics);
 end;
 
 procedure TGame.Update(dt: Double);

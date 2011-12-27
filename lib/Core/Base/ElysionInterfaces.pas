@@ -9,6 +9,8 @@ uses
   ElysionEvents,
   ElysionAnimTypes,
 
+  ElysionGraphicsProvider,
+
   Classes;
 
 type
@@ -84,7 +86,7 @@ type
 
     procedure Animate(AnimProperty: String; TargetValue: Single; Duration: Integer = 1000; Delay: Integer = 0; Transition: TelAnimationTransition = atLinear);
 
-    procedure Draw(DrawChildren: Boolean = true);
+    procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
   end;
 
   //ITimer = interface(IComponent)

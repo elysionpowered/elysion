@@ -16,6 +16,7 @@ uses
 
     ElysionTypes,
     ElysionObject,
+    ElysionGraphicsProvider,
     ElysionEvents,
     ElysionApplication,
     ElysionInput,
@@ -68,7 +69,7 @@ TelScene = class(TelObject)
     procedure SetPauseKey(aKey: Cardinal);
     procedure DisablePauseKey();
 
-    procedure Render(); virtual;
+    procedure Render(Graphics: IGraphicsProvider); virtual;
     procedure Update(dt: Double = 0.0); virtual;
     procedure HandleEvents(); virtual;
   published
@@ -145,7 +146,7 @@ TelSceneDirector = class(TelObject)
     procedure SwitchTo(Index: Integer); Overload;
     procedure SwitchTo(aSceneName: AnsiString); Overload;
 
-    procedure Render(); inline;
+    procedure Render(Graphics: IGraphicsProvider); inline;
     procedure Update(dt: Double = 0.0); inline;
     procedure HandleEvents(); inline;
 
@@ -267,12 +268,12 @@ begin
   fPauseKeyDefined := false;
 end;
 
-procedure TelScene.Render();
+procedure TelScene.Render(Graphics: IGraphicsProvider);
 begin
-  fNodeList.Draw();
-  fEntityList.Draw;
+  fNodeList.Draw(Graphics);
+  fEntityList.Draw(Graphics);
 
-  if GUILayer.Count > 0 then GUILayer.Draw();
+  if GUILayer.Count > 0 then GUILayer.Draw(Graphics);
 end;
 
 procedure TelScene.Update(dt: Double = 0.0);
@@ -520,10 +521,10 @@ Begin
 
 end;
 
-procedure TelSceneDirector.Render();
+procedure TelSceneDirector.Render(Graphics: IGraphicsProvider);
 begin
   if CurrentScene = fNullScene then Exit
-  else CurrentScene.Render();
+  else CurrentScene.Render(Graphics);
 end;
 
 procedure TelSceneDirector.Update(dt: Double = 0.0);

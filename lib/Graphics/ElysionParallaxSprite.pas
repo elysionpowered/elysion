@@ -6,6 +6,7 @@ interface
 
 uses
   ElysionTypes,
+  ElysionGraphicsProvider,
   ElysionApplication,
   ElysionSprite;
 
@@ -31,7 +32,7 @@ type
       procedure Pause(); inline;
       procedure UnPause(); inline;
 
-      procedure Draw(DrawChildren: Boolean = true); override;
+      procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); override;
       procedure Update(dt: Double = 0.0); Override;
     published
       property Direction: TelParallaxDirection read fDirection write fDirection;
@@ -73,10 +74,10 @@ begin
   fPaused := false;
 end;
 
-procedure TelParallaxSprite.Draw(DrawChildren: Boolean = true);
+procedure TelParallaxSprite.Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
 var i,j,leftMissing, rightMissing, upMissing, downMissing : Integer; formerX, formerY : Single; rotateMe : boolean;
 begin
-  inherited Draw(DrawChildren);
+  inherited Draw(Graphics, DrawChildren);
   // Immediately exit after draw: This is not the recursive call.
   if(not fRecursion) then Exit;
   fRecursion := false;
@@ -107,7 +108,7 @@ begin
     Position  := MakeV3f(formerX-(Width*i),formerY-j*Height);
        // if(j mod 2 = 1)then
        // Rotate(180);
-    Draw;
+    Draw(Graphics, DrawChildren);
     end;
   end;
   Position := MakeV3f(formerX, formerY);
@@ -117,7 +118,7 @@ begin
     for j := 0 to upMissing do
     begin
       Position  := MakeV3f(i*Width+formerX,formerY-j*Height);
-      Draw;
+      Draw(Graphics, DrawChildren);
     end;
   end;
   Rotate(0);
@@ -133,7 +134,7 @@ begin
   for i := 0 to downMissing do
   begin
     Position := MakeV3f(formerX,formerY+i*Height);
-    Draw;
+    Draw(Graphics, DrawChildren);
   end;
 
   Position := MakeV3f(formerX, formerY);

@@ -9,6 +9,7 @@ uses
 
   ElysionObject,
   ElysionInterfaces,
+  ElysionGraphicsProvider,
   ElysionNode;
 
 type
@@ -29,7 +30,7 @@ type
     constructor Create; Override; Overload;
     constructor Create(aNode: TelNode); Overload;
 
-    procedure Draw;
+    procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
     procedure Update(dt: Double = 0.0);
 
     procedure SendMessage(Message: AnsiString); Overload;
@@ -68,7 +69,7 @@ type
     procedure Delete(Index: Integer); inline;
 
     // Draws all drawable nodes in the list
-    procedure Draw(); inline;
+    procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); inline;
 
     // Updates all nodes in the list
     procedure Update(dt: Double = 0.0); inline;
@@ -168,9 +169,9 @@ begin
   fNode := aNode;
 end;
 
-procedure TelEntity.Draw;
+procedure TelEntity.Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
 begin
-  if (fNode <> nil) then fNode.Draw;
+  if (fNode <> nil) then fNode.Draw(Graphics, DrawChildren);
 end;
 
 procedure TelEntity.Update(dt: Double);
@@ -329,14 +330,14 @@ begin
 
 end;
 
-procedure TelEntityList.Draw();
+procedure TelEntityList.Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
 var
   i: Integer;
 begin
   if Count > 0 then
   begin
     for i := 0 to Count - 1 do
-      if (Items[i] <> nil) then Items[i].Draw;
+      if (Items[i] <> nil) then Items[i].Draw(Graphics, DrawChildren);
   end;
 end;
 
