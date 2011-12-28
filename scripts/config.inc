@@ -14,5 +14,5 @@ SRC_MAIN = 'main.lpr';
 
 CONFIG_FILE = 'config.cfg';
 
-EXEC_NAME = 'wolkenwelt';
-APP_NAME = 'Wolkenwelt';
+EXEC_NAME = 'myapp';
+APP_NAME = 'MyApp';
