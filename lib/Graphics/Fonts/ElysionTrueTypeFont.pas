@@ -4,12 +4,6 @@ interface
 
 {$I Elysion.inc}
 
-{$IFDEF AUTO_LINK}
-  {$IFDEF DARWIN}
-    {$linkframework SDL_ttf}
-  {$ENDIF}
-{$ENDIF}
-
 uses
   ElysionTypes,
   ElysionObject,

@@ -148,10 +148,6 @@ end;
 
 procedure TelSpriteSheet.UpdateSpritesheet;
 begin
-  Self.Log(fFrame);
-  Self.Log(fFrameIndex);
-  Self.Log(Length(fFrameArray));
-
   if Length(fFrameArray) = 0 then Exit;
 
   if fFrameIndex = Length(fFrameArray) - 1 then

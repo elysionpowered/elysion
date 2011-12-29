@@ -58,20 +58,6 @@
 
 
 
-{$DEFINE AUTO_LINK}
-
-{$IFDEF AUTO_LINK}
-	// Links automatically to frameworks under Mac OS X
-	{$IFDEF DARWIN}
-		{$PASCALMAINNAME SDL_main} // Needed for Snow Leopard
-		{$linklib SDLmain}
-
-		{$linkframework Cocoa}
-		{$linkframework SDL}
-		{$linkframework OpenGL}
-	{$ENDIF}
-
-{$ENDIF}
 
 // Initializes container objects (Font container, Application container, etc.) by default
 {$DEFINE AUTO_INIT}

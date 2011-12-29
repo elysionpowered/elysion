@@ -13,9 +13,6 @@ uses
   ElysionGraphics,
   ElysionInput,
   ElysionTrueTypeFont,
-  ElysionUtils,
-  ElysionAnimTypes,
-  ElysionAnimator,
 
   SDLUtils,
   {$IFDEF USE_DGL_HEADER}
@@ -24,7 +21,6 @@ uses
   gl, glu, glext,
   {$ENDIF}
 
-  OpenURLUtil,
   SysUtils,
   Classes;
 
@@ -120,7 +116,7 @@ implementation
 
 { TelRoundedRectangle }
 
-procedure TelRoundedRectangle.Draw;
+procedure TelRoundedRectangle.Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
 begin
   if Visible then
   begin
@@ -148,6 +144,7 @@ begin
     glPopMatrix;
   end;
 
+  inherited Draw(Graphics, DrawChildren);
 end;
 
 { TelGradientRectangle }

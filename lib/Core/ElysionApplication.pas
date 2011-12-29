@@ -1147,7 +1147,7 @@ begin
   {$IFDEF USE_VAMPYRE}
   ImagingSDL.SaveSDLSurfaceToFile(tmpFilename, tmpSurface);
   {$ELSE}
-  SDL_SaveBMP(tmpSurface, PChar(tmpFile));
+  SDL_SaveBMP(tmpSurface, PAnsiChar(tmpFilename));
   {$ENDIF}
 
   SDL_FreeSurface(tmpSurface);

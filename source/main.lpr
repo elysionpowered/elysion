@@ -1,6 +1,8 @@
 
 program myapplication;
 
+{$I Elysion.inc}
+
 {$IFDEF WINDOWS}
   {$IFNDEF DEBUG}  
     {$APPTYPE GUI}
@@ -9,10 +11,21 @@ program myapplication;
   // Adds icon
   {$R main.res}
 {$ELSE}
-  // Maybe move linker stuff here
-{$ENDIF}
+  // Links automatically to frameworks under Mac OS X
+  {$IFDEF DARWIN}
+    {$PASCALMAINNAME SDL_main}
+    {$linklib SDLmain}
 
-{$I Elysion.inc}
+    {$linkframework Cocoa}
+    {$linkframework SDL}
+    {$linkframework OpenGL}
+
+    // Additional SDL frameworks
+    {$linkframework SDL_image}
+    {$linkframework SDL_ttf}
+    {$linkframework SDL_mixer}
+  {$ENDIF}
+{$ENDIF}
 
 uses
   ElysionApplication in '../lib/ElysionApplication.pas',
@@ -31,7 +44,7 @@ begin
   Game.Initialize();
   
   // Game Loop
-  while Application.Run do
+  while Game.Run do
   begin
     // Clears buffer
     ActiveWindow.BeginScene;

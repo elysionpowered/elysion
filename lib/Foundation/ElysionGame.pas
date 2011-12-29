@@ -28,6 +28,8 @@ type
 { TelGame }
 
   TelGame = class(TelObject)
+  private
+    function GetRun: Boolean;
   protected
     fResolutions: TelSizeArray;
     fSceneDirector: TelSceneDirector;
@@ -56,6 +58,8 @@ type
   public
     property Resolutions: TelSizeArray read fResolutions write fResolutions;
   published
+    property Run: Boolean read GetRun;
+
     property SceneDirector: TelSceneDirector read fSceneDirector write fSceneDirector;
 
     property Width: Integer read GetWidth;
@@ -119,6 +123,11 @@ begin
       end;
     end;
   end;
+end;
+
+function TelGame.GetRun: Boolean;
+begin
+  Result := Application.Run;
 end;
 
 function TelGame.GetWidth: Integer;

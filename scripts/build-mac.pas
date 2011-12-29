@@ -263,7 +263,7 @@ begin
 
   if TargetIntel32 <> -1 then
   begin
-    if fpSystem('`which ppc386`' + ' @' + CONFIG_FILE + COMPILER_OPTIONS + ' -k"-L' + LIB_FOLDER + '/MacOSX -L/usr/X11R6/lib -macosx_version_min 10.' + IntToStr(TargetIntel32) + '" ' + SRC_MAIN) = 127 then
+    if fpSystem('`which ppc386`' + ' @' + CONFIG_FILE + COMPILER_OPTIONS + ' -k"-L' + LIB_FOLDER + '/MacOSX -macosx_version_min 10.' + IntToStr(TargetIntel32) + '" ' + SRC_MAIN) = 127 then
     begin
       WriteLn('Could not build 32-bit executable. Exiting.');
       Exit;
@@ -276,7 +276,7 @@ begin
 
   if TargetIntel64 <> -1 then
   begin
-    if fpSystem('`which ppcx64`' + ' @' + CONFIG_FILE + COMPILER_OPTIONS + ' -k"-L' + LIB_FOLDER + '/MacOSX -L/usr/X11R6/lib -macosx_version_min 10.' + IntToStr(TargetIntel64) + '" ' + SRC_MAIN) = 127 then
+    if fpSystem('`which ppcx64`' + ' @' + CONFIG_FILE + COMPILER_OPTIONS + ' -k"-L' + LIB_FOLDER + '/MacOSX -macosx_version_min 10.' + IntToStr(TargetIntel64) + '" ' + SRC_MAIN) = 127 then
     begin
       WriteLn('Could not build 64-bit executable. Exiting.');
       Exit;
@@ -289,7 +289,7 @@ begin
 
   if TargetPPC <> -1 then
   begin
-    if fpSystem('`which ppcppc`' + ' @' + CONFIG_FILE + COMPILER_OPTIONS + ' -k"-L' + LIB_FOLDER + '/MacOSX -L/usr/X11R6/lib -macosx_version_min 10.' + IntToStr(TargetPPC) + '" ' + SRC_MAIN) = 127 then
+    if fpSystem('`which ppcppc`' + ' @' + CONFIG_FILE + COMPILER_OPTIONS + ' -k"-L' + LIB_FOLDER + '/MacOSX -macosx_version_min 10.' + IntToStr(TargetPPC) + '" ' + SRC_MAIN) = 127 then
     begin
       WriteLn('Could not build PowerPC executable. Exiting.');
       Exit;

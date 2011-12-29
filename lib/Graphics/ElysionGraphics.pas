@@ -5,17 +5,12 @@ interface
 {$I Elysion.inc}
 
 uses
-  ElysionUtils,
-  ElysionObject,
   ElysionApplication,
   ElysionTypes,
   ElysionColor,
   ElysionInput,
-  ElysionTimer,
-  ElysionNode,
   ElysionTexture,
   ElysionContent,
-  ElysionLogger,
   ElysionSprite,
 
   {$IFDEF USE_VAMPYRE}
@@ -27,14 +22,13 @@ uses
   {$IFDEF USE_DGL_HEADER}
   dglOpenGL,
   {$ELSE}
-  gl, glu, glext,
+  gl, glu,
   {$ENDIF}
   SDL,
   SDLUtils,
   //SDLTextures,
 
   SysUtils,
-  OpenURLUtil,
   Classes;
 
 

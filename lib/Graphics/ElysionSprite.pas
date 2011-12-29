@@ -22,8 +22,6 @@ uses
   ElysionTexture,
   ElysionGraphicsProvider,
   ElysionTypes,
-  ElysionAnimTypes,
-  ElysionTimer,
   ElysionInput,
   ElysionApplication;
 
@@ -88,7 +86,7 @@ type
       procedure Move(aPoint: TelVector3f); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       function Collides(Other: TelSprite; AllowInvisibleObjects: Boolean = false): Boolean; Overload;
-      function Collides(Others: array of TelSprite; AllowInvisibleObjects: Boolean = false): Integer; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function Collides(Others: array of TelSprite; AllowInvisibleObjects: Boolean = false): Integer; Overload;
       function Collides(Others: TelSpriteList; AllowInvisibleObjects: Boolean = false): Integer; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); Override;
