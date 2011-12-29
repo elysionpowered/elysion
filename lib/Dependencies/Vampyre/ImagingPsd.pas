@@ -1,5 +1,4 @@
 {
-  $Id: ImagingPsd.pas 154 2008-12-27 15:41:09Z galfar $
   Vampyre Imaging Library
   by Marek Mauder
   http://imaginglib.sourceforge.net
@@ -46,8 +45,10 @@ type
     RGB images but without actual conversion to RGB color space.
     Also no layer information is loaded.}
   TPSDFileFormat = class(TImageFileFormat)
-  protected
+  private
     FSaveAsLayer: LongBool;
+  protected
+    procedure Define; override;
     function LoadData(Handle: TImagingHandle; var Images: TDynImageDataArray;
       OnlyFirstLevel: Boolean): Boolean; override;
     function SaveData(Handle: TImagingHandle; const Images: TDynImageDataArray;
@@ -55,7 +56,6 @@ type
     procedure ConvertToSupported(var Image: TImageData;
       const Info: TImageFormatInfo); override;
   public
-    constructor Create; override;
     function TestFormat(Handle: TImagingHandle): Boolean; override;
   published
     property SaveAsLayer: LongBool read FSaveAsLayer write FSaveAsLayer;
@@ -124,13 +124,11 @@ end;
   TPSDFileFormat class implementation
 }
 
-constructor TPSDFileFormat.Create;
+procedure TPSDFileFormat.Define;
 begin
-  inherited Create;
+  inherited;
   FName := SPSDFormatName;
-  FCanLoad := True;
-  FCanSave := True;
-  FIsMultiImageFormat := False;
+  FFeatures := [ffLoad, ffSave];
   FSupportedFormats := PSDSupportedFormats;
   AddMasks(SPSDMasks);
 

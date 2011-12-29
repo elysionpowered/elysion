@@ -1,5 +1,4 @@
 {
-  $Id: ImagingComponents.pas 171 2009-09-02 01:34:19Z galfar $
   Vampyre Imaging Library
   by Marek Mauder 
   http://imaginglib.sourceforge.net
@@ -336,9 +335,7 @@ implementation
 uses
 {$IF Defined(LCL)}
   {$IF Defined(LCLGTK2)}
-    GLib2, GDK2, GTK2, GTKDef, GTKProc,
-  {$ELSEIF Defined(LCLGTK)}
-    GDK, GTK, GTKDef, GTKProc,
+    GLib2, GDK2, GTK2, GTK2Def, GTK2Proc,
   {$IFEND}
 {$IFEND}
 {$IFNDEF DONT_LINK_BITMAP}
@@ -359,7 +356,7 @@ uses
 {$IF not Defined(DONT_LINK_PNG) or not Defined(DONT_LINK_MNG) or not Defined(DONT_LINK_JNG)}
   ImagingNetworkGraphics,
 {$IFEND}
-  ImagingUtility;
+  ImagingFormats, ImagingUtility;
 
 resourcestring
   SBadFormatDataToBitmap = 'Cannot find compatible bitmap format for image %s';
@@ -509,6 +506,14 @@ var
 begin
   PF := DataFormatToPixelFormat(Data.Format);
   GetImageFormatInfo(Data.Format, Info);
+
+  if (PF = pf8bit) and PaletteHasAlpha(Data.Palette, Info.PaletteEntries) then
+  begin
+    // Some indexed images may have valid alpha data, dont lose it!
+    // (e.g. transparent 8bit PNG or GIF images)
+    PF := pfCustom;
+  end;
+
   if PF = pfCustom then
   begin
     // Convert from formats not supported by Graphics unit
@@ -693,9 +698,14 @@ begin
       RawImage.Description.LineEnd);
     // Copy scanlines
     for I := 0 to Data.Height - 1 do
+    begin
       Move(PByteArray(RawImage.Data)[I * LineLazBytes],
         PByteArray(Data.Bits)[I * LineBytes], LineBytes);
-    { If you get complitation error here upgrade to Lazarus 0.9.24+ }
+    end;
+    // May need to swap RB order, depends on wifget set
+    if RawImage.Description.BlueShift > RawImage.Description.RedShift then
+      SwapChannels(Data, ChannelRed, ChannelBlue);
+
     RawImage.FreeData;
   end;
 {$ENDIF}
@@ -768,17 +778,19 @@ procedure DisplayImageData(DstCanvas: TCanvas; const DstRect: TRect; const Image
 begin
   DisplayImageDataOnDC(DstCanvas.Handle, DstRect, ImageData, SrcRect);
 end;
-{$ELSEIF Defined(LCLGTK) or Defined(LCLGTK2)}
+{$ELSEIF Defined(LCLGTK2)}
+  type
+    TDeviceContext = TGtk2DeviceContext;
 
   procedure GDKDrawBitmap(Dest: HDC; DstX, DstY: Integer; SrcX, SrcY,
     SrcWidth, SrcHeight: Integer; ImageData: TImageData);
   var
     P: TPoint;
   begin
-    P := TGtkDeviceContext(Dest).Offset;
+    P := TDeviceContext(Dest).Offset;
     Inc(DstX, P.X);
     Inc(DstY, P.Y);
-    gdk_draw_rgb_32_image(TGtkDeviceContext(Dest).Drawable, TGtkDeviceContext(Dest).GC,
+    gdk_draw_rgb_32_image(TDeviceContext(Dest).Drawable, TDeviceContext(Dest).GC,
       DstX, DstY, SrcWidth, SrcHeight, GDK_RGB_DITHER_NONE,
       @PLongWordArray(ImageData.Bits)[SrcY * ImageData.Width + SrcX], ImageData.Width * 4);
   end;
@@ -1217,6 +1229,16 @@ finalization
   -- TODOS ----------------------------------------------------
     - nothing now
 
+  -- 0.77.1 ---------------------------------------------------
+    - Fixed bug in ConvertBitmapToData causing images from GTK2 bitmaps
+      to have swapped RB channels.
+    - LCL: Removed GTK1 support (deprecated).
+
+  -- 0.26.3 Changes/Bug Fixes ---------------------------------
+    - Transparency of 8bit images (like loaded from 8bit PNG or GIF) is
+      kept intact during conversion to TBitmap in ConvertDataToBitmap
+      (32bit bitmap is created).
+
   -- 0.26.3 Changes/Bug Fixes ---------------------------------
     - Setting AlphaFormat property of TBitmap in ConvertDataToBitmap
       when using Delphi 2009+.
@@ -1269,4 +1291,4 @@ finalization
 }
 
 end.
-
+

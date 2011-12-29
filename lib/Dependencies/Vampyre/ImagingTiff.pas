@@ -1,5 +1,4 @@
 {
-  $Id: ImagingTiff.pas 175 2009-10-06 11:55:15Z galfar $
   Vampyre Imaging Library
   by Marek Mauder 
   http://imaginglib.sourceforge.net
@@ -44,23 +43,35 @@ type
     Uses LibTiffDelphi now so it is only usable with Delphi. Native support
     is planned.}
   TTiffFileFormat = class(TImageFileFormat)
+  private
+    FCompression: Integer;
+    FJpegQuality: Integer;
+    FAppendMode: LongBool;
   protected
-    FCompression: LongInt;
+    procedure Define; override;
     function LoadData(Handle: TImagingHandle; var Images: TDynImageDataArray;
       OnlyFirstLevel: Boolean): Boolean; override;
     function SaveData(Handle: TImagingHandle; const Images: TDynImageDataArray;
-      Index: LongInt): Boolean; override;
+      Index: Integer): Boolean; override;
     procedure ConvertToSupported(var Image: TImageData;
       const Info: TImageFormatInfo); override;
   public
-    constructor Create; override;
     function TestFormat(Handle: TImagingHandle): Boolean; override;
     { Specifies compression scheme used when saving TIFF images. Supported values
-      are 0 (Uncompressed), 1 (LZW), 2 (PackBits RLE), 3 (Deflate - ZLib), 4 (JPEG).
+      are 0 (Uncompressed), 1 (LZW), 2 (PackBits RLE), 3 (Deflate - ZLib), 4 (JPEG),
+      5 (CCITT Group 4 fax encoding - for binary images only).
       Default is 1 (LZW). Note that not all images can be stored with
       JPEG compression - these images will be saved with default compression if
       JPEG is set.}
-    property Compression: LongInt read FCompression write FCompression;
+    property Compression: Integer read FCompression write FCompression;
+    { Controls compression quality when selected TIFF compression is Jpeg.
+      It is number in range 1..100. 1 means small/ugly file,
+      100 means large/nice file. Accessible trough ImagingTiffJpegQuality option.}
+    property JpegQuality: Integer read FJpegQuality write FJpegQuality;
+    { When activated (True = 1) existing TIFF files are not overwritten when saving but
+      new images are instead appended thus producing multipage TIFFs.
+      Default value is False (0).}
+    property AppendMode: LongBool read FAppendMode write FAppendMode;
   end;
 
 implementation
@@ -68,10 +79,12 @@ implementation
 const
   STiffFormatName = 'Tagged Image File Format';
   STiffMasks      = '*.tif,*.tiff';
-  TiffSupportedFormats: TImageFormats = [ifIndex8, ifGray8, ifA8Gray8, 
+  TiffSupportedFormats: TImageFormats = [ifIndex8, ifGray8, ifA8Gray8,
     ifGray16, ifA16Gray16, ifGray32, ifR8G8B8, ifA8R8G8B8, ifR16G16B16,
-    ifA16R16G16B16, ifR32F, ifA32R32G32B32F, ifR16F, ifA16R16G16B16F];
+    ifA16R16G16B16, ifR32F, ifA32R32G32B32F, ifR16F, ifA16R16G16B16F, ifBinary];
   TiffDefaultCompression = 1;
+  TiffDefaultJpegQuality = 90;
+  TiffDefaultAppendMode = False;
 
 const
   TiffBEMagic: TChar4 = 'MM'#0#42;
@@ -122,7 +135,7 @@ begin
   Result := PTiffIOWrapper(Fd).IO.Seek(PTiffIOWrapper(Fd).Handle, Offset, Mode);
 end;
 
-function  TIFFCloseProc(Fd: Cardinal): Integer; cdecl;
+function TIFFCloseProc(Fd: Cardinal): Integer; cdecl;
 begin
   Result := 0;
 end;
@@ -139,41 +152,63 @@ end;
 var
   LastError: string = 'None';
 
-procedure TIFFErrorHandler(const A, B: string);
+procedure TIFFErrorHandler(const A, B: AnsiString);
 begin
-  LastError := A + ': ' + B;
-end;  
+  LastError := string(A + ': ' + B);
+end;
 
 {
   TTiffFileFormat implementation
 }
 
-constructor TTiffFileFormat.Create;
+procedure TTiffFileFormat.Define;
 begin
-  inherited Create;
+  inherited;
   FName := STiffFormatName;
-  FCanLoad := True;
-  FCanSave := True;
-  FIsMultiImageFormat := True;
+  FFeatures := [ffLoad, ffSave, ffMultiImage, ffReadOnSave { needed for Append mode }];
   FSupportedFormats := TiffSupportedFormats;
   FCompression := TiffDefaultCompression;
+  FJpegQuality := TiffDefaultJpegQuality;
+  FAppendMode := TiffDefaultAppendMode;
 
   AddMasks(STiffMasks);
   RegisterOption(ImagingTiffCompression, @FCompression);
+  RegisterOption(ImagingTiffJpegQuality, @FJpegQuality);
+  RegisterOption(ImagingTiffAppendMode, @FAppendMode);
 end;
 
 function TTiffFileFormat.LoadData(Handle: TImagingHandle;
   var Images: TDynImageDataArray; OnlyFirstLevel: Boolean): Boolean;
 var
-  Tif: PTIFF;
+  Tiff: PTIFF;
   IOWrapper: TTiffIOWrapper;
-  I, Idx, TiffResult, ScanLineSize, NumDirectories: Integer;
+  I, Idx, TiffResult, ScanLineSize, NumDirectories, X: Integer;
   RowsPerStrip: LongWord;
   Orientation, BitsPerSample, SamplesPerPixel, Photometric,
     PlanarConfig, SampleFormat: Word;
   DataFormat: TImageFormat;
   CanAccessScanlines: Boolean;
+  Ptr: PByte;
   Red, Green, Blue: PWordRecArray;
+
+  procedure LoadMetadata(Tiff: PTiff; TiffPage: Integer);
+  var
+    TiffResUnit: Word;
+    XRes, YRes: Single;
+    ResUnit: TResolutionUnit;
+  begin
+    TIFFGetFieldDefaulted(Tiff, TIFFTAG_RESOLUTIONUNIT, @TiffResUnit);
+    TIFFGetFieldDefaulted(Tiff, TIFFTAG_XRESOLUTION, @XRes);
+    TIFFGetFieldDefaulted(Tiff, TIFFTAG_YRESOLUTION, @YRes);
+    if (TiffResUnit <> RESUNIT_NONE) and (XRes >= 0.1) and (YRes >= 0.1) then
+    begin
+      ResUnit := ruDpi;
+      if TiffResUnit = RESUNIT_CENTIMETER then
+        ResUnit := ruDpcm;
+      FMetadata.SetPhysicalPixelSize(ResUnit, XRes, YRes, False, TiffPage);
+    end;
+  end;
+
 begin
   Result := False;
   LibTiffDelphiSetErrorHandler(TIFFErrorHandler);
@@ -182,36 +217,41 @@ begin
   IOWrapper.IO := GetIO;
   IOWrapper.Handle := Handle;
 
-  Tif := TIFFClientOpen('LibTIFF', 'r', Cardinal(@IOWrapper), @TIFFReadProc,
+  Tiff := TIFFClientOpen('LibTIFF', 'r', Cardinal(@IOWrapper), @TIFFReadProc,
     @TIFFWriteProc, @TIFFSeekProc, @TIFFCloseProc,
     @TIFFSizeProc, @TIFFNoMapProc, @TIFFNoUnmapProc);
 
-  if Tif <> nil then
-    TIFFSetFileNo(Tif, Cardinal(@IOWrapper))
+  if Tiff <> nil then
+    TIFFSetFileNo(Tiff, Cardinal(@IOWrapper))
   else
     Exit;
 
-  NumDirectories := TIFFNumberOfDirectories(Tif);
+  NumDirectories := TIFFNumberOfDirectories(Tiff);
+  if OnlyFirstLevel then
+    NumDirectories := Min(1, NumDirectories);
+
   SetLength(Images, NumDirectories);
 
   for Idx := 0 to NumDirectories - 1 do
   begin
-    TIFFSetDirectory(Tif, Idx);
+    TIFFSetDirectory(Tiff, Idx);
 
     // Set defaults for TIFF fields
     DataFormat := ifUnknown;
 
     // Read some TIFF fields with basic image info
-    TIFFGetField(Tif, TIFFTAG_IMAGEWIDTH, @Images[Idx].Width);
-    TIFFGetField(Tif, TIFFTAG_IMAGELENGTH, @Images[Idx].Height);
-    TIFFGetFieldDefaulted(Tif, TIFFTAG_ORIENTATION, @Orientation);
-    TIFFGetFieldDefaulted(Tif, TIFFTAG_BITSPERSAMPLE, @BitsPerSample);
-    TIFFGetFieldDefaulted(Tif, TIFFTAG_SAMPLESPERPIXEL, @SamplesPerPixel);
-    TIFFGetFieldDefaulted(Tif, TIFFTAG_SAMPLEFORMAT, @SampleFormat);
-    TIFFGetFieldDefaulted(Tif, TIFFTAG_PHOTOMETRIC, @Photometric);
-    TIFFGetFieldDefaulted(Tif, TIFFTAG_PLANARCONFIG, @PlanarConfig);
-    TIFFGetFieldDefaulted(Tif, TIFFTAG_ROWSPERSTRIP, @RowsPerStrip);
+    TIFFGetField(Tiff, TIFFTAG_IMAGEWIDTH, @Images[Idx].Width);
+    TIFFGetField(Tiff, TIFFTAG_IMAGELENGTH, @Images[Idx].Height);
+    TIFFGetFieldDefaulted(Tiff, TIFFTAG_ORIENTATION, @Orientation);
+    TIFFGetFieldDefaulted(Tiff, TIFFTAG_BITSPERSAMPLE, @BitsPerSample);
+    TIFFGetFieldDefaulted(Tiff, TIFFTAG_SAMPLESPERPIXEL, @SamplesPerPixel);
+    TIFFGetFieldDefaulted(Tiff, TIFFTAG_SAMPLEFORMAT, @SampleFormat);
+    TIFFGetFieldDefaulted(Tiff, TIFFTAG_PHOTOMETRIC, @Photometric);
+    TIFFGetFieldDefaulted(Tiff, TIFFTAG_PLANARCONFIG, @PlanarConfig);
+    TIFFGetFieldDefaulted(Tiff, TIFFTAG_ROWSPERSTRIP, @RowsPerStrip);
 
+    // Load supported metadata
+    LoadMetadata(Tiff, Idx);
     // See if we can just copy scanlines from TIFF to Imaging image
     CanAccessScanlines := (PlanarConfig = PLANARCONFIG_CONTIG) or (SamplesPerPixel = 1);
 
@@ -219,11 +259,14 @@ begin
     begin
       // We can copy scanlines so we try to find data format that best matches
       // TIFFs internal data format
-      if Photometric = PHOTOMETRIC_MINISBLACK then
+      if (Photometric = PHOTOMETRIC_MINISBLACK) or (Photometric = PHOTOMETRIC_MINISWHITE) then
       begin
-        if (SampleFormat = SAMPLEFORMAT_UINT) then
+        if SampleFormat = SAMPLEFORMAT_UINT then
         begin
           case BitsPerSample of
+             1:
+               if SamplesPerPixel = 1 then
+                 DataFormat := ifBinary;
              8:
                case SamplesPerPixel of
                  1: DataFormat := ifGray8;
@@ -239,7 +282,7 @@ begin
                  DataFormat := ifGray32;
           end;
         end
-        else if (SampleFormat = SAMPLEFORMAT_IEEEFP) then
+        else if SampleFormat = SAMPLEFORMAT_IEEEFP then
         begin
           case BitsPerSample of
             16:
@@ -253,7 +296,7 @@ begin
       end
       else if Photometric = PHOTOMETRIC_RGB then
       begin
-        if (SampleFormat = SAMPLEFORMAT_UINT) then
+        if SampleFormat = SAMPLEFORMAT_UINT then
         begin
           case BitsPerSample of
              8:
@@ -268,7 +311,7 @@ begin
                end;
           end;
         end
-        else if (SampleFormat = SAMPLEFORMAT_IEEEFP) then
+        else if SampleFormat = SAMPLEFORMAT_IEEEFP then
         begin
           case BitsPerSample of
             16:
@@ -292,24 +335,24 @@ begin
       // Use RGBA interface to read A8R8G8B8 TIFFs and mainly TIFFs in various
       // formats with no Imaging equivalent, exotic color spaces etc.
       NewImage(Images[Idx].Width, Images[Idx].Height, ifA8R8G8B8, Images[Idx]);
-      TiffResult := TIFFReadRGBAImageOriented(Tif, Images[Idx].Width, Images[Idx].Height,
+      TiffResult := TIFFReadRGBAImageOriented(Tiff, Images[Idx].Width, Images[Idx].Height,
         Images[Idx].Bits, Orientation, 0);
       if TiffResult = 0 then
-        Exit;
+        RaiseImaging(LastError, []);
     end
     else
     begin
       // Create new image in given format and read scanlines from TIFF,
       // read palette too if needed
       NewImage(Images[Idx].Width, Images[Idx].Height, DataFormat, Images[Idx]);
-      ScanLineSize := TIFFScanlineSize(Tif);
+      ScanLineSize := TIFFScanlineSize(Tiff);
 
       for I := 0 to Images[Idx].Height - 1 do
-        TIFFReadScanline(Tif, @PByteArray(Images[Idx].Bits)[I * ScanLineSize], I, 0);
+        TIFFReadScanline(Tiff, @PByteArray(Images[Idx].Bits)[I * ScanLineSize], I, 0);
 
       if DataFormat = ifIndex8 then
       begin
-        TIFFGetField(Tif, TIFFTAG_COLORMAP, @Red, @Green, @Blue);
+        TIFFGetField(Tiff, TIFFTAG_COLORMAP, @Red, @Green, @Blue);
         for I := 0 to 255 do
         with Images[Idx].Palette[I] do
         begin
@@ -319,25 +362,38 @@ begin
           B := Blue[I].High;
         end;
       end;
-    end;
 
-    // TIFF uses BGR order so we must swap it, but not images we got
-    // from TiffLib RGBA interface.
-    if (Photometric = PHOTOMETRIC_RGB) or (DataFormat = ifUnknown) then
-      SwapChannels(Images[Idx], ChannelRed, ChannelBlue);
+      // TIFF uses BGR order so we must swap it (but not images we got
+      // from TiffLib RGBA interface)
+      if Photometric = PHOTOMETRIC_RGB then
+        SwapChannels(Images[Idx], ChannelRed, ChannelBlue);
+
+      // We need to negate 'MinIsWhite' formats to get common grayscale
+      // formats where min sample value is black
+      if Photometric = PHOTOMETRIC_MINISWHITE then
+        for I := 0 to Images[Idx].Height - 1 do
+        begin
+          Ptr := @PByteArray(Images[Idx].Bits)[I * ScanLineSize];
+          for X := 0 to ScanLineSize - 1 do
+          begin
+            Ptr^ := not Ptr^;
+            Inc(Ptr);
+          end;
+        end;
+    end;
   end;
 
-  TIFFClose(Tif);
+  TIFFClose(Tiff);
   Result := True;
 end;
 
 function TTiffFileFormat.SaveData(Handle: TImagingHandle;
   const Images: TDynImageDataArray; Index: Integer): Boolean;
 const
-  Compressions: array[0..4] of Word = (COMPRESSION_NONE, COMPRESSION_LZW,
-    COMPRESSION_PACKBITS, COMPRESSION_DEFLATE, COMPRESSION_JPEG);
+  Compressions: array[0..5] of Word = (COMPRESSION_NONE, COMPRESSION_LZW,
+    COMPRESSION_PACKBITS, COMPRESSION_DEFLATE, COMPRESSION_JPEG, COMPRESSION_CCITTFAX4);
 var
-  Tif: PTIFF;
+  Tiff: PTIFF;
   IOWrapper: TTiffIOWrapper;
   I, J, ScanLineSize: Integer;
   ImageToSave: TImageData;
@@ -347,23 +403,50 @@ var
     PlanarConfig, SampleFormat, CompressionScheme: Word;
   RowsPerStrip: LongWord;
   Red, Green, Blue: array[Byte] of TWordRec;
+  CompressionMismatch: Boolean;
+  OpenMode: PAnsiChar;
+
+  procedure SaveMetadata(Tiff: PTiff; TiffPage: Integer);
+  var
+    XRes, YRes: Single;
+  begin
+    XRes := -1;
+    YRes := -1;
+
+    // First try to find phys. size for current TIFF page index. If not found then
+    // try size for main image (index 0).
+    if not FMetadata.GetPhysicalPixelSize(ruDpcm, XRes, YRes, True, TiffPage) then
+      FMetadata.GetPhysicalPixelSize(ruDpcm, XRes, YRes, True, 0);
+
+    if (XRes > 0) and (YRes > 0) then
+    begin
+      TIFFSetField(Tiff, TIFFTAG_RESOLUTIONUNIT, RESUNIT_CENTIMETER);
+      TIFFSetField(Tiff, TIFFTAG_XRESOLUTION, XRes);
+      TIFFSetField(Tiff, TIFFTAG_YRESOLUTION, YRes);
+    end;
+  end;
+
 begin
   Result := False;
   LibTiffDelphiSetErrorHandler(TIFFErrorHandler);
 
-  if not (FCompression in [0..4]) then
+  if not (FCompression in [0..5]) then
     FCompression := TiffDefaultCompression;
 
   // Set up IO wrapper and open TIFF
   IOWrapper.IO := GetIO;
   IOWrapper.Handle := Handle;
 
-  Tif := TIFFClientOpen('LibTIFF', 'w', Cardinal(@IOWrapper), @TIFFReadProc,
+  OpenMode := 'w';
+  if FAppendMode then
+    OpenMode := 'a';
+
+  Tiff := TIFFClientOpen('LibTIFF', OpenMode, Cardinal(@IOWrapper), @TIFFReadProc,
     @TIFFWriteProc, @TIFFSeekProc, @TIFFCloseProc,
     @TIFFSizeProc, @TIFFNoMapProc, @TIFFNoUnmapProc);
 
-  if Tif <> nil then
-    TIFFSetFileNo(Tif, Cardinal(@IOWrapper))
+  if Tiff <> nil then
+    TIFFSetFileNo(Tiff, Cardinal(@IOWrapper))
   else
     Exit;
 
@@ -377,17 +460,24 @@ begin
       // Set Tag values
       Orientation := ORIENTATION_TOPLEFT;
       BitsPerSample := Info.BytesPerPixel div Info.ChannelCount * 8;
+      if Info.Format = ifBinary then
+        BitsPerSample := 1;
       SamplesPerPixel := Info.ChannelCount;
       SampleFormat := Iff(not Info.IsFloatingPoint, SAMPLEFORMAT_UINT, SAMPLEFORMAT_IEEEFP);
       PlanarConfig := PLANARCONFIG_CONTIG;
       CompressionScheme := Compressions[FCompression];
-      if (CompressionScheme = COMPRESSION_JPEG) and ((BitsPerSample <> 8) or
-        not (SamplesPerPixel in [1, 3]) or Info.IsIndexed or Info.IsFloatingPoint) then
-      begin
-        // JPEG compression only for some data formats
+
+      // Check if selected compression scheme can be used for current image
+      CompressionMismatch := (CompressionScheme = COMPRESSION_JPEG) and ((BitsPerSample <> 8) or
+        not (SamplesPerPixel in [1, 3]) or Info.IsIndexed or Info.IsFloatingPoint);
+      CompressionMismatch := CompressionMismatch or ((CompressionScheme = COMPRESSION_CCITTFAX4) and (Info.Format <> ifBinary));
+      if CompressionMismatch then
         CompressionScheme := Compressions[TiffDefaultCompression];
-      end;
-      RowsPerStrip := TIFFDefaultStripSize(Tif, Height);
+      // If we have some compression scheme selected and it's not Fax then select it automatically - better comp ratios!
+      if (Info.Format = ifBinary) and (CompressionScheme <> COMPRESSION_NONE) and (CompressionScheme <> COMPRESSION_CCITTFAX4) then
+        CompressionScheme := COMPRESSION_CCITTFAX4;
+
+      RowsPerStrip := TIFFDefaultStripSize(Tiff, Height);
       if Info.IsIndexed then
         Photometric := PHOTOMETRIC_PALETTE
       else if (Info.HasGrayChannel) or (Info.ChannelCount = 1) then
@@ -396,16 +486,20 @@ begin
         Photometric := PHOTOMETRIC_RGB;
 
       // Write tags
-      TIFFSetField(Tif, TIFFTAG_IMAGEWIDTH, Width);
-      TIFFSetField(Tif, TIFFTAG_IMAGELENGTH, Height);
-      TIFFSetField(Tif, TIFFTAG_PHOTOMETRIC, Photometric);
-      TIFFSetField(Tif, TIFFTAG_PLANARCONFIG, PlanarConfig);
-      TIFFSetField(Tif, TIFFTAG_ORIENTATION, Orientation);
-      TIFFSetField(Tif, TIFFTAG_BITSPERSAMPLE, BitsPerSample);
-      TIFFSetField(Tif, TIFFTAG_SAMPLESPERPIXEL, SamplesPerPixel);
-      TIFFSetField(Tif, TIFFTAG_SAMPLEFORMAT, SampleFormat);
-      TIFFSetField(tif, TIFFTAG_COMPRESSION, CompressionScheme);
-      TIFFSetField(Tif, TIFFTAG_ROWSPERSTRIP, RowsPerStrip);
+      TIFFSetField(Tiff, TIFFTAG_IMAGEWIDTH, Width);
+      TIFFSetField(Tiff, TIFFTAG_IMAGELENGTH, Height);
+      TIFFSetField(Tiff, TIFFTAG_PHOTOMETRIC, Photometric);
+      TIFFSetField(Tiff, TIFFTAG_PLANARCONFIG, PlanarConfig);
+      TIFFSetField(Tiff, TIFFTAG_ORIENTATION, Orientation);
+      TIFFSetField(Tiff, TIFFTAG_BITSPERSAMPLE, BitsPerSample);
+      TIFFSetField(Tiff, TIFFTAG_SAMPLESPERPIXEL, SamplesPerPixel);
+      TIFFSetField(Tiff, TIFFTAG_SAMPLEFORMAT, SampleFormat);
+      TIFFSetField(Tiff, TIFFTAG_COMPRESSION, CompressionScheme);
+      if CompressionScheme = COMPRESSION_JPEG then
+        TIFFSetField(Tiff, TIFFTAG_JPEGQUALITY, FJpegQuality);
+      TIFFSetField(Tiff, TIFFTAG_ROWSPERSTRIP, RowsPerStrip);
+      // Save supported metadata
+      SaveMetadata(Tiff, I);
 
       if Format = ifIndex8 then
       begin
@@ -417,27 +511,27 @@ begin
           Green[J].High := G;
           Blue[J].High := B;
         end;
-        TIFFSetField(Tif, TIFFTAG_COLORMAP, Red, Green, Blue);
+        TIFFSetField(Tiff, TIFFTAG_COLORMAP, Red, Green, Blue);
       end;
 
-      ScanLineSize := Width * Info.BytesPerPixel;
+      ScanLineSize := Info.GetPixelsSize(Info.Format, Width, 1);
 
       if Photometric = PHOTOMETRIC_RGB then
         SwapChannels(ImageToSave, ChannelRed, ChannelBlue);
       // Write image scanlines and then directory for current image
       for J := 0 to Height - 1 do
-        TIFFWriteScanline(Tif, @PByteArray(Bits)[J * ScanLineSize], J, 0);
+        TIFFWriteScanline(Tiff, @PByteArray(Bits)[J * ScanLineSize], J, 0);
       if Info.ChannelCount > 1 then
         SwapChannels(ImageToSave, ChannelRed, ChannelBlue);
 
-      TIFFWriteDirectory(Tif);
+      TIFFWriteDirectory(Tiff);
     finally
       if MustBeFreed then
         FreeImage(ImageToSave);
     end;
   end;
 
-  TIFFClose(Tif);
+  TIFFClose(Tiff);
   Result := True;
 end;
 
@@ -481,6 +575,21 @@ initialization
 
   -- TODOS ----------------------------------------------------
     - nothing now
+
+  -- 0.77.1 ----------------------------------------------------
+    - Added TIFF Append mode: when saving existing files are not
+      overwritten but images are appended to TIFF instead.
+    - Images in ifBinary format are now supported for loading/saving
+      (optional Group 4 fax encoding added).
+    - PHOTOMETRIC_MINISWHITE is now properly read as Grayscale/Binary
+      instead of using unefficient RGBA interface.
+
+  -- 0.26.5 Changes/Bug Fixes ---------------------------------
+    - Fix: All pages of multipage TIFF were loaded even when
+      OnlyFirstLevel was True.
+    - Loading and saving of physical resolution metadata.
+    - Unicode compatibility fixes in LibTiffDelphi.
+    - Added Jpeg compression quality setting.
 
   -- 0.24.3 Changes/Bug Fixes ---------------------------------
     - Fixed bug in loading and saving of 2 channel images - Imaging

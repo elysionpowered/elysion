@@ -1,5 +1,4 @@
 {
-  $Id: ImagingTypes.pas 171 2009-09-02 01:34:19Z galfar $
   Vampyre Imaging Library
   by Marek Mauder 
   http://imaginglib.sourceforge.net
@@ -37,9 +36,9 @@ const
   { Current Major version of Imaging.}
   ImagingVersionMajor = 0;
   { Current Minor version of Imaging.}
-  ImagingVersionMinor = 26;
+  ImagingVersionMinor = 77;
   { Current patch of Imaging.}
-  ImagingVersionPatch = 4;
+  ImagingVersionPatch = 1;
 
   { Imaging Option Ids whose values can be set/get by SetOption/
     GetOption functions.}
@@ -134,14 +133,17 @@ const
   { Specifies whether JNG images are saved in progressive format.
     For details look at ImagingJpegProgressive.}
   ImagingJNGProgressive        = 44;
+
   { Specifies whether PGM files are stored in text or in binary format.
     Allowed values are 0 (store as text - very! large files) and 1 (save binary).
     Default value is 1.}
   ImagingPGMSaveBinary         = 50;
+
   { Specifies whether PPM files are stored in text or in binary format.
     Allowed values are 0 (store as text - very! large files) and 1 (save binary).
     Default value is 1.}
   ImagingPPMSaveBinary         = 51;
+
   { Boolean option that specifies whether GIF images with more frames
     are animated by Imaging (according to frame disposal methods) or just
     raw frames are loaded and sent to user (if you want to animate GIF yourself).
@@ -182,6 +184,10 @@ const
     <Ord(Low(ImagingFormats.TSamplingFilter)), Ord(High(ImagingFormats.TSamplingFilter))>
     and default value is 1 (linear filter).}
   ImagingMipMapFilter         = 131;
+  { Specifies treshold value used when automatically converting images to
+    ifBinary format. For adaptive tresholding see ImagingBinary.pas unit.
+    Default value is 128 and allowed range is 0..255.}
+  ImagingBinaryTreshold       = 132;
 
   { Returned by GetOption if given Option Id is invalid.}
   InvalidOption = -$7FFFFFFF;
@@ -232,13 +238,20 @@ type
     ifR16F           = 173,
     ifA16R16G16B16F  = 174,
     ifA16B16G16R16F  = 175,
+    ifR32G32B32F     = 176,
+    ifB32G32R32F     = 177,
     { Special formats.}
     ifDXT1           = 220,
     ifDXT3           = 221,
     ifDXT5           = 222,
     ifBTC            = 223,
     ifATI1N          = 224,
-    ifATI2N          = 225);
+    ifATI2N          = 225,
+    //ifDXBC6         = 227,
+    //ifDXBC7         = 228
+    ifBinary         = 235
+    //ifRGBE         = 236
+  );
 
   { Color value for 32 bit images.}
   TColor32 = LongWord;
@@ -296,12 +309,24 @@ type
   TColor64RecArray = array[0..MaxInt div SizeOf(TColor64Rec) - 1] of TColor64Rec;
   PColor64RecArray = ^TColor64RecArray;
 
+  { Color record for 96 bit floating point images, which allows access to
+    individual color channels.}
+  TColor96FPRec = packed record
+    case Integer of
+      0: (B, G, R: Single);
+      1: (Channels: array[0..2] of Single);
+  end;
+  PColor96FPRec = ^TColor96FPRec;
+  TColor96FPRecArray = array[0..MaxInt div SizeOf(TColor96FPRec) - 1] of TColor96FPRec;
+  PColor96FPRecArray = ^TColor96FPRecArray;
+
   { Color record for 128 bit floating point images, which allows access to
     individual color channels.}
   TColorFPRec = packed record
     case LongInt of
       0: (B, G, R, A: Single);
       1: (Channels: array[0..3] of Single);
+      2: (Color96Rec: TColor96FPRec);
   end;
   PColorFPRec = ^TColorFPRec;
   TColorFPRecArray = array[0..MaxInt div SizeOf(TColorFPRec) - 1] of TColorFPRec;
@@ -376,7 +401,7 @@ type
     Palette: PPalette32;const Color: TColor32Rec);
   { Procedure for setting pixel colors. Input FP ARGB color is translated to
     native format and then written to Image.}
-  TSetPixelFPProc = procedure(Bits: Pointer; Info: PImageFormatInfo; 
+  TSetPixelFPProc = procedure(Bits: Pointer; Info: PImageFormatInfo;
     Palette: PPalette32; const Color: TColorFPRec);
 
   { Additional information for each TImageFormat value.}
@@ -427,7 +452,8 @@ type
   TResizeFilter = (
     rfNearest  = 0,
     rfBilinear = 1,
-    rfBicubic  = 2);
+    rfBicubic  = 2,
+    rfLanczos  = 3);
 
   { Seek origin mode for IO function Seek.}
   TSeekMode = (
@@ -435,9 +461,14 @@ type
    smFromCurrent   = 1,
    smFromEnd       = 2);
 
+  TOpenMode = (
+    omReadOnly  = 0, // Opens file for reading only
+    omCreate    = 1, // Creates new file (overwriting any existing) and opens it for writing
+    omReadWrite = 2  // Opens for reading and writing. Non existing file is created.
+  );
+
   { IO functions used for reading and writing images from/to input/output.}
-  TOpenReadProc = function(Source: PChar): TImagingHandle; cdecl;
-  TOpenWriteProc = function(Source: PChar): TImagingHandle; cdecl;
+  TOpenProc = function(Source: PChar; Mode: TOpenMode): TImagingHandle; cdecl;
   TCloseProc = procedure(Handle: TImagingHandle); cdecl;
   TEofProc = function(Handle: TImagingHandle): Boolean; cdecl;
   TSeekProc = function(Handle: TImagingHandle; Offset: LongInt; Mode: TSeekMode): LongInt; cdecl;
@@ -452,6 +483,16 @@ implementation
 
   -- TODOS ----------------------------------------------------
     - add lookup tables to pixel formats for fast conversions
+
+  -- 0.77.1 ---------------------------------------------------
+    - Changed IO functions. Merged open functions to one
+      and added third open mode R/W (for TIFF append etc.).
+    - Added new image data formats and related structures:
+      ifR32G32B32F, ifB32G32G32F.
+
+  -- 0.26.5 Changes/Bug Fixes ---------------------------------
+    - Added ifBinary image format and ImagingBinaryTreshold option.
+    - Lanczos filter added to TResizeFilter enum.
 
   -- 0.24.3 Changes/Bug Fixes ---------------------------------
     - Added ifATI1N and ifATI2N image data formats.
@@ -496,4 +537,4 @@ implementation
 
 }
 
-end. 
+end.

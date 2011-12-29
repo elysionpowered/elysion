@@ -1,5 +1,4 @@
 {
-  $Id: ImagingSDL.pas 90 2007-06-18 22:09:16Z galfar $
   Vampyre Imaging Library
   by Marek Mauder 
   http://imaginglib.sourceforge.net

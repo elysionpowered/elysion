@@ -1,5 +1,4 @@
 {
-  $Id: ImagingOpenGL.pas 165 2009-08-14 12:34:40Z galfar $
   Vampyre Imaging Library
   by Marek Mauder 
   http://imaginglib.sourceforge.net
@@ -34,8 +33,9 @@ unit ImagingOpenGL;
 
 { Define this symbol if you want to use dglOpenGL header.}
 {$IFNDEF DARWIN}
-{$DEFINE USE_DGL_HEADERS}
+  {$DEFINE USE_DGL_HEADERS}
 {$ENDIF}
+
 { $DEFINE USE_GLSCENE_HEADERS}
 
 interface
@@ -47,7 +47,7 @@ uses
 {$ELSEIF Defined(USE_GLSCENE_HEADERS)}
   OpenGL1x,
 {$ELSE}
-  gl, glext, glx,
+  gl, glext,
 {$IFEND}
  ImagingUtility;
 
@@ -177,8 +177,8 @@ var
   { Standard behaviur if GL_ARB_texture_non_power_of_two extension is not supported
     is to rescale image to power of 2 dimensions. NPOT extension is exposed only
     when HW has full support for NPOT textures but some cards
-    (ATI Radeons, some other maybe) have partial NPOT support. Namely Radeons
-    can use NPOT textures but not mipmapped. If you know what you are doing
+    (pre-DX10 ATI Radeons, some other maybe) have partial NPOT support. 
+    Namely Radeons can use NPOT textures but not mipmapped. If you know what you are doing
     you can disable NPOT support check so the image won't be rescaled to POT
     by seting DisableNPOTSupportCheck to True.}
   DisableNPOTSupportCheck: Boolean = False;
@@ -287,6 +287,15 @@ const
   GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS = $8B4C;
 
 
+{$IFDEF MSWINDOWS}
+  GLLibName = 'opengl32.dll';
+{$ENDIF}
+{$IFDEF UNIX}
+  {$IFNDEF DARWIN}
+    GLLibName = 'libGL.so';
+  {$ENDIF}
+{$ENDIF}
+
 type
   TglCompressedTexImage2D = procedure (Target: GLenum; Level: GLint;
     InternalFormat: GLenum; Width: GLsizei; Height: GLsizei; Border: GLint;
@@ -295,6 +304,15 @@ type
 var
   glCompressedTexImage2D: TglCompressedTexImage2D = nil;
   ExtensionBuffer: string = '';
+
+{$IFDEF MSWINDOWS}
+function wglGetProcAddress(ProcName: PAnsiChar): Pointer; stdcall; external GLLibName;
+{$ENDIF}
+{$IFDEF UNIX}
+  {$IFNDEF DARWIN}
+    function glXGetProcAddress(ProcName: PAnsiChar): Pointer; cdecl; external GLLibName;
+  {$ENDIF}
+{$ENDIF}
 
 function IsGLExtensionSupported(const Extension: string): Boolean;
 var
@@ -315,11 +333,11 @@ end;
 function GetGLProcAddress(const ProcName: string): Pointer;
 begin
 {$IFDEF MSWINDOWS}
-  Result := wglGetProcAddress(PChar(ProcName));
+  Result := wglGetProcAddress(PAnsiChar(AnsiString(ProcName)));
 {$ENDIF}
 {$IFDEF UNIX}
   {$IFNDEF DARWIN}
-  Result := glXGetProcAddress(PChar(ProcName));
+    Result := glXGetProcAddress(PAnsiChar(AnsiString(ProcName)));
   {$ENDIF}
 {$ENDIF}
 end;
@@ -877,6 +895,10 @@ initialization
       not only A8R8G8B8
     - support for cube and 3D maps
 
+  -- 0.26.5 Changes/Bug Fixes ---------------------------------
+    - Fixed GetGLProcAddress in Unicode Delphi. Compressed
+      textures didn't work because of this.
+
   -- 0.26.1 Changes/Bug Fixes ---------------------------------
     - Added support for GLScene's OpenGL header.
 
@@ -914,4 +936,4 @@ initialization
     - unit created and initial stuff added
 }
 
-end.
+end.

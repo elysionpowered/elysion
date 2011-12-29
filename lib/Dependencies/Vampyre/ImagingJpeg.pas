@@ -1,5 +1,4 @@
 {
-  $Id: ImagingJpeg.pas 168 2009-08-22 18:50:21Z galfar $
   Vampyre Imaging Library
   by Marek Mauder
   http://imaginglib.sourceforge.net
@@ -40,11 +39,12 @@ unit ImagingJpeg;
   two quite large almost the same libraries linked to your exe.
   This is the case with Lazarus applications for example.}
 
-{$DEFINE IMJPEGLIB}
-{ $DEFINE PASJPEG}
+{.$DEFINE IMJPEGLIB}
+{$DEFINE PASJPEG}
 
 { Automatically use FPC's PasJpeg when compiling with Lazarus. But not when
-  WINDOWS is defined. See http://galfar.vevb.net/imaging/smf/index.php/topic,90.0.html}
+  WINDOWS is defined. See http://galfar.vevb.net/imaging/smf/index.php/topic,90.0.html.
+  Fixed in FPC revision 13963: http://bugs.freepascal.org/view.php?id=14928 }
 {$IF Defined(LCL) and not Defined(WINDOWS)}
   {$UNDEF IMJPEGLIB}
   {$DEFINE PASJPEG}
@@ -81,6 +81,7 @@ type
     FQuality: LongInt;
     FProgressive: LongBool;
     procedure SetJpegIO(const JpegIO: TIOFunctions); virtual;
+    procedure Define; override;
     function LoadData(Handle: TImagingHandle; var Images: TDynImageDataArray;
       OnlyFirstLevel: Boolean): Boolean; override;
     function SaveData(Handle: TImagingHandle; const Images: TDynImageDataArray;
@@ -88,10 +89,9 @@ type
     procedure ConvertToSupported(var Image: TImageData;
       const Info: TImageFormatInfo); override;
   public
-    constructor Create; override;
     function TestFormat(Handle: TImagingHandle): Boolean; override;
     procedure CheckOptionsValidity; override;
-  published  
+  published
     { Controls Jpeg save compression quality. It is number in range 1..100.
       1 means small/ugly file, 100 means large/nice file. Accessible trough
       ImagingJpegQuality option.}
@@ -185,8 +185,8 @@ begin
 
   if NBytes <= 0 then
   begin
-    PChar(Src.Buffer)[0] := #$FF;
-    PChar(Src.Buffer)[1] := Char(JPEG_EOI);
+    PByteArray(Src.Buffer)[0] := $FF;
+    PByteArray(Src.Buffer)[1] := JPEG_EOI;
     NBytes := 2;
   end;
   Src.Pub.next_input_byte := Src.Buffer;
@@ -330,7 +330,7 @@ begin
   if Saver.FGrayScale then
     jc.c.in_color_space := JCS_GRAYSCALE
   else
-    jc.c.in_color_space := JCS_YCbCr;
+    jc.c.in_color_space := JCS_RGB;
   jpeg_set_defaults(@jc.c);
   jpeg_set_quality(@jc.c, Saver.FQuality, True);
   if Saver.FProgressive then
@@ -339,13 +339,10 @@ end;
 
 { TJpegFileFormat class implementation }
 
-constructor TJpegFileFormat.Create;
+procedure TJpegFileFormat.Define;
 begin
-  inherited Create;
   FName := SJpegFormatName;
-  FCanLoad := True;
-  FCanSave := True;
-  FIsMultiImageFormat := False;
+  FFeatures := [ffLoad, ffSave];
   FSupportedFormats := JpegSupportedFormats;
 
   FQuality := JpegDefaultQuality;
@@ -371,9 +368,26 @@ var
   jc: TJpegContext;
   Info: TImageFormatInfo;
   Col32: PColor32Rec;
-{$IFDEF RGBSWAPPED}
+  NeedsRedBlueSwap: Boolean;
   Pix: PColor24Rec;
-{$ENDIF}
+
+  procedure LoadMetaData;
+  var
+    XDensity, YDensity: Single;
+    ResUnit: TResolutionUnit;
+  begin
+    // Density unit: 0 - undef, 1 - inch, 2 - cm
+    if jc.d.density_unit > 0 then
+    begin
+      XDensity := jc.d.X_density;
+      YDensity := jc.d.Y_density;
+      ResUnit := ruDpi;
+      if jc.d.density_unit = 2 then
+        ResUnit := ruDpcm;
+      FMetadata.SetPhysicalPixelSize(ResUnit, XDensity, YDensity);
+    end;
+  end;
+
 begin
   // Copy IO functions to global var used in JpegLib callbacks
   Result := False;
@@ -390,6 +404,7 @@ begin
     else
       Exit;
     end;
+
     NewImage(jc.d.image_width, jc.d.image_height, Format, Images[0]);
     jpeg_start_decompress(@jc.d);
     GetImageFormatInfo(Format, Info);
@@ -397,11 +412,18 @@ begin
     LinesPerCall := 1;
     Dest := Bits;
 
+    // If Jpeg's colorspace is RGB and not YCbCr we need to swap
+    // R and B to get Imaging's native order
+    NeedsRedBlueSwap := jc.d.jpeg_color_space = JCS_RGB;
+  {$IFDEF RGBSWAPPED}
+    // Force R-B swap for FPC's PasJpeg
+    NeedsRedBlueSwap := True;
+  {$ENDIF}
+
     while jc.d.output_scanline < jc.d.output_height do
     begin
       LinesRead := jpeg_read_scanlines(@jc.d, @Dest, LinesPerCall);
-    {$IFDEF RGBSWAPPED}
-      if Format = ifR8G8B8 then
+      if NeedsRedBlueSwap and (Format = ifR8G8B8) then
       begin
         Pix := PColor24Rec(Dest);
         for I := 0 to Width - 1 do
@@ -410,7 +432,6 @@ begin
           Inc(Pix);
         end;
       end;
-    {$ENDIF}
       Inc(Dest, PtrInc * LinesRead);
     end;
 
@@ -426,6 +447,9 @@ begin
         Inc(Col32);
       end;
     end;
+
+    // Store supported metadata
+    LoadMetaData;
 
     jpeg_finish_output(@jc.d);
     jpeg_finish_decompress(@jc.d);
@@ -448,6 +472,19 @@ var
   I: LongInt;
   Pix: PColor24Rec;
 {$ENDIF}
+
+  procedure SaveMetaData;
+  var
+    XRes, YRes: Single;
+  begin
+    if FMetadata.GetPhysicalPixelSize(ruDpcm, XRes, YRes, True) then
+    begin
+      jc.c.density_unit := 2; // Dots per cm
+      jc.c.X_density := Round(XRes);
+      jc.c.Y_density := Round(YRes)
+    end;
+  end;
+
 begin
   Result := False;
   // Copy IO functions to global var used in JpegLib callbacks
@@ -478,6 +515,9 @@ begin
   {$IFDEF RGBSWAPPED}
     GetMem(Line, PtrInc);
   {$ENDIF}
+
+    // Save supported metadata
+    SaveMetaData;
 
     jpeg_start_compress(@jc.c, True);
     while (jc.c.next_scanline < jc.c.image_height) do
@@ -553,6 +593,12 @@ initialization
  -- TODOS ----------------------------------------------------
     - nothing now
 
+  -- 0.26.5 Changes/Bug Fixes ---------------------------------
+    - Fixed loading of some JPEGs with certain APPN markers (bug in JpegLib).
+    - Fixed swapped Red-Blue order when loading Jpegs with
+      jc.d.jpeg_color_space = JCS_RGB.
+    - Added loading and saving of physical pixel size metadata.
+
   -- 0.26.3 Changes/Bug Fixes ---------------------------------
     - Changed the Jpeg error manager, messages were not properly formated.
 
@@ -594,4 +640,4 @@ initialization
     - added SetJpegIO method which is used by JNG image format
 }
 end.
-
+
