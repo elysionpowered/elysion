@@ -24,7 +24,7 @@ uses
   ElysionKeyCode,
 
   SDL,
-  SDLUtils,
+  SDLUtilsLight,
   {$IFDEF USE_VAMPYRE}
   ImagingSDL,
   {$ENDIF}
@@ -1083,6 +1083,7 @@ var
   tmpScreenshotCount: Integer;
   tmpFilename, formattedDateTime: String;
   searchResult: TSearchRec;
+  ScreenRect: TSDL_Rect;
 begin
   if aFilename = '' then aFilename := ParamStr(0);
   DateTimeToString(formattedDateTime, 'yyyy-mm-dd_hh-nn-ss', Now);
@@ -1131,23 +1132,26 @@ begin
 
   SDL_LockSurface(tmpSurface);
 
-  //glReadPixels(0, 0, Self.Width, Self.Height, GL_BGR, GL_UNSIGNED_BYTE, tmpSurface^.pixels);
-
   // Saves OpenGL context into tmpSurface
   glReadPixels(0, 0, Self.Width, Self.Height, GL_RGB, GL_UNSIGNED_BYTE, tmpSurface^.pixels);
+
+  ScreenRect.x := 0;
+  ScreenRect.y := 0;
+  ScreenRect.w := Self.Width;
+  ScreenRect.h := Self.Height;
 
   // By default Elysion's origin is at the top-left corner which is not the
   // default setting of OpenGL (default setting of OpenGL: bottom-left)
   // So we need to flip the image (That's all that's happenin' here)
-  SDL_FlipRectV(tmpSurface, PSDLRect(0, 0, Self.Width, Self.Height));
+  SDL_FlipRectV(tmpSurface, @ScreenRect);
 
   SDL_UnlockSurface(tmpSurface);
 
   // Saves image to file
   {$IFDEF USE_VAMPYRE}
-  ImagingSDL.SaveSDLSurfaceToFile(tmpFilename, tmpSurface);
+  ImagingSDL.SaveSDLSurfaceToFile(Environment.WorkingPath + tmpFilename, tmpSurface);
   {$ELSE}
-  SDL_SaveBMP(tmpSurface, PAnsiChar(tmpFilename));
+  SDL_SaveBMP(tmpSurface, PAnsiChar(Environment.WorkingPath + tmpFilename));
   {$ENDIF}
 
   SDL_FreeSurface(tmpSurface);

@@ -25,7 +25,7 @@ uses
   gl, glu,
   {$ENDIF}
   SDL,
-  SDLUtils,
+  SDLUtilsLight,
   //SDLTextures,
 
   SysUtils,
@@ -149,53 +149,53 @@ procedure DrawRoundedRect(X, Y, W, H, Z: Single; aRoundedRadius: Single);
 var
   i: Single;
 begin
-  //glDisable(GL_CULL_FACE);
+  glDisable(GL_CULL_FACE);
 
   glBegin(GL_TRIANGLE_FAN);
 
-    //glVertex3f(X + W - aRoundedRadius , Y + H, Z);
-    //glVertex3f(X + aRoundedRadius , Y + H, Z);
-
-    i := Pi * 0.5;
-    while i < Pi do
-    begin
-      glVertex3f(X + aRoundedRadius + Cos(i)* aRoundedRadius, Y + H - aRoundedRadius + Sin(i) * aRoundedRadius, Z);
-      i := i + 0.1;
-    end;
-
-    //glVertex3f(X + W , Y + aRoundedRadius, Z);
-    //glVertex3f(X + W , Y + H - aRoundedRadius, Z);
-
-    (*i := 0.0;
-    while i < (Pi * 0.5) do
-    begin
-      glVertex3f(X + W - aRoundedRadius + Cos(i)* aRoundedRadius, Y + H - aRoundedRadius + Sin(i) * aRoundedRadius, Z);
-      i := i + 0.1;
-    end;
-
-    //glVertex3f(X , Y + H - aRoundedRadius, Z);
-    //glVertex3f(X , Y + aRoundedRadius, Z);
-
-    i := Pi;
-    while i < (Pi * 1.5) do
-    begin
-      glVertex3f(X + aRoundedRadius + Cos(i)* aRoundedRadius, Y + aRoundedRadius + Sin(i) * aRoundedRadius, Z);
-      i := i + 0.1;
-    end;
-
-    //glVertex3f(X + aRoundedRadius, Y, Z);
-    //glVertex3f(X + W - aRoundedRadius, Y, Z);
+    glVertex2f(X + aRoundedRadius, Y);
+    glVertex2f(X + W - aRoundedRadius, Y);
 
     i := Pi * 1.5;
     while i < (Pi * 2) do
     begin
-      glVertex3f(X + W - aRoundedRadius + Cos(i)* aRoundedRadius, Y + aRoundedRadius + Sin(i) * aRoundedRadius, Z);
+      glVertex2f(X + W - aRoundedRadius + Cos(i)* aRoundedRadius, Y + aRoundedRadius + Sin(i) * aRoundedRadius);
       i := i + 0.1;
-    end;*)
+    end;
 
-  glEnd();
+    glVertex2f(X + W , Y + aRoundedRadius);
+    glVertex2f(X + W , Y + H - aRoundedRadius);
 
-  //glEnable(GL_CULL_FACE);
+    i := 0.0;
+    while i < (Pi * 0.5) do
+    begin
+      glVertex2f(X + W - aRoundedRadius + Cos(i)* aRoundedRadius, Y + H - aRoundedRadius + Sin(i) * aRoundedRadius);
+      i := i + 0.1;
+    end;
+
+    glVertex2f(X + W - aRoundedRadius , Y + H);
+    glVertex2f(X + aRoundedRadius , Y + H);
+
+    i := Pi * 0.5;
+    while i < Pi do
+    begin
+      glVertex2f(X + aRoundedRadius + Cos(i)* aRoundedRadius, Y + H - aRoundedRadius + Sin(i) * aRoundedRadius);
+      i := i + 0.1;
+    end;
+
+    glVertex2f(X , Y + H - aRoundedRadius);
+    glVertex2f(X , Y + aRoundedRadius);
+
+    i := Pi;
+    while i < (Pi * 1.5) do
+    begin
+      glVertex2f(X + aRoundedRadius + Cos(i)* aRoundedRadius, Y + aRoundedRadius + Sin(i) * aRoundedRadius);
+      i := i + 0.1;
+    end;
+
+    glEnd();
+
+  glEnable(GL_CULL_FACE);
 end;
 
 procedure DrawLine(Src, Dst: TelVector3f; Color: TelColor; LineWidth: Single = 1.0);

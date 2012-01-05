@@ -28,6 +28,8 @@ uses
 type
   TelSpriteList = class;
 
+  { TelSprite }
+
   TelSprite = class(TelNode)
     private
       fHyperLink: String;
@@ -46,6 +48,7 @@ type
       function GetTextureHeight(): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       function GetAspectRatio(): Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure SetFilename(AValue: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
     protected
       function GetWidth(): Single; Override;
       function GetHeight(): Single; Override;
@@ -91,7 +94,7 @@ type
 
       procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); Override;
       procedure Update(dt: Double = 0.0); Override;
-
+    public
       property ClipRect: TelRect read fClipRect; // Use ClipImage to set ClipRect
       // Custom Bounding Box
       property CustomBBox: TelRect read fCustomBBox write fCustomBBox;
@@ -101,7 +104,7 @@ type
       property BlendMode: TelBlendMode read fBlendMode write fBlendMode;
       property BoundingBox: TelBoundingBox read fBoundingBox write fBoundingBox;
 
-      property Filename: String read GetFilename;
+      property Filename: String read GetFilename write SetFilename;
 
       property HyperLink: String read fHyperLink write fHyperLink;
 
@@ -335,6 +338,13 @@ end;
 function TelSprite.GetAspectRatio(): Single;
 begin
   Result := Texture.AspectRatio;
+end;
+
+procedure TelSprite.SetFilename(AValue: String);
+begin
+  if AValue = Texture.Filename then Exit;
+
+  Self.LoadFromFile(AValue);
 end;
 
 function TelSprite.GetWidth(): Single;

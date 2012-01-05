@@ -46,21 +46,20 @@ unit SDLTextures;
 interface
 
 uses 
-	SDL,
-	SDLUtils,
-	{$IFDEF USE_SDL_IMAGE}
-	SDL_Image,
-	{$ENDIF}
-	{$IFDEF USE_VAMPYRE}
-	ImagingSDL,
-        ImagingOpenGL,
-	{$ENDIF}
-	{$IFDEF USE_DGL_HEADER}
-    	dglOpenGL,
-    {$ELSE}
-    	gl, glu, glext,
-    {$ENDIF}
-	SysUtils;
+  SDL,
+  {$IFDEF USE_SDL_IMAGE}
+  SDL_Image,
+  {$ENDIF}
+  {$IFDEF USE_VAMPYRE}
+  ImagingSDL,
+  ImagingOpenGL,
+  {$ENDIF}
+  {$IFDEF USE_DGL_HEADER}
+  dglOpenGL,
+  {$ELSE}
+  gl, glu, glext,
+  {$ENDIF}
+  SysUtils;
 
 type
   TTGAHEADER = packed record
@@ -90,10 +89,6 @@ function SupportsFramebufferObject(): Boolean; {$IFDEF CAN_INLINE} inline; {$END
 	
 function LoadTexture(aFilename: String; var Texture: GLuint; var Width: Longint; var Height: Longint): Boolean; Overload;
 function LoadTexture(Surface: PSDL_Surface; var Texture: GLuint; var Width: Longint; var Height: Longint): Boolean; Overload;
-
-function SaveSDLTextureToTGA(aFilename: String; aSurface: PSDL_Surface): Boolean;
-
-procedure SwapBGR(SDL_Surface: PSDL_Surface);
 
 procedure Bind(var Texture: GLuint); {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
@@ -314,104 +309,6 @@ begin
 
     Result := true;
   end;
-end;
-
-// http://wiki.delphigl.com/index.php/Screenshot
-function SaveSDLTextureToTGA(aFilename: String; aSurface: PSDL_Surface): Boolean;
-var
-  TGAHEADER : TTGAHEADER;
-
-  rwop: PSDL_RWops;
-  ImageSize: Integer;
-  i : Integer;
-begin
-  Result:=False;
-
-  if not Assigned(aSurface) then
-  begin
-    ErrorString := 'No surface has been assigned.';
-    exit;
-  end;
-
-  if aSurface^.format^.BytesPerPixel < 3 then
-  begin
-    ErrorString := 'Color depth not supported.';
-    exit;
-  end;
-
-  if SDL_BYTEORDER <> SDL_BIG_ENDIAN then
-  begin
-    SwapBGR(aSurface);
-  end;
-
-  with TGAHEADER do
-  begin
-    tfType := 0;
-    tfColorMapType := 0;
-    tfImageType := 2;
-    for i := 0 to 4 do
-      tfColorMapSpec[i] := 0;
-    tfOrigX := 0;
-    tfOrigY := 0;
-    tfWidth := aSurface^.w;
-    tfHeight := aSurface^.h;
-    tfBpp := aSurface^.format^.BitsPerPixel;
-    tfImageDes := 0;
-  end;
-
-  ImageSize := aSurface^.w * aSurface^.h * aSurface^.format^.BytesPerPixel;
-
-  rwop := SDL_RWfromFile(PChar(aFilename),'w+b');
-  if rwop = nil then
-  begin
-    ErrorString := 'Error while creating Rwop';
-    exit;
-  end;
-  try
-    if SDL_RWWrite(rwop, @TGAHEADER, SizeOf(TGAHEADER), 1) <> 1 then
-    begin
-      ErrorString := 'Error while writing header';
-      exit;
-    end;
-
-    if SDL_RWWrite(rwop, aSurface^.pixels, ImageSize, 1) <> 1 then
-    begin
-      ErrorString := 'Error while writing data.';
-      exit;
-    end;
-
-    Result := True;
-  finally
-    SDL_RWClose(rwop);
-
-    SDL_FreeSurface(aSurface);
-  end;
-end;
-
-procedure SwapBGR(SDL_Surface: PSDL_Surface);
-var
-  x,y: Integer;
-  pixel: UInt32;
-  pred, pgreen, pblue, palpha: PUInt8;
-  red, green, blue, alpha: UInt8;
-begin
-  for y := 0 to (SDL_Surface^.h - 1) do
-    for x := 0 to (SDL_Surface^.w - 1) do
-    begin
-      //reads the pixels them
-      pixel := SDL_GetPixel(SDL_Surface, x, y);
-
-      pred := @red;
-      pgreen := @green;
-      pblue := @blue;
-      palpha := @alpha;
-
-      //read and swap color
-      SDL_GetRGBA(pixel, SDL_Surface^.format, pred, pgreen, pblue, palpha);
-      pixel := SDL_MapRGBA(SDL_Surface^.format, blue, green, red, alpha);
-
-      SDL_PutPixel(SDL_Surface, x, y, pixel);
-    end;
 end;
 
 procedure Bind(var Texture: GLuint);

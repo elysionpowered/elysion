@@ -122,6 +122,9 @@ end;
 
 implementation
 
+uses
+  ElysionApplication;
+
 var
   Logger: TelLogger;
 
@@ -189,7 +192,7 @@ begin
 
   tmpStringList.Add('<span id="title"><a href="https://github.com/freezedev/elysion">Elysion Library</a> Log</span> <br />');
   tmpStringList.Add('<strong>CPU:</strong> ' + IntToStr(SYS_BITS) + '-bit <br /> <b>Operating system:</b> ' + SYS_NAME + '<br />');
-  tmpStringList.Add('<strong>Version:</strong> ' + IntToStr(VER_MAJOR) + '.' + IntToStr(VER_MINOR) + VER_REVISION + ' "' + VER_CODENAME + '" (' + VER_CODENAME_RANDOMQUOTE + ') <br /> <strong>Stable:</strong> '+BoolToString(VER_STABLE)+'<br />');
+  tmpStringList.Add('<strong>Version:</strong> ' + IntToStr(VER_MAJOR) + '.' + IntToStr(VER_MINOR) + VER_REVISION + ' "' + VER_CODENAME + '" <br /> <strong>Stable:</strong> '+BoolToString(VER_STABLE)+'<br />');
   tmpStringList.Add('<strong>Filename:</strong> ' + fFilename + '<br />');
   tmpStringList.Add('</header>');
   tmpStringList.Add('<br /></br />');
@@ -211,7 +214,7 @@ begin
 
   // Save file
   try
-    tmpStringList.SaveToFile(fFilename + '.html');
+    tmpStringList.SaveToFile(Environment.WorkingPath + fFilename + '.html');
   finally
     // TODO: Proper error handling ;)
 

@@ -18,7 +18,6 @@ interface
 
 uses
   Classes,
-  SDLUtils,
   SysUtils;
 
 type
@@ -430,7 +429,7 @@ type
     bmNormal, //< Normal blending
     bmSub);   //< Sub blending
 
-  TGradientStyle = SDLUtils.TGradientStyle;
+  TGradientStyle = (gsVertical, gsHorizontal);
 
   TelColorVertices = array[0..3] of TelColor;
   TelTexCoords = array[0..3] of TelVector2f;

@@ -17,10 +17,8 @@ uses
     ElysionTypes,
     ElysionGraphicsProvider,
 
-    ElysionObject,
     ElysionLayer,
-    ElysionApplication,
-    ElysionNode;
+    ElysionApplication;
 
 
 type
@@ -80,7 +78,7 @@ begin
   inherited Destroy;
 end;
 
-procedure TelCamera.Draw();
+procedure TelCamera.Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
 var
   i: Integer;
 begin
@@ -108,6 +106,8 @@ begin
     end;
 
   glPopMatrix;
+
+  inherited Draw(Graphics, DrawChildren);
 
 end;
 

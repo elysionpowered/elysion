@@ -21,13 +21,16 @@ uses
   gl, glu, glext,
   {$ENDIF}
   SDL,
-  SDLUtils,
+  SDLUtilsLight,
   SDLTextures,
 
   SysUtils,
   Classes;
 
 type
+
+  { TelTexture }
+
   TelTexture = class(TelObject)
     private
       fFilename, fImageType: String;
@@ -45,11 +48,17 @@ type
       function GetAspectRatio(): Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       function IsEmpty(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+      function GetPixel(X, Y: Integer): TelColor;
+      procedure SetPixel(X, Y: Integer; AValue: TelColor);
     public
       TextureSurface: PSDL_Surface;
       TextureID: GLuInt;
 
-      constructor Create; Override;
+      constructor Create; Overload; Override;
+      constructor Create(aSize: TelSize); Overload;
+      constructor Create(aWidth, aHeight: Integer); Overload;
+
       destructor Destroy; Override;
 
       function LoadFromFile(const aFilename: String): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
@@ -61,8 +70,10 @@ type
       procedure SetColorKey(aPoint: TelVector2i); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
       function Reload(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
+    public
       property ColorKey: TelColor read GetColorKey write SetColorKeyProperty;
+
+      property Pixels[X, Y: Integer]: TelColor read GetPixel write SetPixel;
     published
       property AspectRatio: Single read GetAspectRatio;
 
@@ -147,6 +158,16 @@ begin
   fTransparent := false;
 end;
 
+constructor TelTexture.Create(aSize: TelSize);
+begin
+
+end;
+
+constructor TelTexture.Create(aWidth, aHeight: Integer);
+begin
+
+end;
+
 destructor TelTexture.Destroy;
 begin
   if TextureSurface <> nil then
@@ -210,6 +231,16 @@ begin
   {$ELSE}
     Result := (not glIsTexture(Self.TextureID));
   {$ENDIF}
+end;
+
+function TelTexture.GetPixel(X, Y: Integer): TelColor;
+begin
+
+end;
+
+procedure TelTexture.SetPixel(X, Y: Integer; AValue: TelColor);
+begin
+
 end;
 
 procedure TelTexture.SetColorKey(aColor: TelColor); 

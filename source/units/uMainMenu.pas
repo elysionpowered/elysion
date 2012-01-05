@@ -16,6 +16,7 @@ uses
   ElysionInput,
   ElysionAnimator,
   ElysionAssets,
+  ElysionSprite,
 
   SysUtils,
   uBasic,
@@ -26,7 +27,8 @@ type
   TMainMenu = class(TelScene)
   private
     fMenu: TelMenu;
-    fLabel: TelLabel;
+    fLblCopyright: TelLabel;
+    fBtnFacebook, fBtnTwitter: TelSprite;
 
     fNewGameClick: Boolean;
   public
@@ -39,7 +41,10 @@ type
   published
     property Menu: TelMenu read fMenu write fMenu;
 
-    property NewGameClick: Boolean read fNewGameClick write fNewGameClick;
+    property BtnFacebook: TelSprite read fBtnFacebook write fBtnFacebook;
+    property BtnTwitter: TelSprite read fBtnTwitter write fBtnTwitter;
+
+    property LblCopyright: TelLabel read fLblCopyright write fLblCopyright;
   end;
 
 implementation
@@ -47,6 +52,7 @@ implementation
 constructor TMainMenu.Create;
 var
   i: Integer;
+  RoundRect: TelRoundedRectangle;
 begin
   inherited;
 
@@ -61,14 +67,43 @@ begin
     Menu.Items[i].TextLabel.Color := makeCol(0, 0, 0);
 
 
-  fLabel := TelLabel.Create;
-  fLabel.LoadFromFile(GetStdFont);
-  fLabel.Caption := '(C) Your Name Here';
-  fLabel.Size := 14;
-  fLabel.Color := makeCol(255, 255, 255);
-  fLabel.Position := makeV3f(8, ActiveWindow.Height - 25);
+  RoundRect := TelRoundedRectangle.Create(Menu.Width + 16, Menu.Height);
+  RoundRect.Position := makeV3f(Menu.Position.X - 8, Menu.Position.Y - 8);
+  RoundRect.Color := makeCol(0, 0, 0, 128);
+  RoundRect.RoundedRadius := 8;
+  Self.Add(RoundRect);
+
+  Self.Add(Menu);
 
 
+  LblCopyright := TelLabel.Create;
+  LblCopyright.LoadFromFile(GetStdFont);
+  LblCopyright.Caption := '(C) Your Name Here';
+  LblCopyright.Size := 14;
+  LblCopyright.Color := makeCol(255, 255, 255);
+  LblCopyright.Left := 8;
+  LblCopyright.Bottom := 8;
+  LblCopyright.HyperLink := 'http://thatsmyawesomewebsite.com';
+
+  Self.Add(LblCopyright);
+
+
+  BtnTwitter := TelSprite.Create;
+  BtnTwitter.LoadFromFile(GetResImgPath + 'twitter.png');
+  BtnTwitter.Right := 8;
+  BtnTwitter.Bottom := 8;
+  BtnTwitter.HyperLink := 'http://twitter.com';
+  BtnTwitter.Color := makeCol(192, 192, 192);
+  Self.Add(BtnTwitter);
+
+
+  BtnFacebook := TelSprite.Create;
+  BtnFacebook.LoadFromFile(GetResImgPath + 'facebook.png');
+  BtnFacebook.Bottom := 8;
+  BtnFacebook.Right := BtnTwitter.Right + BtnTwitter.Width + 8;
+  BtnFacebook.HyperLink := 'http://facebook.com';
+  BtnFacebook.Color := makeCol(192, 192, 192);
+  Self.Add(BtnFacebook);
 end;
 
 destructor TMainMenu.Destroy;
@@ -80,25 +115,23 @@ end;
 
 procedure TMainMenu.Render(Graphics: IGraphicsProvider);
 begin
-  inherited;
-
-
-  fLabel.Draw(Graphics);
-
-  GUI.RoundedBox(makeRect(Menu.Position.X - 8, Menu.Position.Y - 8, Menu.Width + 16, Menu.Height), makeCol(0, 0, 0, 128), 8);
-  Menu.Draw(Graphics);
+  inherited Render(Graphics);
 
 end;
 
 procedure TMainMenu.Update(dt: Double);
-var
-  i: Integer;
 begin
-  inherited;
+  inherited Update(dt);
 
-  fLabel.Update();
+  if BtnTwitter.MouseOver then
+    BtnTwitter.Color := makeCol(255, 255, 255)
+  else
+    BtnTwitter.Color := makeCol(192, 192, 192);
 
-  Menu.Update(dt);
+  if BtnFacebook.MouseOver then
+    BtnFacebook.Color := makeCol(255, 255, 255)
+  else
+    BtnFacebook.Color := makeCol(192, 192, 192);
 end;
 
 procedure TMainMenu.HandleEvents;

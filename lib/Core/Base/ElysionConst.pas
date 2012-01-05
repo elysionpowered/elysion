@@ -5,17 +5,11 @@ interface
 const
   // Version information
   VER_MAJOR = 1;
-  VER_MINOR = 0;
-  VER_REVISION = 'a';
+  VER_MINOR = 1;
+  VER_REVISION = '';
 
-  VER_CODENAME = 'November'; //< Codename
+  VER_CODENAME = 'Boomer'; //< Codename
   VER_STABLE = true;
-
-  // Other random stuff mostly regarding version information
-  VER_CODENAME_UNIVERSE = 'Dollhouse'; //< From which universe the codename comes from
-  VER_CODENAME_RANDOMQUOTE = 'So tempting..';
-  // Random quote from that universe
-  // So, in case you didn't get this: Each codename comes from a movie or TV show
 
   {$IFDEF FPC}
 	  // Usage of FreePascal is recommanded

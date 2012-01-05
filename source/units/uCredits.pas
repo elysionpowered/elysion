@@ -40,7 +40,7 @@ implementation
 
 constructor TCredits.Create;
 begin
-  inherited;
+  inherited Create;
 
   Font := TelTrueTypeFont.Create;
   Font.LoadFromFile(GetStdFont, 14);
@@ -51,7 +51,7 @@ begin
   Button.LoadFromFile(GetResImgPath + 'button.png', GetStdFont);
   Button.TextLabel.Size := 15;
   Button.Caption := 'Back';
-  Button.Position := makeV3f(ActiveWindow.Width - 300 - 80 + 16 + 16, 450 - 4);
+  Button.Position := makeV3f(ActiveWindow.Width - 500 - 80 + 16 + 16, 450 - 4);
   
   Button.TextLabel.Color := makeCol(0, 0, 0);
 end;
@@ -60,23 +60,23 @@ destructor TCredits.Destroy;
 begin
 
 
-  inherited;
+  inherited Destroy;
 end;
 
 procedure TCredits.Render(Graphics: IGraphicsProvider);
 begin
   inherited Render(Graphics);
 
-  GUI.RoundedBox(makeRect(ActiveWindow.Width - 300 - 80 + 16, 60 + 16, 300, 450), makeCol(0, 0, 0, 128), 8);
+  GUI.RoundedBox(makeRect(ActiveWindow.Width - 500 - 80 + 16, 60 + 16, 500, 450), makeCol(0, 0, 0, 128), 8);
 
-  Font.TextOut(makeV3f(ActiveWindow.Width - 300 - 80 + 16 + 8, 60 + 16 + 8), 'Credits stuff');
+  Font.TextOut(makeV3f(ActiveWindow.Width - 500 - 80 + 16 + 8, 60 + 16 + 8), 'Credits stuff \n Social buttons by Elegant Themes (http://www.elegantthemes.com) \n XNA Button Pack by Jeff Jenkins (http://sinnix.net/downloads/?did=2)');
 
   Button.Draw(Graphics);
 end;
 
 procedure TCredits.Update(dt: Double = 0.0);
 begin
-  inherited;
+  inherited Update(dt);
 end;
 
 procedure TCredits.HandleEvents;

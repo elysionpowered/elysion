@@ -6,12 +6,18 @@ interface
 
 uses
   ElysionTypes,
-  ElysionSprite;
+  ElysionNode;
 
 type
-  TPixelCollision = class
+  TelCollision = class
   public
-    class function Check(): Boolean; Overload;
+   class function Intersection(A, B: TelNode): TelRect;
+
+   class function BoundingBox(A, B: TelNode): Boolean;
+   class function Circle(A, B: TelNode): Boolean;
+
+   class function PixelTest(A, B: TelTexturedNode): Boolean;
+   class function PixelTest(aNode: TelTexturedNode; aRect: TelRect): Boolean;
   end;
 
 implementation

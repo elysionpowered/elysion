@@ -57,7 +57,12 @@ function GetWinSpecialDir(FolderID: Cardinal): AnsiString; {$IFDEF CAN_INLINE} i
 function IsInRange(Min, Max, Value: Integer): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 function IsInRange(Min, Max, Value: Single): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-function PopulateArray(aKeyIdentArray: array of TKeyIdent): TKeyArray; Overload;
+function Minimum(Value1, Value2: Integer): Integer; Overload;
+function Minimum(Value1, Value2: Single): Single; Overload;
+function Maximum(Value1, Value2: Integer): Integer; Overload;
+function Maximum(Value1, Value2: Single): Single; Overload;
+
+function PopulateArray(aKeyIdentArray: array of TKeyIdent): TKeyArray; Overload; deprecated;
 function PopulateArray(aColorArray: array of TelColor): TelColorArray; Overload;
 function PopulateArray(aVectorArray: array of TelVector2f): TelVector2fArray; Overload;
 function PopulateArray(aVectorArray: array of TelVector2i): TelVector2iArray; Overload;
@@ -383,6 +388,30 @@ end;
 function IsInRange(Min, Max, Value: Single): Boolean;
 begin
   Result := ((Value >= Min) and (Value <= Max));
+end;
+
+function Minimum(Value1, Value2: Integer): Integer;
+begin
+  if Value1 > Value2 then Result := Value2
+    else Result := Value1;
+end;
+
+function Minimum(Value1, Value2: Single): Single;
+begin
+  if Value1 > Value2 then Result := Value2
+    else Result := Value1;
+end;
+
+function Maximum(Value1, Value2: Integer): Integer;
+begin
+  if Value1 > Value2 then Result := Value1
+    else Result := Value2;
+end;
+
+function Maximum(Value1, Value2: Single): Single;
+begin
+  if Value1 > Value2 then Result := Value1
+    else Result := Value2;
 end;
 
 function PopulateArray(aKeyIdentArray: array of TKeyIdent

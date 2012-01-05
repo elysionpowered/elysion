@@ -14,7 +14,6 @@ uses
   ElysionInput,
   ElysionTrueTypeFont,
 
-  SDLUtils,
   {$IFDEF USE_DGL_HEADER}
   dglOpenGL,
   {$ELSE}
@@ -93,18 +92,18 @@ TelGUI = class
     constructor Create;
     destructor Destroy; Override;
 
-    procedure Box(Rect: TelRect; Color: TelColor); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure Box(Rect: TelRect; Color: TelGradient); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure Box(Rect: TelRect; Vertices: TelColorVertices); Overload;
+    procedure Box(Rect: TelRect; Color: TelColor); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF} deprecated;
+    procedure Box(Rect: TelRect; Color: TelGradient); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF} deprecated;
+    procedure Box(Rect: TelRect; Vertices: TelColorVertices); Overload; deprecated;
 
-    procedure RoundedBox(Rect: TelRect; Color: TelColor; RoundedRadius: Integer = 5); Overload;
+    procedure RoundedBox(Rect: TelRect; Color: TelColor; RoundedRadius: Integer = 5); Overload; deprecated;
     //procedure RoundedBox(Rect: TelRect; Color: TelGradient; RoundedRadius: Integer = 5); Overload;
 
-    procedure Circle(Rect: TelRect; Color: TelColor); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure Polygon(Vertices: array of TelVertex); Overload;
-    procedure Polygon(Rect: TelRect; Color: TelColor; Polygons: Integer = 5; Rotation: Single = 0.0); Overload;
+    procedure Circle(Rect: TelRect; Color: TelColor); {$IFDEF CAN_INLINE} inline; {$ENDIF} deprecated;
+    procedure Polygon(Vertices: array of TelVertex); Overload; deprecated;
+    procedure Polygon(Rect: TelRect; Color: TelColor; Polygons: Integer = 5; Rotation: Single = 0.0); Overload; deprecated;
 
-    function Button(Rect: TelRect; Caption: String): Boolean;
+    function Button(Rect: TelRect; Caption: String): Boolean; deprecated;
 end;
 
 {$IFDEF AUTO_INIT}
