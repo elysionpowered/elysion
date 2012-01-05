@@ -31,16 +31,22 @@
 <td class="itemcode"><code>procedure <b><a   href="ElysionGraphics.html#DrawQuad">DrawQuad</a></b>(pX, pY, pW, pH, pZ: Single); Overload;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>procedure <b><a   href="ElysionGraphics.html#DrawQuad">DrawQuad</a></b>(pX, pY, pW, pH, pZ: Single; Vertices: <a   href="ElysionTypes.html#TColorVertices">TColorVertices</a>); Overload;</code></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionGraphics.html#DrawQuad">DrawQuad</a></b>(pX, pY, pW, pH, pZ: Single; Vertices: <a   href="ElysionTypes.html#TelColorVertices">TelColorVertices</a>); Overload;</code></td>
 </tr>
 <tr class="list">
 <td class="itemcode"><code>procedure <b><a   href="ElysionGraphics.html#DrawQuad">DrawQuad</a></b>(OrgX, OrgY, ClipX, ClipY, ClipW, ClipH, DrawX, DrawY, DrawW, DrawH, Z: Single); Overload;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>procedure <b><a   href="ElysionGraphics.html#DrawLine">DrawLine</a></b>(Src, Dst: <a   href="ElysionTypes.TelVector2f.html">TelVector2f</a>; Color: <a   href="ElysionTypes.TelColor.html">TelColor</a>); Overload;</code></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionGraphics.html#DrawRoundedRect">DrawRoundedRect</a></b>(X, Y, W, H, Z: Single; aRoundedRadius: Single);</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>procedure <b><a   href="ElysionGraphics.html#DrawLine">DrawLine</a></b>(Points: array of <a   href="ElysionTypes.TelVector2f.html">TelVector2f</a>; Color: <a   href="ElysionTypes.TelColor.html">TelColor</a>); Overload;</code></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionGraphics.html#DrawLine">DrawLine</a></b>(Src, Dst: <a   href="ElysionTypes.TelVector3f.html">TelVector3f</a>; Color: <a   href="ElysionTypes.TelColor.html">TelColor</a>; LineWidth: Single = 1.0); Overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>procedure <b><a   href="ElysionGraphics.html#DrawLine">DrawLine</a></b>(Points: array of <a   href="ElysionTypes.TelVector3f.html">TelVector3f</a>; Color: <a   href="ElysionTypes.TelColor.html">TelColor</a>; LineWidth: Single = 1.0); Overload;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>procedure <b><a   href="ElysionGraphics.html#DrawPolygon">DrawPolygon</a></b>(Vertices: array of <a   href="ElysionTypes.TelVertex.html">TelVertex</a>);</code></td>
 </tr>
 <tr class="list2">
 <td class="itemcode"><code>function <b><a   href="ElysionGraphics.html#CollisionTest">CollisionTest</a></b>(RectOne, RectTwo: <a   href="ElysionTypes.TelRect.html">TelRect</a>): Boolean; Overload;</code></td>
@@ -98,7 +104,7 @@ function convCol(Color: TelColor): Cardinal; Overload;</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><a name="DrawQuad"></a><code>procedure <b>DrawQuad</b>(pX, pY, pW, pH, pZ: Single; Vertices: <a   href="ElysionTypes.html#TColorVertices">TColorVertices</a>); Overload;</code></td>
+<td class="itemcode"><a name="DrawQuad"></a><code>procedure <b>DrawQuad</b>(pX, pY, pW, pH, pZ: Single; Vertices: <a   href="ElysionTypes.html#TelColorVertices">TelColorVertices</a>); Overload;</code></td>
 </tr>
 <tr><td colspan="1">
 &nbsp;</td></tr>
@@ -112,14 +118,28 @@ function convCol(Color: TelColor): Cardinal; Overload;</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><a name="DrawLine"></a><code>procedure <b>DrawLine</b>(Src, Dst: <a   href="ElysionTypes.TelVector2f.html">TelVector2f</a>; Color: <a   href="ElysionTypes.TelColor.html">TelColor</a>); Overload;</code></td>
+<td class="itemcode"><a name="DrawRoundedRect"></a><code>procedure <b>DrawRoundedRect</b>(X, Y, W, H, Z: Single; aRoundedRadius: Single);</code></td>
 </tr>
 <tr><td colspan="1">
 &nbsp;</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><a name="DrawLine"></a><code>procedure <b>DrawLine</b>(Points: array of <a   href="ElysionTypes.TelVector2f.html">TelVector2f</a>; Color: <a   href="ElysionTypes.TelColor.html">TelColor</a>); Overload;</code></td>
+<td class="itemcode"><a name="DrawLine"></a><code>procedure <b>DrawLine</b>(Src, Dst: <a   href="ElysionTypes.TelVector3f.html">TelVector3f</a>; Color: <a   href="ElysionTypes.TelColor.html">TelColor</a>; LineWidth: Single = 1.0); Overload;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><a name="DrawLine"></a><code>procedure <b>DrawLine</b>(Points: array of <a   href="ElysionTypes.TelVector3f.html">TelVector3f</a>; Color: <a   href="ElysionTypes.TelColor.html">TelColor</a>; LineWidth: Single = 1.0); Overload;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><a name="DrawPolygon"></a><code>procedure <b>DrawPolygon</b>(Vertices: array of <a   href="ElysionTypes.TelVertex.html">TelVertex</a>);</code></td>
 </tr>
 <tr><td colspan="1">
 &nbsp;</td></tr>
@@ -152,6 +172,6 @@ function convCol(Color: TelColor): Cardinal; Overload;</p>
 <tr><td colspan="1">
 &nbsp;</td></tr>
 </table>
-<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2011-12-01 21:54:18</em>
+<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2012-01-05 23:33:39</em>
 </span>
 </body></html>

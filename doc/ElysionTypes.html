@@ -58,11 +58,11 @@
 <td class="itemdesc">&nbsp;</td>
 </tr>
 <tr class="list2">
-<td class="itemname">record&nbsp;<a class="bold"  href="ElysionTypes.TelImageOffset.html"><code>TelImageOffset</code></a></td>
+<td class="itemname">record&nbsp;<a class="bold"  href="ElysionTypes.TelOffset.html"><code>TelOffset</code></a></td>
 <td class="itemdesc">&nbsp;</td>
 </tr>
 <tr class="list">
-<td class="itemname">record&nbsp;<a class="bold"  href="ElysionTypes.TelImageRotation.html"><code>TelImageRotation</code></a></td>
+<td class="itemname">record&nbsp;<a class="bold"  href="ElysionTypes.TelRotation.html"><code>TelRotation</code></a></td>
 <td class="itemdesc">&nbsp;</td>
 </tr>
 <tr class="list2">
@@ -79,6 +79,10 @@
 </tr>
 <tr class="list">
 <td class="itemname">record&nbsp;<a class="bold"  href="ElysionTypes.TelAlignment.html"><code>TelAlignment</code></a></td>
+<td class="itemdesc">&nbsp;</td>
+</tr>
+<tr class="list2">
+<td class="itemname">record&nbsp;<a class="bold"  href="ElysionTypes.TelRenderOptions.html"><code>TelRenderOptions</code></a></td>
 <td class="itemdesc">&nbsp;</td>
 </tr>
 </table>
@@ -100,67 +104,73 @@
 <td class="itemcode"><code>function <b><a   href="ElysionTypes.html#makeV3i">makeV3i</a></b>(aX, aY: Integer; aZ: Integer = 0): <a   href="ElysionTypes.TelVector3i.html">TelVector3i</a>; Overload;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>function <b><a   href="ElysionTypes.html#makeSize">makeSize</a></b>(aWidth, aHeight: Integer): <a   href="ElysionTypes.TelSize.html">TelSize</a>;</code></td>
+<td class="itemcode"><code>function <b><a   href="ElysionTypes.html#makeSize">makeSize</a></b>(aWidth, aHeight: Single): <a   href="ElysionTypes.TelSize.html">TelSize</a>;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>function <b><a   href="ElysionTypes.html#makeRect">makeRect</a></b>(aX, aY, aW, aH: Single): <a   href="ElysionTypes.TelRect.html">TelRect</a>;</code></td>
+<td class="itemcode"><code>function <b><a   href="ElysionTypes.html#makeRect">makeRect</a></b>(aX, aY, aW, aH: Single): <a   href="ElysionTypes.TelRect.html">TelRect</a>; Overload;</code></td>
 </tr>
 <tr class="list2">
+<td class="itemcode"><code>function <b><a   href="ElysionTypes.html#makeRect">makeRect</a></b>(aX, aY, aZ, aW, aH: Single): <a   href="ElysionTypes.TelRect.html">TelRect</a>; Overload;</code></td>
+</tr>
+<tr class="list">
 <td class="itemcode"><code>function <b><a   href="ElysionTypes.html#makeCol">makeCol</a></b>(aR, aG, aB: Byte; anA: Byte = 255): <a   href="ElysionTypes.TelColor.html">TelColor</a>; Overload;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code>function <b><a   href="ElysionTypes.html#makeP2D">makeP2D</a></b>(aX, aY: Integer): <a   href="ElysionTypes.TelVector2i.html">TelVector2i</a>; Overload; deprecated;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code>function <b><a   href="ElysionTypes.html#makeP2D">makeP2D</a></b>(aX, aY: Single): <a   href="ElysionTypes.TelVector2f.html">TelVector2f</a>; Overload; deprecated;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code>function <b><a   href="ElysionTypes.html#makeP3D">makeP3D</a></b>(aX, aY: Integer; aZ: Integer = 0): <a   href="ElysionTypes.TelVector3i.html">TelVector3i</a>; Overload; deprecated;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code>function <b><a   href="ElysionTypes.html#makeP3D">makeP3D</a></b>(aX, aY: Single; aZ: Single = 0.0): <a   href="ElysionTypes.TelVector3f.html">TelVector3f</a>; Overload; deprecated;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code>function <b><a   href="ElysionTypes.html#makeKey">makeKey</a></b>(KeyName, KeyValue: String): <a   href="ElysionTypes.TKeyIdent.html">TKeyIdent</a>; Overload;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code>function <b><a   href="ElysionTypes.html#makeKey">makeKey</a></b>(KeyName: String; KeyValue: Integer): <a   href="ElysionTypes.TKeyIdent.html">TKeyIdent</a>; Overload;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code>function <b><a   href="ElysionTypes.html#makeKey">makeKey</a></b>(KeyName: String; KeyValue: Single): <a   href="ElysionTypes.TKeyIdent.html">TKeyIdent</a>; Overload;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code>function <b><a   href="ElysionTypes.html#IsRectEmpty">IsRectEmpty</a></b>(Rect: <a   href="ElysionTypes.TelRect.html">TelRect</a>): Boolean;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code>function <b><a   href="ElysionTypes.html#VectorEquals">VectorEquals</a></b>(VecOne, VecTwo: <a   href="ElysionTypes.TelVector2f.html">TelVector2f</a>): Boolean; Overload;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code>function <b><a   href="ElysionTypes.html#VectorEquals">VectorEquals</a></b>(VecOne, VecTwo: <a   href="ElysionTypes.TelVector2i.html">TelVector2i</a>): Boolean; Overload;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code>function <b><a   href="ElysionTypes.html#VectorEquals">VectorEquals</a></b>(VecOne, VecTwo: <a   href="ElysionTypes.TelVector3f.html">TelVector3f</a>): Boolean; Overload;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code>function <b><a   href="ElysionTypes.html#VectorEquals">VectorEquals</a></b>(VecOne, VecTwo: <a   href="ElysionTypes.TelVector3i.html">TelVector3i</a>): Boolean; Overload;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code>function <b><a   href="ElysionTypes.html#ColorEquals">ColorEquals</a></b>(ColorOne, ColorTwo: <a   href="ElysionTypes.TelColor.html">TelColor</a>): Boolean;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code>function <b><a   href="ElysionTypes.html#IsInRange">IsInRange</a></b>(Min, Max, Value: Integer): Boolean; Overload;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code>function <b><a   href="ElysionTypes.html#IsInRange">IsInRange</a></b>(Min, Max, Value: Single): Boolean; Overload;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code>function <b><a   href="ElysionTypes.html#RectContainsVector">RectContainsVector</a></b>(aRect: <a   href="ElysionTypes.TelRect.html">TelRect</a>; aVector: <a   href="ElysionTypes.TelVector2i.html">TelVector2i</a>): Boolean; Overload;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code>function <b><a   href="ElysionTypes.html#RectContainsVector">RectContainsVector</a></b>(aRect: <a   href="ElysionTypes.TelRect.html">TelRect</a>; aVector: <a   href="ElysionTypes.TelVector2f.html">TelVector2f</a>): Boolean; Overload;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code>function <b><a   href="ElysionTypes.html#RectContainsRect">RectContainsRect</a></b>(aRect, bRect: <a   href="ElysionTypes.TelRect.html">TelRect</a>): Boolean;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a   href="ElysionTypes.html#EmptyRenderOptions">EmptyRenderOptions</a></b>: <a   href="ElysionTypes.TelRenderOptions.html">TelRenderOptions</a>;</code></td>
 </tr>
 </table>
 <a name="%40Types"></a><h3 class="summary">Types</h3>
@@ -223,22 +233,28 @@
 <td class="itemcode"><code><b><a   href="ElysionTypes.html#TelBlendMode">TelBlendMode</a></b> = (...);</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code><b><a   href="ElysionTypes.html#TGradientStyle">TGradientStyle</a></b> = SDLUtils.TGradientStyle;</code></td>
+<td class="itemcode"><code><b><a   href="ElysionTypes.html#TGradientStyle">TGradientStyle</a></b> = (...);</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code><b><a   href="ElysionTypes.html#TColorVertices">TColorVertices</a></b> = array[0..3] of <a   href="ElysionTypes.TelColor.html">TelColor</a>;</code></td>
+<td class="itemcode"><code><b><a   href="ElysionTypes.html#TelColorVertices">TelColorVertices</a></b> = array[0..3] of <a   href="ElysionTypes.TelColor.html">TelColor</a>;</code></td>
 </tr>
 <tr class="list2">
+<td class="itemcode"><code><b><a   href="ElysionTypes.html#TelTexCoords">TelTexCoords</a></b> = array[0..3] of <a   href="ElysionTypes.TelVector2f.html">TelVector2f</a>;</code></td>
+</tr>
+<tr class="list">
 <td class="itemcode"><code><b><a   href="ElysionTypes.html#TelBoundingBox">TelBoundingBox</a></b> = (...);</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><b><a   href="ElysionTypes.html#TAlignVertical">TAlignVertical</a></b> = (...);</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><b><a   href="ElysionTypes.html#TAlignHorizontal">TAlignHorizontal</a></b> = (...);</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><b><a   href="ElysionTypes.html#TelAssetType">TelAssetType</a></b> = (...);</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a   href="ElysionTypes.html#PelRenderOptions">PelRenderOptions</a></b> = &circ;<a   href="ElysionTypes.TelRenderOptions.html">TelRenderOptions</a>;</code></td>
 </tr>
 <tr class="list2">
 <td class="itemcode"><code><b><a   href="ElysionTypes.html#TelElementDecoration">TelElementDecoration</a></b> = (...);</code></td>
@@ -297,14 +313,21 @@
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><a name="makeSize"></a><code>function <b>makeSize</b>(aWidth, aHeight: Integer): <a   href="ElysionTypes.TelSize.html">TelSize</a>;</code></td>
+<td class="itemcode"><a name="makeSize"></a><code>function <b>makeSize</b>(aWidth, aHeight: Single): <a   href="ElysionTypes.TelSize.html">TelSize</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 &nbsp;</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><a name="makeRect"></a><code>function <b>makeRect</b>(aX, aY, aW, aH: Single): <a   href="ElysionTypes.TelRect.html">TelRect</a>;</code></td>
+<td class="itemcode"><a name="makeRect"></a><code>function <b>makeRect</b>(aX, aY, aW, aH: Single): <a   href="ElysionTypes.TelRect.html">TelRect</a>; Overload;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><a name="makeRect"></a><code>function <b>makeRect</b>(aX, aY, aZ, aW, aH: Single): <a   href="ElysionTypes.TelRect.html">TelRect</a>; Overload;</code></td>
 </tr>
 <tr><td colspan="1">
 &nbsp;</td></tr>
@@ -442,6 +465,13 @@ function makeCol(aR, aG, aB: Single; anA: Single = 1.0): TelColor; Overload; {$I
 <table class="detail wide_list">
 <tr class="list">
 <td class="itemcode"><a name="RectContainsRect"></a><code>function <b>RectContainsRect</b>(aRect, bRect: <a   href="ElysionTypes.TelRect.html">TelRect</a>): Boolean;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><a name="EmptyRenderOptions"></a><code>function <b>EmptyRenderOptions</b>: <a   href="ElysionTypes.TelRenderOptions.html">TelRenderOptions</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 &nbsp;</td></tr>
@@ -602,14 +632,28 @@ bmSub: Sub blending</li>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><a name="TGradientStyle"></a><code><b>TGradientStyle</b> = SDLUtils.TGradientStyle;</code></td>
+<td class="itemcode"><a name="TGradientStyle"></a><code><b>TGradientStyle</b> = (...);</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;<h6 class="description_section">Values</h6>
+<ul>
+<li>
+gsVertical: &nbsp;</li>
+<li>
+gsHorizontal: &nbsp;</li>
+</ul>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><a name="TelColorVertices"></a><code><b>TelColorVertices</b> = array[0..3] of <a   href="ElysionTypes.TelColor.html">TelColor</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 &nbsp;</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><a name="TColorVertices"></a><code><b>TColorVertices</b> = array[0..3] of <a   href="ElysionTypes.TelColor.html">TelColor</a>;</code></td>
+<td class="itemcode"><a name="TelTexCoords"></a><code><b>TelTexCoords</b> = array[0..3] of <a   href="ElysionTypes.TelVector2f.html">TelVector2f</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 &nbsp;</td></tr>
@@ -686,6 +730,13 @@ atSpriteSheet: &nbsp;</li>
 </table>
 <table class="detail wide_list">
 <tr class="list">
+<td class="itemcode"><a name="PelRenderOptions"></a><code><b>PelRenderOptions</b> = &circ;<a   href="ElysionTypes.TelRenderOptions.html">TelRenderOptions</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
 <td class="itemcode"><a name="TelElementDecoration"></a><code><b>TelElementDecoration</b> = (...);</code></td>
 </tr>
 <tr><td colspan="1">
@@ -750,6 +801,6 @@ ltNote: Displays message as a note</li>
 <tr><td colspan="1">
 &nbsp;</td></tr>
 </table>
-<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2011-12-01 21:54:19</em>
+<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2012-01-05 23:33:42</em>
 </span>
 </body></html>

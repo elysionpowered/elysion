@@ -29,18 +29,18 @@ TelRectangle</p>
 <table class="summary wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code><b><a   href="ElysionGUI.TelRectangle.html#fVertices">fVertices</a></b>: <a   href="ElysionTypes.html#TColorVertices">TColorVertices</a>;</code></td>
+<td class="itemcode"><code><b><a   href="ElysionGUI.TelRectangle.html#fVertices">fVertices</a></b>: <a   href="ElysionTypes.html#TelColorVertices">TelColorVertices</a>;</code></td>
 </tr>
 </table>
 <a name="%40Methods"></a><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>function <b><a   href="ElysionGUI.TelRectangle.html#GetWidth">GetWidth</a></b>(): Integer; Override;</code></td>
+<td class="itemcode"><code>function <b><a   href="ElysionGUI.TelRectangle.html#GetWidth">GetWidth</a></b>(): Single; Override;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>function <b><a   href="ElysionGUI.TelRectangle.html#GetHeight">GetHeight</a></b>(): Integer; Override;</code></td>
+<td class="itemcode"><code>function <b><a   href="ElysionGUI.TelRectangle.html#GetHeight">GetHeight</a></b>(): Single; Override;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
@@ -64,7 +64,7 @@ TelRectangle</p>
 </tr>
 <tr class="list2">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>constructor <b><a   href="ElysionGUI.TelRectangle.html#Create">Create</a></b>(aWidth, aHeight: Integer); Overload;</code></td>
+<td class="itemcode"><code>constructor <b><a   href="ElysionGUI.TelRectangle.html#Create">Create</a></b>(aWidth, aHeight: Single); Overload;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
@@ -76,14 +76,14 @@ TelRectangle</p>
 </tr>
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a   href="ElysionGUI.TelRectangle.html#Draw">Draw</a></b>(DrawChildren: Boolean = true); Override;</code></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionGUI.TelRectangle.html#Draw">Draw</a></b>(Graphics: <a   href="ElysionGraphicsProvider.IGraphicsProvider.html">IGraphicsProvider</a>; DrawChildren: Boolean = true); Override;</code></td>
 </tr>
 </table>
 <a name="%40Properties"></a><h3 class="summary">Properties</h3>
 <table class="summary wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>property <b><a   href="ElysionGUI.TelRectangle.html#Vertices">Vertices</a></b>: <a   href="ElysionTypes.html#TColorVertices">TColorVertices</a> read <a   href="ElysionGUI.TelRectangle.html#fVertices">fVertices</a> write <a   href="ElysionGUI.TelRectangle.html#fVertices">fVertices</a>;</code></td>
+<td class="itemcode"><code>property <b><a   href="ElysionGUI.TelRectangle.html#Vertices">Vertices</a></b>: <a   href="ElysionTypes.html#TelColorVertices">TelColorVertices</a> read <a   href="ElysionGUI.TelRectangle.html#fVertices">fVertices</a> write <a   href="ElysionGUI.TelRectangle.html#fVertices">fVertices</a>;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
@@ -91,7 +91,7 @@ TelRectangle</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><a name="fVertices"></a><code><b>fVertices</b>: <a   href="ElysionTypes.html#TColorVertices">TColorVertices</a>;</code></td>
+<td class="itemcode"><a name="fVertices"></a><code><b>fVertices</b>: <a   href="ElysionTypes.html#TelColorVertices">TelColorVertices</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -100,7 +100,7 @@ TelRectangle</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><a name="GetWidth"></a><code>function <b>GetWidth</b>(): Integer; Override;</code></td>
+<td class="itemcode"><a name="GetWidth"></a><code>function <b>GetWidth</b>(): Single; Override;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -108,7 +108,7 @@ TelRectangle</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><a name="GetHeight"></a><code>function <b>GetHeight</b>(): Integer; Override;</code></td>
+<td class="itemcode"><a name="GetHeight"></a><code>function <b>GetHeight</b>(): Single; Override;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -156,7 +156,7 @@ TelRectangle</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Create"></a><code>constructor <b>Create</b>(aWidth, aHeight: Integer); Overload;</code></td>
+<td class="itemcode"><a name="Create"></a><code>constructor <b>Create</b>(aWidth, aHeight: Single); Overload;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -180,7 +180,7 @@ TelRectangle</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Draw"></a><code>procedure <b>Draw</b>(DrawChildren: Boolean = true); Override;</code></td>
+<td class="itemcode"><a name="Draw"></a><code>procedure <b>Draw</b>(Graphics: <a   href="ElysionGraphicsProvider.IGraphicsProvider.html">IGraphicsProvider</a>; DrawChildren: Boolean = true); Override;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -189,11 +189,11 @@ TelRectangle</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Vertices"></a><code>property <b>Vertices</b>: <a   href="ElysionTypes.html#TColorVertices">TColorVertices</a> read <a   href="ElysionGUI.TelRectangle.html#fVertices">fVertices</a> write <a   href="ElysionGUI.TelRectangle.html#fVertices">fVertices</a>;</code></td>
+<td class="itemcode"><a name="Vertices"></a><code>property <b>Vertices</b>: <a   href="ElysionTypes.html#TelColorVertices">TelColorVertices</a> read <a   href="ElysionGUI.TelRectangle.html#fVertices">fVertices</a> write <a   href="ElysionGUI.TelRectangle.html#fVertices">fVertices</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
 </table>
-<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2011-12-01 21:54:18</em>
+<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2012-01-05 23:33:40</em>
 </span>
 </body></html>
