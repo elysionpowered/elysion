@@ -1,6 +1,8 @@
 Elysion Game Framework
 ======================
 
+![Elysion Logo](https://github.com/freezedev/elysion/raw/master/resources/images/logo.png)
+
 What is this?
 -------------
 
@@ -70,7 +72,7 @@ For detailed information please visit the Elysion wiki: https://github.com/freez
 Need some help?
 ---------------
 
-If you have some questions or hit road block during development, Check out the official forums: http://www.pascalgamedevelopment.com/forumdisplay.php?67-Elysion-Game-Framework
+If you have some questions or hit road block during development, check out the official forums: http://www.pascalgamedevelopment.com/forumdisplay.php?67-Elysion-Game-Framework
 
 
 License
