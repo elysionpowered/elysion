@@ -1,7 +1,6 @@
 Elysion Game Framework
 ======================
 
-![Elysion Logo](https://github.com/freezedev/elysion/raw/master/resources/images/logo.png)
 
 What is this?
 -------------
