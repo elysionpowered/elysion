@@ -1,3 +1,21 @@
+V1.1:
+(Primarily bug fix release, still supports FreePascal 2.4.x and Delphi 7 / Turbo Delphi)
+* Marked intermediate GUI as deprecated (Please use TelNode descendants and add them to other nodes, layers or scenes)
++ Added support for sprite sheets (TelSpriteSheet)
+* Fixed an issue where animators don't have their end value when the animation finishes
++ Added WaitUntilFinished property to TelAnimator and TelSpriteSheet (If set to true, the animation cannot be played again until it has been finished)
+* Small performance optimizations (#59)
+* Saves screenshots and log at working path (#58)
+* Fixed an issue where pixel collisions leads to a crash on 64-bit systems (#63)
+* Fixed an issue where rounded rectangles are not being drawn (#64)
+* Removed X11 linking dependency on Mac OS X
+* Updated Vampyre dependency to latest Mercurial version (11-Dec-20)
+* TelSize has now Single values instead of Integer
++ Added first draft of pluggable provider system (for graphics, audio, etc.)
+* Improved texture loader: Pixel data (for pixel collision) will only be loaded if needed -> Faster loading times
+- Removed ResourceMap unit (as it will be renamed and restructured)
+- Removed SFont unit due to it being GPL licensed
+
 V1.0a:
 (This the last version that supports FreePascal 2.4.x officially and Delphi 7 / Turbo Delphi unofficially. All future versions require at least FreePascal 2.6.0 or Delphi 2010)
 * Back to standard versioning, no more YY-MM versions (1.0 series will be FPC 2.4 compatible, 1.5 and up is FPC 2.6 compatible)
