@@ -1,34 +1,71 @@
 unit ElysionBounds;
 
+{$I Elysion.inc}
+
+{$mode delphi}
+
 interface
+
+uses
+  SysUtils,
+
+  ElysionTypes;
 
 type
 
   { TelBounds }
 
-  TelBounds = class
-  protected
+  TelBounds = record
+  private
     fLeft, fTop, fRight, fBottom: Single;
 
-    function GetValue: Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure SetValue(const AValue: Single); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  public
-    constructor Create;
-    destructor Destroy; Override;
+    function GetValue: Single; inline;
+    procedure SetValue(const AValue: Single); inline;
 
-    function IsEmpty(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  published
+    function GetHeight: Single; inline;
+    function GetWidth: Single; inline;
+
+    function IsEmpty: Boolean; inline;
+  public
+    procedure Clear;
+
+    function ToString: AnsiString;
+    function ToRect: TelRect;
+  public
+    class operator Implicit(AValue: Single): TelBounds; inline;
+  public
+    class function Create: TelBounds; static; inline; Overload;
+    class function Create(aLeft, aTop, aRight, aBottom: Single): TelBounds; static; inline; Overload;
+    class function Create(aRect: TelRect): TelBounds; static; inline; Overload;
+
+    class function Copy(aSource: TelBounds): TelBounds; static; inline;
+  public
+    property Empty: Boolean read IsEmpty;
+
     property Value: Single read GetValue write SetValue;
 
     property Left: Single read fLeft write fLeft;
     property Top: Single read fTop write fTop;
     property Right: Single read fRight write fRight;
     property Bottom: Single read fBottom write fBottom;
+
+    property Width: Single read GetWidth;
+    property Height: Single read GetHeight;
   end;
 
 implementation
 
 { TelBounds }
+
+function TelBounds.GetHeight: Single;
+begin
+  Result := Bottom - Top;
+end;
+
+function TelBounds.GetWidth: Single;
+begin
+  Result := Right - Left;
+end;
 
 function TelBounds.GetValue: Single;
 begin
@@ -43,7 +80,12 @@ begin
   Bottom := AValue;
 end;
 
-constructor TelBounds.Create;
+function TelBounds.IsEmpty: Boolean;
+begin
+  Result := (Value = 0);
+end;
+
+procedure TelBounds.Clear;
 begin
   fLeft := 0;
   fTop := 0;
@@ -51,14 +93,49 @@ begin
   fBottom := 0;
 end;
 
-destructor TelBounds.Destroy;
+function TelBounds.ToString: AnsiString;
 begin
-  inherited Destroy;
+  Result := Format('bounds(%f, %f, %f, %f)', [Left, Top, Right, Bottom]);
 end;
 
-function TelBounds.IsEmpty(): Boolean;
+function TelBounds.ToRect: TelRect;
 begin
-  Result := (Value = 0);
+  Result := makeRect(Left, Top, Width, Height);
+end;
+
+class operator TelBounds.Implicit(AValue: Single): TelBounds;
+begin
+  Result.Value := AValue;
+end;
+
+class function TelBounds.Create: TelBounds;
+begin
+  Result.Clear;
+end;
+
+class function TelBounds.Create(aLeft, aTop, aRight, aBottom: Single
+  ): TelBounds;
+begin
+  Result.Left := aLeft;
+  Result.Top := aTop;
+  Result.Right := aRight;
+  Result.Bottom := aBottom;
+end;
+
+class function TelBounds.Create(aRect: TelRect): TelBounds;
+begin
+  Result.Left := aRect.X;
+  Result.Top := aRect.Y;
+  Result.Right := aRect.W + aRect.X;
+  Result.Bottom := aRect.H + aRect.Y;
+end;
+
+class function TelBounds.Copy(aSource: TelBounds): TelBounds;
+begin
+  Result.Left := aSource.Left;
+  Result.Top := aSource.Top;
+  Result.Right := aSource.Right;
+  Result.Bottom := aSource.Bottom;
 end;
 
 end.

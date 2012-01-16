@@ -6,17 +6,15 @@
   * @author(Johannes Stein and contributors <http://elysionpowered.org>)
   *
   *)
-unit ElysionApplication;
+unit ElysionWindowManager;
 
 {$I Elysion.inc}
 
 interface
 
 uses
-  ElysionEnums,
   ElysionTypes,
   ElysionObject,
-  ElysionContainer,
   ElysionColor,
   ElysionContent,
   ElysionLogger,
@@ -44,13 +42,22 @@ uses
 
 type
 
+// TelVideoFlags
+TelVideoFlag =
+  (vfNull,      //< vfNull: Use for console applications, no video surface will be created
+   vfAuto,      //< vfAuto: Automatically checks if hardware or software render mode are available
+   vfHardware,  //< vfHardware: Use hardware surface
+   vfSoftware); //< vfSoftware: Use software surface
+
+TelProjectionMode = (pmFrustum, pmOrtho);
+
 {
     @classname @br
     Description: @br
     Provides an application container
 
 }
-TAppContainer = class(TelContainer)
+TAppContainer = class(TelModuleContainer)
   private
     FInitialized: Boolean;
 
@@ -214,7 +221,7 @@ TelWindow = class(TelObject)
     procedure SetNativeResolution(NativeRes: TelVector2i); {$IFDEF CAN_INLINE} inline; {$ENDIF}
     function GetNativeResolution: TelVector2i; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-    function GetDisplayOrientation(): TRectOrientation; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetDisplayOrientation(): TDisplayOrientation; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     function GetWideScreen(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
     // Set projection matrix
@@ -329,7 +336,7 @@ TelWindow = class(TelObject)
     property MouseButtonDownEventList: TList read fMouseButtonDownEventList;
     property MouseButtonUpEventList: TList read fMouseButtonUpEventList;
 
-    property DisplayOrientation: TRectOrientation read GetDisplayOrientation;
+    property DisplayOrientation: TDisplayOrientation read GetDisplayOrientation;
     property WideScreen: Boolean read GetWideScreen;
 
     // Read-only, set values through SetVideoMode
@@ -671,10 +678,10 @@ begin
   Result := SDL_NumJoysticks();
 end;
 
-function TelWindow.GetDisplayOrientation(): TRectOrientation;
+function TelWindow.GetDisplayOrientation(): TDisplayOrientation;
 begin
-  if (Trunc(Self.Width / Self.Height) = 0) then Result := roPortrait
-  else Result := roLandscape;
+  if (Trunc(Self.Width / Self.Height) = 0) then Result := doPortrait
+  else Result := doLandscape;
 end;
 
 function TelWindow.GetWideScreen(): Boolean;
@@ -783,7 +790,7 @@ begin
 
     TextureManager.ReloadAllTextures();
 
-    SetBackgroundColor(TelColor.clFreezeDevBlue);
+    SetBackgroundColor(Color.clFreezeDevBlue);
 
     glViewport(0, 0, FResolution.X, FResolution.Y);
     SetProjection(pmOrtho);

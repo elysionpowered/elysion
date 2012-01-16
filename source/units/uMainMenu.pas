@@ -12,11 +12,11 @@ uses
   ElysionApplication,
   ElysionMenu,
   ElysionLabel,
-  ElysionGUI,
   ElysionInput,
   ElysionAnimator,
   ElysionAssets,
   ElysionSprite,
+  ElysionPrimitives,
 
   SysUtils,
   uBasic,

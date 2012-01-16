@@ -6,7 +6,7 @@
   * @author(Johannes Stein and contributors <http://elysionpowered.org>)
   *
   *)
-unit ElysionApplication;
+unit ElysionWindow;
 
 {$I Elysion.inc}
 
@@ -43,6 +43,15 @@ uses
   Classes;
 
 type
+
+// TelVideoFlags
+TelVideoFlag =
+  (vfNull,      //< vfNull: Use for console applications, no video surface will be created
+   vfAuto,      //< vfAuto: Automatically checks if hardware or software render mode are available
+   vfHardware,  //< vfHardware: Use hardware surface
+   vfSoftware); //< vfSoftware: Use software surface
+
+TelProjectionMode = (pmFrustum, pmOrtho);
 
 {
     @classname @br

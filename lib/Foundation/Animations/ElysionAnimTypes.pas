@@ -3,7 +3,9 @@ unit ElysionAnimTypes;
 interface
 
 uses
-  ElysionTypes;
+  ElysionTypes,
+  ElysionColor,
+  ElysionShadow;
 
 type
 

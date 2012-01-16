@@ -1,4 +1,4 @@
-unit ElysionTrueTypeFont;
+unit ElysionFontManager;
 
 interface
 
@@ -6,9 +6,7 @@ interface
 
 uses
   ElysionTypes,
-  ElysionColor,
   ElysionObject,
-  ElysionContainer,
   ElysionApplication,
   ElysionGraphics,
   ElysionLogger,
@@ -99,7 +97,7 @@ TelTrueTypeFont = class(TelFontContainer)
     property RenderStyle: TFontRender read GetRenderType write SetRenderType;
 end;
 
-TSDLTTFFontContainer = class(TelContainer)
+TSDLTTFFontContainer = class(TelModuleContainer)
 public
   constructor Create; Override;
   destructor Destroy; Override;
@@ -288,7 +286,7 @@ end;
 
 procedure TelTrueTypeFont.SetColor(aColor: TelColor);
 begin
-  if not (fColor = aColor) then
+  if not fColor.Equals(aColor) then
     fColor := aColor;
 end;
 

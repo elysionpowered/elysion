@@ -12,7 +12,7 @@ uses
   ElysionGraphicsProvider,
   ElysionInput,
   ElysionButton,
-  ElysionGUI,
+  ElysionPrimitives,
   ElysionTrueTypeFont,
 
   uBasic,
@@ -44,7 +44,7 @@ begin
 
   Font := TelTrueTypeFont.Create;
   Font.LoadFromFile(GetStdFont, 14);
-  Font.Color := Color.clWhite;
+  Font.Color := TelColor.clWhite;
   Font.RenderStyle := rtBlended;
 
   Button := TelButton.Create;

@@ -1,4 +1,4 @@
-unit ElysionEntity;
+unit ElysionCSS;
 
 interface
 
@@ -8,7 +8,6 @@ uses
   Classes,
 
   ElysionObject,
-  ElysionContainer,
   ElysionInterfaces,
   ElysionGraphicsProvider,
   ElysionNode;

@@ -1,4 +1,4 @@
-unit ElysionTexture;
+unit ElysionTextureManager;
 
 {$IFDEF FPC}
   {$mode delphi}
@@ -8,7 +8,6 @@ unit ElysionTexture;
 interface
 
 uses
-  ElysionColor,
   ElysionTypes,
   ElysionObject,
 
@@ -50,8 +49,8 @@ type
 
       function IsEmpty(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
-      //function GetPixel(X, Y: Integer): TelColor;
-      //procedure SetPixel(X, Y: Integer; AValue: TelColor);
+      function GetPixel(X, Y: Integer): TelColor;
+      procedure SetPixel(X, Y: Integer; AValue: TelColor);
     public
       TextureSurface: PSDL_Surface;
       TextureID: GLuInt;
@@ -74,7 +73,7 @@ type
     public
       property ColorKey: TelColor read GetColorKey write SetColorKeyProperty;
 
-      //property Pixels[X, Y: Integer]: TelColor read GetPixel write SetPixel;
+      property Pixels[X, Y: Integer]: TelColor read GetPixel write SetPixel;
     published
       property AspectRatio: Single read GetAspectRatio;
 
@@ -234,7 +233,7 @@ begin
   {$ENDIF}
 end;
 
-(*function TelTexture.GetPixel(X, Y: Integer): TelColor;
+function TelTexture.GetPixel(X, Y: Integer): TelColor;
 begin
 
 end;
@@ -242,7 +241,7 @@ end;
 procedure TelTexture.SetPixel(X, Y: Integer; AValue: TelColor);
 begin
 
-end;*)
+end;
 
 procedure TelTexture.SetColorKey(aColor: TelColor); 
 begin

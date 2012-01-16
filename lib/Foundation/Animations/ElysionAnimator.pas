@@ -22,6 +22,7 @@ interface
 uses
   ElysionObject,
   ElysionTypes,
+  ElysionColor,
   ElysionAnimTypes,
   ElysionTimer,
   ElysionNode,
@@ -476,7 +477,7 @@ procedure TelAnimator.Update(dt: Double = 0.0);
 
   procedure AnimPosition(dt: Double = 0.0);
   begin
-    if not VectorEquals(AnimProperty.StartPosition, AnimProperty.EndPosition) then
+    if not (AnimProperty.StartPosition = AnimProperty.EndPosition) then
     begin
       case Transition of
         atLinear:
@@ -513,7 +514,7 @@ procedure TelAnimator.Update(dt: Double = 0.0);
 
   procedure AnimOrigin(dt: Double = 0.0);
   begin
-    if not VectorEquals(AnimProperty.StartOrigin, AnimProperty.EndOrigin) then
+    if not (AnimProperty.StartOrigin = AnimProperty.EndOrigin) then
     begin
       case Transition of
         atLinear:
@@ -541,7 +542,7 @@ procedure TelAnimator.Update(dt: Double = 0.0);
   procedure AnimRotation(dt: Double = 0.0);
   begin
     // Rotation vector
-    if not VectorEquals(AnimProperty.StartRotation.Vector, AnimProperty.EndRotation.Vector) then
+    if not (AnimProperty.StartRotation.Vector = AnimProperty.EndRotation.Vector) then
     begin
       case Transition of
         atLinear:
@@ -593,11 +594,7 @@ procedure TelAnimator.Update(dt: Double = 0.0);
 
   procedure AnimColor(dt: Double = 0.0);
   begin
-    {$IFDEF CAN_METHODS}
-    if not AnimProperty.StartColor.Equals(AnimProperty.EndColor) then
-    {$ELSE}
-    if not ColorEquals(AnimProperty.StartColor, AnimProperty.EndColor) then
-    {$ENDIF}
+    if not (AnimProperty.StartColor = AnimProperty.EndColor) then
     begin
       case Transition of
         atLinear:
@@ -640,7 +637,7 @@ procedure TelAnimator.Update(dt: Double = 0.0);
 
   procedure AnimScale(dt: Double = 0.0);
   begin
-    if not VectorEquals(AnimProperty.StartScale, AnimProperty.EndScale) then
+    if not (AnimProperty.StartScale = AnimProperty.EndScale) then
     begin
       case Transition of
         atLinear:

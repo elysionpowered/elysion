@@ -1,4 +1,4 @@
-unit ElysionLabel;
+unit ElysionCheckBox;
 
 interface
 
@@ -97,7 +97,11 @@ begin
 
   fRect := makeRect(Position.X, Position.Y, GetWidth(), GetHeight());
 
-  Result := (ActiveWindow.Cursor in fRect);
+  {$IFDEF CAN_METHODS}
+    Result := fRect.ContainsVector(ActiveWindow.Cursor);
+  {$ELSE}
+    Result := RectContainsVector(fRect, ActiveWindow.Cursor);
+  {$ENDIF}
 end;
 
 function TelLabel.GetClick(): Boolean;

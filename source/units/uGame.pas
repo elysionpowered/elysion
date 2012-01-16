@@ -136,7 +136,7 @@ begin
 
   fFont := TelTrueTypeFont.Create;
   fFont.LoadFromFile(GetStdFont, 16);
-  fFont.Color := Color.clWhite;
+  fFont.Color := TelColor.clWhite;
   fFont.RenderStyle := rtBlended;
 
 

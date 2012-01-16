@@ -5,12 +5,13 @@ interface
 uses
   ElysionApplication,
   ElysionTypes,
+  ElysionColor,
   ElysionScene,
   ElysionGraphics,
   ElysionGraphicsProvider,
   ElysionInput,
   ElysionMenu,
-  ElysionGUI,
+  ElysionPrimitives,
 
   uBasic,
   uGlobal,

@@ -1225,9 +1225,7 @@ end;
 
 function TelMouseHelper.Motion(Rect: TelRect): Boolean; 
 begin
-  Result := false;
-
-  if (Rect.ContainsVector(Self.Cursor) and Motion()) then Result := true;
+  Result := ((Self.Cursor in Rect) and Motion);
 end;
 
 {

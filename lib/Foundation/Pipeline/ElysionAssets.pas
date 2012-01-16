@@ -9,8 +9,7 @@ uses
   ElysionTexture,
   ElysionSprite,
   ElysionParallaxSprite,
-  ElysionSpriteSheet,
-  ElysionGUI;
+  ElysionSpriteSheet;
 
 type
 

@@ -5,6 +5,7 @@ interface
 {$I Elysion.inc}
 
 uses
+  ElysionColor,
   ElysionTypes;
 
 type

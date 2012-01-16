@@ -166,7 +166,7 @@ begin
       Break;
     end else
     begin
-      if Environment.AspectRatio = fResolutions[i].GetAspectRatio then
+      if Environment.AspectRatio = fResolutions[i].AspectRatio then
       begin
         if ((prevWidth < fResolutions[i].Width) and (prevHeight < fResolutions[i].Height)) then
         begin

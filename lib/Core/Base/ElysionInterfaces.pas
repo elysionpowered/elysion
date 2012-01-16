@@ -21,6 +21,26 @@ type
   IDataContainer = interface
 
   end;
+
+  IDataReader = interface
+    function LoadFromFile(aFilename: AnsiString): Boolean;
+
+    function GetNodeValue(aNodeName: AnsiString): AnsiString;
+
+    function GetItemValue(anIndex: Integer): AnsiString;
+    function GetItemName(anIndex: Integer): AnsiString;
+
+    function GetItemAttributeName(anIndex, anAttribute: Integer): AnsiString;
+    function GetItemAttributeValue(anIndex, anAttribute: Integer): AnsiString;
+  end;
+
+
+  IDataWriter = interface
+    function SaveToFile(aFilename: AnsiString): Boolean;
+
+    procedure AddElement(aNodeName, aNodeValue: AnsiString); Overload;
+    procedure AddElement(aNodeName, aNodeValue: AnsiString; Attributes: array of AnsiString); Overload;
+  end;
   
   IReadableData = interface
     function LoadFromPlain(aData: TStringList): Boolean;

@@ -10,13 +10,13 @@ uses
   ElysionApplication,
   ElysionGraphicsProvider,
   ElysionTypes,
+  ElysionColor,
   ElysionInput,
   ElysionNode,
   ElysionSprite,
-  ElysionGUI,
+  ElysionPrimitives,
   ElysionTimer,
   ElysionScene,
-  ElysionColor,
   ElysionTrueTypeFont,
   ElysionAnimator,
   ElysionStorage,
@@ -74,7 +74,7 @@ begin
   Font.LoadFromFile(GetStdFont, 18);
 
   // Set font color to white (see ElysionColors.pas)
-  Font.Color := Color.clWhite;
+  Font.Color := TelColor.clWhite;
 
   // Set font render style to rtBlended, which means the font will be drawn
   // nice and anti-aliased, but it costs performance

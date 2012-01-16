@@ -14,8 +14,11 @@ uses
   gl, glu, glext,
   {$ENDIF}
 
+  ElysionEnums,
+  ElysionColor,
   ElysionObject,
   ElysionContent,
+  ElysionList,
   ElysionLogger,
   ElysionUtils,
   ElysionNode,
@@ -26,11 +29,17 @@ uses
   ElysionApplication;
 
 type
-  TelSpriteList = class;
+  // Forward declaration
+  TelSprite = class;
+
+  TelSpriteList = TelList<TelSprite>;
 
   { TelSprite }
 
   TelSprite = class(TelNode)
+    // Variable and type definitions
+    public type
+      TelBoundingBox = (bbDefault, bbCustom, bbPixel);
     private
       fHyperLink: String;
       fTexture, fMask: TelTexture;
@@ -120,36 +129,6 @@ type
       property Height: Single read GetHeight;
   end;
 
-TelSpriteList = class(TelObject)
-  private
-    FSpriteList: TList;
-    Head: String[13];
-
-    function Get(Index: Integer): TelSprite;
-    function GetPos(Index: String): Integer;
-    procedure Put(Index: Integer; const Item: TelSprite);
-    procedure PutS(Index: String; const Item: TelSprite);
-    function GetS(Index: String): TelSprite;
-    function GetCount: integer;
-  public
-    constructor Create; Override;
-    destructor Destroy; Override;
-
-    procedure Insert(Index: Integer; Sprite: TelSprite);
-    function  Add(Sprite: TelSprite): Integer;
-    procedure Delete(Index: Integer);
-    procedure LoadFromStream(Stream : TFileStream);
-    procedure SaveToStream(Stream : TFileStream);
-
-    procedure LoadFromFile(Filename: String);
-    procedure SaveToFile(Filename: String);
-
-    property Items[Index: Integer]: TelSprite read Get write Put; default;
-    property Find[Index: String]: TelSprite read GetS write PutS;
-  published
-    property Count: Integer read GetCount;
-end;
-
 implementation
 
 uses
@@ -218,7 +197,7 @@ begin
   inherited;
 
   {$IFDEF CAN_METHODS}
-    if ((Self.BoundingBox = bbCustom) and (Self.CustomBBox.IsEmpty())) then Self.BoundingBox := bbDefault;
+    if ((Self.BoundingBox = bbCustom) and (Self.CustomBBox.Empty)) then Self.BoundingBox := bbDefault;
   {$ELSE}
     if ((Self.BoundingBox = bbCustom) and (IsRectEmpty(Self.CustomBBox)) then Self.BoundingBox := bbDefault;
   {$ENDIF}
@@ -231,11 +210,7 @@ begin
       tempRect.W := fClipRect.W * ActiveWindow.ResScale.X;
       tempRect.H := fClipRect.H * ActiveWindow.ResScale.Y;
 
-      {$IFDEF CAN_METHODS}
-        Result := tempRect.ContainsVector(ActiveWindow.Cursor);
-      {$ELSE}
-        Result := RectContainsVector(fClipRect, ActiveWindow.Cursor);
-      {$ENDIF}
+      Result := (ActiveWindow.Cursor in tempRect);
     end;
 
     bbCustom:
@@ -245,11 +220,7 @@ begin
       tempRect.W := Self.CustomBBox.W * ActiveWindow.ResScale.X;
       tempRect.H := Self.CustomBBox.H * ActiveWindow.ResScale.Y;
 
-      {$IFDEF CAN_METHODS}
-        Result := tempRect.ContainsVector(ActiveWindow.Cursor);
-      {$ELSE}
-        Result := RectContainsVector(fClipRect, ActiveWindow.Cursor);
-      {$ENDIF}
+      Result := (ActiveWindow.Cursor in tempRect);
     end;
 
     bbPixel:
@@ -421,7 +392,7 @@ begin
       ClipImage(aClipRect);
 
       // Sets origin to center
-      Origin := Center(Self);
+      //Origin := Center(Self);
 
       //FAnim.W := GetSurfaceWidth div Trunc(FClipRect.W);
       //FAnim.H := GetSurfaceHeight div Trunc(FClipRect.H);
@@ -538,17 +509,19 @@ end;
 
 procedure TelSprite.Move(aPoint: TelVector2f);
 begin
-  Position.Add(makeV3f(aPoint.X, aPoint.Y, 0.0));
+  Position.X := Position.X + aPoint.X;
+  Position.Y := Position.Y + aPoint.Y;
 end;
 
 procedure TelSprite.Move(aPoint: TelVector2i);
 begin
-  Position.Add(makeV3f(aPoint.X, aPoint.Y, 0.0));
+  Position.X := Position.X + aPoint.X;
+  Position.Y := Position.Y + aPoint.Y;
 end;
 
 procedure TelSprite.Move(aPoint: TelVector3f);
 begin
-  Position.Add(aPoint);
+  Position := Position + aPoint;
 end;
 
 function TelSprite.Collides(Other: TelSprite; AllowInvisibleObjects: Boolean = false): Boolean;
@@ -675,214 +648,5 @@ begin
   if (HyperLink <> '') and GetClick then OpenURL(HyperLink);
 end;
 
-
-//
-// TelSpriteList
-//
-
-constructor TelSpriteList.Create;
-begin
-  inherited;
-
-  FSpriteList := TList.Create;
-  Head := 'TelSpriteList';
-end;
-
-destructor TelSpriteList.Destroy;
-var
-  Counter : integer;
-begin
-
-  for Counter := 0 to FSpriteList.Count - 1 do
-  begin
-    TelSprite(FSpriteList[Counter]).Destroy;
-  end;
-  FSpriteList.Free;
-
-  inherited Destroy;
-
-end;
-
-function TelSpriteList.GetCount: Integer;
-begin
-  Result := FSpriteList.Count;
-end;
-
-procedure TelSpriteList.Insert(Index: Integer; Sprite: TelSprite);
-begin
-  if ((Index >= 0) and (Index <= FSpriteList.Count - 1)) then FSpriteList.Insert(Index, Sprite)
-  else begin
-    if Index > FSpriteList.Count - 1 then TelLogger.GetInstance.WriteLog('SpriteList: Index > Count');
-    if Index < 0 then TelLogger.GetInstance.WriteLog('SpriteList : Index < Count');
-  end;
-end;
-
-function TelSpriteList.Add(Sprite: TelSprite): Integer;
-begin
-  Result := FSpriteList.Add(Sprite);
-end;
-
-procedure TelSpriteList.Delete(Index: Integer);
-var
-  TmpSprite: TelSprite;
-begin
-  if ((Index >= 0) and (Index <= FSpriteList.Count - 1)) then
-  begin
-    TmpSprite := Get(Index);
-    TmpSprite.Destroy;
-    FSpriteList.Delete(Index);
-  end
-  else begin
-    if Index > FSpriteList.Count - 1 then TelLogger.GetInstance.WriteLog('SpriteList: Index > Count');
-    if Index < 0 then TelLogger.GetInstance.WriteLog('SpriteList : Index < Count');
-  end;
-
-end;
-
-function TelSpriteList.Get(Index: Integer): TelSprite;
-begin
-  if ((Index >= 0) and (Index <= FSpriteList.Count - 1)) then Result := TelSprite(FSpritelist[Index])
-  else begin
-    if Index > FSpriteList.Count - 1 then TelLogger.GetInstance.WriteLog('SpriteList: Index > Count');
-    if Index < 0 then TelLogger.GetInstance.WriteLog('SpriteList : Index < Count');
-  end;
-
-end;
-
-function TelSpriteList.GetPos(Index: String): Integer;
-Var a, TMP: Integer;
-Begin
-  Try
-    For a := 0 To FSpriteList.Count - 1 Do
-    Begin
-      if Items[a].Name <> Index then TMP := -1
-      else begin
-        TMP := a;
-        Break;
-      end;
-    End;
-  Finally
-    Result := TMP;
-  End;
-
-end;
-
-procedure TelSpriteList.Put(Index: Integer; const Item: TelSprite);
-var
-  TmpSprite: TelSprite;
-begin
-  if ((Index >= 0) and (Index <= FSpriteList.Count - 1)) then
-  begin
-    TmpSprite := Get(Index);
-    TmpSprite.Destroy;
-    Insert(Index, Item);
-  end
-  else begin
-    if Index > FSpriteList.Count - 1 then TelLogger.GetInstance.WriteLog('SpriteList: Index > Count');
-    if Index < 0 then TelLogger.GetInstance.WriteLog('SpriteList : Index < Count');
-  end;
-
-end;
-
-Function TelSpriteList.GetS(Index: String): TelSprite;
-Var TMP: Integer;
-Begin
-  TMP := GetPos(Index);
-  if TMP >= 0 then Result := TelSprite(FSpriteList[TMP])
-			  else Result := nil;
-End;
-
-Procedure TelSpriteList.PutS(Index: String; const Item: TelSprite);
-var
-  TMP: Integer;
-  TmpSprite: TelSprite;
-Begin
-  if (Index <> '') then
-  begin
-    TmpSprite := GetS(Index);
-	if TmpSprite <> nil then
-	begin
-	  TMP := GetPos(Index);
-      TmpSprite.Destroy;
-      Insert(TMP, Item);
-	end
-    else TelLogger.GetInstance.WriteLog('SpriteList: Index does not exist');
-  end
-  else TelLogger.GetInstance.WriteLog('SpriteList: Index string is empty');
-End;
-
-procedure TelSpriteList.LoadFromStream(Stream: TFileStream);
-var
-  TmpHead: String[13];
-  loop : integer;
-  ImgBuf : TelSprite;
-begin
-  TmpHead := '';
-  loop := 0;
-
-  Stream.Read(TmpHead, SizeOf(TmpHead));
-
-  if TmpHead <> Head then
-  begin
-    TelLogger.GetInstance.WriteLog('Could not load file: Wrong file');
-  end else
-  begin
-    Stream.Read(loop, SizeOf(Integer));
-
-    FSpriteList.Count := loop;
-
-    for loop := 0 to FSpriteList.Count - 1 do
-    begin
-      ImgBuf := TelSprite.Create;
-      ImgBuf.LoadFromStream(Stream);
-      FSpriteList.Insert(0, ImgBuf);
-    end;
-  end;
-
-end;
-
-
-procedure TelSpriteList.SaveToStream( Stream : TFileStream );
-var
-  loop : integer;
-begin
-  Stream.Write(Head, SizeOf(Head));
-  Stream.Write(FSpriteList.Count, SizeOf(Integer));
-
-  for loop := 0 to FSpriteList.Count - 1 do
-  begin
-    TelSprite(FSpriteList[loop]).SaveToStream(Stream);
-  end;
-
-end;
-
-procedure TelSpriteList.SaveToFile(Filename: String);
-var
-  FileHndl: TFileStream;
-begin
-  FileHndl := TFileStream.Create( Filename, fmCreate );
-
-  SaveToStream(FileHndl);
-
-  FileHndl.Free;
-end;
-
-procedure TelSpriteList.LoadFromFile(Filename: String);
-var
-  FileHndl: TFileStream;
-  Counter: integer;
-begin
-
-  for Counter := 0 to FSpriteList.Count - 1 do
-  begin
-    TelSprite(FSpriteList[Counter]).Destroy;
-  end;
-
-  FileHndl := TFileStream.Create(FileName, fmOpenRead);
-
-  loadFromStream(FileHndl);
-
-  FileHndl.Free;
-end;
 
 end.

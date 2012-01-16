@@ -155,11 +155,7 @@ begin
 
   fRect := makeRect(Position.X, Position.Y, GetWidth(), GetHeight());
 
-  {$IFDEF CAN_METHODS}
-    if fRect.ContainsVector(ActiveWindow.Cursor) then
-  {$ELSE}
-    if RectContainsVector(fRect, ActiveWindow.Cursor) then
-  {$ENDIF}
+  if (ActiveWindow.Cursor in fRect) then
     begin
       Result := true;
       fFocus := true;
@@ -227,7 +223,7 @@ begin
 
     if ((fSprite <> nil) and (fTextLabel <> nil)) then
     begin
-      if not ColorEquals(fSprite.Color, Self.Color) then
+      if not (fSprite.Color = Self.Color) then
         fSprite.Color := Self.Color;
 
       // Update positions

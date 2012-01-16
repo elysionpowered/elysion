@@ -1,4 +1,4 @@
-{%region '--- Unit description ---'}
+﻿{%region '--- Unit description ---'}
 (**
   *
   *
@@ -26,6 +26,11 @@ uses
 
 type
 
+{%region 'Logger priority types'}
+  // Logger message type
+
+  {%endregion}
+
 {%region 'Logger class (Prototype)'}
 {
   Class: TelLogger @br
@@ -33,7 +38,17 @@ type
   Description: Very simple logger class @br
   Singleton pattern -> See http://en.wikipedia.org/wiki/Singleton_pattern for more information 
 }
-TelLogger = class
+TelLogger = class sealed
+// Type & Variable definitions
+public type
+  TLogMessageType =
+    (ltError,   //< Displays message as an error
+     ltWarning, //< Displays message as a warning
+     ltNote);   //< Displays message as a note
+
+  TLogMessagePriorities = set of TLogMessageType;
+strict private
+  class var Instance: TelLogger;
 private
   fFilename: AnsiString;
   fText: TStringList;
@@ -125,10 +140,6 @@ implementation
 uses
   ElysionApplication;
 
-var
-  Logger: TelLogger;
-
-
 procedure TelLogger.Dump();
 var
   i: Integer;
@@ -192,7 +203,7 @@ begin
 
   tmpStringList.Add('<span id="title"><a href="https://github.com/freezedev/elysion">Elysion Library</a> Log</span> <br />');
   tmpStringList.Add('<strong>CPU:</strong> ' + IntToStr(SYS_BITS) + '-bit <br /> <b>Operating system:</b> ' + SYS_NAME + '<br />');
-  tmpStringList.Add('<strong>Version:</strong> ' + IntToStr(VER_MAJOR) + '.' + IntToStr(VER_MINOR) + VER_REVISION + ' "' + VER_CODENAME + '" <br /> <strong>Stable:</strong> '+BoolToString(VER_STABLE)+'<br />');
+  tmpStringList.Add('<strong>Version:</strong> ' + IntToStr(VER_MAJOR) + '-' + IntToStr(VER_MINOR) + VER_REVISION + ' "' + VER_CODENAME + '"<br /> <strong>Stable:</strong> '+BoolToString(VER_STABLE)+'<br />');
   tmpStringList.Add('<strong>Filename:</strong> ' + fFilename + '<br />');
   tmpStringList.Add('</header>');
   tmpStringList.Add('<br /></br />');
@@ -369,8 +380,8 @@ end;
 
 class function TelLogger.GetInstance: TelLogger;
 begin
-  if (Logger = nil) then Logger := TelLogger.Create;
-  Result := Logger;
+  if (Instance = nil) then Instance := TelLogger.Create;
+  Result := Instance;
 end;
 
 destructor TelLogger.Destroy;

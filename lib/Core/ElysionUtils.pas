@@ -14,55 +14,53 @@ uses
   SysUtils,
   Classes,
   Math,
+
+  ElysionColor,
   ElysionTypes;
 
 function IntToString(aValue: Integer; LeadingZero: Boolean; Digits: Integer): AnsiString;
-function BoolToString(aValue: Boolean): AnsiString; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-function BoolToInt(aValue: Boolean): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-function BoolToFloat(aValue: Boolean): Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function BoolToString(aValue: Boolean): AnsiString; inline;
+function BoolToInt(aValue: Boolean): Integer; inline;
+function BoolToFloat(aValue: Boolean): Single; inline;
 
-function CamelCase(aString: String): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-function HasSuffix(aString, aSubString: AnsiString): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-function HasSuffix(aString: AnsiString; aChar: Char): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function CamelCase(aString: String): String; inline;
+function HasSuffix(aString, aSubString: AnsiString): Boolean; Overload; inline;
+function HasSuffix(aString: AnsiString; aChar: Char): Boolean; Overload; inline;
 
-function StringWithoutPrefix(anOrgString, aPrefix: AnsiString): AnsiString; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-function StringWithoutPrefix(anOrgString: AnsiString; aPrefix: Char): AnsiString; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function StringWithoutPrefix(anOrgString, aPrefix: AnsiString): AnsiString; Overload; inline;
+function StringWithoutPrefix(anOrgString: AnsiString; aPrefix: Char): AnsiString; Overload; inline;
 
-function StringWithoutSuffix(anOrgString, aSuffix: AnsiString): AnsiString; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-function StringWithoutSuffix(anOrgString: AnsiString; aSuffix: Char): AnsiString; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function StringWithoutSuffix(anOrgString, aSuffix: AnsiString): AnsiString; Overload; inline;
+function StringWithoutSuffix(anOrgString: AnsiString; aSuffix: Char): AnsiString; Overload; inline;
 
-function SubStringToIndex(anOrgString: AnsiString; anIndex: Integer): AnsiString; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-function SubStringFromIndex(anOrgString: AnsiString; anIndex: Integer): AnsiString; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function SubStringToIndex(anOrgString: AnsiString; anIndex: Integer): AnsiString; inline;
+function SubStringFromIndex(anOrgString: AnsiString; anIndex: Integer): AnsiString; inline;
 
-function HasPrefix(aString, aSubString: AnsiString): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-function HasPrefix(aString: AnsiString; aChar: Char): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function HasPrefix(aString, aSubString: AnsiString): Boolean; Overload; inline;
+function HasPrefix(aString: AnsiString; aChar: Char): Boolean; Overload; inline;
 
 
 function Split(fText: AnsiString;fSep: Char;fTrim: Boolean=false;fQuotes: Boolean=false): TStringList;
 
+function PathString(Paths: array of AnsiString; TrailingSlash: Boolean = true): AnsiString;
 
-function GetFilenameExtension(aFilename: AnsiString; isUpperCase: Boolean = true): AnsiString; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-function GetFilenameWithoutExt(aFilename: AnsiString): AnsiString; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function GetFilenameExtension(aFilename: AnsiString; isUpperCase: Boolean = true): AnsiString; inline;
+function GetFilenameWithoutExt(aFilename: AnsiString): AnsiString; inline;
 
-function GetUserDirectory(): AnsiString; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-function GetAppUserDirectory(AppName: AnsiString): AnsiString; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function GetUserDirectory(): AnsiString; inline;
+function GetAppUserDirectory(AppName: AnsiString): AnsiString; inline;
 
 // Checks if the application is in an application bundle or not (Mac OS X only)
-function IsApplicationBundle(LazAppBundle: Boolean = false): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function IsApplicationBundle(LazAppBundle: Boolean = false): Boolean; inline;
 
 {$IFDEF WINDOWS}
-function GetWinSpecialDir(FolderID: Cardinal): AnsiString; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function GetWinSpecialDir(FolderID: Cardinal): AnsiString; inline;
 {$ENDIF}
 
-function IsInRange(Min, Max, Value: Integer): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-function IsInRange(Min, Max, Value: Single): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function IsInRange(Min, Max, Value: Integer): Boolean; Overload; inline;
+function IsInRange(Min, Max, Value: Single): Boolean; Overload; inline;
 
-function Minimum(Value1, Value2: Integer): Integer; Overload;
-function Minimum(Value1, Value2: Single): Single; Overload;
-function Maximum(Value1, Value2: Integer): Integer; Overload;
-function Maximum(Value1, Value2: Single): Single; Overload;
-
-function PopulateArray(aKeyIdentArray: array of TKeyIdent): TKeyArray; Overload; deprecated;
+//function PopulateArray(aKeyIdentArray: array of TKeyIdent): TKeyArray; Overload;
 function PopulateArray(aColorArray: array of TelColor): TelColorArray; Overload;
 function PopulateArray(aVectorArray: array of TelVector2f): TelVector2fArray; Overload;
 function PopulateArray(aVectorArray: array of TelVector2i): TelVector2iArray; Overload;
@@ -71,13 +69,13 @@ function PopulateArray(aVectorArray: array of TelVector3i): TelVector3iArray; Ov
 function PopulateArray(aSizeArray: array of TelSize): TelSizeArray; Overload;
 function PopulateArray(aRectArray: array of TelRect): TelRectArray; Overload;
 
-function HexToInt(HexNum: AnsiString): LongInt; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function HexToInt(HexNum: AnsiString): LongInt; inline;
 function StringToColor(aString: AnsiString): TelColor;
 
-function ValuesEnclosedSymbols(anOrgString: AnsiString; aBeginSymbol, anEndSymbol: Char; Seperator: Char; Trim: Boolean = true): TStringList; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-function ValuesEnclosedStrings(anOrgString: AnsiString; aBeginSymbol, anEndSymbol: AnsiString; Seperator: Char; Trim: Boolean = true): TStringList; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-function ValueEnclosedSymbols(anOrgString: AnsiString; aBeginSymbol, anEndSymbol: Char): AnsiString; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-function ValueEnclosedStrings(anOrgString: AnsiString; aBeginSymbol, anEndSymbol: AnsiString): AnsiString; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function ValuesEnclosedSymbols(anOrgString: AnsiString; aBeginSymbol, anEndSymbol: Char; Seperator: Char; Trim: Boolean = true): TStringList; inline;
+function ValuesEnclosedStrings(anOrgString: AnsiString; aBeginSymbol, anEndSymbol: AnsiString; Seperator: Char; Trim: Boolean = true): TStringList; inline;
+function ValueEnclosedSymbols(anOrgString: AnsiString; aBeginSymbol, anEndSymbol: Char): AnsiString; inline;
+function ValueEnclosedStrings(anOrgString: AnsiString; aBeginSymbol, anEndSymbol: AnsiString): AnsiString; inline;
 
 
 {$IFDEF WINDOWS}
@@ -256,6 +254,56 @@ begin
   end;
 end;
 
+function PathString(Paths: array of String; TrailingSlash: Boolean = true): String;
+var
+  i: Integer;
+  tmpString, tmpStringPath: String;
+  tmpStringPathLen: Integer;
+begin
+  tmpString := '';
+  tmpStringPath := '';
+
+  if Length(Paths) = 0 then
+    tmpString := '';
+
+  if Length(Paths) = 1 then
+    tmpString := Paths[0];
+
+  if Length(Paths) > 1 then
+  begin
+    for i := 0 to Length(Paths) - 2 do
+    begin
+      if Paths[i] <> '' then
+      begin
+        tmpStringPath := Paths[i];
+        tmpStringPathLen := Length(tmpStringPath);
+
+        tmpString := tmpString + tmpStringPath;
+
+        if tmpStringPath[tmpStringPathLen] <> DirectorySeparator then
+          tmpString := tmpString + DirectorySeparator;
+      end;
+    end;
+
+    if Paths[Length(Paths) - 1] <> '' then
+      tmpString := tmpString + Paths[Length(Paths) - 1];
+  end;
+
+  if Length(tmpString) > 0 then
+  begin
+    if TrailingSlash then
+    begin
+      if tmpString[Length(tmpString)] <> DirectorySeparator then
+        tmpString := tmpString + DirectorySeparator;
+    end else
+    begin
+      if tmpString[Length(tmpString)] = DirectorySeparator then
+        tmpString := Copy(tmpString, 1, Length(tmpString) - 1);
+    end;
+  end;
+
+  Result := tmpString;
+end;
 
 function GetFilenameExtension(aFilename: AnsiString; isUpperCase: Boolean = true): AnsiString;
 var
@@ -390,31 +438,7 @@ begin
   Result := ((Value >= Min) and (Value <= Max));
 end;
 
-function Minimum(Value1, Value2: Integer): Integer;
-begin
-  if Value1 > Value2 then Result := Value2
-    else Result := Value1;
-end;
-
-function Minimum(Value1, Value2: Single): Single;
-begin
-  if Value1 > Value2 then Result := Value2
-    else Result := Value1;
-end;
-
-function Maximum(Value1, Value2: Integer): Integer;
-begin
-  if Value1 > Value2 then Result := Value1
-    else Result := Value2;
-end;
-
-function Maximum(Value1, Value2: Single): Single;
-begin
-  if Value1 > Value2 then Result := Value1
-    else Result := Value2;
-end;
-
-function PopulateArray(aKeyIdentArray: array of TKeyIdent
+(*function PopulateArray(aKeyIdentArray: array of TKeyIdent
   ): TKeyArray;
 var
   i: Integer;
@@ -426,7 +450,7 @@ begin
     tmpArray[i] := aKeyIdentArray[i];
 
   Result := tmpArray;
-end;
+end;*)
 
 function PopulateArray(aColorArray: array of TelColor): TelColorArray;
 var

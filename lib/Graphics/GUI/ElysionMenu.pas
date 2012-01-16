@@ -8,6 +8,7 @@ uses
   Classes,
 
   ElysionTypes,
+  ElysionColor,
   ElysionGraphicsProvider,
 
   ElysionNode,
@@ -89,7 +90,7 @@ begin
   Animator := TelAnimator.Create;
 
   // Default animator, can be replaced though, but only if you really want it
-  Animator.ColorEffect(makeCol(180, 180, 180), makeCol(255, 255, 255));
+  Animator.ColorEffect(TelColor.Create(180, 180, 180), TelColor.Create(255, 255, 255));
   Animator.Duration := 1500;
 
   Position.Clear;

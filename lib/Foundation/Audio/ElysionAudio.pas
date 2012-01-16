@@ -7,6 +7,7 @@ interface
 uses
   ElysionTypes,
   ElysionObject,
+  ElysionContainer,
   ElysionApplication,
   ElysionLogger,
   ElysionContent,
@@ -54,7 +55,7 @@ public
 end;
 
 
-TSDLMixerAudioContainer = class(TelModuleContainer)
+TSDLMixerAudioContainer = class(TelContainer)
 private
   FAudio_rate, FAudio_rate_Mac: Integer;
   FAudio_format: UInt16;

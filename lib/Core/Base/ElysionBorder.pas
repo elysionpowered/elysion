@@ -1,81 +1,124 @@
 unit ElysionBorder;
 
+{$I Elysion.inc}
+
+{$ifdef fpc}
+  {$mode delphi}
+{$endif}
+
 interface
 
 uses
-  ElysionTypes;
+  SysUtils,
+
+  ElysionTypes,
+  ElysionColor,
+  ElysionBounds;
 
 type
 
-  TelBorderStyle = (bsSolid, bsDashed, bsDouble, bsDotted, bsGroove, bsRidge, bsInset, bsOutset);
-
-  TelBorderRadius = class
-  protected
-    fTopLeft, fTopRight, fBottomLeft, fBottomRight: Single;
-
-    function GetValue: Single;
-    procedure SetValue(const AValue: Single);
-  public
-    constructor Create; Overload;
-    constructor Create(aTopLeft, aTopRight, aBottomLeft, aBottomRight: Single); Overload;
-    constructor Create(aRect: TelRect); Overload;
-
-    destructor Destroy; Override;
-
-    function IsEmpty(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Equals(aBorderRadius: TelBorderRadius): Boolean; Overload;
-  published
-    property Value: Single read GetValue write SetValue;
-
-    property TopLeft: Single read fTopLeft write fTopLeft;
-    property TopRight: Single read fTopRight write fTopRight;
-    property BottomLeft: Single read fBottomLeft write fBottomLeft;
-    property BottomRight: Single read fBottomRight write fBottomRight;
-  end;
-
-  { TelBorderSide }
-
-  TelBorderSide = class
-  protected
-    fWidth: Single;
-    fStyle: TelBorderStyle;
-  public
-    constructor Create;
-    destructor Destroy; Override;
-  public
-    Color: TelColor;
-  published
-    property Width: Single read fWidth write fWidth;
-    property Style: TelBorderStyle read fStyle write fStyle;
-  end;
-
   { TelBorder }
 
-  TelBorder = class
-  protected
+  TelBorder = record
+  public type
+
+    TelBorderStyle = (bsSolid, bsDashed, bsDouble, bsDotted, bsGroove, bsRidge, bsInset, bsOutset);
+
+    { TelBorderRadius }
+
+    TelBorderRadius = record
+    private
+      fTopLeft, fTopRight, fBottomLeft, fBottomRight: Single;
+
+      function GetValue: Single; inline;
+      procedure SetValue(const AValue: Single); inline;
+
+      function IsEmpty(): Boolean; inline;
+    public
+      procedure Make(aTopLeft, aTopRight, aBottomLeft, aBottomRight: Single); inline; Overload;
+
+      procedure Clear(); inline;
+    public
+      class function Create: TelBorderRadius; static; inline; Overload;
+      class function Create(aTopLeft, aTopRight, aBottomLeft, aBottomRight: Single): TelBorderRadius; static; inline; Overload;
+
+      class function Copy(aSource: TelBorderRadius): TelBorderRadius; static; inline;
+    public
+      class operator Add(A, B: TelBorderRadius): TelBorderRadius; inline;
+      class operator Subtract(A, B: TelBorderRadius): TelBorderRadius; inline;
+      // Apparently, some bug 'ere; Can't be bothered with this at the moment
+      //class operator Mulitply(A, B: TelBorderRadius): TelBorderRadius; inline;
+      class operator Divide(A, B: TelBorderRadius): TelBorderRadius; inline;
+
+      class operator Equal(A, B: TelBorderRadius): Boolean; inline;
+      class operator NotEqual(A, B: TelBorderRadius): Boolean; inline;
+
+      class operator Implicit(AValue: Single): TelBorderRadius; inline; Overload;
+      class operator Implicit(AValue: Integer): TelBorderRadius; inline; Overload;
+    public
+      property Empty: Boolean read IsEmpty;
+
+      property Value: Single read GetValue write SetValue;
+
+      property TopLeft: Single read fTopLeft write fTopLeft;
+      property TopRight: Single read fTopRight write fTopRight;
+      property BottomLeft: Single read fBottomLeft write fBottomLeft;
+      property BottomRight: Single read fBottomRight write fBottomRight;
+    end;
+
+    { TelBorderSide }
+
+    TelBorderSide = record
+    private
+      fColor: TelColor;
+
+      fWidth: Single;
+      fStyle: TelBorderStyle;
+    public
+      class function Create: TelBorderSide; static; inline; Overload;
+      class function Create(aColor: TelColor; aWidth: Single; aStyle: TelBorderStyle = bsSolid): TelBorderSide; static; inline; Overload;
+
+      class function Copy(aSource: TelBorderSide): TelBorderSide; static; inline;
+    public
+      class operator Equal(A, B: TelBorderSide): Boolean; inline;
+      class operator NotEqual(A, B: TelBorderSide): Boolean; inline;
+    public
+      property Color: TelColor read fColor write fColor;
+
+      property Width: Single read fWidth write fWidth;
+      property Style: TelBorderStyle read fStyle write fStyle;
+    end;
+
+  private
     fLeft, fTop, fRight, fBottom: TelBorderSide;
     fRadius: TelBorderRadius;
 
-    function GetColor: TelColor; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure SetColor(const AValue: TelColor); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetColor: TelColor; inline;
+    procedure SetColor(const AValue: TelColor); inline;
 
-    function GetWidth: Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure SetWidth(AValue: Single); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetWidth: Single; inline;
+    procedure SetWidth(AValue: Single); inline;
 
-    function GetStyle: TelBorderStyle; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure SetStyle(AValue: TelBorderStyle); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetStyle: TelBorderStyle; inline;
+    procedure SetStyle(AValue: TelBorderStyle); inline;
 
-    function IsEmpty(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure SetValue(AValue: TelBorderSide); inline;
+
+    function IsEmpty(): Boolean; inline;
   public
-    constructor Create;
-    destructor Destroy; Override;
+    class function Create: TelBorder; static; inline; Overload;
+    class function Create(aLeft, aTop, aRight, aBottom: TelBorderSide; aRadius: TelBorderRadius): TelBorder; static; inline; Overload;
+
+    class function Copy(aSource: TelBorder): TelBorder; static; inline;
   public
     property Color: TelColor read GetColor write SetColor;
-  published
+
     property Radius: TelBorderRadius read fRadius write fRadius;
 
     property Width: Single read GetWidth write SetWidth;
     property Style: TelBorderStyle read GetStyle write SetStyle;
+
+    property Value: TelBorderSide write SetValue;
 
     property Left: TelBorderSide read fLeft write fLeft;
     property Top: TelBorderSide read fTop write fTop;
@@ -85,43 +128,14 @@ type
 
 implementation
 
-{ TelBorderRadius }
+{ TelBorder.TelBorderRadius }
 
-constructor TelBorderRadius.Create;
+function TelBorder.TelBorderRadius.GetValue: Single;
 begin
-  fTopLeft := 0;
-  fTopRight := 0;
-  fBottomLeft := 0;
-  fBottomRight := 0;
+  Result := (TopLeft + TopRight + BottomLeft + BottomRight) / 4;
 end;
 
-constructor TelBorderRadius.Create(aTopLeft, aTopRight, aBottomLeft, aBottomRight: Single);
-begin
-  fTopLeft := aTopLeft;
-  fTopRight := aTopRight;
-  fBottomLeft := aBottomLeft;
-  fBottomRight := aBottomRight;
-end;
-
-constructor TelBorderRadius.Create(aRect: TelRect);
-begin
-  fTopLeft := aRect.X;
-  fTopRight := aRect.Y;
-  fBottomLeft := aRect.W;
-  fBottomRight := aRect.H;
-end;
-
-destructor TelBorderRadius.Destroy;
-begin
-  inherited;
-end;
-
-function TelBorderRadius.GetValue: Single;
-begin
-  Result := ((TopLeft + TopRight + BottomLeft + BottomRight) / 4);
-end;
-
-procedure TelBorderRadius.SetValue(const AValue: Single);
+procedure TelBorder.TelBorderRadius.SetValue(const AValue: Single);
 begin
   TopLeft := AValue;
   TopRight := AValue;
@@ -129,43 +143,156 @@ begin
   BottomRight := AValue;
 end;
 
-function TelBorderRadius.IsEmpty(): Boolean;
+function TelBorder.TelBorderRadius.IsEmpty: Boolean;
 begin
-  Result := (Value = 0);
+  Result := ((TopLeft = 0) and (TopRight = 0) and (BottomLeft = 0)  and (BottomRight = 0));
 end;
 
-function TelBorderRadius.Equals(aBorderRadius: TelBorderRadius): Boolean;
+procedure TelBorder.TelBorderRadius.Make(aTopLeft, aTopRight, aBottomLeft,
+  aBottomRight: Single);
 begin
-  Result := ((Self.TopLeft = aBorderRadius.TopLeft) or (Self.TopRight = aBorderRadius.TopRight) or (Self.BottomLeft = aBorderRadius.BottomLeft) or (Self.BottomRight = aBorderRadius.BottomRight));
+  TopLeft := aTopLeft;
+  TopRight := aTopRight;
+  BottomLeft := aBottomLeft;
+  BottomRight := aBottomRight;
 end;
 
-{ TelBorderSide }
-
-constructor TelBorderSide.Create;
+procedure TelBorder.TelBorderRadius.Clear;
 begin
-  fWidth := 0;
-  fStyle := bsSolid;
-  Color := makeCol(0, 0, 0, 255);
+  Value := 0;
 end;
 
-destructor TelBorderSide.Destroy;
+class function TelBorder.TelBorderRadius.Create: TelBorderRadius;
 begin
-  inherited Destroy;
+  Result.Value := 0;
 end;
+
+class function TelBorder.TelBorderRadius.Create(aTopLeft, aTopRight,
+  aBottomLeft, aBottomRight: Single): TelBorderRadius;
+begin
+  Result.TopLeft := aTopLeft;
+  Result.TopRight := aTopRight;
+  Result.BottomLeft := aBottomLeft;
+  Result.BottomRight := aBottomRight;
+end;
+
+class function TelBorder.TelBorderRadius.Copy(aSource: TelBorderRadius): TelBorderRadius;
+begin
+  Result.TopLeft := aSource.TopLeft;
+  Result.TopRight := aSource.TopRight;
+  Result.BottomLeft := aSource.BottomLeft;
+  Result.BottomRight := aSource.BottomRight;
+end;
+
+class operator TelBorder.TelBorderRadius.Add(A, B: TelBorderRadius
+  ): TelBorderRadius;
+begin
+  Result.TopLeft := A.TopLeft + B.TopLeft;
+  Result.TopRight := A.TopRight + B.TopRight;
+  Result.BottomLeft := A.BottomLeft + B.BottomLeft;
+  Result.BottomRight := A.BottomRight + B.BottomRight;
+end;
+
+class operator TelBorder.TelBorderRadius.Subtract(A, B: TelBorderRadius
+  ): TelBorderRadius;
+begin
+  Result.TopLeft := A.TopLeft - B.TopLeft;
+  Result.TopRight := A.TopRight - B.TopRight;
+  Result.BottomLeft := A.BottomLeft - B.BottomLeft;
+  Result.BottomRight := A.BottomRight - B.BottomRight;
+end;
+
+(*class operator TelBorder.TelBorderRadius.Mulitply(A, B: TelBorderRadius
+  ): TelBorderRadius;
+begin
+  Result.TopLeft := A.TopLeft * B.TopLeft;
+  Result.TopRight := A.TopRight * B.TopRight;
+  Result.BottomLeft := A.BottomLeft * B.BottomLeft;
+  Result.BottomRight := A.BottomRight * B.BottomRight;
+end;*)
+
+class operator TelBorder.TelBorderRadius.Divide(A, B: TelBorderRadius
+  ): TelBorderRadius;
+begin
+  Result.TopLeft := A.TopLeft / B.TopLeft;
+  Result.TopRight := A.TopRight / B.TopRight;
+  Result.BottomLeft := A.BottomLeft / B.BottomLeft;
+  Result.BottomRight := A.BottomRight / B.BottomRight;
+end;
+
+class operator TelBorder.TelBorderRadius.Equal(A, B: TelBorderRadius): Boolean;
+begin
+  Result := ((A.TopLeft = B.TopLeft) and (A.TopRight = B.TopRight) and (A.BottomLeft = B.BottomLeft) and (A.BottomRight = B.BottomRight));
+end;
+
+class operator TelBorder.TelBorderRadius.NotEqual(A, B: TelBorderRadius
+  ): Boolean;
+begin
+  Result := not ((A.TopLeft = B.TopLeft) and (A.TopRight = B.TopRight) and (A.BottomLeft = B.BottomLeft) and (A.BottomRight = B.BottomRight));
+end;
+
+class operator TelBorder.TelBorderRadius.Implicit(AValue: Single
+  ): TelBorderRadius;
+begin
+  Result.Value := AValue;
+end;
+
+class operator TelBorder.TelBorderRadius.Implicit(AValue: Integer
+  ): TelBorderRadius;
+begin
+  Result.Value := AValue * 1.0;
+end;
+
+
+{ TelBorder.TelBorderSide }
+
+class function TelBorder.TelBorderSide.Create: TelBorderSide;
+begin
+  Result.Width := 0;
+  Result.Style := bsSolid;
+  Result.Color := TelColor.Create;
+end;
+
+class function TelBorder.TelBorderSide.Create(aColor: TelColor; aWidth: Single;
+  aStyle: TelBorderStyle): TelBorderSide;
+begin
+  Result.Width := aWidth;
+  Result.Style := aStyle;
+  Result.Color := aColor;
+end;
+
+class function TelBorder.TelBorderSide.Copy(aSource: TelBorderSide
+  ): TelBorderSide;
+begin
+  Result.Width := aSource.Width;
+  Result.Style := aSource.Style;
+  Result.Color := aSource.Color;
+end;
+
+class operator TelBorder.TelBorderSide.Equal(A, B: TelBorderSide): Boolean;
+begin
+  Result := ((A.Color = B.Color) and (A.Width = B.Width) and (A.Style = B.Style));
+end;
+
+class operator TelBorder.TelBorderSide.NotEqual(A, B: TelBorderSide): Boolean;
+begin
+  Result := not ((A.Color = B.Color) and (A.Width = B.Width) and (A.Style = B.Style));
+end;
+
 
 { TelBorder }
 
 function TelBorder.GetColor: TelColor;
 begin
-  if (fLeft.Color.Equals(fTop.Color) and fTop.Color.Equals(fRight.Color) and fRight.Color.Equals(fBottom.Color)) then
+  if ((fLeft.Color = fTop.Color) and (fTop.Color = fRight.Color) and (fRight.Color = fBottom.Color)) then
   begin
     Result := fLeft.Color;
   end else
   begin
-    Result := makeCol(Trunc(Integer(fLeft.Color.R + fTop.Color.R + fRight.Color.R + fBottom.Color.R) / 4),
-                      Trunc(Integer(fLeft.Color.G + fTop.Color.G + fRight.Color.G + fBottom.Color.G) / 4),
-                      Trunc(Integer(fLeft.Color.B + fTop.Color.B + fRight.Color.B + fBottom.Color.B) / 4),
-                      Trunc(Integer(fLeft.Color.A + fTop.Color.A + fRight.Color.A + fBottom.Color.A) / 4));
+    Result := TelColor.Create(Trunc(Integer(fLeft.Color.R + fTop.Color.R + fRight.Color.R + fBottom.Color.R) / 4),
+                              Trunc(Integer(fLeft.Color.G + fTop.Color.G + fRight.Color.G + fBottom.Color.G) / 4),
+                              Trunc(Integer(fLeft.Color.B + fTop.Color.B + fRight.Color.B + fBottom.Color.B) / 4),
+                              Trunc(Integer(fLeft.Color.A + fTop.Color.A + fRight.Color.A + fBottom.Color.A) / 4));
   end;
 end;
 
@@ -209,26 +336,43 @@ begin
   fBottom.Style := AValue;
 end;
 
-constructor TelBorder.Create;
+class function TelBorder.Create: TelBorder;
 begin
-  fLeft := TelBorderSide.Create;
-  fTop := TelBorderSide.Create;
-  fRight := TelBorderSide.Create;
-  fBottom := TelBorderSide.Create;
+  Result.Left := TelBorderSide.Create;
+  Result.Top := TelBorderSide.Create;
+  Result.Right := TelBorderSide.Create;
+  Result.Bottom := TelBorderSide.Create;
 
-  fRadius := TelBorderRadius.Create;
+  Result.Radius := TelBorderRadius.Create;
 end;
 
-destructor TelBorder.Destroy;
+class function TelBorder.Create(aLeft, aTop, aRight, aBottom: TelBorderSide;
+  aRadius: TelBorderRadius): TelBorder;
 begin
-  fLeft.Destroy;
-  fTop.Destroy;
-  fRight.Destroy;
-  fBottom.Destroy;
+  Result.Left := aLeft;
+  Result.Top := aTop;
+  Result.Right := aRight;
+  Result.Bottom := aBottom;
 
-  fRadius.Destroy;
+  Result.Radius := aRadius;
+end;
 
-  inherited Destroy;
+class function TelBorder.Copy(aSource: TelBorder): TelBorder;
+begin
+  Result.Left := aSource.Left;
+  Result.Top := aSource.Top;
+  Result.Right := aSource.Right;
+  Result.Bottom := aSource.Bottom;
+
+  Result.Radius := aSource.Radius;
+end;
+
+procedure TelBorder.SetValue(AValue: TelBorderSide);
+begin
+  fLeft := AValue;
+  fTop := AValue;
+  fRight := AValue;
+  fBottom := AValue;
 end;
 
 function TelBorder.IsEmpty(): Boolean;

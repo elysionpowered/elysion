@@ -21,7 +21,6 @@ uses
   ElysionApplication,
   ElysionLogger,
   ElysionTypes,
-  ElysionKeyList,
 
   Classes,
   SysUtils;
@@ -33,7 +32,7 @@ type
 
   { TelStorage }
 
-  // TODO: Reflect if that should be a singleton
+  // TODO: Reflect if that should be a singleton -> Should be a static class!
   TelStorage = class(TelObject)
     private
       fFileFormat: TStorageFileFormat;
@@ -41,19 +40,19 @@ type
       fFilename, fDirectory: String;
       fModified, fAutoSave: Boolean;
 
-      fKeyList: TKeyList;
+      fKeyList: TStringList;
 
       procedure SetDirectory(Value: String);
     public
       constructor Create; Override;
       destructor Destroy; Override;
 
-      procedure DebugInfo(); Override;
+      //procedure DebugInfo(); Override;
 
-      procedure SetKey(KeyName, KeyValue: String); Overload;
-      procedure SetKey(aKey: TKeyIdent); Overload;
+      procedure SetKey(KeyName, KeyValue: String);
+      //procedure SetKey(aKey: TKeyIdent); Overload;
 
-      function GetKey(KeyName: String): TKeyIdent;
+      //function GetKey(KeyName: String): TKeyIdent;
       function GetKeyValue(KeyName: String): String;
       function GetKeyAsInt(KeyName: String): Integer;
       function GetKeyAsBool(KeyName: String): Boolean;
@@ -93,7 +92,7 @@ begin
   fAutoSave := true;
   fFileFormat := ffPlain;
 
-  fKeyList := TKeyList.Create;
+  fKeyList := TStringList.Create;
 
   if Application.Name <> '' then AppName := Application.Name
     else AppName := GetFilenameWithoutExt(ParamStr(0));
@@ -118,18 +117,18 @@ begin
   fDirectory := Value;
 end;
 
-procedure TelStorage.DebugInfo();
+(*procedure TelStorage.DebugInfo();
 begin
   TelLogger.GetInstance.WriteLog('Default storage directory: ' + fDirectory, ltNote);
   TelLogger.GetInstance.WriteLog('Default storage filename: ' + fFilename, ltNote);
-end;
+end;*)
 
 procedure TelStorage.SetKey(KeyName, KeyValue: String);
 begin
-  SetKey(makeKey(KeyName, KeyValue));
+  //SetKey(makeKey(KeyName, KeyValue));
 end;
 
-procedure TelStorage.SetKey(aKey: TKeyIdent);
+(*procedure TelStorage.SetKey(aKey: TKeyIdent);
 var
   tmpPos: Integer;
 begin
@@ -155,31 +154,31 @@ begin
 
   if (tmpPos <> -1) then Result := fKeyList.Items[tmpPos]
   else Self.Log('Key not found: ' + KeyName, ltWarning);
-end;
+end;*)
 
 function TelStorage.GetKeyValue(KeyName: String): String;
 begin
-  Result := GetKey(KeyName).Value;
+  //Result := GetKey(KeyName).Value;
 end;
 
 function TelStorage.GetKeyAsInt(KeyName: String): Integer;
 begin
-  Result := GetKey(KeyName).ToInt();
+  //Result := GetKey(KeyName).ToInt();
 end;
 
 function TelStorage.GetKeyAsBool(KeyName: String): Boolean;
 begin
-  Result := GetKey(KeyName).ToBool();
+  //Result := GetKey(KeyName).ToBool();
 end;
 
 function TelStorage.GetKeyAsFloat(KeyName: String): Single;
 begin
-  Result := GetKey(KeyName).ToFloat();
+  //Result := GetKey(KeyName).ToFloat();
 end;
 
 function TelStorage.KeyExists(KeyName: String): Boolean;
 begin
-  Result := fKeyList.Exists(KeyName);
+  //Result := fKeyList.Exists(KeyName);
 end;
 
 procedure TelStorage.Push();
@@ -187,7 +186,7 @@ var
   tmpStringList: TStringList;
   i: Integer;
 begin
-  tmpStringList := TStringList.Create;
+  (*tmpStringList := TStringList.Create;
 
   case FileFormat of
     ffPlain:
@@ -236,7 +235,7 @@ begin
 
   TelLogger.GetInstance.WriteLog('Saved storage to: ' + fDirectory + fFilename, ltNote);
 
-  tmpStringList.Free;
+  tmpStringList.Free;*)
 end;
 
 procedure TelStorage.Pull();
@@ -244,9 +243,9 @@ var
   tmpStringList: TStringList;
   i, j: Integer;
   tmpKeyName, tmpKeyValue: String;
-  tmpKey: TKeyIdent;
+  //tmpKey: TKeyIdent;
 begin
-  tmpStringList := TStringList.Create;
+  (*tmpStringList := TStringList.Create;
 
   tmpStringList.LoadFromFile(fDirectory + fFilename);
   
@@ -290,7 +289,7 @@ begin
     end;
   end;
 
-  tmpStringList.Free;
+  tmpStringList.Free; *)
 end;
 
 procedure TelStorage.Clear();

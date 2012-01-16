@@ -13,285 +13,75 @@
 unit ElysionTypes;
 
 {$I Elysion.inc}
+{$ifdef fpc}
+  {$mode delphi}
+{$endif}
 
 interface
 
 uses
+  ElysionEnums,
+
+  ElysionMath,
+  ElysionColor,
+
   Classes,
   SysUtils;
 
 type
 
-  // Forward declarations
-  PelColor = ^TelColor;
-  PelVector2f = ^TelVector2f;
-  PelVector2i = ^TelVector2i;
-  PelVector3f = ^TelVector3f;
-  PelVector3i = ^TelVector3i;
+  { TelVector2 }
 
-  PelRect = ^TelRect;
-  PelSize = ^TelSize;
+  TelVector2<T> = record
+  private
+    fX, fY: T;
+  public
+    procedure Make(aX, aY: T);
+  public
+    class function Copy(aSource: TelVector2{$IFNDEF FPC}<T>{$ENDIF}): TelVector2{$IFNDEF FPC}<T>{$ENDIF}; static; inline;
+  public
+    class operator Add(A, B: TelVector2{$IFNDEF FPC}<T>{$ENDIF}): TelVector2{$IFNDEF FPC}<T>{$ENDIF}; inline;
+    class operator Subtract(A, B: TelVector2{$IFNDEF FPC}<T>{$ENDIF}): TelVector2{$IFNDEF FPC}<T>{$ENDIF}; inline;
 
-
-  PKeyIdent = ^TKeyIdent;
-
-
-  { TKeyIdent }
-
-  {$IFDEF FPC}
-  TKeyIdent = object
-  {$ELSE}
-  TKeyIdent = record
-  {$ENDIF}
-    Name: String;
-    Value: String;
-
-    {$IFDEF CAN_METHODS}
-      procedure Clear();
-
-      procedure SetValue(aValue: Integer); Overload;
-      procedure SetValue(aValue: Single); Overload;
-      procedure SetValue(aValue: Boolean); Overload;
-
-      function ToInt(): Integer;
-      function ToFloat(): Single;
-      function ToBool(): Boolean;
-
-      function ToColor(): PelColor;
-      function ToVector2f(): PelVector2f;
-      function ToVector2i(): PelVector2i;
-      function ToVector3f(): PelVector3f;
-      function ToVector3i(): PelVector3i;
-      function ToSize(): PelSize;
-      function ToRect(): PelRect;
-
-      function ToString(): String;
-      function ToXML(): String;
-      function ToJSON(): String;
-    {$ENDIF}
+    class operator Equal(A, B: TelVector2{$IFNDEF FPC}<T>{$ENDIF}): Boolean; inline;
+    class operator NotEqual(A, B: TelVector2{$IFNDEF FPC}<T>{$ENDIF}): Boolean; inline;
+  public
+    property X: T read fX write fX;
+    property Y: T read fY write fY;
   end;
 
-  TKeyArray = array of TKeyIdent;
-
-
-  {%region '--- TelColor type definition ---'}
-    {%region '--- TelColor description ---'}
-    (**
-      *
-      *
-      *
-      *
-      *
-      *)
-    {%endregion}
-
-  {$IFDEF FPC}
-  TelColor = object
-  {$ELSE}
-  TelColor = record
-  {$ENDIF}
-    R, G, B, A: Byte;
-
-    {$IFDEF CAN_METHODS}
-    procedure Clear(anAlpha: Byte = 255);
-    procedure Make(aR, aG, aB: Byte; anA: Byte = 255);
-
-    function ToKey(KeyName: String): PKeyIdent;
-    function ToString(): String;
-
-    procedure ToFloat(var floatR: Single; var floatG: Single; var floatB: Single; var floatA: Single);
-
-    // Operators (has to compliant to earlier Delphi versions)
-    procedure Add(Color: TelColor);
-    procedure Sub(Color: TelColor);
-    procedure Multiply(Color: TelColor);
-    procedure Divide(Color: TelColor);
-    procedure Scale(Factor: Single);
-
-    function Equals(aColor: TelColor): Boolean;
-    {$ENDIF}
-  end;
-
-  TelColorArray = array of TelColor;
-
-
-  {%endregion}
-
-  {$IFDEF FPC}
-  TelVector2f = object
-  {$ELSE}
-  TelVector2f = record
-  {$ENDIF}
-    X, Y: Single;
-
-    {$IFDEF CAN_METHODS}
-    procedure Clear();
-
-    function GetLength: Double;
-    procedure Make(aX, aY: Single);
-
-    function ToString(): String;
-
-    // Convert to other types
-    function ToVector2i(): PelVector2i;
-    function ToVector3f(): PelVector3f;
-    function ToVector3i(): PelVector3i;
-    function ToSize(): PelSize;
-    function ToKey(KeyName: String): PKeyIdent;
-
-    // Operators (has to compliant to earlier Delphi versions)
-    procedure Add(Vector: TelVector2f);
-    procedure Sub(Vector: TelVector2f);
-    procedure Multiply(Vector: TelVector2f);
-    procedure Divide(Vector: TelVector2f);
-    procedure Scale(Factor: Single);
-
-    // Vector stuff
-    function DotProduct(Vector: TelVector2f): Single;
-    procedure Normalize();
-
-    function Equals(aVector: TelVector2f): Boolean;
-    {$ENDIF}
-  end;
+  TelVector2f = TelVector2<Single>;
+  TelVector2i = TelVector2<Integer>;
 
   TelVector2fArray = array of TelVector2f;
-
-
-  {$IFDEF FPC}
-  TelVector2i = object
-  {$ELSE}
-  TelVector2i = record
-  {$ENDIF}
-    X, Y: Integer;
-
-    {$IFDEF CAN_METHODS}
-    procedure Clear();
-
-    function GetLength(): Double;
-    procedure Make(aX, aY: Integer);
-
-    function ToString(): String;
-
-    // Convert to other types
-    function ToVector2f(): PelVector2f;
-    function ToVector3f(): PelVector3f;
-    function ToVector3i(): PelVector3i;
-    function ToSize(): PelSize;
-    function ToKey(KeyName: String): PKeyIdent;
-
-    // Operators (has to compliant to earlier Delphi versions)
-    procedure Add(Vector: TelVector2i);
-    procedure Sub(Vector: TelVector2i);
-    procedure Multiply(Vector: TelVector2i);
-    procedure Divide(Vector: TelVector2i);
-    procedure Scale(Factor: Single);
-
-    // Vector stuff
-    function DotProduct(Vector: TelVector2i): Integer;
-    procedure Normalize();
-
-    function Equals(aVector: TelVector2i): Boolean;
-    {$ENDIF}
-  end;
-
   TelVector2iArray = array of TelVector2i;
 
 
-  {$IFDEF FPC}
-  TelVector3f = object
-  {$ELSE}
-  TelVector3f = record
-  {$ENDIF}
-    X, Y, Z: Single;
+  { TelVector3 }
 
-    {$IFDEF CAN_METHODS}
-    procedure Clear();
+  TelVector3<T> = record
+  private
+    fX, fY, fZ: T;
+  public
+    procedure Make(aX, aY, aZ: T);
+  public
+    class function Copy(aSource: TelVector3{$IFNDEF FPC}<T>{$ENDIF}): TelVector3{$IFNDEF FPC}<T>{$ENDIF}; static; inline;
+  public
+    class operator Add(A, B: TelVector3{$IFNDEF FPC}<T>{$ENDIF}): TelVector3{$IFNDEF FPC}<T>{$ENDIF}; inline;
+    class operator Subtract(A, B: TelVector3{$IFNDEF FPC}<T>{$ENDIF}): TelVector3{$IFNDEF FPC}<T>{$ENDIF}; inline;
 
-    function GetLength(): Double;
-
-    procedure Make(aX, aY, aZ: Single);
-
-    function ToString(): String;
-
-    // Convert to other types
-    function ToVector3i(): PelVector3i;
-    function ToVector2f(): PelVector2f;
-    function ToVector2i(): PelVector2i;
-    function ToSize(): PelSize;
-    function ToKey(KeyName: String): PKeyIdent;
-
-    // Operators (has to compliant to earlier Delphi versions)
-    procedure Add(Vector: TelVector3f);
-    procedure Sub(Vector: TelVector3f);
-    procedure Multiply(Vector: TelVector3f);
-    procedure Divide(Vector: TelVector3f);
-    procedure Scale(Factor: Single);
-
-    // Vector stuff
-    function DotProduct(Vector: TelVector3f): Single;
-    function CrossProduct(Vector: TelVector3f): PelVector3f;
-
-    procedure Normalize();
-
-    procedure Zero();
-    procedure One();
-    procedure Forward();
-    procedure Up();
-    procedure Right();
-
-    function Equals(aVector: TelVector3f): Boolean;
-    {$ENDIF}
+    class operator Equal(A, B: TelVector3{$IFNDEF FPC}<T>{$ENDIF}): Boolean; inline;
+    class operator NotEqual(A, B: TelVector3{$IFNDEF FPC}<T>{$ENDIF}): Boolean; inline;
+  public
+    property X: T read fX write fX;
+    property Y: T read fY write fY;
+    property Z: T read fZ write fZ;
   end;
+
+  TelVector3f = TelVector3<Single>;
+  TelVector3i = TelVector3<Integer>;
 
   TelVector3fArray = array of TelVector3f;
-
-
-  {$IFDEF FPC}
-  TelVector3i = object
-  {$ELSE}
-  TelVector3i = record
-  {$ENDIF}
-    X, Y, Z: Integer;
-
-    {$IFDEF CAN_METHODS}
-    procedure Clear();
-
-    function GetLength(): Double;
-
-    procedure Make(aX, aY, aZ: Integer);
-
-    function ToString(): String;
-
-    // Convert to other types
-    function ToVector3f(EmptyZ: Boolean = False): PelVector3f;
-    function ToVector2f(): PelVector2f;
-    function ToVector2i(): PelVector2i;
-    function ToSize(): PelSize;
-    function ToKey(KeyName: String): PKeyIdent;
-
-    // Operators (has to compliant to earlier Delphi versions)
-    procedure Add(Vector: TelVector3i);
-    procedure Sub(Vector: TelVector3i);
-    procedure Multiply(Vector: TelVector3i);
-    procedure Divide(Vector: TelVector3i);
-    procedure Scale(Factor: Single);
-
-    // Vector stuff
-    function DotProduct(Vector: TelVector3i): Integer;
-    function CrossProduct(Vector: TelVector3i): PelVector3i;
-
-    procedure Normalize();
-
-    procedure Zero();
-    procedure One();
-    procedure Forward();
-    procedure Up();
-    procedure Right();
-
-    function Equals(aVector: TelVector3i): Boolean;
-    {$ENDIF}
-  end;
-
   TelVector3iArray = array of TelVector3i;
 
 
@@ -301,44 +91,64 @@ type
     Color: TelColor;
   end;
 
+  TelVertexArray = array of TelVertex;
+
+
   { TelSize }
 
-  {$IFDEF FPC}
-  TelSize = object
-  {$ELSE}
   TelSize = record
-  {$ENDIF}
-    Width, Height: Single;
+  private
+    fWidth, fHeight: Single;
 
-    {$IFDEF CAN_METHODS}
+    function GetAspectRatio: Single; inline;
+    function GetOrientation: TRectOrientation; inline;
+
+    function IsWide: Boolean; inline;
+    function IsEmpty: Boolean; inline;
+  public
     procedure Clear();
 
-    procedure Make(aWidth, aHeight: Integer);
+    procedure Make(aWidth, aHeight: Integer); Overload;
+    procedure Make(aWidth, aHeight: Single); Overload;
 
-    function ToString(): String;
+    function ToString(): AnsiString; inline;
 
-    // Convert to other types
-    function ToVector2i(): PelVector2i;
-    function ToVector2f(): PelVector2f;
-    function ToVector3i(): PelVector3i;
-    function ToVector3f(): PelVector3f;
-    function ToKey(KeyName: String): PKeyIdent;
+    function ToVector2i: TelVector2i; inline;
+    function ToVector2f: TelVector2f; inline;
+    function ToVector3i: TelVector3i; inline;
+    function ToVector3f: TelVector3f; inline;
 
-    // Operators (has to compliant to earlier Delphi versions)
-    procedure Add(Size: TelSize);
-    procedure Sub(Size: TelSize);
-    procedure Multiply(Size: TelSize);
-    procedure Divide(Size: TelSize);
-    procedure Scale(Factor: Single);
+    function Center: TelVector2f;
+  public
+    class function Create: TelSize; static; inline; Overload;
+    class function Create(aWidth, aHeight: Single): TelSize; static; inline; Overload;
 
-    function Center(): PelVector2f; Overload;
-    function Center(aRect: PelRect): PelVector2f; Overload;
+    class function Copy(aSource: TelSize): TelSize; static; inline;
+  public
+    class operator Add(A, B: TelSize): TelSize; inline;
+    class operator Subtract(A, B: TelSize): TelSize; inline;
+    class operator Multiply(A, B: TelSize): TelSize; inline; Overload;
+    class operator Multiply(A: TelSize; Factor: Single): TelSize; inline; Overload;
+    class operator Divide(A, B: TelSize): TelSize; inline;
 
-    function GetAspectRatio(): Single;
-    function IsWide(): Boolean;
+    class operator IntDivide(A, B: TelSize): TelSize; inline;
+    class operator Modulus(A, B: TelSize): TelSize; inline;
 
-    function Equals(aSize: TelSize): Boolean;
-    {$ENDIF}
+    class operator Equal(A, B: TelSize): Boolean; inline;
+    class operator NotEqual(A, B: TelSize): Boolean; inline;
+    class operator GreaterThan(A, B: TelSize): Boolean; inline;
+    class operator GreaterThanOrEqual(A, B: TelSize): Boolean; inline;
+    class operator LessThan(A, B: TelSize): Boolean; inline;
+    class operator LessThanOrEqual(A, B: TelSize): Boolean; inline;
+  public
+    property Width: Single read fWidth write fWidth;
+    property Height: Single read fHeight write fHeight;
+
+    property AspectRatio: Single read GetAspectRatio;
+    property Wide: Boolean read IsWide;
+    property Empty: Boolean read IsEmpty;
+
+    property Orientation: TRectOrientation read GetOrientation;
   end;
 
   TelSizeArray = array of TelSize;
@@ -346,51 +156,207 @@ type
 
   { TelRect }
 
-  {$IFDEF FPC}
-  TelRect = object
-  {$ELSE}
   TelRect = record
-  {$ENDIF}
-    X, Y, Z, W, H: Single;
+  private
+    // Position
+    fX, fY, fZ: Single;
+    // Width & Height
+    fW, FH: Single;
 
-    {$IFDEF CAN_METHODS}
-    procedure Clear();
+    function GetAspectRatio(): Single; inline;
+    function GetOrientation: TRectOrientation; inline;
 
-    procedure Make(aX, aY, aW, aH: Single); Overload;
-    procedure Make(aX, aY, aZ, aW, aH: Single); Overload;
-    procedure Make(aX, aY, aW, aH: Integer); Overload;
-    procedure Make(aX, aY, aZ, aW, aH: Integer); Overload;
+    function IsWide(): Boolean; inline;
 
-    procedure Make(aPosition: TelVector2f; aSize: TelSize); Overload;
-    procedure Make(aPosition: TelVector2i; aSize: TelSize); Overload;
+    function IsEmpty(): Boolean; inline;
+  public
+    procedure Clear(); inline;
 
-    function ToString(): String;
-    function ToKey(KeyName: String): PKeyIdent;
+    procedure Make(aX, aY, aW, aH: Single); inline; Overload;
+    procedure Make(aX, aY, aZ, aW, aH: Single); inline; Overload;
 
-    function Center(): PelVector2f; Overload;
-    function Center(aRect: TelRect): PelVector2f; Overload;
+    procedure Make(aX, aY, aW, aH: Integer); inline; Overload;
+    procedure Make(aX, aY, aZ, aW, aH: Integer); inline; Overload;
 
-    function ContainsVector(aVector: TelVector2i): Boolean; Overload;
-    function ContainsVector(aVector: TelVector2f): Boolean; Overload;
-    function ContainsRect(aRect: TelRect): Boolean; Overload;
+    procedure Make(aPosition: TelVector2f; aSize: TelSize); inline; Overload;
+    procedure Make(aPosition: TelVector2i; aSize: TelSize); inline; Overload;
+    procedure Make(aPosition: TelVector3f; aSize: TelSize); inline; Overload;
+    procedure Make(aPosition: TelVector3i; aSize: TelSize); inline; Overload;
 
-    function GetAspectRatio(): Single;
-    function IsWide(): Boolean;
+    function ToString(): AnsiString; inline;
+    function ToSize(): TelSize; inline;
 
-    function Equals(aRect: TelRect): Boolean;
-    function IsEmpty(): Boolean;
-    {$ENDIF}
+    function Center(): TelVector2f; inline;
+  public
+    class function Create: TelRect; static; inline; Overload;
+
+    class function Create(aX, aY, aW, aH: Single): TelRect; static; inline; Overload;
+    class function Create(aX, aY, aW, aH: Integer): TelRect; static; inline; Overload;
+
+    class function Create(aX, aY, aZ, aW, aH: Single): TelRect; static; inline; Overload;
+    class function Create(aX, aY, aZ, aW, aH: Integer): TelRect; static; inline; Overload;
+
+    class function Create(aPosition: TelVector2f; aSize: TelSize): TelRect; static; inline; Overload;
+    class function Create(aPosition: TelVector2i; aSize: TelSize): TelRect; static; inline; Overload;
+    class function Create(aPosition: TelVector3f; aSize: TelSize): TelRect; static; inline; Overload;
+    class function Create(aPosition: TelVector3i; aSize: TelSize): TelRect; static; inline; Overload;
+
+    class function Copy(aSource: TelRect): TelRect; static; inline;
+  public
+    class operator Add(A, B: TelRect): TelRect; inline;
+    class operator Subtract(A, B: TelRect): TelRect; inline;
+    class operator Multiply(A, B: TelRect): TelRect; inline;
+    class operator Divide(A, B: TelRect): TelRect; inline;
+
+    class operator Equal(A, B: TelRect): Boolean; inline;
+    class operator NotEqual(A, B: TelRect): Boolean; inline;
+
+    class operator In(aVector: TelVector2i; aRect: TelRect): Boolean; inline; Overload;
+    class operator In(aVector: TelVector2f; aRect: TelRect): Boolean; inline; Overload;
+    class operator In(aVector: TelVector3i; aRect: TelRect): Boolean; inline; Overload;
+    class operator In(aVector: TelVector3f; aRect: TelRect): Boolean; inline; Overload;
+    class operator In(aSize: TelSize; aRect: TelRect): Boolean; inline; Overload;
+    class operator In(A, B: TelRect): Boolean; inline; Overload;
+  public
+    property X: Single read fX write fX;
+    property Y: Single read fY write fY;
+    property Z: Single read fZ write fZ;
+
+    property W: Single read fW write fW;
+    property H: Single read fH write fH;
+
+    property AspectRatio: Single read GetAspectRatio;
+    property Wide: Boolean read IsWide;
+    property Empty: Boolean read IsEmpty;
+
+    property Orientation: TRectOrientation read GetOrientation;
   end;
 
   TelRectArray = array of TelRect;
 
 
-  // Display orientation (will be renamed in the future)
-  TDisplayOrientation = (doLandscape, doPortrait);
+  TelVector2iHelper = record helper for TelVector2i
+  private
+    function GetLength: Single; inline;
+  public
+    procedure Normalize; inline; Overload;
+
+    procedure Clear; inline;
+  public
+    function ToString: AnsiString; inline;
+
+    function ToVector2f: TelVector2f; inline;
+    function ToVector3i: TelVector3i; inline;
+    function ToVector3f: TelVector3f; inline;
+
+    function ToSize: TelSize; inline;
+  public
+    class function Create: TelVector2i; static; inline; Overload;
+    class function Create(aX, aY: Integer): TelVector2i; static; inline; Overload;
+  public
+    class function Normalize(aVector: TelVector2i): TelVector2i; static; inline; Overload;
+
+    class function DotProduct(A, B: TelVector2i): Single; static; inline;
+  public
+    property Length: Single read GetLength;
+  end;
+
+  TelVector2fHelper = record helper for TelVector2f
+  private
+    function GetLength: Single; inline;
+  public
+    procedure Normalize; inline; Overload;
+
+    procedure Clear; inline;
+  public
+    function ToString: AnsiString; inline;
+
+    function ToVector2i: TelVector2i; inline;
+    function ToVector3i: TelVector3i; inline;
+    function ToVector3f: TelVector3f; inline;
+
+    function ToSize: TelSize; inline;
+  public
+    class function Create: TelVector2f; static; inline; Overload;
+    class function Create(aX, aY: Single): TelVector2f; static; inline; Overload;
+  public
+    class function Normalize(aVector: TelVector2f): TelVector2f; static; inline; Overload;
+
+    class function DotProduct(A, B: TelVector2f): Single; static; inline;
+  public
+    property Length: Single read GetLength;
+  end;
+
+  TelVector3iHelper = record helper for TelVector3i
+  private
+    function GetLength: Single; inline;
+  public
+    procedure Clear; inline;
+
+    procedure Normalize; inline; Overload;
+  public
+    function ToString: AnsiString; inline;
+
+    function ToVector2i: TelVector2i; inline;
+    function ToVector2f: TelVector2f; inline;
+    function ToVector3f: TelVector3f; inline;
+
+    function ToSize: TelSize; inline;
+  public
+    class function Create: TelVector3i; static; inline; Overload;
+    class function Create(aX, aY: Integer; aZ: Integer = 0): TelVector3i; static; inline; Overload;
+  public
+    class function Normalize(aVector: TelVector3i): TelVector3i; static; inline; Overload;
+
+    class function DotProduct(A, B: TelVector3i): Single; static; inline;
+    class function CrossProduct(A, B: TelVector3i): TelVector3i; static; inline;
+
+    class function Zero(): TelVector3i; static; inline;
+    class function One(): TelVector3i; static; inline;
+    class function Forward(): TelVector3i; static; inline;
+    class function Up(): TelVector3i; static; inline;
+    class function Right(): TelVector3i; static; inline;
+  public
+    property Length: Single read GetLength;
+  end;
+
+  TelVector3fHelper = record helper for TelVector3f
+  private
+    function GetLength: Single; inline;
+  public
+    procedure Clear; inline;
+
+    procedure Normalize; inline; Overload;
+  public
+    function ToString: AnsiString; inline;
+
+    function ToVector2i: TelVector2i; inline;
+    function ToVector2f: TelVector2f; inline;
+    function ToVector3i: TelVector3i; inline;
+
+    function ToSize: TelSize; inline;
+  public
+    class function Create: TelVector3f; static; inline; Overload;
+    class function Create(aX, aY: Single; aZ: Single = 0.0): TelVector3f; static; inline; Overload;
+  public
+    class function Normalize(aVector: TelVector3f): TelVector3f; static; inline; Overload;
+
+    class function DotProduct(A, B: TelVector3f): Single; static; inline;
+    class function CrossProduct(A, B: TelVector3f): TelVector3f; static; inline;
+
+    class function Zero(): TelVector3f; static; inline;
+    class function One(): TelVector3f; static; inline;
+    class function Forward(): TelVector3f; static; inline;
+    class function Up(): TelVector3f; static; inline;
+    class function Right(): TelVector3f; static; inline;
+  public
+    property Length: Single read GetLength;
+  end;
 
 
 
-  TelOffset = record
+
+  TelImageOffset = record
     Position: TelVector2f;
     Rotation: TelVector2f;
   end;
@@ -400,56 +366,11 @@ type
     Vector: TelVector3f;
   end;
 
-  {$IFDEF FPC}
-
-  { TelShadow }
-
-  TelShadow = object
-  {$ELSE}
-  TelShadow = record
-  {$ENDIF}
-    Blur: Integer;
-    Color: TelColor;
-    Position: TelVector2f;
-    Visible: Boolean;
-
-    {$IFDEF CAN_METHODS}
-    procedure Clear();
-    {$ENDIF}
-  end;
 
   PelButtonEvent = ^TelButtonEvent;
   TelButtonEvent = record
     Position: TelVector2i;
     Called: Cardinal;
-  end;
-
-  TelBlendMode = (
-    bmAdd,    //< Additive blending
-    bmNormal, //< Normal blending
-    bmSub);   //< Sub blending
-
-  TGradientStyle = (gsVertical, gsHorizontal);
-
-  TelColorVertices = array[0..3] of TelColor;
-  TelTexCoords = array[0..3] of TelVector2f;
-
-  TelBoundingBox = (bbDefault, bbCustom, bbPixel);
-
-  TelGradient = Record
-    StartColor: TelColor;
-    EndColor: TelColor;
-    GradientStyle: TGradientStyle;
-  end;
-
-  TAlignVertical = (avNone, avTop, avBottom, avCenter);
-  TAlignHorizontal = (ahNone, ahLeft, ahRight, ahCenter);
-
-  TelAssetType = (atTexture, atSprite, atParallexSprite, atSpriteSheet);
-
-  TelAlignment = record
-    Vertical: TAlignVertical;
-    Horizontal: TAlignHorizontal;
   end;
 
   TelRenderOptions = record
@@ -460,146 +381,26 @@ type
   end;
   PelRenderOptions = ^TelRenderOptions;
 
-  TelElementDecoration = (edMargin, edPadding, edBorder);
-  TelElementDecorations = set of TelElementDecoration;
 
 
-
-  // See: TelGraphicObject.Generate;
-  TGenerateMode = (gmAuto, gmRGB, gmRGBA);
-
-  {%region 'Logger priority types'}
-  // Logger message type
-  TLogMessageType =
-    (ltError,   //< Displays message as an error
-     ltWarning, //< Displays message as a warning
-     ltNote);   //< Displays message as a note
-
-  TLogMessagePriorities = set of TLogMessageType;
-  {%endregion}
 
   {%region 'General functions'}
-  function makeGradient(StartColor: TelColor; EndColor: TelColor; GradientStyle: TGradientStyle = gsVertical): TelGradient; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  function makeV2f(aX, aY: Single): TelVector2f; inline; deprecated 'Use TelVector2f.Create(...) instead';
+  function makeV2i(aX, aY: Integer): TelVector2i; inline; deprecated 'Use TelVector2i.Create(...) instead';
+  function makeV3f(aX, aY: Single; aZ: Single = 0.0): TelVector3f; inline; deprecated 'Use TelVector3f.Create(...) instead';
+  function makeV3i(aX, aY: Integer; aZ: Integer = 0): TelVector3i; inline; deprecated 'Use TelVector3f.Create(...) instead';
 
-  function makeV2f(aX, aY: Single): TelVector2f; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  function makeV2i(aX, aY: Integer): TelVector2i; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  function makeV3f(aX, aY: Single; aZ: Single = 0.0): TelVector3f; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  function makeV3i(aX, aY: Integer; aZ: Integer = 0): TelVector3i; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  function makeSize(aWidth, aHeight: Single): TelSize; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  function makeSize(aWidth, aHeight: Integer): TelSize; Overload; inline; deprecated 'Use TelSize.Create(...) instead';
+  function makeSize(aWidth, aHeight: Single): TelSize; Overload; inline; deprecated 'Use TelSize.Create(...) instead';
 
-  function makeRect(aX, aY, aW, aH: Single): TelRect; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  function makeRect(aX, aY, aZ, aW, aH: Single): TelRect; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-  function makeCol(aR, aG, aB: Byte; anA: Byte = 255): TelColor; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  //function makeCol(aR, aG, aB: Single; anA: Single = 1.0): TelColor; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-  function makeP2D(aX, aY: Integer): TelVector2i; Overload; deprecated;
-  function makeP2D(aX, aY: Single): TelVector2f; Overload; deprecated;
-  function makeP3D(aX, aY: Integer; aZ: Integer = 0): TelVector3i; Overload; deprecated;
-  function makeP3D(aX, aY: Single; aZ: Single = 0.0): TelVector3f; Overload; deprecated;
-
-  function makeKey(KeyName, KeyValue: String): TKeyIdent; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  function makeKey(KeyName: String; KeyValue: Integer): TKeyIdent; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  function makeKey(KeyName: String; KeyValue: Single): TKeyIdent; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  function makeRect(aX, aY, aW, aH: Single): TelRect; inline; deprecated 'Use TelRect.Create(...) instead';
   {%endregion}
 
 
-  function IsRectEmpty(Rect: TelRect): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-
-  function VectorEquals(VecOne, VecTwo: TelVector2f): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  function VectorEquals(VecOne, VecTwo: TelVector2i): Boolean; Overload;{$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-  function VectorEquals(VecOne, VecTwo: TelVector3f): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  function VectorEquals(VecOne, VecTwo: TelVector3i): Boolean; Overload;{$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-  function ColorEquals(ColorOne, ColorTwo: TelColor): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-
-  function IsInRange(Min, Max, Value: Integer): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  function IsInRange(Min, Max, Value: Single): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-  {$IFNDEF CAN_METHODS}
-  function RectContainsVector(aRect: TelRect; aVector: TelVector2i): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  function RectContainsVector(aRect: TelRect; aVector: TelVector2f): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  function RectContainsRect(aRect, bRect: TelRect): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  {$ENDIF}
-
-
-  function EmptyRenderOptions: TelRenderOptions;
 
 
 implementation
 
-function EmptyRenderOptions: TelRenderOptions;
-begin
-  Result.Translation := makeV3f(0, 0, 0);
-  Result.Rotation.Vector := makeV3f(0, 1, 0);
-  Result.Rotation.Angle := 0;
-  Result.Origin := makeV2f(0, 0);
-  Result.Scale := makeV2f(1, 1);
-end;
-
-function makeGradient(StartColor: TelColor; EndColor: TelColor; GradientStyle: TGradientStyle = gsVertical): TelGradient;
-var
-  tmpGradient: TelGradient;
-begin
-  tmpGradient.StartColor := StartColor;
-  tmpGradient.EndColor := EndColor;
-  tmpGradient.GradientStyle := GradientStyle;
-
-  Result := tmpGradient;
-end;
-
-function makeCol(aR, aG, aB: Byte; anA: Byte = 255): TelColor;
-var
-  tmpCol: TelColor;
-begin
-  tmpCol.R := aR;
-  tmpCol.G := aG;
-  tmpCol.B := aB;
-  tmpCol.A := anA;
-
-  Result := tmpCol;
-end;
-
-(*function makeCol(aR, aG, aB: Single; anA: Single = 1.0): TelColor;
-var
-  tR, tG, tB, tA: Byte;
-  tmpCol: TelColor;
-begin
-  if (aR * 255) >= 255 then tR := 255 else tR := Trunc(aR * 255);
-  if (aG * 255) >= 255 then tG := 255 else tG := Trunc(aR * 255);
-  if (aB * 255) >= 255 then tB := 255 else tB := Trunc(aR * 255);
-  if (anA * 255) >= 255 then tA := 255 else tA := Trunc(aR * 255);
-
-  tmpCol.R := tR ;
-  tmpCol.G := tG;
-  tmpCol.B := tB;
-  tmpCol.A := tA;
-
-  Result := tmpCol;
-end;*)
-
-function makeP2D(aX, aY: Integer): TelVector2i;
-begin
-  Result := makeV2i(aX, aY);
-end;
-
-function makeP2D(aX, aY: Single): TelVector2f;
-begin
-  Result := makeV2f(aX, aY);
-end;
-
-function makeP3D(aX, aY: Integer; aZ: Integer = 0): TelVector3i;
-begin
-  Result := makeV3i(aX, aY, aZ);
-end;
-
-function makeP3D(aX, aY: Single; aZ: Single = 0.0): TelVector3f;
-begin
-  Result := makeV3f(aX, aY, aZ);
-end;
 
 function makeV2i(aX, aY: Integer): TelVector2i;
 var
@@ -643,6 +444,16 @@ begin
   Result := tmpVec;
 end;
 
+function makeSize(aWidth, aHeight: Integer): TelSize;
+var
+  tmpVec: TelSize;
+begin
+  tmpVec.Width := aWidth * 1.0;
+  tmpVec.Height := aHeight * 1.0;
+
+  Result := tmpVec;
+end;
+
 function makeSize(aWidth, aHeight: Single): TelSize;
 var
   tmpVec: TelSize;
@@ -659,661 +470,93 @@ var
 begin
   tmpRect.X := aX;
   tmpRect.Y := aY;
-  tmpRect.Z := 0;
   tmpRect.W := aW;
   tmpRect.H := aH;
 
   Result := tmpRect;
 end;
 
-function makeRect(aX, aY, aZ, aW, aH: Single): TelRect;
-var
-  tmpRect: TelRect;
-begin
-  tmpRect.X := aX;
-  tmpRect.Y := aY;
-  tmpRect.Z := aZ;
-  tmpRect.W := aW;
-  tmpRect.H := aH;
-
-  Result := tmpRect;
-end;
-
-function makeKey(KeyName, KeyValue: String): TKeyIdent;
-var
-  tmpKey: TKeyIdent;
-begin
-  tmpKey.Name := KeyName;
-  tmpKey.Value := KeyValue;
-
-  Result := tmpKey;
-end;
-
-function makeKey(KeyName: String; KeyValue: Integer): TKeyIdent;
-var
-  tmpKey: TKeyIdent;
-begin
-  tmpKey.Name := KeyName;
-  tmpKey.Value := IntToStr(KeyValue);
-
-  Result := tmpKey;
-end;
-
-function makeKey(KeyName: String; KeyValue: Single): TKeyIdent;
-var
-  tmpKey: TKeyIdent;
-begin
-  tmpKey.Name := KeyName;
-  tmpKey.Value := FloatToStr(KeyValue);
-
-  Result := tmpKey;
-end;
-
-
-function IsRectEmpty(Rect: TelRect): Boolean;
-begin
-  Result := ((Rect.X = 0) and (Rect.Y = 0) and (Rect.W = 0) and (Rect.H = 0));
-end;
-
-function VectorEquals(VecOne, VecTwo: TelVector2f): Boolean;
-begin
-  Result := ((VecOne.X = VecTwo.X) and (VecOne.Y = VecTwo.Y));
-end;
-
-function VectorEquals(VecOne, VecTwo: TelVector2i): Boolean;
-begin
-  Result := ((VecOne.X = VecTwo.X) and (VecOne.Y = VecTwo.Y));
-end;
-
-function VectorEquals(VecOne, VecTwo: TelVector3f): Boolean;
-begin
-  Result := ((VecOne.X = VecTwo.X) and (VecOne.Y = VecTwo.Y) and (VecOne.Z = VecTwo.Z));
-end;
-
-function VectorEquals(VecOne, VecTwo: TelVector3i): Boolean;
-begin
-  Result := ((VecOne.X = VecTwo.X) and (VecOne.Y = VecTwo.Y) and (VecOne.Z = VecTwo.Z));
-end;
-
-function ColorEquals(ColorOne, ColorTwo: TelColor): Boolean;
-begin
-  Result := ((ColorOne.R = ColorTwo.R) and (ColorOne.G = ColorTwo.G) and (ColorOne.B = ColorTwo.B) and (ColorOne.A = ColorTwo.A));
-end;
-
-function IsInRange(Min, Max, Value: Integer): Boolean;
-begin
-  Result :=  ((Value >= Min) and (Value <= Max));
-end;
-
-function IsInRange(Min, Max, Value: Single): Boolean;
-begin
-  Result :=  ((Value >= Min) and (Value <= Max));
-end;
-
-{ TelShadow }
-
-procedure TelShadow.Clear();
-begin
-  Self.Blur := 0;
-  Self.Color.Clear();
-  Self.Position.Clear();
-  Self.Visible := false;
-end;
-
-{$IFDEF CAN_METHODS}
-
-procedure TKeyIdent.Clear();
-begin
-  Value := '';
-end;
-
-procedure TKeyIdent.SetValue(aValue: Integer);
-begin
-  Value := IntToStr(aValue);
-end;
-
-procedure TKeyIdent.SetValue(aValue: Single);
-begin
-  Value := FloatToStr(aValue);
-end;
-
-procedure TKeyIdent.SetValue(aValue: Boolean);
-begin
-  if aValue then Value := 'true'
-  else Value := 'false';
-end;
-
-function TKeyIdent.ToInt(): Integer;
-begin
-  try
-    Result := StrToInt(Value);
-  except
-    on Exception: EConvertError do Exit;
-  end;
-end;
-
-function TKeyIdent.ToFloat(): Single;
-begin
-  try
-    Result := StrToFloat(Value);
-  except
-    on Exception: EConvertError do Exit;
-  end;
-end;
-
-function TKeyIdent.ToBool(): Boolean;
-begin
-  if ((Value = 'true') or (Value = '1')) then Result := true
-  else Result := false;
-end;
-
-function TKeyIdent.ToColor(): PelColor;
-var
-  tmpString: String;
-  posR, posG, posB, posA: Integer;
-  tmpR, tmpG, tmpB, tmpA: Byte;
-  tmpColor: TelColor;
-begin
-  // Remove spaces and double colons
-  tmpString := StringReplace(Value, ' ', '', [rfReplaceAll, rfIgnoreCase]);
-  tmpString := StringReplace(Value, ':', '', [rfReplaceAll, rfIgnoreCase]);
-
-  posR := Pos('R', tmpString);
-  posG := Pos('G', tmpString);
-  posB := Pos('B', tmpString);
-  posA := Pos('A', tmpString);
-
-  tmpR := StrToInt(Copy(tmpString, posR + 1, posG - (posR + 1)));
-  tmpG := StrToInt(Copy(tmpString, posG + 1, posB - (posG + 1)));
-  tmpB := StrToInt(Copy(tmpString, posB + 1, posA - (posB + 1)));
-  tmpA := StrToInt(Copy(tmpString, posA + 1, Length(tmpString)));
-
-  tmpColor := makeCol(tmpR, tmpG, tmpB, tmpA);
-
-  Result := @tmpColor;
-end;
-
-function TKeyIdent.ToVector2f(): PelVector2f;
-var
-  tmpString: String;
-  posX, posY: Integer;
-  tmpX, tmpY: Single;
-  tmpVec: TelVector2f;
-begin
-  // Remove spaces and double colons
-  tmpString := StringReplace(Value, ' ', '', [rfReplaceAll, rfIgnoreCase]);
-  tmpString := StringReplace(Value, ':', '', [rfReplaceAll, rfIgnoreCase]);
-
-  posX := Pos('X', tmpString);
-  posY := Pos('Y', tmpString);
-
-  tmpX := StrToInt(Copy(tmpString, posX + 1, posY - (posX + 1)));
-  tmpY := StrToInt(Copy(tmpString, posY + 1, Length(tmpString)));
-
-  tmpVec := makeV2f(tmpX, tmpY);
-
-  Result := @tmpVec;
-end;
-
-function TKeyIdent.ToVector2i(): PelVector2i;
-var
-  tmpString: String;
-  posX, posY: Integer;
-  tmpX, tmpY: Integer;
-  tmpVec: TelVector2i;
-begin
-  // Remove spaces and double colons
-  tmpString := StringReplace(Value, ' ', '', [rfReplaceAll, rfIgnoreCase]);
-  tmpString := StringReplace(Value, ':', '', [rfReplaceAll, rfIgnoreCase]);
-
-  posX := Pos('X', tmpString);
-  posY := Pos('Y', tmpString);
-
-  tmpX := StrToInt(Copy(tmpString, posX + 1, posY - (posX + 1)));
-  tmpY := StrToInt(Copy(tmpString, posY + 1, Length(tmpString)));
-
-  tmpVec := makeV2i(tmpX, tmpY);
-
-  Result := @tmpVec;
-end;
-
-function TKeyIdent.ToVector3f(): PelVector3f;
-var
-  tmpString: String;
-  posX, posY, posZ: Integer;
-  tmpX, tmpY, tmpZ: Single;
-  tmpVec: TelVector3f;
-begin
-  // Remove spaces and double colons
-  tmpString := StringReplace(Value, ' ', '', [rfReplaceAll, rfIgnoreCase]);
-  tmpString := StringReplace(Value, ':', '', [rfReplaceAll, rfIgnoreCase]);
-
-  posX := Pos('X', tmpString);
-  posY := Pos('Y', tmpString);
-  posZ := Pos('Z', tmpString);
-
-  tmpX := StrToInt(Copy(tmpString, posX + 1, posY - (posX + 1)));
-  tmpY := StrToInt(Copy(tmpString, posY + 1, posZ - (posY + 1)));
-  tmpZ := StrToInt(Copy(tmpString, posZ + 1, Length(tmpString)));
-
-  tmpVec := makeV3f(tmpX, tmpY, tmpZ);
-
-  Result := @tmpVec;
-end;
-
-function TKeyIdent.ToVector3i(): PelVector3i;
-var
-  tmpString: String;
-  posX, posY, posZ: Integer;
-  tmpX, tmpY, tmpZ: Integer;
-  tmpVec: TelVector3i;
-begin
-  // Remove spaces and double colons
-  tmpString := StringReplace(Value, ' ', '', [rfReplaceAll, rfIgnoreCase]);
-  tmpString := StringReplace(Value, ':', '', [rfReplaceAll, rfIgnoreCase]);
-
-  posX := Pos('X', tmpString);
-  posY := Pos('Y', tmpString);
-  posZ := Pos('Z', tmpString);
-
-  tmpX := StrToInt(Copy(tmpString, posX + 1, posY - (posX + 1)));
-  tmpY := StrToInt(Copy(tmpString, posY + 1, posZ - (posY + 1)));
-  tmpZ := StrToInt(Copy(tmpString, posZ + 1, Length(tmpString)));
-
-  tmpVec := makeV3i(tmpX, tmpY, tmpZ);
-
-  Result := @tmpVec;
-end;
-
-function TKeyIdent.ToSize(): PelSize;
-var
-  tmpString: String;
-  posW, posH: Integer;
-  tmpW, tmpH: Integer;
-  tmpSize: TelSize;
-begin
-  // Remove spaces and double colons
-  tmpString := StringReplace(Value, ' ', '', [rfReplaceAll, rfIgnoreCase]);
-  tmpString := StringReplace(Value, ':', '', [rfReplaceAll, rfIgnoreCase]);
-
-  posW := Pos('Width', tmpString);
-  posH := Pos('Height', tmpString);
-
-  tmpW := StrToInt(Copy(tmpString, posW + 1, posH - (posW + 1)));
-  tmpH := StrToInt(Copy(tmpString, posH + 1, Length(tmpString)));
-
-  tmpSize := makeSize(tmpW, tmpH);
-
-  Result := @tmpSize;
-end;
-
-function TKeyIdent.ToRect(): PelRect;
-var
-  tmpString: String;
-  posX, posY, posW, posH: Integer;
-  tmpX, tmpY, tmpW, tmpH: Single;
-  tmpRect: TelRect;
-begin
-  // Remove spaces and double colons
-  tmpString := StringReplace(Value, ' ', '', [rfReplaceAll, rfIgnoreCase]);
-  tmpString := StringReplace(Value, ':', '', [rfReplaceAll, rfIgnoreCase]);
-
-  posX := Pos('X', tmpString);
-  posY := Pos('Y', tmpString);
-  posW := Pos('W', tmpString);
-  posH := Pos('H', tmpString);
 
-  tmpX := StrToInt(Copy(tmpString, posX + 1, posY - (posX + 1)));
-  tmpY := StrToInt(Copy(tmpString, posY + 1, posW - (posY + 1)));
-  tmpW := StrToInt(Copy(tmpString, posW + 1, posH - (posW + 1)));
-  tmpH := StrToInt(Copy(tmpString, posH + 1, Length(tmpString)));
 
-  tmpRect := makeRect(tmpX, tmpY, tmpW, tmpH);
 
-  Result := @tmpRect;
-end;
-
-function TKeyIdent.ToString(): String;
-begin
-  Result := Format('Key "%s": %s', [Name, Value]);
-end;
-
-function TKeyIdent.ToXML(): String;
-begin
-  Result := Format('<key name="%s">%s</key>', [Name, Value]);
-end;
-
-function TKeyIdent.ToJSON(): String;
-begin
-  Result := Format('"%s": {"%s"}', [Name, Value]);
-end;
-
-
-procedure TelColor.Clear(anAlpha: Byte = 255);
-begin
-  R := 0;
-  G := 0;
-  B := 0;
-  A := anAlpha;
-end;
-
-procedure TelColor.Make(aR, aG, aB: Byte; anA: Byte = 255);
-begin
-  R := aR;
-  G := aG;
-  B := aB;
-  A := anA;
-end;
-
-function TelColor.ToString(): String;
-begin
-  Result := Format('R: %d G: %d B: %d A: %d', [R, G, B, A]);
-end;
-
-function TelColor.ToKey(KeyName: String): PKeyIdent;
-var
-  tmpKey: TKeyIdent;
-begin
-  tmpKey.Name := KeyName;
-  tmpKey.Value := Self.ToString();
-
-  Result := @tmpKey;
-end;
-
-procedure TelColor.ToFloat(var floatR: Single; var floatG: Single; var floatB: Single; var floatA: Single);
-begin
-  floatR := R / 255;
-  floatG := G / 255;
-  floatB := B / 255;
-  floatA := A / 255;
-end;	
-
-procedure TelColor.Add(Color: TelColor);
-begin
-  Self.R := Self.R + Color.R;
-  Self.G := Self.G + Color.G;
-  Self.B := Self.B + Color.B;
-  Self.A := Self.A + Color.A;
-end;
-
-procedure TelColor.Sub(Color: TelColor);
-begin
-  Self.R := Self.R - Color.R;
-  Self.G := Self.G - Color.G;
-  Self.B := Self.B - Color.B;
-  Self.A := Self.A - Color.A;
-end;
-
-procedure TelColor.Multiply(Color: TelColor);
-begin
-  Self.R := Self.R * Color.R;
-  Self.G := Self.G * Color.G;
-  Self.B := Self.B * Color.B;
-  Self.A := Self.A * Color.A;
-end;
-
-procedure TelColor.Divide(Color: TelColor);
-begin
-  Self.R := Self.R div Color.R;
-  Self.G := Self.G div Color.G;
-  Self.B := Self.B div Color.B;
-  Self.A := Self.A div Color.A;
-end;
-
-procedure TelColor.Scale(Factor: Single);
-var
-  tR, tG, tB, tA: Byte;
-begin
-  if (Self.R * Factor) >= 255.0 then tR := 255
-     else tR := Trunc(Self.R * Factor);
-
-  if (Self.G * Factor) >= 255.0 then tG := 255
-     else tG := Trunc(Self.G * Factor);
-
-  if (Self.B * Factor) >= 255.0 then tB := 255
-     else tB := Trunc(Self.B * Factor);
-
-  if (Self.A * Factor) >= 255.0 then tA := 255
-     else tA := Trunc(Self.A * Factor);
-
-  Self.R := tR;
-  Self.G := tG;
-  Self.B := tB;
-  Self.A := tA;
-end;
-
-function TelColor.Equals(aColor: TelColor): Boolean;
-begin
-  Result := ((Self.R = aColor.R) and (Self.G = aColor.G) and (Self.B = aColor.B) and (Self.A = aColor.A));
-end;
-
-procedure TelVector2f.Clear();
-begin
-  X := 0.0;
-  Y := 0.0;
-end;
-
-function TelVector2f.GetLength(): Double;
-begin
-  Result := sqrt(X * X + Y * Y);
-end;
-	
-procedure TelVector2f.Make(aX, aY: Single);
-begin
-  X := aX;
-  Y := aY;
-end;
-	
-function TelVector2f.ToString(): String;
-begin
-  Result := Format('X: %.2f Y: %.2f', [X, Y])
-end;
-	
-function TelVector2f.ToVector2i(): PelVector2i;
-var
-  tmpVec: TelVector2i;
-begin
-  tmpVec := makeV2i(Trunc(X), Trunc(Y));
-
-  Result := @tmpVec;
-end;
-
-function TelVector2f.ToVector3f(): PelVector3f;
-var
-  tmpVec: TelVector3f;
-begin
-  tmpVec := makeV3f(X, Y, 0);
-
-  Result := @tmpVec;
-end;
-
-function TelVector2f.ToVector3i(): PelVector3i;
-var
-  tmpVec: TelVector3i;
-begin
-  tmpVec := makeV3i(Trunc(X), Trunc(Y), 0);
-
-  Result := @tmpVec;
-end;
-
-function TelVector2f.ToSize(): PelSize;
-var
-  tmpSize: TelSize;
-begin
-  tmpSize := makeSize(Trunc(X), Trunc(Y));
-
-  Result := @tmpSize;
-end;
-
-function TelVector2f.ToKey(KeyName: String): PKeyIdent;
-var
-  tmpKey: TKeyIdent;
-begin
-  tmpKey.Name := KeyName;
-  tmpKey.Value := Self.ToString();
-
-  Result := @tmpKey;
-end;
-
-procedure TelVector2f.Add(Vector: TelVector2f);
-begin
-  Self.X := Self.X + Vector.X;
-  Self.Y := Self.Y + Vector.Y;
-end;
-
-procedure TelVector2f.Sub(Vector: TelVector2f);
-begin
-  Self.X := Self.Y - Vector.X;
-  Self.Y := Self.Y - Vector.Y;
-end;
-
-procedure TelVector2f.Multiply(Vector: TelVector2f);
-begin
-  Self.X := Self.X * Vector.X;
-  Self.Y := Self.Y * Vector.Y;
-end;
-
-procedure TelVector2f.Divide(Vector: TelVector2f);
-begin
-  Self.X := Self.X / Vector.X;
-  Self.Y := Self.Y / Vector.Y;
-end;
+{ TelVector2<T> }
 
-procedure TelVector2f.Scale(Factor: Single);
-begin
-  Self.X := Self.X * Factor;
-  Self.Y := Self.Y * Factor;
-end;
-	
-function TelVector2f.DotProduct(Vector: TelVector2f): Single;
+procedure TelVector2<T>.Make(aX, aY: T);
 begin
-  Result := (Self.X * Vector.X) + (Self.Y * Vector.Y);
+  fX := aX;
+  fY := aY;
 end;
 
-procedure TelVector2f.Normalize();
+class function TelVector2<T>.Copy(aSource: TelVector2): TelVector2;
 begin
-  Self.X := Self.X / GetLength;
-  Self.Y := Self.Y / GetLength;
+  Result.X := aSource.X;
+  Result.Y := aSource.Y;
 end;
 
-function TelVector2f.Equals(aVector: TelVector2f): Boolean;
+class operator TelVector2<T>.Add(A, B: TelVector2): TelVector2;
 begin
-  Result := ((Self.X = aVector.X) and (Self.Y = aVector.Y));
+  Result.X := A.X + B.X;
+  Result.Y := A.Y + B.Y;
 end;
 
-procedure TelVector2i.Clear();
+class operator TelVector2<T>.Subtract(A, B: TelVector2): TelVector2;
 begin
-  X := 0;
-  Y := 0;
+  Result.X := A.X - B.X;
+  Result.Y := A.Y - B.Y;
 end;
 
-function TelVector2i.GetLength(): Double;
+class operator TelVector2<T>.Equal(A, B: TelVector2): Boolean;
 begin
-  Result := sqrt(X * X + Y * Y);
+  Result := ((A.X = B.X) and (A.Y = B.Y));
 end;
-	
-procedure TelVector2i.Make(aX, aY: Integer);
-begin
-  X := aX;
-  Y := aY;
-end;
-	
-function TelVector2i.ToString(): String;
-begin
-  Result := Format('X: %d Y: %d', [X, Y])
-end;
 
-function TelVector2i.ToSize(): PelSize;
-var
-  tmpVec: TelSize;
+class operator TelVector2<T>.NotEqual(A, B: TelVector2): Boolean;
 begin
-  tmpVec := makeSize(X, Y);
-
-  Result := @tmpVec;
+  Result := not ((A.X = B.X) and (A.Y = B.Y));
 end;
-
-function TelVector2i.ToVector2f(): PelVector2f;
-var
-  tmpVec: TelVector2f;
-begin
-  tmpVec := makeV2f(X * 1.0, Y * 1.0);
 
-  Result := @tmpVec;
-end;
+{ TelVector3<T> }
 
-function TelVector2i.ToVector3f(): PelVector3f;
-var
-  tmpVec: TelVector3f;
+procedure TelVector3<T>.Make(aX, aY, aZ: T);
 begin
-  tmpVec := makeV3f(X * 1.0, Y * 1.0, 0);
-
-  Result := @tmpVec;
+  fX := aX;
+  fY := aY;
+  fZ := aZ;
 end;
 
-function TelVector2i.ToVector3i(): PelVector3i;
-var
-  tmpVec: TelVector3i;
+class function TelVector3<T>.Copy(aSource: TelVector3): TelVector3;
 begin
-  tmpVec := makeV3i(X, Y, 0);
-
-  Result := @tmpVec;
+  Result.X := aSource.X;
+  Result.Y := aSource.Y;
+  Result.Z := aSource.Z;
 end;
 
-function TelVector2i.ToKey(KeyName: String): PKeyIdent;
-var
-  tmpKey: TKeyIdent;
+class operator TelVector3<T>.Add(A, B: TelVector3): TelVector3;
 begin
-  tmpKey.Name := KeyName;
-  tmpKey.Value := Self.ToString();
-
-  Result := @tmpKey;
-end;
-	
-procedure TelVector2i.Add(Vector: TelVector2i);
-begin
-  Self.X := Self.X + Vector.X;
-  Self.Y := Self.Y + Vector.Y;
+  Result.X := A.X + B.X;
+  Result.Y := A.Y + B.Y;
+  Result.Z := A.Z + B.Z;
 end;
 
-procedure TelVector2i.Sub(Vector: TelVector2i);
+class operator TelVector3<T>.Subtract(A, B: TelVector3): TelVector3;
 begin
-  Self.X := Self.Y - Vector.X;
-  Self.Y := Self.Y - Vector.Y;
+  Result.X := A.X - B.X;
+  Result.Y := A.Y - B.Y;
+  Result.Z := A.Z - B.Z;
 end;
 
-procedure TelVector2i.Multiply(Vector: TelVector2i);
+class operator TelVector3<T>.Equal(A, B: TelVector3): Boolean;
 begin
-  Self.X := Self.X * Vector.X;
-  Self.Y := Self.Y * Vector.Y;
+  Result := ((A.X = B.X) and (A.Y = B.Y) and (A.Z = B.Z));
 end;
 
-procedure TelVector2i.Divide(Vector: TelVector2i);
+class operator TelVector3<T>.NotEqual(A, B: TelVector3): Boolean;
 begin
-  Self.X := Trunc(Self.X / Vector.X);
-  Self.Y := Trunc(Self.Y / Vector.Y);
+  Result := not ((A.X = B.X) and (A.Y = B.Y) and (A.Z = B.Z));
 end;
 
-procedure TelVector2i.Scale(Factor: Single);
-begin
-  Self.X := Trunc(Self.X * Factor);
-  Self.Y := Trunc(Self.Y * Factor);
-end;
-	
-function TelVector2i.DotProduct(Vector: TelVector2i): Integer;
-begin
-  Result := (Self.X * Vector.X) + (Self.Y * Vector.Y);
-end;
 
-procedure TelVector2i.Normalize();
-begin
-  Self.X := Trunc(Self.X / GetLength);
-  Self.Y := Trunc(Self.Y / GetLength);
-end;
 
-function TelVector2i.Equals(aVector: TelVector2i): Boolean;
-begin
-  Result := ((Self.X = aVector.X) and (Self.Y = aVector.Y));
-end;
 
 procedure TelSize.Clear();
 begin
@@ -1323,107 +566,134 @@ end;
 
 procedure TelSize.Make(aWidth, aHeight: Integer);
 begin
+  Width := Trunc(aWidth);
+  Height := Trunc(aHeight);
+end;
+
+procedure TelSize.Make(aWidth, aHeight: Single);
+begin
   Width := aWidth;
   Height := aHeight;
 end;
 
-function TelSize.ToString(): String;
+function TelSize.ToString(): AnsiString;
 begin
-  Result := Format('Width: %f Height: %f', [Width, Height])
+  Result := Format('size(%f, %f)', [Width, Height])
 end;
 
-function TelSize.ToVector2f(): PelVector2f;
-var
-  tmpVec: TelVector2f;
+function TelSize.ToVector2f(): TelVector2f;
 begin
-  tmpVec := makeV2f(Width, Height);
-
-  Result := @tmpVec;
+  Result := TelVector2f.Create(Width, Height);
 end;
 
-function TelSize.ToVector2i(): PelVector2i;
-var
-  tmpVec: TelVector2i;
+function TelSize.ToVector2i(): TelVector2i;
 begin
-  tmpVec := makeV2i(Trunc(Width), Trunc(Height));
-
-  Result := @tmpVec;
+  Result := TelVector2i.Create(Trunc(Width), Trunc(Height));
 end;
 
-function TelSize.ToVector3f(): PelVector3f;
-var
-  tmpVec: TelVector3f;
+function TelSize.ToVector3f(): TelVector3f;
 begin
-  tmpVec := makeV3f(Width, Height);
-
-  Result := @tmpVec;
+  Result := TelVector3f.Create(Width, Height);
 end;
 
-function TelSize.ToVector3i(): PelVector3i;
-var
-  tmpVec: TelVector3i;
+function TelSize.ToVector3i(): TelVector3i;
 begin
-  tmpVec := makeV3i(Trunc(Width), Trunc(Height));
-
-  Result := @tmpVec;
+  Result := TelVector3i.Create(Trunc(Width), Trunc(Height));
 end;
 
-function TelSize.ToKey(KeyName: String): PKeyIdent;
-var
-  tmpKey: TKeyIdent;
+function TelSize.Center(): TelVector2f;
 begin
-  tmpKey.Name := KeyName;
-  tmpKey.Value := Self.ToString();
-
-  Result := @tmpKey;
+  Result := TelVector2f.Create(Self.Width / 2, Self.Height / 2);
 end;
 
-procedure TelSize.Add(Size: TelSize);
+class function TelSize.Create: TelSize;
 begin
-  Self.Width := Self.Width + Size.Width;
-  Self.Height := Self.Height + Size.Height;
+  Result.Width := 0;
+  Result.Height := 0;
 end;
 
-procedure TelSize.Sub(Size: TelSize);
+class function TelSize.Create(aWidth, aHeight: Single): TelSize;
 begin
-  Self.Width := Self.Height - Size.Width;
-  Self.Height := Self.Height - Size.Height;
+  Result.Width := aWidth;
+  Result.Height := aHeight;
 end;
 
-procedure TelSize.Multiply(Size: TelSize);
+class function TelSize.Copy(aSource: TelSize): TelSize;
 begin
-  Self.Width := Self.Width * Size.Width;
-  Self.Height := Self.Height * Size.Height;
+  Result.Width := aSource.Width;
+  Result.Height := aSource.Height;
 end;
 
-procedure TelSize.Divide(Size: TelSize);
+class operator TelSize.Add(A, B: TelSize): TelSize;
 begin
-  Self.Width := Self.Width / Size.Width;
-  Self.Height := Self.Height / Size.Height;
+  Result.Width := A.Width + B.Width;
+  Result.Height := A.Height + B.Height;
 end;
 
-procedure TelSize.Scale(Factor: Single);
+class operator TelSize.Subtract(A, B: TelSize): TelSize;
 begin
-  Self.Width := Self.Width * Factor;
-  Self.Height := Self.Height * Factor;
+  Result.Width := A.Height - B.Width;
+  Result.Height := A.Height - B.Height;
 end;
 
-function TelSize.Center(): PelVector2f;
-var
-  tmpVec: TelVector2f;
+class operator TelSize.Multiply(A, B: TelSize): TelSize;
 begin
-  tmpVec := makeV2f(Self.Width / 2, Self.Height / 2);
-
-  Result := @tmpVec;
+  Result.Width := A.Width * B.Width;
+  Result.Height := A.Height * B.Height;
 end;
 
-function TelSize.Center(aRect: PelRect): PelVector2f;
-var
-  tmpVec: TelVector2f;
+class operator TelSize.Multiply(A: TelSize; Factor: Single): TelSize;
 begin
-  tmpVec := makeV2f(Self.Width - (aRect^.W - aRect^.X) / 2, Self.Height - (aRect^.H - aRect^.Y) / 2);
+  Result.Width := A.Width * Factor;
+  Result.Height := A.Height * Factor;
+end;
 
-  Result := @tmpVec;
+class operator TelSize.Divide(A, B: TelSize): TelSize;
+begin
+  Result.Width := A.Width / B.Width;
+  Result.Height := A.Height / B.Height;
+end;
+
+class operator TelSize.IntDivide(A, B: TelSize): TelSize;
+begin
+  Result.Width := Trunc(A.Width) div Trunc(B.Width);
+  Result.Height := Trunc(A.Height) div Trunc(B.Height);
+end;
+
+class operator TelSize.Modulus(A, B: TelSize): TelSize;
+begin
+  Result.Width := Trunc(A.Width) mod Trunc(B.Width);
+  Result.Height := Trunc(A.Height) mod Trunc(B.Height);
+end;
+
+class operator TelSize.Equal(A, B: TelSize): Boolean;
+begin
+  Result := ((A.Width = B.Width) and (A.Height = B.Height));
+end;
+
+class operator TelSize.NotEqual(A, B: TelSize): Boolean;
+begin
+  Result := not ((A.Width = B.Width) and (A.Height = B.Height));
+end;
+
+class operator TelSize.GreaterThan(A, B: TelSize): Boolean;
+begin
+  Result := ((A.Width > B.Width) and (A.Height > B.Height));
+end;
+
+class operator TelSize.GreaterThanOrEqual(A, B: TelSize): Boolean;
+begin
+  Result := ((A.Width >= B.Width) and (A.Height >= B.Height));
+end;
+
+class operator TelSize.LessThan(A, B: TelSize): Boolean;
+begin
+  Result := ((A.Width < B.Width) and (A.Height < B.Height));
+end;
+
+class operator TelSize.LessThanOrEqual(A, B: TelSize): Boolean;
+begin
+  Result := ((A.Width <= B.Width) and (A.Height <= B.Height));
 end;
 
 function TelSize.GetAspectRatio(): Single;
@@ -1431,348 +701,23 @@ begin
   Result := Width / Height;
 end;
 
+function TelSize.GetOrientation: TRectOrientation;
+begin
+  if Width > Height then Result := roLandscape
+    else Result := roPortrait;
+end;
+
 function TelSize.IsWide(): Boolean;
 begin
   Result := (GetAspectRatio > (4 / 3));
 end;
 
-function TelSize.Equals(aSize: TelSize): Boolean;
+function TelSize.IsEmpty: Boolean;
 begin
-  Result := ((Self.Width = aSize.Width) and (Self.Height = aSize.Height));
+  Result := ((Self.Width = 0) and (Self.Height = 0));
 end;
 
-procedure TelVector3f.Clear();
-begin
-  X := 0.0;
-  Y := 0.0;
-  Z := 0.0;
-end;
 
-function TelVector3f.GetLength(): Double;
-begin
-  Result := sqrt(X * X + Y * Y + Z * Z);
-end;
-	
-procedure TelVector3f.Make(aX, aY, aZ: Single);
-begin
-  X := aX;
-  Y := aY;
-  Z := aZ;
-end;
-	
-function TelVector3f.ToString(): String;
-begin
-  Result := Format('X: %.3f Y: %.3f Z: %.3f', [X, Y, Z])
-end;
-	
-function TelVector3f.ToVector3i(): PelVector3i;
-var
-  tmpVec: TelVector3i;
-begin
-  tmpVec := makeV3i(Trunc(X), Trunc(Y), Trunc(Z));
-
-  Result := @tmpVec;
-end;
-
-function TelVector3f.ToVector2f(): PelVector2f;
-var
-  tmpVec: TelVector2f;
-begin
-  tmpVec := makeV2f(X, Y);
-
-  Result := @tmpVec;
-end;
-
-function TelVector3f.ToVector2i(): PelVector2i;
-var
-  tmpVec: TelVector2i;
-begin
-  tmpVec := makeV2i(Trunc(X), Trunc(Y));
-
-  Result := @tmpVec;
-end;
-
-function TelVector3f.ToSize(): PelSize;
-var
-  tmpSize: TelSize;
-begin
-  tmpSize := makeSize(Trunc(X), Trunc(Y));
-
-  Result := @tmpSize;
-end;
-
-function TelVector3f.ToKey(KeyName: String): PKeyIdent;
-var
-  tmpKey: TKeyIdent;
-begin
-  tmpKey.Name := KeyName;
-  tmpKey.Value := Self.ToString();
-
-  Result := @tmpKey;
-end;
-
-procedure TelVector3f.Add(Vector: TelVector3f);
-begin
-  Self.X := Self.X + Vector.X;
-  Self.Y := Self.Y + Vector.Y;
-  Self.Z := Self.Z + Vector.Z;
-end;
-
-procedure TelVector3f.Sub(Vector: TelVector3f);
-begin
-  Self.X := Self.Y - Vector.X;
-  Self.Y := Self.Y - Vector.Y;
-  Self.Z := Self.Z - Vector.Z;
-end;
-
-procedure TelVector3f.Multiply(Vector: TelVector3f);
-begin
-  Self.X := Self.X * Vector.X;
-  Self.Y := Self.Y * Vector.Y;
-  Self.Z := Self.Z * Vector.Z;
-end;
-
-procedure TelVector3f.Divide(Vector: TelVector3f);
-begin
-  Self.X := Self.X / Vector.X;
-  Self.Y := Self.Y / Vector.Y;
-  Self.Z := Self.Z / Vector.Z;
-end;
-
-procedure TelVector3f.Scale(Factor: Single);
-begin
-  Self.X := Self.X * Factor;
-  Self.Y := Self.Y * Factor;
-  Self.Z := Self.Z * Factor;
-end;
-	
-function TelVector3f.DotProduct(Vector: TelVector3f): Single;
-begin
-  Result := (Self.X * Vector.X) + (Self.Y * Vector.Y) + (Self.Z * Vector.Z);
-end;
-
-function TelVector3f.CrossProduct(Vector: TelVector3f): PelVector3f;
-var
-  tmpVec: TelVector3f;
-begin
-  tmpVec := makeV3f(Self.Y * Vector.Z - Vector.Y * Self.Z, Self.Z * Vector.X - Vector.Z * Self.X, Self.X * Vector.Y - Vector.X * Self.Y);
-
-  Result := @tmpVec;
-end;
-
-procedure TelVector3f.Normalize();
-begin
-  Self.X := Self.X / GetLength;
-  Self.Y := Self.Y / GetLength;
-  Self.Z := Self.Z / GetLength;
-end;
-
-procedure TelVector3f.Zero();
-begin
-  Self.X := 0.0;
-  Self.Y := 0.0;
-  Self.Z := 0.0;
-end;
-
-procedure TelVector3f.One();
-begin
-  Self.X := 1.0;
-  Self.Y := 1.0;
-  Self.Z := 1.0;
-end;
-
-procedure TelVector3f.Forward();
-begin
-  Self.X := 0.0;
-  Self.Y := 0.0;
-  Self.Z := 1.0;
-end;
-
-procedure TelVector3f.Up();
-begin
-  Self.X := 0.0;
-  Self.Y := 1.0;
-  Self.Z := 0.0;
-end;
-
-procedure TelVector3f.Right();
-begin
-  Self.X := 1.0;
-  Self.Y := 0.0;
-  Self.Z := 0.0;
-end;
-
-function TelVector3f.Equals(aVector: TelVector3f): Boolean;
-begin
-  Result := ((Self.X = aVector.X) and (Self.Y = aVector.Y) and (Self.Z = aVector.Z));
-end;
-
-procedure TelVector3i.Clear();
-begin
-  X := 0;
-  Y := 0;
-  Z := 0;
-end;
-
-function TelVector3i.GetLength(): Double;
-begin
-  Result := sqrt(X * X + Y * Y + Z * Z);
-end;
-	
-procedure TelVector3i.Make(aX, aY, aZ: Integer);
-begin
-  X := aX;
-  Y := aY;
-  Z := aZ;
-end;
-	
-function TelVector3i.ToString(): String;
-begin
-  Result := Format('X: %d Y: %d, Z: %d', [X, Y, Z]);
-end;
-	
-function TelVector3i.ToVector3f(EmptyZ: Boolean = False): PelVector3f;
-var
-  tmpVec: TelVector3f;
-begin
-  if EmptyZ then tmpVec := makeV3f(X * 1.0, Y * 1.0, 0)
-     else tmpVec := makeV3f(X * 1.0, Y * 1.0, Z * 1.0);
-
-  Result := @tmpVec;
-end;
-
-function TelVector3i.ToVector2f(): PelVector2f;
-var
-  tmpVec: TelVector2f;
-begin
-  tmpVec := makeV2f(X * 1.0, Y * 1.0);
-
-  Result := @tmpVec;
-end;
-
-function TelVector3i.ToVector2i(): PelVector2i;
-var
-  tmpVec: TelVector2i;
-begin
-  tmpVec := makeV2i(X, Y);
-
-  Result := @tmpVec;
-end;
-
-function TelVector3i.ToSize(): PelSize;
-var
-  tmpSize: TelSize;
-begin
-  tmpSize := makeSize(X, Y);
-
-  Result := @tmpSize;
-end;
-
-function TelVector3i.ToKey(KeyName: String): PKeyIdent;
-var
-  tmpKey: TKeyIdent;
-begin
-  tmpKey.Name := KeyName;
-  tmpKey.Value := Self.ToString();
-
-  Result := @tmpKey;
-end;
-
-procedure TelVector3i.Add(Vector: TelVector3i);
-begin
-  Self.X := Self.X + Vector.X;
-  Self.Y := Self.Y + Vector.Y;
-  Self.Z := Self.Z + Vector.Z;
-end;
-
-procedure TelVector3i.Sub(Vector: TelVector3i);
-begin
-  Self.X := Self.Y - Vector.X;
-  Self.Y := Self.Y - Vector.Y;
-  Self.Z := Self.Z - Vector.Z;
-end;
-
-procedure TelVector3i.Multiply(Vector: TelVector3i);
-begin
-  Self.X := Self.X * Vector.X;
-  Self.Y := Self.Y * Vector.Y;
-  Self.Z := Self.Z * Vector.Z;
-end;
-
-procedure TelVector3i.Divide(Vector: TelVector3i);
-begin
-  Self.X := Trunc(Self.X / Vector.X);
-  Self.Y := Trunc(Self.Y / Vector.Y);
-  Self.Z := Trunc(Self.Z / Vector.Z);
-end;
-
-procedure TelVector3i.Scale(Factor: Single);
-begin
-  Self.X := Trunc(Self.X * Factor);
-  Self.Y := Trunc(Self.Y * Factor);
-  Self.Z := Trunc(Self.Z * Factor);
-end;
-	
-function TelVector3i.DotProduct(Vector: TelVector3i): Integer;
-begin
-  Result := (Self.X * Vector.X) + (Self.Y * Vector.Y) + (Self.Z * Vector.Z);
-end;
-
-function TelVector3i.CrossProduct(Vector: TelVector3i): PelVector3i;
-var
-  tmpVec: TelVector3i;
-begin
-  tmpVec := makeV3i(Self.Y * Vector.Z - Vector.Y * Self.Z, Self.Z * Vector.X - Vector.Z * Self.X, Self.X * Vector.Y - Vector.X * Self.Y);
-
-  Result := @tmpVec;
-end;
-
-procedure TelVector3i.Normalize();
-begin
-  Self.X := Trunc(Self.X / GetLength);
-  Self.Y := Trunc(Self.Y / GetLength);
-  Self.Z := Trunc(Self.Z / GetLength);
-end;
-
-procedure TelVector3i.Zero();
-begin
-  Self.X := 0;
-  Self.Y := 0;
-  Self.Z := 0;
-end;
-
-procedure TelVector3i.One();
-begin
-  Self.X := 1;
-  Self.Y := 1;
-  Self.Z := 1;
-end;
-
-procedure TelVector3i.Forward();
-begin
-  Self.X := 0;
-  Self.Y := 0;
-  Self.Z := 1;
-end;
-
-procedure TelVector3i.Up();
-begin
-  Self.X := 0;
-  Self.Y := 1;
-  Self.Z := 0;
-end;
-
-procedure TelVector3i.Right();
-begin
-  Self.X := 1;
-  Self.Y := 0;
-  Self.Z := 0;
-end;
-
-function TelVector3i.Equals(aVector: TelVector3i): Boolean;
-begin
-  Result := ((Self.X = aVector.X) and (Self.Y = aVector.Y) and (Self.Z = aVector.Z));
-end;
 
 
 
@@ -1780,6 +725,8 @@ procedure TelRect.Clear();
 begin
   X := 0;
   Y := 0;
+  Z := 0;
+
   W := 0;
   H := 0;
 end;
@@ -1789,6 +736,7 @@ begin
   X := aX * 1.0;
   Y := aY * 1.0;
   Z := 0.0;
+
   W := aW * 1.0;
   H := aH * 1.0;
 end;
@@ -1798,6 +746,7 @@ begin
   X := aX * 1.0;
   Y := aY * 1.0;
   Z := aZ * 1.0;
+
   W := aW * 1.0;
   H := aH * 1.0;
 end;
@@ -1806,7 +755,8 @@ procedure TelRect.Make(aX, aY, aW, aH: Single);
 begin
   X := aX;
   Y := aY;
-  Z := 0;
+  Z := 0.0;
+
   W := aW;
   H := aH;
 end;
@@ -1816,6 +766,7 @@ begin
   X := aX;
   Y := aY;
   Z := aZ;
+
   W := aW;
   H := aH;
 end;
@@ -1824,64 +775,238 @@ procedure TelRect.Make(aPosition: TelVector2f; aSize: TelSize);
 begin
   X := aPosition.X;
   Y := aPosition.Y;
-  W := aSize.Width * 1.0;
-  H := aSize.Height * 1.0;
+  Z := 0.0;
+
+  W := aSize.Width;
+  H := aSize.Height;
 end;
 
 procedure TelRect.Make(aPosition: TelVector2i; aSize: TelSize);
 begin
   X := aPosition.X * 1.0;
   Y := aPosition.Y * 1.0;
-  W := aSize.Width * 1.0;
-  H := aSize.Height * 1.0;
+  Z := 0.0;
+
+  W := aSize.Width;
+  H := aSize.Height;
 end;
 
-function TelRect.ToString(): String;
+procedure TelRect.Make(aPosition: TelVector3f; aSize: TelSize);
 begin
-  Result := Format('X: %f Y: %f W: %f H: %f', [X, Y, W, H]);
+  X := aPosition.X;
+  Y := aPosition.Y;
+  Z := aPosition.Z;
+
+  W := aSize.Width;
+  H := aSize.Height;
 end;
 
-function TelRect.ToKey(KeyName: String): PKeyIdent;
-var
-  tmpKey: TKeyIdent;
+procedure TelRect.Make(aPosition: TelVector3i; aSize: TelSize);
 begin
-  tmpKey.Name := KeyName;
-  tmpKey.Value := Self.ToString();
+  X := aPosition.X * 1.0;
+  Y := aPosition.Y * 1.0;
+  Z := aPosition.Z * 1.0;
 
-  Result := @tmpKey;
+  W := aSize.Width;
+  H := aSize.Height;
 end;
 
-function TelRect.Center(): PelVector2f;
-var
-  tmpVec: TelVector2f;
+function TelRect.ToString(): AnsiString;
 begin
-  tmpVec := makeV2f((Self.W - Self.X) / 2, (Self.H - Self.Y) / 2);
-
-  Result := @tmpVec;
+  Result := Format('rect(%f, %f, %f, %f, %f)', [X, Y, Z, W, H]);
 end;
 
-function TelRect.Center(aRect: TelRect): PelVector2f;
-var
-  tmpVec: TelVector2f;
+function TelRect.ToSize(): TelSize;
 begin
-  tmpVec := makeV2f(Self.W - (aRect.W - aRect.X) / 2, Self.H - (aRect.H - aRect.Y));
-
-  Result := @tmpVec;
+  Result := TelSize.Create(W, H);
 end;
 
-function TelRect.ContainsVector(aVector: TelVector2i): Boolean;
+function TelRect.Center(): TelVector2f;
 begin
-  Result := ((aVector.X >= Self.X) and (aVector.Y >= Self.Y) and (aVector.X <= (Self.X + Self.W)) and (aVector.Y <= (Self.Y + Self.H)));
+  Result := TelVector2f.Create(Self.X + (Self.W / 2), Self.Y + (Self.H / 2));
 end;
 
-function TelRect.ContainsVector(aVector: TelVector2f): Boolean;
+class function TelRect.Create: TelRect;
 begin
-  Result := ((aVector.X >= Self.X) and (aVector.Y >= Self.Y) and (aVector.X <= (Self.X + Self.W)) and (aVector.Y <= (Self.Y + Self.H)));
+  Result.X := 0;
+  Result.Y := 0;
+  Result.Z := 0;
+
+  Result.W := 0;
+  Result.H := 0;
 end;
 
-function TelRect.ContainsRect(aRect: TelRect): Boolean;
+class function TelRect.Create(aX, aY, aW, aH: Single): TelRect;
 begin
-  Result := ((aRect.X >= Self.X) and (aRect.Y >= Self.Y) and (aRect.X <= (Self.X + Self.W)) and (aRect.Y <= (Self.Y + Self.H)));
+  Result.X := aX;
+  Result.Y := aY;
+  Result.Z := 0.0;
+
+  Result.W := aW;
+  Result.H := aH;
+end;
+
+class function TelRect.Create(aX, aY, aW, aH: Integer): TelRect;
+begin
+  Result.X := aX * 1.0;
+  Result.Y := aY * 1.0;
+  Result.Z := 0.0;
+
+  Result.W := aW * 1.0;
+  Result.H := aH * 1.0;
+end;
+
+class function TelRect.Create(aX, aY, aZ, aW, aH: Single): TelRect;
+begin
+  Result.X := aX;
+  Result.Y := aY;
+  Result.Z := aZ;
+
+  Result.W := aW;
+  Result.H := aH;
+end;
+
+class function TelRect.Create(aX, aY, aZ, aW, aH: Integer): TelRect;
+begin
+  Result.X := aX * 1.0;
+  Result.Y := aY * 1.0;
+  Result.Z := aZ * 1.0;
+
+  Result.W := aW * 1.0;
+  Result.H := aH * 1.0;
+end;
+
+class function TelRect.Create(aPosition: TelVector2f; aSize: TelSize): TelRect;
+begin
+  Result.X := aPosition.X;
+  Result.Y := aPosition.Y;
+  Result.Z := 0.0;
+
+  Result.W := aSize.Width;
+  Result.H := aSize.Height;
+end;
+
+class function TelRect.Create(aPosition: TelVector2i; aSize: TelSize): TelRect;
+begin
+  Result.X := aPosition.X * 1.0;
+  Result.Y := aPosition.Y * 1.0;
+  Result.Z := 0.0;
+
+  Result.W := aSize.Width;
+  Result.H := aSize.Height;
+end;
+
+class function TelRect.Create(aPosition: TelVector3f; aSize: TelSize): TelRect;
+begin
+  Result.X := aPosition.X;
+  Result.Y := aPosition.Y;
+  Result.Z := aPosition.Z;
+
+  Result.W := aSize.Width;
+  Result.H := aSize.Height;
+end;
+
+class function TelRect.Create(aPosition: TelVector3i; aSize: TelSize): TelRect;
+begin
+  Result.X := aPosition.X * 1.0;
+  Result.Y := aPosition.Y * 1.0;
+  Result.Z := aPosition.Z * 1.0;
+
+  Result.W := aSize.Width;
+  Result.H := aSize.Height;
+end;
+
+class function TelRect.Copy(aSource: TelRect): TelRect;
+begin
+  Result.X := aSource.X;
+  Result.Y := aSource.Y;
+  Result.Z := aSource.Z;
+
+  Result.W := aSource.W;
+  Result.H := aSource.H;
+end;
+
+class operator TelRect.Add(A, B: TelRect): TelRect;
+begin
+  Result.X := A.X + B.X;
+  Result.Y := A.Y + B.Y;
+  Result.Z := A.Z + B.Z;
+
+  Result.W := A.W + B.W;
+  Result.H := A.H + B.H;
+end;
+
+class operator TelRect.Subtract(A, B: TelRect): TelRect;
+begin
+  Result.X := A.X - B.X;
+  Result.Y := A.Y - B.Y;
+  Result.Z := A.Z - B.Z;
+
+  Result.W := A.W - B.W;
+  Result.H := A.H - B.H;
+end;
+
+class operator TelRect.Multiply(A, B: TelRect): TelRect;
+begin
+  Result.X := A.X * B.X;
+  Result.Y := A.Y * B.Y;
+  Result.Z := A.Z * B.Z;
+
+  Result.W := A.W * B.W;
+  Result.H := A.H * B.H;
+end;
+
+class operator TelRect.Divide(A, B: TelRect): TelRect;
+begin
+  Result.X := A.X / B.X;
+  Result.Y := A.Y / B.Y;
+  Result.Z := A.Z / B.Z;
+
+  if (not B.Empty)  then
+  begin
+    Result.W := A.W / B.W;
+    Result.H := A.H / B.H;
+  end;
+end;
+
+class operator TelRect.Equal(A, B: TelRect): Boolean;
+begin
+  Result := ((A.X = B.X) and (A.Y = B.Y) and (A.W = B.W) and (A.H = B.H));
+end;
+
+class operator TelRect.NotEqual(A, B: TelRect): Boolean;
+begin
+  Result := not ((A.X = B.X) and (A.Y = B.Y) and (A.W = B.W) and (A.H = B.H));
+end;
+
+class operator TelRect.In(aVector: TelVector2i; aRect: TelRect): Boolean;
+begin
+  Result := ((aVector.X >= aRect.X) and (aVector.Y >= aRect.Y) and (aVector.X <= (aRect.X + aRect.W)) and (aVector.Y <= (aRect.Y + aRect.H)));
+end;
+
+class operator TelRect.In(aVector: TelVector2f; aRect: TelRect): Boolean;
+begin
+  Result := ((aVector.X >= aRect.X) and (aVector.Y >= aRect.Y) and (aVector.X <= (aRect.X + aRect.W)) and (aVector.Y <= (aRect.Y + aRect.H)));
+end;
+
+class operator TelRect.In(aVector: TelVector3i; aRect: TelRect): Boolean;
+begin
+  Result := ((aVector.X >= aRect.X) and (aVector.Y >= aRect.Y) and (aVector.Z = aRect.Z) and (aVector.X <= (aRect.X + aRect.W)) and (aVector.Y <= (aRect.Y + aRect.H)));
+end;
+
+class operator TelRect.In(aVector: TelVector3f; aRect: TelRect): Boolean;
+begin
+  Result := ((aVector.X >= aRect.X) and (aVector.Y >= aRect.Y) and (aVector.Z = aRect.Z) and (aVector.X <= (aRect.X + aRect.W)) and (aVector.Y <= (aRect.Y + aRect.H)));
+end;
+
+class operator TelRect.In(aSize: TelSize; aRect: TelRect): Boolean;
+begin
+  Result := ((aRect.W = aSize.Width) and (aRect.H = aSize.Height));
+end;
+
+class operator TelRect.In(A, B: TelRect): Boolean;
+begin
+  Result := ((A.X >= B.X) and (A.Y >= B.Y) and (A.X <= (B.X + B.W)) and (A.Y <= (B.Y + B.H)));
 end;
 
 function TelRect.GetAspectRatio(): Single;
@@ -1894,9 +1019,10 @@ begin
   Result := (GetAspectRatio > (4 / 3));
 end;
 
-function TelRect.Equals(aRect: TelRect): Boolean;
+function TelRect.GetOrientation: TRectOrientation;
 begin
-  Result := ((aRect.X = Self.X) and (aRect.Y = Self.Y) and (aRect.W = Self.W) and (aRect.H = Self.H));
+  if W > H then Result := roLandscape
+    else Result := roPortrait;
 end;
 
 function TelRect.IsEmpty(): Boolean;
@@ -1904,22 +1030,363 @@ begin
   Result := ((X = 0) and (Y = 0) and (W = 0) and (H = 0));
 end;
 
-{$ELSE}
+{ TelVector2iHelper }
 
-function RectContainsVector(aRect: TelRect; aVector: TelVector2i): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+procedure TelVector2iHelper.Clear;
 begin
-  Result := ((aVector.X >= aRect.X) and (aVector.Y >= aRect.Y) and (aVector.X <= (aRect.X + aRect.W)) and (aVector.Y <= (aRect.Y + aRect.H)));
+  X := 0;
+  Y := 0;
 end;
 
-function RectContainsVector(aRect: TelRect; aVector: TelVector2f): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+class function TelVector2iHelper.Create: TelVector2i;
 begin
-  Result := ((aVector.X >= aRect.X) and (aVector.Y >= aRect.Y) and (aVector.X <= (aRect.X + aRect.W)) and (aVector.Y <= (aRect.Y + aRect.H)));
+  Result.X := 0;
+  Result.Y := 0;
 end;
 
-function RectContainsRect(aRect, bRect: TelRect): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+class function TelVector2iHelper.Create(aX, aY: Integer): TelVector2i;
 begin
-  Result := (((aRect.X >= bRect.X) and (aRect.Y >= bRect.Y) and (aRect.X <= (bRect.X + bRect.W)) and (aRect.Y <= (bRect.Y + bRect.H)));
+  Result.X := aX;
+  Result.Y := aY;
 end;
-{$ENDIF}
+
+class function TelVector2iHelper.DotProduct(A, B: TelVector2i): Single;
+begin
+  Result := (A.X * B.X) + (A.Y * B.Y);
+end;
+
+function TelVector2iHelper.GetLength: Single;
+begin
+  Result := sqrt(X * X + Y * Y);
+end;
+
+procedure TelVector2iHelper.Normalize;
+begin
+  Self.X := Trunc(Self.X / Length);
+  Self.Y := Trunc(Self.Y / Length);
+end;
+
+class function TelVector2iHelper.Normalize(aVector: TelVector2i): TelVector2i;
+begin
+  Result.X := Trunc(aVector.X / aVector.Length);
+  Result.Y := Trunc(aVector.Y / aVector.Length);
+end;
+
+function TelVector2iHelper.ToSize: TelSize;
+begin
+  Result := TelSize.Create(X * 1.0, Y * 1.0);
+end;
+
+function TelVector2iHelper.ToString: AnsiString;
+begin
+  Result := Format('%d %d', [X, Y]);
+end;
+
+function TelVector2iHelper.ToVector2f: TelVector2f;
+begin
+  Result := TelVector2f.Create(X * 1.0, Y * 1.0);
+end;
+
+function TelVector2iHelper.ToVector3f: TelVector3f;
+begin
+  Result := TelVector3f.Create(X * 1.0, Y * 1.0);
+end;
+
+function TelVector2iHelper.ToVector3i: TelVector3i;
+begin
+  Result := TelVector3i.Create(X, Y);
+end;
+
+{ TelVector2fHelper }
+
+procedure TelVector2fHelper.Clear;
+begin
+  X := 0.0;
+  Y := 0.0;
+end;
+
+class function TelVector2fHelper.Create: TelVector2f;
+begin
+  Result.X := 0.0;
+  Result.Y := 0.0;
+end;
+
+class function TelVector2fHelper.Create(aX, aY: Single): TelVector2f;
+begin
+  Result.X := aX;
+  Result.Y := aY;
+end;
+
+class function TelVector2fHelper.DotProduct(A, B: TelVector2f): Single;
+begin
+  Result := (A.X * B.X) + (A.Y * B.Y);
+end;
+
+function TelVector2fHelper.GetLength: Single;
+begin
+  Result := sqrt(X * X + Y * Y);
+end;
+
+procedure TelVector2fHelper.Normalize;
+begin
+  Self.X := Self.X / Length;
+  Self.Y := Self.Y / Length;
+end;
+
+class function TelVector2fHelper.Normalize(aVector: TelVector2f): TelVector2f;
+begin
+  Result.X := aVector.X / aVector.Length;
+  Result.Y := aVector.Y / aVector.Length;
+end;
+
+function TelVector2fHelper.ToSize: TelSize;
+begin
+  Result := TelSize.Create(X, Y);
+end;
+
+function TelVector2fHelper.ToString: AnsiString;
+begin
+  Result := Format('%f %f', [X, Y]);
+end;
+
+function TelVector2fHelper.ToVector2i: TelVector2i;
+begin
+  Result := TelVector2i.Create(Trunc(X), Trunc(Y));
+end;
+
+function TelVector2fHelper.ToVector3f: TelVector3f;
+begin
+  Result := TelVector3f.Create(X, Y);
+end;
+
+function TelVector2fHelper.ToVector3i: TelVector3i;
+begin
+  Result := TelVector3i.Create(Trunc(X), Trunc(Y));
+end;
+
+{ TelVector3iHelper }
+
+procedure TelVector3iHelper.Clear;
+begin
+  X := 0;
+  Y := 0;
+  Z := 0;
+end;
+
+class function TelVector3iHelper.Create: TelVector3i;
+begin
+  Result.X := 0;
+  Result.Y := 0;
+  Result.Z := 0;
+end;
+
+class function TelVector3iHelper.Create(aX, aY: Integer; aZ: Integer = 0): TelVector3i;
+begin
+  Result.X := aX;
+  Result.Y := aY;
+  Result.Z := aZ;
+end;
+
+class function TelVector3iHelper.CrossProduct(A, B: TelVector3i): TelVector3i;
+begin
+  Result := TelVector3i.Create(A.Y * B.Z - B.Y * A.Z, A.Z * B.X - B.Z * A.X, A.X * B.Y - B.X * A.Y);
+end;
+
+class function TelVector3iHelper.DotProduct(A, B: TelVector3i): Single;
+begin
+  Result := (A.X * B.X) + (A.Y * B.Y) + (A.Z * B.Z);
+end;
+
+class function TelVector3iHelper.Forward: TelVector3i;
+begin
+  Result.X := 0;
+  Result.Y := 0;
+  Result.Z := 1;
+end;
+
+function TelVector3iHelper.GetLength: Single;
+begin
+  Result := sqrt(X * X + Y * Y + Z * Z);
+end;
+
+class function TelVector3iHelper.Normalize(aVector: TelVector3i): TelVector3i;
+begin
+  Result.X := Trunc(aVector.X / aVector.Length);
+  Result.Y := Trunc(aVector.Y / aVector.Length);
+  Result.Z := Trunc(aVector.Z / aVector.Length);
+end;
+
+procedure TelVector3iHelper.Normalize;
+begin
+  Self.X := Trunc(Self.X / GetLength);
+  Self.Y := Trunc(Self.Y / GetLength);
+  Self.Z := Trunc(Self.Z / GetLength);
+end;
+
+class function TelVector3iHelper.One: TelVector3i;
+begin
+  Result.X := 1;
+  Result.Y := 1;
+  Result.Z := 1;
+end;
+
+class function TelVector3iHelper.Right: TelVector3i;
+begin
+  Result.X := 1;
+  Result.Y := 0;
+  Result.Z := 0;
+end;
+
+function TelVector3iHelper.ToSize: TelSize;
+begin
+  Result := TelSize.Create(X * 1.0, Y * 1.0);
+end;
+
+function TelVector3iHelper.ToString: AnsiString;
+begin
+  Result := Format('%d %d %d', [X, Y, Z]);
+end;
+
+function TelVector3iHelper.ToVector2f: TelVector2f;
+begin
+  Result := TelVector2f.Create(X * 1.0, Y * 1.0);
+end;
+
+function TelVector3iHelper.ToVector2i: TelVector2i;
+begin
+  Result := TelVector2i.Create(X, Y);
+end;
+
+function TelVector3iHelper.ToVector3f: TelVector3f;
+begin
+  Result := TelVector3f.Create(X * 1.0, Y * 1.0, Z * 1.0);
+end;
+
+class function TelVector3iHelper.Up: TelVector3i;
+begin
+  Result.X := 0;
+  Result.Y := 1;
+  Result.Z := 0;
+end;
+
+class function TelVector3iHelper.Zero: TelVector3i;
+begin
+  Result.X := 0;
+  Result.Y := 0;
+  Result.Z := 0;
+end;
+
+{ TelVector3fHelper }
+
+procedure TelVector3fHelper.Clear;
+begin
+  X := 0.0;
+  Y := 0.0;
+  Z := 0.0;
+end;
+
+class function TelVector3fHelper.Create: TelVector3f;
+begin
+  Result.X := 0.0;
+  Result.Y := 0.0;
+  Result.Z := 0.0;
+end;
+
+class function TelVector3fHelper.Create(aX, aY: Single; aZ: Single = 0.0): TelVector3f;
+begin
+  Result.X := aX;
+  Result.Y := aY;
+  Result.Z := aZ;
+end;
+
+class function TelVector3fHelper.CrossProduct(A, B: TelVector3f): TelVector3f;
+begin
+  Result := TelVector3f.Create(A.Y * B.Z - B.Y * A.Z, A.Z * B.X - B.Z * A.X, A.X * B.Y - B.X * A.Y);
+end;
+
+class function TelVector3fHelper.DotProduct(A, B: TelVector3f): Single;
+begin
+  Result := (A.X * B.X) + (A.Y * B.Y) + (A.Z * B.Z);
+end;
+
+class function TelVector3fHelper.Forward: TelVector3f;
+begin
+  Result.X := 0.0;
+  Result.Y := 0.0;
+  Result.Z := 1.0;
+end;
+
+class function TelVector3fHelper.Right: TelVector3f;
+begin
+  Result.X := 1.0;
+  Result.Y := 0.0;
+  Result.Z := 0.0;
+end;
+
+function TelVector3fHelper.GetLength: Single;
+begin
+  Result := sqrt(X * X + Y * Y + Z * Z);
+end;
+
+class function TelVector3fHelper.Normalize(aVector: TelVector3f): TelVector3f;
+begin
+  Result.X := aVector.X / aVector.Length;
+  Result.Y := aVector.Y / aVector.Length;
+  Result.Z := aVector.Z / aVector.Length;
+end;
+
+procedure TelVector3fHelper.Normalize;
+begin
+  Self.X := Self.X / GetLength;
+  Self.Y := Self.Y / GetLength;
+  Self.Z := Self.Z / GetLength;
+end;
+
+class function TelVector3fHelper.One: TelVector3f;
+begin
+  Result.X := 1.0;
+  Result.Y := 1.0;
+  Result.Z := 1.0;
+end;
+
+function TelVector3fHelper.ToSize: TelSize;
+begin
+  Result := TelSize.Create(X, Y);
+end;
+
+function TelVector3fHelper.ToString: AnsiString;
+begin
+  Result := Format('%f %f %f', [X, Y, Z]);
+end;
+
+function TelVector3fHelper.ToVector2f: TelVector2f;
+begin
+  Result := TelVector2f.Create(X, Y);
+end;
+
+function TelVector3fHelper.ToVector2i: TelVector2i;
+begin
+  Result := TelVector2i.Create(Trunc(X), Trunc(Y));
+end;
+
+function TelVector3fHelper.ToVector3i: TelVector3i;
+begin
+  Result := TelVector3i.Create(Trunc(X), Trunc(Y), Trunc(Y));
+end;
+
+class function TelVector3fHelper.Up: TelVector3f;
+begin
+  Result.X := 0.0;
+  Result.Y := 1.0;
+  Result.Z := 0.0;
+end;
+
+class function TelVector3fHelper.Zero: TelVector3f;
+begin
+  Result.X := 0.0;
+  Result.Y := 0.0;
+  Result.Z := 0.0;
+end;
+
 
 end.
