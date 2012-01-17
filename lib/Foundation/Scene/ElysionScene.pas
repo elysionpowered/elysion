@@ -14,15 +14,14 @@ interface
 uses
     Classes,
 
-    ElysionTypes,
     ElysionObject,
+    ElysionList,
     ElysionGraphicsProvider,
     ElysionEvents,
     ElysionApplication,
     ElysionInput,
     ElysionNode,
     ElysionEntity,
-    ElysionUtils,
     ElysionLayer;
 
 
@@ -91,30 +90,7 @@ TelScene = class(TelObject)
     property OnResume: TelEvent read fOnResume write fOnResume;
 end;
 
-TelSceneList = class(TelObject)
-   private
-    fSceneList: TList;
-
-    function Get(Index: Integer): TelScene; inline;
-    function GetPos(Index: AnsiString): Integer; inline;
-    procedure Put(Index: Integer; const Item: TelScene); inline;
-    procedure PutS(Index: AnsiString; const Item: TelScene); inline;
-    function GetS(Index: AnsiString): TelScene; inline;
-
-    function GetCount: Integer; inline;
-  public
-    constructor Create; Override;
-    destructor Destroy; Override;
-
-    procedure Insert(Index: Integer; Scene: TelScene); inline;
-    function Add(Scene: TelScene): Integer; inline;
-    procedure Delete(Index: Integer); inline;
-
-    property Items[Index: Integer]: TelScene read Get write Put; default;
-    property Find[Index: AnsiString]: TelScene read GetS write PutS;
-  published
-    property Count: Integer read GetCount;
-end;
+TelSceneList = TelList<TelScene>;
 
 { TelSceneDirector }
 
@@ -164,24 +140,24 @@ implementation
 
 constructor TelScene.Create;
 begin
-  inherited;
+  inherited Create;
 
   fOnPause := nil;
   fOnResume := nil;
 
   fParent := nil;
 
-  fNodeList := TelNodeList.Create;
-  fEntityList := TelEntityList.Create;
+  //fNodeList := TelNodeList.Create;
+  //fEntityList := TelEntityList.Create;
 
-  GUILayer := TelLayer.Create;
+  //GUILayer := TelLayer.Create;
 
-    fAutoSave := true;
+  fAutoSave := true;
 end;
 
 constructor TelScene.Create(aName: AnsiString);
 begin
-  Create;
+  //Create;
 
   Self.Name := aName;
 end;
@@ -309,116 +285,6 @@ begin
 
 end;
 
-{ TelSceneList }
-
-constructor TelSceneList.Create;
-begin
-  inherited;
-
-  fSceneList := TList.Create;
-end;
-
-destructor TelSceneList.Destroy;
-var
-  i: Integer;
-begin
-  for i := 0 to fSceneList.Count - 1 do
-  begin
-    TelScene(fSceneList[i]).Free;
-  end;
-  fSceneList.Free;
-
-  inherited;
-end;
-
-function TelSceneList.GetCount: Integer;
-begin
-  Result := fSceneList.Count;
-end;
-
-function TelSceneList.Get(Index: Integer): TelScene;
-begin
-  if ((Index >= 0) and (Index <= fSceneList.Count - 1)) then Result := TelScene(fSceneList[Index]);
-end;
-
-function TelSceneList.GetPos(Index: AnsiString): Integer;
-Var a, TMP: Integer;
-Begin
-  Try
-    For a := 0 To fSceneList.Count - 1 Do
-    Begin
-      if Items[a].Name <> Index then TMP := -1
-      else begin
-        TMP := a;
-        Break;
-      end;
-    End;
-  Finally
-    Result := TMP;
-  End;
-
-end;
-
-procedure TelSceneList.Put(Index: Integer; const Item: TelScene);
-var
-  TmpScene: TelScene;
-begin
-  if ((Index >= 0) and (Index <= fSceneList.Count - 1)) then
-  begin
-    TmpScene := Get(Index);
-    TmpScene.Destroy;
-    Insert(Index, Item);
-  end;
-
-end;
-
-procedure TelSceneList.PutS(Index: AnsiString; const Item: TelScene);
-var
-  TMP: Integer;
-  TmpScene: TelScene;
-Begin
-  if (Index <> '') then
-  begin
-    TmpScene := GetS(Index);
-	if TmpScene <> nil then
-	begin
-	  TMP := GetPos(Index);
-      TmpScene.Destroy;
-      Insert(TMP, Item);
-	end;
-   end;
-end;
-
-function TelSceneList.GetS(Index: AnsiString): TelScene;
-Var TMP: Integer;
-Begin
-  TMP := GetPos(Index);
-  if TMP >= 0 then Result := TelScene(fSceneList[TMP])
-			  else Result := nil;
-end;
-
-procedure TelSceneList.Insert(Index: Integer; Scene: TelScene);
-begin
-  if ((Index >= 0) and (Index <= fSceneList.Count - 1)) then fSceneList.Insert(Index, Scene);
-end;
-
-function TelSceneList.Add(Scene: TelScene): Integer;
-begin
-  Result := fSceneList.Add(Scene);
-end;
-
-procedure TelSceneList.Delete(Index: Integer);
-var
-  TmpScene: TelScene;
-begin
-  if ((Index >= 0) and (Index <= fSceneList.Count - 1)) then
-  begin
-    TmpScene := Get(Index);
-    TmpScene.Destroy;
-    fSceneList.Delete(Index);
-  end;
-
-end;
 
 { TelSceneDirector }
 
@@ -490,7 +356,7 @@ end;
 function TelSceneDirector.Add(aScene: TelScene; aName: AnsiString): Integer;
 begin
   aScene.Name := aName;
-  Add(aScene);
+  Result := Add(aScene);
 end;
 
 procedure TelSceneDirector.Delete(Index: Integer);

@@ -11,6 +11,7 @@ uses
   ElysionColor,
   ElysionTypes,
   ElysionObject,
+  ElysionList,
 
   {$IFDEF USE_VAMPYRE}
   ImagingSDL,
@@ -90,62 +91,12 @@ type
       property Height: Integer read fHeight;
   end;
 
-  TelTextureList = class(TelObject)
-    private
-      fTextureList: TList;
-      Head: String[14];
+  TelTextureList = TelList<TelTexture>;
 
-      function Get(Index: Integer): TelTexture;
-      function GetPos(Index: String): Integer;
-      procedure Put(Index: Integer; const Item: TelTexture);
-      procedure PutS(Index: String; const Item: TelTexture);
-      function GetS(Index: String): TelTexture;
-
-      function GetCount: Integer;
-    public
-      constructor Create; Override;
-      destructor Destroy; Override;
-
-      procedure Insert(Index: Integer; Texture: TelTexture);
-      function  Add(Texture: TelTexture): Integer;
-      procedure Delete(Index: Integer);
-      //procedure LoadFromStream(Stream : TFileStream);
-      //procedure SaveToStream(Stream : TFileStream);
-
-      //procedure LoadFromFile(Filename: String);
-      //procedure SaveToFile(Filename: String);
-
-      procedure ReloadAllTextures(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-      property Items[Index: Integer]: TelTexture read Get write Put; default;
-      property Find[Index: String]: TelTexture read GetS write PutS;
-    published
-      property Count: Integer read GetCount;
+  TelTextureListHelper = class helper for TelTextureList
+  public
+    procedure ReloadAllTextures;
   end;
-
-  // Factory
-  TelTextureManager = class(TelObject)
-    private
-      fTextureList: TelTextureList;
-    public
-      constructor Create; Override;
-      destructor Destroy; Override;
-
-      function CreateNewTexture(aFilename: String): TelTexture; Overload;
-      function CreateNewTexture(aSurface: PSDL_Surface): TelTexture; Overload;
-
-      function ForceNewTexture(aFilename: String): TelTexture; Overload;
-      function ForceNewTexture(aSurface: PSDL_Surface): TelTexture; Overload;
-
-      procedure ReloadAllTextures(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    published
-      property TextureList: TelTextureList read fTextureList write fTextureList;
-  end;
-
-{$IFDEF AUTO_INIT}
-var
-  TextureManager: TelTextureManager;
-{$ENDIF}
 
 implementation
 
@@ -177,7 +128,7 @@ begin
     glDeleteTextures(1, @TextureID);
   end;
 
-  inherited;
+  inherited Destroy;
 end;
 
 function TelTexture.LoadFromFile(const aFilename: String): Boolean;
@@ -291,214 +242,17 @@ begin
   if TextureSurface <> nil then Result := Self.LoadFromSDLSurface(Self.TextureSurface);
 end;
 
-constructor TelTextureList.Create;
-begin
-  inherited;
 
-  fTextureList := TList.Create;
-  Head := 'TelTextureList';
-end;
-
-destructor TelTextureList.Destroy;
-var
-  i: Integer;
-begin
-  for i := 0 to fTextureList.Count - 1 do
-  begin
-    TelTexture(fTextureList[i]).Destroy;
-  end;
-  fTextureList.Free;
-
-  inherited;
-end;
-
-function TelTextureList.GetCount: Integer;
-begin
-  Result := fTextureList.Count;
-end;
-
-function TelTextureList.Get(Index: Integer): TelTexture;
-begin
-  if ((Index >= 0) and (Index <= fTextureList.Count - 1)) then Result := TelTexture(fTextureList[Index]);
-end;
-
-function TelTextureList.GetPos(Index: String): Integer;
-Var a, TMP: Integer;
-Begin
-  Try
-    For a := 0 To fTextureList.Count - 1 Do
-    Begin
-      if Items[a].Name <> Index then TMP := -1
-      else begin
-        TMP := a;
-        Break;
-      end;
-    End;
-  Finally
-    Result := TMP;
-  End;
-
-end;
-
-procedure TelTextureList.Put(Index: Integer; const Item: TelTexture);
-var
-  TmpTexture: TelTexture;
-begin
-  if ((Index >= 0) and (Index <= fTextureList.Count - 1)) then
-  begin
-    TmpTexture := Get(Index);
-    TmpTexture.Destroy;
-    Insert(Index, Item);
-  end;
-
-end;
-
-procedure TelTextureList.PutS(Index: String; const Item: TelTexture);
-var
-  TMP: Integer;
-  TmpTexture: TelTexture;
-Begin
-  if (Index <> '') then
-  begin
-    TmpTexture := GetS(Index);
-	if TmpTexture <> nil then
-	begin
-	  TMP := GetPos(Index);
-      TmpTexture.Destroy;
-      Insert(TMP, Item);
-	end;
-   end;
-end;
-
-function TelTextureList.GetS(Index: String): TelTexture;
-Var TMP: Integer;
-Begin
-  TMP := GetPos(Index);
-  if TMP >= 0 then Result := TelTexture(fTextureList[TMP])
-			  else Result := nil;
-end;
-
-procedure TelTextureList.Insert(Index: Integer; Texture: TelTexture);
-begin
-  if ((Index >= 0) and (Index <= fTextureList.Count - 1)) then fTextureList.Insert(Index, Texture);
-end;
-
-function TelTextureList.Add(Texture: TelTexture): Integer;
-begin
-  Result := fTextureList.Add(Texture);
-end;
-
-procedure TelTextureList.Delete(Index: Integer);
-var
-  TmpTexture: TelTexture;
-begin
-  if ((Index >= 0) and (Index <= fTextureList.Count - 1)) then
-  begin
-    TmpTexture := Get(Index);
-    TmpTexture.Destroy;
-    fTextureList.Delete(Index);
-  end;
-
-end;
-
-procedure TelTextureList.ReloadAllTextures();
+procedure TelTextureListHelper.ReloadAllTextures();
 var
   i: Integer;
 begin
   for i := 0 to Count - 1 do
   begin
-    TelTexture(fTextureList[i]).Reload();
+    TelTexture(Items[i]).Reload();
   end;
 end;
 
-constructor TelTextureManager.Create;
-begin
-  inherited;
 
-  fTextureList := TelTextureList.Create;
-end;
-
-destructor TelTextureManager.Destroy;
-begin
-  fTextureList.Free;
-
-  inherited;
-end;
-
-function TelTextureManager.CreateNewTexture(aFilename: String): TelTexture;
-var
-  i: Integer;
-  tmpTexture: TelTexture;
-begin
-  tmpTexture := TelTexture.Create;
-
-  // Is Texture already in stack?
-  if fTextureList.Count > 0 then
-  begin
-    for i := 0 to fTextureList.Count - 1 do
-    begin
-      if fTextureList.Items[i].Filename = aFilename then
-      begin
-        Result := fTextureList.Items[i];
-        Exit;
-      end;
-    end;
-  end;
-
-  // If not, add it
-  tmpTexture.LoadFromFile(aFilename);
-  fTextureList.Add(tmpTexture);
-  Result := tmpTexture;
-
-end;
-
-// Fix this! Is the same as ForceNewTexture
-function TelTextureManager.CreateNewTexture(aSurface: PSDL_Surface): TelTexture;
-var
-  tmpTexture: TelTexture;
-begin
-  tmpTexture := TelTexture.Create;
-
-  tmpTexture.LoadFromSDLSurface(aSurface);
-  fTextureList.Add(tmpTexture);
-  Result := tmpTexture;
-
-end;
-
-function TelTextureManager.ForceNewTexture(aFilename: String): TelTexture;
-var
-  tmpTexture: TelTexture;
-begin
-  tmpTexture := TelTexture.Create;
-
-  tmpTexture.LoadFromFile(aFilename);
-  fTextureList.Add(tmpTexture);
-  Result := tmpTexture;
-end;
-
-function TelTextureManager.ForceNewTexture(aSurface: PSDL_Surface): TelTexture;
-var
-  tmpTexture: TelTexture;
-begin
-  tmpTexture := TelTexture.Create;
-
-  tmpTexture.LoadFromSDLSurface(aSurface);
-  fTextureList.Add(tmpTexture);
-  Result := tmpTexture;
-
-end;
-
-procedure TelTextureManager.ReloadAllTextures();
-begin
-  fTextureList.ReloadAllTextures();
-end;
-
-{$IFDEF AUTO_INIT}
-initialization
-  TextureManager := TelTextureManager.Create;
-
-finalization
-  TextureManager.Destroy;
-{$ENDIF}
 
 end.

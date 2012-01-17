@@ -9,6 +9,7 @@ uses
 
   ElysionObject,
   ElysionContainer,
+  ElysionList,
   ElysionInterfaces,
   ElysionGraphicsProvider,
   ElysionNode;
@@ -17,7 +18,7 @@ type
 
   // Forward decleration
   TelComponent = class;
-  TelComponentList = class;
+  TelComponentList = TelList<TelComponent>;
 
   { TelEntity }
 
@@ -49,37 +50,17 @@ type
 
   TelEntityArray = array of TelEntity;
 
-  TelEntityList = class(TelObject)
-  private
-    fEntityList: TList;
+  TelEntityList = TelList<TelEntity>;
 
-    function Get(Index: Integer): TelEntity; inline;
-    function GetPos(Index: String): Integer; inline;
-    procedure Put(Index: Integer; const Item: TelEntity); inline;
-    procedure PutS(Index: String; const Item: TelEntity); inline;
-    function GetS(Index: String): TelEntity; inline;
-
-    function GetCount: Integer; inline;
+  TelEntityListHelper = class helper for TelEntityList
   public
-    constructor Create; Override;
-    destructor Destroy; Override;
-
-    procedure Insert(Index: Integer; Entity: TelEntity); inline;
-    function Add(Entity: TelEntity): Integer; Overload; inline;
-    function Add(EntityArray: TelEntityArray): Integer; Overload; inline;
-    procedure Delete(Index: Integer); inline;
-
     // Draws all drawable nodes in the list
     procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); inline;
 
     // Updates all nodes in the list
     procedure Update(dt: Double = 0.0); inline;
-
-    property Items[Index: Integer]: TelEntity read Get write Put; default;
-    property Find[Index: String]: TelEntity read GetS write PutS;
-  published
-    property Count: Integer read GetCount;
   end;
+
 
   { TelComponent }
 
@@ -114,7 +95,7 @@ type
     function WriteToXML: TStringList;
     function WriteToJSON: TStringList;
   published
-    //property Initialized: Boolean read IsInitialized;
+    property Initialized: Boolean read IsInitialized;
 
     property ReceivedMessages: TStringList read fReceivedMessages write fReceivedMessages;
 
@@ -123,33 +104,10 @@ type
 
   TelComponentArray = array of TelComponent;
 
-  TelComponentList = class(TelObject)
-      private
-    fEntityList: TList;
-
-    function Get(Index: Integer): TelComponent; inline;
-    function GetPos(Index: String): Integer; inline;
-    procedure Put(Index: Integer; const Item: TelComponent); inline;
-    procedure PutS(Index: String; const Item: TelComponent); inline;
-    function GetS(Index: String): TelComponent; inline;
-
-    function GetCount: Integer; inline;
+  TelComponentListHelper = class helper for TelComponentList
   public
-    constructor Create; Override;
-    destructor Destroy; Override;
-
-    procedure Insert(Index: Integer; Component: TelComponent); inline;
-    function Add(Component: TelComponent): Integer; Overload; inline;
-    function Add(ComponentArray: TelComponentArray): Integer; Overload; inline;
-    procedure Delete(Index: Integer); inline;
-
     // Updates all nodes in the list
     procedure Update(dt: Double = 0.0); inline;
-  public
-    property Items[Index: Integer]: TelComponent read Get write Put; default;
-    property Find[Index: String]: TelComponent read GetS write PutS;
-  published
-    property Count: Integer read GetCount;
   end;
 
 implementation
@@ -214,124 +172,8 @@ begin
 end;
 
 
-constructor TelEntityList.Create;
-begin
-  inherited;
 
-  fEntityList := TList.Create;
-end;
-
-destructor TelEntityList.Destroy;
-var
-  i: Integer;
-begin
-  for i := 0 to fEntityList.Count - 1 do
-  begin
-    TelEntity(fEntityList[i]).Destroy;
-  end;
-  fEntityList.Free;
-
-  inherited;
-end;
-
-function TelEntityList.GetCount: Integer;
-begin
-  Result := fEntityList.Count;
-end;
-
-function TelEntityList.Get(Index: Integer): TelEntity;
-begin
-  if ((Index >= 0) and (Index <= fEntityList.Count - 1)) then Result := TelEntity(fEntityList[Index]);
-end;
-
-function TelEntityList.GetPos(Index: String): Integer;
-Var a, TMP: Integer;
-Begin
-  Try
-    For a := 0 To fEntityList.Count - 1 Do
-    Begin
-      if Items[a].Name <> Index then TMP := -1
-      else begin
-        TMP := a;
-        Break;
-      end;
-    End;
-  Finally
-    Result := TMP;
-  End;
-
-end;
-
-procedure TelEntityList.Put(Index: Integer; const Item: TelEntity);
-var
-  TmpNode: TelEntity;
-begin
-  if ((Index >= 0) and (Index <= fEntityList.Count - 1)) then
-  begin
-    TmpNode := Get(Index);
-    TmpNode.Destroy;
-    Insert(Index, Item);
-  end;
-
-end;
-
-procedure TelEntityList.PutS(Index: String; const Item: TelEntity);
-var
-  TMP: Integer;
-  TmpNode: TelEntity;
-Begin
-  if (Index <> '') then
-  begin
-    TmpNode := GetS(Index);
-	if TmpNode <> nil then
-	begin
-	  TMP := GetPos(Index);
-      TmpNode.Destroy;
-      Insert(TMP, Item);
-	end;
-   end;
-end;
-
-function TelEntityList.GetS(Index: String): TelEntity;
-Var TMP: Integer;
-Begin
-  TMP := GetPos(Index);
-  if TMP >= 0 then Result := TelEntity(fEntityList[TMP])
-			  else Result := nil;
-end;
-
-procedure TelEntityList.Insert(Index: Integer; Entity: TelEntity);
-begin
-  if ((Index >= 0) and (Index <= fEntityList.Count - 1)) then fEntityList.Insert(Index, Entity);
-end;
-
-function TelEntityList.Add(Entity: TelEntity): Integer;
-begin
-  Result := fEntityList.Add(Entity);
-end;
-
-function TelEntityList.Add(EntityArray: TelEntityArray): Integer;
-var
-  i: Integer;
-begin
-  for i := 0 to Length(EntityArray) - 1 do
-    Result := fEntityList.Add(EntityArray[i]);
-end;
-
-procedure TelEntityList.Delete(Index: Integer);
-var
-  TmpNode: TelEntity;
-begin
-  if ((Index >= 0) and (Index <= fEntityList.Count - 1)) then
-  begin
-    TmpNode := Get(Index);
-    TmpNode.Destroy;
-    fEntityList.Delete(Index);
-  end;
-
-end;
-
-procedure TelEntityList.Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
+procedure TelEntityListHelper.Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
 var
   i: Integer;
 begin
@@ -342,7 +184,7 @@ begin
   end;
 end;
 
-procedure TelEntityList.Update(dt: Double = 0.0);
+procedure TelEntityListHelper.Update(dt: Double = 0.0);
 var
   i: Integer;
 begin
@@ -383,7 +225,7 @@ begin
   fFinalized := true;
 end;
 
-procedure TelComponent.Update(dt: Double);
+procedure TelComponent.Update(dt: Double = 0.0);
 begin
 
 end;
@@ -452,124 +294,8 @@ begin
 
 end;
 
-constructor TelComponentList.Create;
-begin
-  inherited;
 
-  fEntityList := TList.Create;
-end;
-
-destructor TelComponentList.Destroy;
-var
-  i: Integer;
-begin
-  for i := 0 to fEntityList.Count - 1 do
-  begin
-    TelComponent(fEntityList[i]).Destroy;
-  end;
-  fEntityList.Free;
-
-  inherited;
-end;
-
-function TelComponentList.GetCount: Integer;
-begin
-  Result := fEntityList.Count;
-end;
-
-function TelComponentList.Get(Index: Integer): TelComponent;
-begin
-  if ((Index >= 0) and (Index <= fEntityList.Count - 1)) then Result := TelComponent(fEntityList[Index]);
-end;
-
-function TelComponentList.GetPos(Index: String): Integer;
-Var a, TMP: Integer;
-Begin
-  Try
-    For a := 0 To fEntityList.Count - 1 Do
-    Begin
-      if Items[a].Name <> Index then TMP := -1
-      else begin
-        TMP := a;
-        Break;
-      end;
-    End;
-  Finally
-    Result := TMP;
-  End;
-
-end;
-
-procedure TelComponentList.Put(Index: Integer; const Item: TelComponent);
-var
-  TmpNode: TelComponent;
-begin
-  if ((Index >= 0) and (Index <= fEntityList.Count - 1)) then
-  begin
-    TmpNode := Get(Index);
-    TmpNode.Destroy;
-    Insert(Index, Item);
-  end;
-
-end;
-
-procedure TelComponentList.PutS(Index: String; const Item: TelComponent);
-var
-  TMP: Integer;
-  TmpNode: TelComponent;
-Begin
-  if (Index <> '') then
-  begin
-    TmpNode := GetS(Index);
-	if TmpNode <> nil then
-	begin
-	  TMP := GetPos(Index);
-      TmpNode.Destroy;
-      Insert(TMP, Item);
-	end;
-   end;
-end;
-
-function TelComponentList.GetS(Index: String): TelComponent;
-Var TMP: Integer;
-Begin
-  TMP := GetPos(Index);
-  if TMP >= 0 then Result := TelComponent(fEntityList[TMP])
-			  else Result := nil;
-end;
-
-procedure TelComponentList.Insert(Index: Integer; Component: TelComponent);
-begin
-  if ((Index >= 0) and (Index <= fEntityList.Count - 1)) then fEntityList.Insert(Index, Component);
-end;
-
-function TelComponentList.Add(Component: TelComponent): Integer;
-begin
-  Result := fEntityList.Add(Component);
-end;
-
-function TelComponentList.Add(ComponentArray: TelComponentArray): Integer;
-var
-  i: Integer;
-begin
-  for i := 0 to Length(ComponentArray) - 1 do
-    Result := fEntityList.Add(ComponentArray[i]);
-end;
-
-procedure TelComponentList.Delete(Index: Integer);
-var
-  TmpNode: TelComponent;
-begin
-  if ((Index >= 0) and (Index <= fEntityList.Count - 1)) then
-  begin
-    TmpNode := Get(Index);
-    TmpNode.Destroy;
-    fEntityList.Delete(Index);
-  end;
-
-end;
-
-procedure TelComponentList.Update(dt: Double = 0.0);
+procedure TelComponentListHelper.Update(dt: Double = 0.0);
 var
   i: Integer;
 begin

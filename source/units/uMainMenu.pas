@@ -71,9 +71,9 @@ begin
   RoundRect.Position := makeV3f(Menu.Position.X - 8, Menu.Position.Y - 8);
   RoundRect.Color := makeCol(0, 0, 0, 128);
   RoundRect.RoundedRadius := 8;
-  Self.Add(RoundRect);
+  //Self.Add(RoundRect);
 
-  Self.Add(Menu);
+  //Self.Add(Menu);
 
 
   LblCopyright := TelLabel.Create;
@@ -85,7 +85,7 @@ begin
   LblCopyright.Bottom := 8;
   LblCopyright.HyperLink := 'http://thatsmyawesomewebsite.com';
 
-  Self.Add(LblCopyright);
+  //Self.Add(LblCopyright);
 
 
   BtnTwitter := TelSprite.Create;
@@ -94,7 +94,7 @@ begin
   BtnTwitter.Bottom := 8;
   BtnTwitter.HyperLink := 'http://twitter.com';
   BtnTwitter.Color := makeCol(192, 192, 192);
-  Self.Add(BtnTwitter);
+  //Self.Add(BtnTwitter);
 
 
   BtnFacebook := TelSprite.Create;
@@ -103,7 +103,7 @@ begin
   BtnFacebook.Right := BtnTwitter.Right + BtnTwitter.Width + 8;
   BtnFacebook.HyperLink := 'http://facebook.com';
   BtnFacebook.Color := makeCol(192, 192, 192);
-  Self.Add(BtnFacebook);
+  //Self.Add(BtnFacebook);
 end;
 
 destructor TMainMenu.Destroy;

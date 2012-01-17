@@ -67,7 +67,7 @@ type
   end;
 
 
-   TelNodeList = TelList<TelNode>;
+  TelNodeList = TelList<TelNode>;
 
   { TelNode }
 
@@ -1152,8 +1152,7 @@ var
 begin
   if Count > 0 then
   begin
-    for i := 0 to Count - 1 do
-      if (Items[i] <> nil) then Items[i].Draw(Graphics, DrawChildren);
+    for i := 0 to Count - 1 do Items[i].Draw(Graphics, DrawChildren);
   end;
 end;
 

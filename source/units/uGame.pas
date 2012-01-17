@@ -146,15 +146,15 @@ begin
 
   // Create scenes
   MainMenu := TMainMenu.Create('mainmenu');
-  Options := TOptions.Create('options');
-  Credits := TCredits.Create('credits');
-  GameScreen := TGameScreen.Create('game');
+  //Options := TOptions.Create('options');
+  //Credits := TCredits.Create('credits');
+  //GameScreen := TGameScreen.Create('game');
 
   // Add scenes to scene director
   SceneDirector.Add(MainMenu);
-  SceneDirector.Add(Options);
-  SceneDirector.Add(Credits);
-  SceneDirector.Add(GameScreen);
+  //SceneDirector.Add(Options);
+  //SceneDirector.Add(Credits);
+  //SceneDirector.Add(GameScreen);
 
   // Switch to main menu
   SceneDirector.SwitchTo('mainmenu');

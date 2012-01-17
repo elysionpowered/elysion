@@ -163,6 +163,25 @@ published
 end;
 
 
+TelStaticObject = class abstract
+strict private
+  class var ObjectCount: Integer;
+private
+  class var fDebug: Boolean;
+  class var fID: Integer;
+  class var fNote: AnsiString;
+  class var fName: AnsiString;
+  class var fTag: Cardinal;
+public
+  class property Debug: Boolean read fDebug write fDebug default false;
+
+  class property Name: AnsiString read fName write fName;      //< Name of an object
+  class property ID: Integer read fID write fID default 0;     //< ID of an object
+  class property Note: AnsiString read fNote write fNote;      //< Note of an object: For example to be used for description, tooltip, etc.
+  class property Tag: Cardinal read fTag write fTag default 0; //< Tag of an object
+end;
+
+
 TelFontContainer = class(TelObject)
 protected
   fText: AnsiString;
@@ -206,12 +225,16 @@ constructor TelObject.Create;
 begin
   inherited Create;
 
-  fObjectCount := ObjectCount;
+  fDebug := false;
+  fID := 0;
+  fName := Self.ClassName;
+  fTag := 0;
+
 
   if ltNote in TelLogger.GetInstance.Priorities then
     TelLogger.GetInstance.WriteLog('<i>' + rsObjectCreated + ':</i> ' + Self.UniqueID, 'Initialization', ltNote, true);
 
-  ObjectCount := ObjectCount + 1;
+  fObjectCount := fObjectCount + 1;
   fContentPath := '';
 
 
@@ -230,7 +253,7 @@ begin
       TelLogger.GetInstance.WriteLog('<i>' + rsObjectDestroyed + ':</i> ' + Self.UniqueID, 'Finalization', ltNote, true);
   end;
 
-  inherited;
+  inherited Destroy;
 end;
 
 procedure TelObject.DebugInfo();
@@ -447,6 +470,8 @@ begin
     tkClass : Result := TelObject(GetObjectProp(Self, tmpName, TelObject));
   end;
 end;
+
+
 
 procedure TelFontContainer.SetText(aText: AnsiString);
 begin

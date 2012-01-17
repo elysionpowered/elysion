@@ -20,7 +20,7 @@ uses
   ElysionColor,
   ElysionContent,
   ElysionLogger,
-  ElysionTexture,
+  ElysionTextureManager,
   ElysionTimer,
   ElysionUtils,
   ElysionKeyCode,
@@ -790,7 +790,7 @@ begin
     glCullFace(GL_BACK);
 
 
-    TextureManager.ReloadAllTextures();
+    TelTextureManager.ReloadAllTextures();
 
     SetBackgroundColor(TelColor.clFreezeDevBlue);
 

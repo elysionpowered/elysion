@@ -23,6 +23,7 @@ uses
   ElysionUtils,
   ElysionNode,
   ElysionTexture,
+  ElysionTextureManager,
   ElysionGraphicsProvider,
   ElysionTypes,
   ElysionInput,
@@ -381,7 +382,7 @@ begin
 
     if FileExists(Directory + Content.RootDirectory + aFilename + OptExtension) then
     begin
-      Self.Texture := TextureManager.CreateNewTexture(Directory + Content.RootDirectory + aFilename + OptExtension);
+      Self.Texture := TelTextureManager.CreateNewTexture(Directory + Content.RootDirectory + aFilename + OptExtension);
 
       if aClipRect.X < 0 then aClipRect.X := 0;
       if aClipRect.Y < 0 then aClipRect.Y := 0;

@@ -1,7 +1,10 @@
 unit ElysionList;
 
 {$I Elysion.inc}
-{$mode delphi}
+
+{$ifdef fpc}
+  {$mode delphi}
+{$endif}
 
 interface
 
@@ -17,6 +20,7 @@ type
   TelList<T> = class(TelObject)
   private
     function GetCount: Integer;
+  private
     function GetItemF(Index: String): T; inline;
     function GetItems(Index: Integer): T; inline;
     procedure SetItemF(Index: String; AValue: T); inline;
@@ -24,10 +28,11 @@ type
   protected
     fList: TObjectList;
   public
-    constructor Create; Override;
-    destructor Destroy; Override;
+    constructor Create;
+    destructor Destroy;
 
-    function Add(AValue: T): Integer; inline;
+    function Add(AValue: T): Integer; Overload; inline;
+    procedure Add(anArray: array of T); Overload;
 
     function Remove(AValue: T): Integer; inline;
     function IndexOf(AValue: T): Integer; inline;
@@ -58,7 +63,7 @@ var
   tmpObject: T;
 begin
 
-  // TODO: Change this to MD 5 for faster comparisons
+  // TODO: Change this to MD5 for faster comparisons
   for tmpObject in fList do
   begin
     if TelObject(tmpObject).Name = Index then
@@ -71,7 +76,7 @@ end;
 
 function TelList<T>.GetItems(Index: Integer): T;
 begin
-  if ((Index >= 0) and (Index < GetCount)) then Result := T(fList.Items[Index]);
+  if ((Index >= 0) and (Index < fList.Count)) then Result := T(fList.Items[Index]);
 end;
 
 procedure TelList<T>.SetItemF(Index: String; AValue: T);
@@ -106,6 +111,14 @@ begin
   Result := fList.Add(AValue);
 end;
 
+procedure TelList<T>.Add(anArray: array of T);
+var
+  i: Integer;
+begin
+  for i := 0 to Length(anArray) - 1 do
+    fList.Add(anArray[i]);
+end;
+
 function TelList<T>.Remove(AValue: T): Integer;
 begin
   Result := fList.Remove(AValue);
@@ -118,7 +131,7 @@ end;
 
 procedure TelList<T>.Insert(Index: Integer; AValue: T);
 begin
-  if ((Index >= 0) and (Index < GetCount)) then fList.Insert(Index, AValue);
+  if ((Index >= 0) and (Index < fList.Count)) then fList.Insert(Index, AValue);
 end;
 
 procedure TelList<T>.Delete(Index: Integer);
