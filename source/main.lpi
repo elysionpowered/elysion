@@ -102,10 +102,11 @@ if TargetOS = 'darwin' then
       <Unit1>
         <Filename Value="units\uBasic.pas"/>
         <UnitName Value="uBasic"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="18"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="4"/>
-        <CursorPos X="11" Y="8"/>
+        <TopLine Value="3"/>
+        <CursorPos X="16" Y="8"/>
         <UsageCount Value="93"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -1181,7 +1182,6 @@ if TargetOS = 'darwin' then
       <Unit112>
         <Filename Value="..\lib\Foundation\Pipeline\ElysionStorage.pas"/>
         <UnitName Value="ElysionStorage"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="76"/>
@@ -1242,7 +1242,7 @@ if TargetOS = 'darwin' then
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit117>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="..\lib\Foundation\ElysionGame.pas"/>
         <Caret Line="75" Column="81" TopLine="61"/>
@@ -1332,37 +1332,33 @@ if TargetOS = 'darwin' then
         <Caret Line="226" Column="30" TopLine="1"/>
       </Position22>
       <Position23>
-        <Filename Value="units\uCredits.pas"/>
-        <Caret Line="1" Column="1" TopLine="49"/>
+        <Filename Value="units\uGame.pas"/>
+        <Caret Line="29" Column="22" TopLine="19"/>
       </Position23>
       <Position24>
-        <Filename Value="units\uOptions.pas"/>
-        <Caret Line="41" Column="19" TopLine="43"/>
+        <Filename Value="units\uGame.pas"/>
+        <Caret Line="8" Column="22" TopLine="1"/>
       </Position24>
       <Position25>
         <Filename Value="units\uGame.pas"/>
-        <Caret Line="29" Column="22" TopLine="19"/>
+        <Caret Line="7" Column="23" TopLine="1"/>
       </Position25>
       <Position26>
         <Filename Value="units\uGame.pas"/>
-        <Caret Line="8" Column="22" TopLine="1"/>
+        <Caret Line="97" Column="5" TopLine="89"/>
       </Position26>
       <Position27>
-        <Filename Value="units\uGame.pas"/>
-        <Caret Line="7" Column="23" TopLine="1"/>
-      </Position27>
-      <Position28>
-        <Filename Value="units\uGame.pas"/>
-        <Caret Line="97" Column="5" TopLine="89"/>
-      </Position28>
-      <Position29>
         <Filename Value="main.lpr"/>
         <Caret Line="42" Column="29" TopLine="34"/>
-      </Position29>
-      <Position30>
+      </Position27>
+      <Position28>
         <Filename Value="main.lpr"/>
         <Caret Line="67" Column="35" TopLine="40"/>
-      </Position30>
+      </Position28>
+      <Position29>
+        <Filename Value="units\uBasic.pas"/>
+        <Caret Line="8" Column="11" TopLine="4"/>
+      </Position29>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

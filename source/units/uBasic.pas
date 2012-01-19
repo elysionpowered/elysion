@@ -5,6 +5,8 @@ unit uBasic;
 interface
 
 uses
+  ElysionUtils,
+
   SysUtils;
 
 {$I Elysion.inc}
