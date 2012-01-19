@@ -12,17 +12,17 @@ unit ElysionScene;
 interface
 
 uses
-    Classes,
+  Classes,
 
-    ElysionObject,
-    ElysionList,
-    ElysionGraphicsProvider,
-    ElysionEvents,
-    ElysionApplication,
-    ElysionInput,
-    ElysionNode,
-    ElysionEntity,
-    ElysionLayer;
+  ElysionObject,
+  ElysionList,
+  ElysionGraphicsProvider,
+  ElysionEvents,
+  ElysionApplication,
+  ElysionInput,
+  ElysionNode,
+  ElysionEntity,
+  ElysionLayer;
 
 
 type
@@ -51,9 +51,7 @@ TelScene = class(TelObject)
     procedure SetEditable(AValue: Boolean);
     function GetModified(): Boolean;
   public
-    constructor Create; Override; Overload;
-    constructor Create(aName: AnsiString); Overload;
-
+    constructor Create; Override;
     destructor Destroy; Override;
 
     procedure Reset(); virtual;
@@ -62,8 +60,8 @@ TelScene = class(TelObject)
 
     procedure Add(aNode: TelNode); Overload; inline;
     procedure Add(anEntity: TelEntity); Overload; inline;
-	procedure Add(aNodeArray: array of TelNode); Overload;
-	procedure Add(anEntityArray: array of TelEntity); Overload;
+    procedure Add(aNodeArray: array of TelNode); Overload;
+    procedure Add(anEntityArray: array of TelEntity); Overload;
 
     procedure SetPauseKey(aKey: Cardinal);
     procedure DisablePauseKey();
@@ -90,7 +88,7 @@ TelScene = class(TelObject)
     property OnResume: TelEvent read fOnResume write fOnResume;
 end;
 
-TelSceneList = TelList<TelScene>;
+TelSceneList = TelObjectList<TelScene>;
 
 { TelSceneDirector }
 
@@ -147,19 +145,12 @@ begin
 
   fParent := nil;
 
-  //fNodeList := TelNodeList.Create;
-  //fEntityList := TelEntityList.Create;
+  fNodeList := TelNodeList.Create;
+  fEntityList := TelEntityList.Create;
 
-  //GUILayer := TelLayer.Create;
+  GUILayer := TelLayer.Create;
 
   fAutoSave := true;
-end;
-
-constructor TelScene.Create(aName: AnsiString);
-begin
-  //Create;
-
-  Self.Name := aName;
 end;
 
 destructor TelScene.Destroy;
@@ -174,7 +165,7 @@ begin
   fNodeList.Destroy;
   fEntityList.Destroy;
 
-  inherited;
+  inherited Destroy;
 end;
 
 procedure TelScene.Reset();
@@ -290,10 +281,10 @@ end;
 
 constructor TelSceneDirector.Create();
 begin
-  inherited;
+  inherited Create;
 
   // Create empty scene
-  fNullScene := TelScene.Create('');
+  fNullScene := TelScene.Create;
 
   fList := TelSceneList.Create;
   fActiveSceneID := -1;
@@ -303,7 +294,7 @@ destructor TelSceneDirector.Destroy();
 begin
   fList.Destroy;
 
-  inherited;
+  inherited Destroy;
 end;
 
 function TelSceneDirector.GetCount(): Integer;

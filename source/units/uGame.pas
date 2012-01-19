@@ -4,7 +4,8 @@ interface
 
 uses
   ElysionTypes,
-  ElysionApplication,
+  ElysionWindowManager,
+  ElysionEnvironment,
   ElysionGame,
   ElysionScene,
   ElysionLogger,
@@ -32,8 +33,10 @@ type
     fGameScreen: TGameScreen;
     fCredits: TCredits;    
     fOptions: TOptions;
-    
+
+    fSpriteList: TelSpriteList;
     fLoadScreen: TelSprite;
+
 
     fFont: TelTrueTypeFont;
     fShowFPS, fDebug: Boolean;
@@ -91,7 +94,7 @@ begin
 
   // Change application container debug flag
   // (only if debug is set to true, the logger will be written to file)
-  Application.Debug := Self.Debug;
+  //Application.Debug := Self.Debug;
 
   if Debug then
     TelLogger.getInstance.Priorities := [ltNote, ltWarning, ltError]
@@ -101,15 +104,22 @@ begin
     else tmpFullscreen := true;
 
   // Super
-  if ((Environment.Width = 1024) and (Environment.Height = 600)) then
-    inherited Create(Environment.Width, Environment.Height, AppConfig.Bits, true)
+  if ((TelEnvironment.Width = 1024) and (TelEnvironment.Height = 600)) then
+    inherited Create(TelEnvironment.Width, TelEnvironment.Height, AppConfig.Bits, true)
   else
     inherited Create(AppConfig.Width, AppConfig.Height, AppConfig.Bits, false);
 
 
   fLoadScreen := TelSprite.Create;
   fLoadScreen.LoadFromFile(GetResImgPath + 'loadscreen.jpg');
+  WriteLn(fLoadScreen.Name);
 
+  fSpriteList := TelSpriteList.Create;
+  WriteLn('SpriteList.Count: ' + IntToStr(fSpriteList.Count));
+  fSpriteList.Add(fLoadScreen);
+  WriteLn('SpriteList.Count: ' + IntToStr(fSpriteList.Count));
+
+  WriteLn(fSpriteList.Name);
 end;
 
 destructor TGame.Destroy;
@@ -127,7 +137,8 @@ begin
 
 
   ActiveWindow.BeginScene;
-  fLoadScreen.Draw(nil);
+  fSpriteList.Draw(nil);
+  //fLoadScreen.Draw(nil);
   ActiveWindow.EndScene;
 
   ActiveWindow.Caption := 'My Application';
@@ -145,19 +156,21 @@ begin
   Input.DebugInfo();
 
   // Create scenes
-  MainMenu := TMainMenu.Create('mainmenu');
-  //Options := TOptions.Create('options');
-  //Credits := TCredits.Create('credits');
-  //GameScreen := TGameScreen.Create('game');
+  MainMenu := TMainMenu.Create;
+  WriteLn(MainMenu.Name);
+
+  Options := TOptions.Create;
+  Credits := TCredits.Create;
+  GameScreen := TGameScreen.Create;
 
   // Add scenes to scene director
   SceneDirector.Add(MainMenu);
-  //SceneDirector.Add(Options);
-  //SceneDirector.Add(Credits);
-  //SceneDirector.Add(GameScreen);
+  SceneDirector.Add(Options);
+  SceneDirector.Add(Credits);
+  SceneDirector.Add(GameScreen);
 
   // Switch to main menu
-  SceneDirector.SwitchTo('mainmenu');
+  SceneDirector.SwitchTo('MainMenu');
 end;
 
 procedure TGame.Render(Graphics: IGraphicsProvider);
@@ -186,12 +199,12 @@ begin
   inherited HandleEvents;
 
   // Keyboard Inputs
-  if SceneDirector.CurrentScene.Name <> 'mainmenu' then
+  if SceneDirector.CurrentScene.Name <> 'MainMenu' then
   begin
-    if Input.Keyboard.isKeyHit(Key.Escape) or Input.XBox360Controller.Back then SceneDirector.SwitchTo('mainmenu');
+    if Input.Keyboard.isKeyHit(Key.Escape) or Input.XBox360Controller.Back then SceneDirector.SwitchTo('MainMenu');
   end else
   begin
-    if Input.Keyboard.isKeyHit(Key.Escape) or Input.XBox360Controller.Back then Application.Quit();
+    if Input.Keyboard.isKeyHit(Key.Escape) or Input.XBox360Controller.Back then TelWindowManager.CurrentWindow.Quit();
   end;
 
 

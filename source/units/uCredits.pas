@@ -3,7 +3,7 @@ unit uCredits;
 interface
 
 uses
-  ElysionApplication,
+  ElysionWindowManager,
   ElysionAudio,
   ElysionColor,
   ElysionTypes,

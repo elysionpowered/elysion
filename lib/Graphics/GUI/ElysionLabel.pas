@@ -61,6 +61,9 @@ type
 
 implementation
 
+uses
+  ElysionWindowManager;
+
 //
 // TelLabel
 //

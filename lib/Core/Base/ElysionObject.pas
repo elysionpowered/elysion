@@ -164,8 +164,6 @@ end;
 
 
 TelStaticObject = class abstract
-strict private
-  class var ObjectCount: Integer;
 private
   class var fDebug: Boolean;
   class var fID: Integer;
@@ -227,7 +225,9 @@ begin
 
   fDebug := false;
   fID := 0;
-  fName := Self.ClassName;
+  fName := StringWithoutPrefix(Self.ClassName, 'T');
+
+
   fTag := 0;
 
 

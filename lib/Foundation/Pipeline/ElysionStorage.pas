@@ -94,8 +94,8 @@ begin
 
   fKeyList := TStringList.Create;
 
-  if Application.Name <> '' then AppName := Application.Name
-    else AppName := GetFilenameWithoutExt(ParamStr(0));
+  //if Application.Name <> '' then AppName := Application.Name else
+  AppName := GetFilenameWithoutExt(ParamStr(0));
 
   fFilename := GetFilenameWithoutExt(ParamStr(0)) + '.storage';
   Directory := GetAppUserDirectory(AppName);

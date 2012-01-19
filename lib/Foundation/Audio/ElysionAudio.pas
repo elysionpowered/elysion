@@ -5,7 +5,6 @@ interface
 {$I Elysion.inc}
 
 uses
-  ElysionTypes,
   ElysionObject,
   ElysionContainer,
   ElysionApplication,
@@ -191,7 +190,7 @@ begin
 
   fDriverName := 'SDL_mixer';
 
-  if (not Application.Initialized) then Application.Initialize;
+  //if (not Application.Initialized) then Application.Initialize;
 
   FAudio_rate := 22050;
   FAudio_rate_Mac := 44100;

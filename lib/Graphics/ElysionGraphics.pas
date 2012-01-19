@@ -5,13 +5,13 @@ interface
 {$I Elysion.inc}
 
 uses
-  ElysionApplication,
   ElysionTypes,
   ElysionColor,
   ElysionInput,
   ElysionTexture,
   ElysionContent,
   ElysionSprite,
+  ElysionWindow,
 
   {$IFDEF USE_VAMPYRE}
   ImagingSDL,
@@ -60,6 +60,9 @@ uses
 
 
 implementation
+
+uses
+  ElysionWindowManager;
 
 // deprecated, please use function convCol(Color: TelColor): Cardinal; instead
 function convCol(S: TelWindow; Color: TelColor): Cardinal; Overload;

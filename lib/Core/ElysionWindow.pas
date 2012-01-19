@@ -1,11 +1,3 @@
-(**
-  * ElysionApplication.pas
-  *
-  * Handles application container and windows
-  *
-  * @author(Johannes Stein and contributors <http://elysionpowered.org>)
-  *
-  *)
 unit ElysionWindow;
 
 {$I Elysion.inc}
@@ -13,18 +5,6 @@ unit ElysionWindow;
 interface
 
 uses
-  ElysionEnums,
-  ElysionTypes,
-  ElysionObject,
-  ElysionContainer,
-  ElysionColor,
-  ElysionContent,
-  ElysionLogger,
-  ElysionTextureManager,
-  ElysionTimer,
-  ElysionUtils,
-  ElysionKeyCode,
-
   SDL,
   SDLUtilsLight,
   {$IFDEF USE_VAMPYRE}
@@ -39,118 +19,29 @@ uses
   {$ELSE}
   gl, glu, glext,
   {$ENDIF}
+
+  Classes,
   SysUtils,
-  Classes;
+
+  ElysionObject,
+  ElysionList,
+  ElysionStrings,
+  ElysionContent,
+  ElysionTypes,
+  ElysionTimer,
+  ElysionKeyCode,
+  ElysionColor,
+  ElysionEnums,
+  ElysionLogger;
 
 type
 
-// TelVideoFlags
-TelVideoFlag =
-  (vfNull,      //< vfNull: Use for console applications, no video surface will be created
-   vfAuto,      //< vfAuto: Automatically checks if hardware or software render mode are available
-   vfHardware,  //< vfHardware: Use hardware surface
-   vfSoftware); //< vfSoftware: Use software surface
+  { TelWindow }
 
-TelProjectionMode = (pmFrustum, pmOrtho);
-
-{
-    @classname @br
-    Description: @br
-    Provides an application container
-
-}
-TAppContainer = class(TelContainer)
-  private
-    FInitialized: Boolean;
-
-    FRun: Boolean;
-
-    {
-        Application.GetUnicodeSupport @br
-        Unicode support
-        @return
-
-    }
-    function GetUnicodeSupport: Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    {
-        Application.SetUnicodeSupport
-
-    }
-    procedure SetUnicodeSupport(Value: Boolean); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  public
-    {
-      Application.Create
-
-
-      Returns: Instance of class Application
-    }
-    constructor Create; Override;
-
-    {
-      Application.Destroy
-
-
-    }
-    destructor Destroy; Override;
-
-    {
-      Application.Initialize
-
-      Returns:
-    }
-    function Initialize: Boolean; Overload; Override;
-
-    // For backward compability purposes
-    function Initialize(const aName: String; Width, Height, Bits: Integer; Fullscreen: Boolean; VideoFlag: TelVideoFlag): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Initialize(Width, Height, Bits: Integer; Fullscreen: Boolean = false): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    {
-      Application.Finalize
-    }
-    procedure Finalize(); Override;
-
-    {
-      Application.CreateWindow
-      @param Name: String
-             Width, Height, Bits: Integer
-             Fullscreen: Boolean
-             VideoFlag: TelVideoFlags
-
-    }
-    function CreateWindow(aName: String; Width, Height, Bits: Integer; Fullscreen: Boolean; VideoFlag: TelVideoFlag): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    {
-      Application.CreateWindow
-
-      @seealso
-    }
-    function CreateWindow(aName: String; Width, Height, Bits: Integer; Fullscreen: Boolean = false): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    {
-      Application.Quit
-      Description:
-    }
-    procedure Quit; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-  published
-    property Initialized: Boolean read FInitialized;
-
-    // Use Application.Run for the main loop
-    property Run: Boolean read FRun;
-
-    {
-      If UnicodeSupport is active, all keydown events are switched to unicode
-      and true type fonts will be automatically set for unicode mode
-    }
-    property UnicodeSupport: Boolean read GetUnicodeSupport write SetUnicodeSupport;
-end;
-
-{ TelWindow }
-
-TelWindow = class(TelObject)
+  TelWindow = class(TelObject)
   private
     fJoystick: PSDL_Joystick;
+    fActive: Boolean;
 
     FResolution: TelVector3i;
     // Native resolution
@@ -175,10 +66,8 @@ TelWindow = class(TelObject)
 
     FFoVY, FZNear, FZFar: Double;
 
-    UseBackgroundImage: Boolean;
 
     FBackgroundChange: Boolean;
-    FBackgroundImage: PSDL_Surface;
 
     fEvent: TSDL_Event;
 
@@ -194,42 +83,41 @@ TelWindow = class(TelObject)
     fMouseDownCount, fMouseUpCount, fMouseMotionCount: Integer;
     fProjection: TelProjectionMode;
 
-    fFocused: Boolean;
-
     fDeltaTime: Double;
 
     // Handling key and mouse inputs
     procedure HandleEvents;
 
-    function GetAspectRatio(): Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetAspectRatio(): Single; inline;
 
     // Get the window title
-    function GetCaption: String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetCaption: AnsiString; inline;
 
     // Sets the window title
-    procedure SetCaption(Caption: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure SetCaption(Caption: AnsiString); inline;
 
-    procedure SetFPS(Value: Single); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function GetFPS: Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure SetFPS(Value: Single); inline;
+    function GetFPS: Single; inline;
 
-    function GetDeltaTime: Double; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetDeltaTime: Double; inline;
 
-    function GetWidth: Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function GetHeight: Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function GetBitsPerPixel: Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetWidth: Integer; inline;
+    function GetHeight: Integer; inline;
+    function GetBitsPerPixel: Integer; inline;
 
-    function GetJoystickCount(): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetJoystickCount(): Integer; inline;
 
-    procedure SetNativeResolution(NativeRes: TelVector2i); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function GetNativeResolution: TelVector2i; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure SetNativeResolution(NativeRes: TelVector2i); inline;
+    function GetNativeResolution: TelVector2i; inline;
 
-    function GetDisplayOrientation(): TRectOrientation; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function GetWideScreen(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetDisplayOrientation(): TRectOrientation; inline;
+
+    function GetWideScreen(): Boolean; inline;
 
     // Set projection matrix
     // Expert function: Automatically Ortho mode is being called, this function needs to be used
     // if you want to display 3d objects on the screen, you need to call perspective mode
-    procedure SetProjection(ProjectionMode: TelProjectionMode); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure SetProjection(ProjectionMode: TelProjectionMode); inline;
 
   public
 
@@ -273,51 +161,46 @@ TelWindow = class(TelObject)
       function SetVideoMode(_Width, _Height, _ColorBits: Integer; _Fullscreen: Boolean; _VideoFlag: TelVideoFlag): Boolean; Overload;
 
       // Sets video mode for the surface. Use this if you want to change the resolution in-game.
-      function SetVideoMode(_Width, _Height, _ColorBits: Integer; _Fullscreen: Boolean = False): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function SetVideoMode(_Width, _Height, _ColorBits: Integer; _Fullscreen: Boolean = False): Boolean; Overload; inline;
 
 
       // Switches between windowed mode and fullscreen mode
-      procedure ToggleFullscreen(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure ToggleFullscreen(); inline;
 
       // Use BeginScene first thing in the game loop
-      procedure BeginScene(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure BeginScene(); inline;
 
       // Use EndScene last thing before the end of the game loop
-      procedure EndScene(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure EndScene(); inline;
 
-
-      // Expert function: Use background image instead of a color
-      procedure SetBackgroundImage(Surface: PSDL_Surface); Overload;
-
-      // Sets background image with specifying a filename
-      procedure SetBackgroundImage(const Filename: String); Overload;
 
       // Sets background color
-      procedure SetBackgroundColor(Color: TelColor); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure SetBackgroundColor(Color: TelColor); inline;
 
       // Sets a window icon
-      procedure SetIcon(Filename: String); Overload;
+      procedure SetIcon(Filename: AnsiString); Overload;
 
       // Sets a window icon with color key
-      procedure SetIcon(Filename: String; Mask: TelColor); Overload;
+      procedure SetIcon(Filename: AnsiString; Mask: TelColor); Overload;
 
       // Hide the standard black/white cursor. Normally turned on
-      procedure HideCursor; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure HideCursor; inline;
 
       // Show the cursor
-      procedure ShowCursor; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure ShowCursor; inline;
 
       // Saves the surface into an image
-      Procedure TakeScreenshot(aFilename: String = '');
+      Procedure TakeScreenshot(aFilename: AnsiString = '');
 
       // Checks if a point is within a rect
-      Function OnPoint(Coord: TelVector2i; Rect: TelRect): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      Function OnPoint(Coord: TelVector2i; Rect: TelRect): Boolean; inline;
 
       // Checks if surface is active
-      function IsActive: Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      function IsFocused: Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      //function IsActive: Boolean; inline;
 
-      function GetTicks(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure Quit;
+
+      function GetTicks(): Cardinal; inline;
 
       property BackgroundColor: TelColor read fBackgroundColor write fBackgroundColor;
 
@@ -330,10 +213,9 @@ TelWindow = class(TelObject)
       property NativeResolution: TelVector2i read GetNativeResolution write SetNativeResolution;
 
   published
-    property Active: Boolean read IsActive;
-    property Focused: Boolean read IsFocused;
-
     property AspectRatio: Single read GetAspectRatio;
+
+    property Active: Boolean read fActive;
 
     property MouseButtonDownEventList: TList read fMouseButtonDownEventList;
     property MouseButtonUpEventList: TList read fMouseButtonUpEventList;
@@ -353,7 +235,7 @@ TelWindow = class(TelObject)
 
 
     // Setting the caption
-    property Caption: String read GetCaption write SetCaption;
+    property Caption: AnsiString read GetCaption write SetCaption;
 
     property DeltaTime: Double read GetDeltaTime;
 
@@ -369,197 +251,19 @@ TelWindow = class(TelObject)
     property FoVY: Double read FFoVY write FFoVY;
     property ZNear: Double read FZNear write FZNear;
     property ZFar: Double read FZFar write FZFar;
-end;
-
- // Factory pattern
-  TelWindowManager = class(TelObject)
-    private
-      fWindowList: TList;
-      fWindowCount: Integer;
-
-      function GetCurrentWindow(): TelWindow; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    public
-      constructor Create; Override;
-      destructor Destroy; Override;
-
-      function CreateWindow(const aName: String; Width, Height, Bits: Integer; Fullscreen: Boolean; VideoFlag: TelVideoFlag): TelWindow; Overload;
-      function CreateWindow(const aName: String; Width, Height, Bits: Integer; Fullscreen: Boolean = false): TelWindow; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      function DestroyWindow(aWindow: TelWindow): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure DestroyAllWindows(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    published
-      property CurrentWindow: TelWindow read GetCurrentWindow;
-      property WindowCount: Integer read fWindowCount;
   end;
 
-  { TelEnvironment }
+  TelWindowList = TelObjectList<TelWindow>;
 
-  TelEnvironment = class(TelObject)
-    private
-      fWidth: Integer;
-      fHeight: Integer;
-      fColorDepth: Byte;
-      fMobile: Boolean;
 
-      function GetAspectRatio(): Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      function GetBasename: AnsiString;
-      function GetWorkingPath: AnsiString;
 
-    public
-      constructor Create; Override;
-      destructor Destroy; Override;
-
-    published
-      property AspectRatio: Single read GetAspectRatio;
-
-      property Width: Integer read fWidth;
-      property Height: Integer read fHeight;
-      property ColorDepth: Byte read fColorDepth;
-
-      property Mobile: Boolean read fMobile;
-
-      property Basename: AnsiString read GetBasename;
-      property WorkingPath: AnsiString read GetWorkingPath;
-  end;
-
-{$IFDEF AUTO_INIT}
-var
-  // Application
-  Application: TAppContainer;
-  WindowManager: TelWindowManager;
-  Environment: TelEnvironment;
-{$ENDIF}
-
-  function ActiveWindow: TelWindow; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  function TicksNow(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
 implementation
 
-function ActiveWindow: TelWindow; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-begin
-  Result := WindowManager.CurrentWindow;
-end;
-
-function TicksNow(): Cardinal;
-begin
-  Result := ActiveWindow.GetTicks();
-end;
-
-{
-  #############################################################################
-  # TAppContainer                                                             #
-  #############################################################################
-
-  Description:
+uses
+  ElysionTextureManager;
 
 
-  Additional Notes: Essential class
-
-}
-
-constructor TAppContainer.Create;
-begin
-  inherited Create;
-
-  FRun := true;
-  FInitialized := false;
-  UnicodeSupport := true;
-  fDrivername := 'SDL';
-end;
-
-destructor TAppContainer.Destroy;
-begin
-  Finalize();
-
-
-  if Self.Debug then TelLogger.GetInstance.Dump();
-
-  inherited Destroy;
-
-  Halt(0);
-end;
-
-function TAppContainer.Initialize: Boolean; 
-begin
-  Result := true;
-
-  if SDL_Init(SDL_INIT_EVERYTHING) <> 0 then
-  begin
-    Result := false;
-    TelLogger.GetInstance.WriteLog('Error initializing SDL', ltError);
-    Exit;
-  end else FInitialized := true;
-
-   SDL_JoystickEventState(SDL_ENABLE);
-
-  // Laden und Initalisieren von OpenGL
-
-  {$IFDEF USE_DGL_HEADER}
-    InitOpenGL;
-    ReadExtensions;
-  {$ENDIF}
-    //ReadImplementationProperties;
-
-end;
-
-function TAppContainer.Initialize(const aName: String; Width, Height, Bits: Integer; Fullscreen: Boolean; VideoFlag: TelVideoFlag): Boolean; 
-begin
-  if not Initialized then Initialize();
-  Result := CreateWindow(aName, Width, Height, Bits, Fullscreen, VideoFlag);
-end;
-
-function TAppContainer.Initialize(Width, Height, Bits: Integer; Fullscreen: Boolean = false): Boolean; 
-begin
-  if not Initialized then Initialize();
-  Result := CreateWindow('', Width, Height, Bits, Fullscreen);
-end;
-
-procedure TAppContainer.Finalize(); 
-begin
-  WindowManager.DestroyAllWindows();
-
-  if FInitialized then
-  begin
-    SDL_Quit;
-  end;
-end;
-
-function TAppContainer.CreateWindow(aName: String; Width, Height, Bits: Integer; Fullscreen: Boolean; VideoFlag: TelVideoFlag): Boolean; 
-begin
-  (*if Window = nil then
-  begin
-
-  end else
-  begin
-    if isLoggerActive then TelLogger.GetInstance.WriteLog('Elysion Library supports only one window at a time at the moment.');
-    Result := false;
-  end; *)
-
-  if WindowManager.CreateWindow(aName, Width, Height, Bits, Fullscreen, VideoFlag) <> nil then Result := true
-     else Result := false;
-
-end;
-
-function TAppContainer.CreateWindow(aName: String; Width, Height, Bits: Integer; Fullscreen: Boolean = false): Boolean; 
-begin
-  Result := Self.CreateWindow(aName, Width, Height, Bits, Fullscreen, vfAuto);
-end;
-
-procedure TAppContainer.Quit; 
-begin
-  FRun := false;
-end;
-
-function TAppContainer.GetUnicodeSupport: Boolean; 
-begin
-  if SDL_EnableUNICODE(-1) = 0 then Result := false
-                               else Result := true;
-end;
-
-procedure TAppContainer.SetUnicodeSupport(Value: Boolean); 
-begin
-  if Value then SDL_EnableUNICODE(1)
-           else SDL_EnableUNICODE(0);
-end;
 
 {
   #############################################################################
@@ -578,6 +282,8 @@ var
   i: Integer;
 begin
   inherited Create;
+
+  fActive := true;
 
   if (SDL_NumJoysticks() > 0) then
     fJoystick := SDL_JoystickOpen(0);
@@ -613,8 +319,7 @@ begin
 
   FBackgroundChange := False;
   FFoVY := 60.0;
-
-  FZNear := 0.0;
+  FZNear := 0.1;
   FZFar := 128.0;
 
   fMouseDownCount := 0;
@@ -768,6 +473,8 @@ begin
     end
       else Self.SDL_Surface := SDL_SetVideoMode(FResolution.X, FResolution.Y, FResolution.Z, FFlags);
 
+    //TelAppProvider.GraphicsProvider.InitVideoMode;
+
     // Reset attributes (http://sdl.beuc.net/sdl.wiki/SDL_SetVideoMode - User Note 1)
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5);
     SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 5);
@@ -789,15 +496,15 @@ begin
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
-
     TelTextureManager.ReloadAllTextures();
 
     SetBackgroundColor(TelColor.clFreezeDevBlue);
 
     glViewport(0, 0, FResolution.X, FResolution.Y);
+    //TelAppProvider.GraphicsProvider.SetViewport(makeSize(fResolution.X, fResolution.Y));
     SetProjection(pmOrtho);
-
     glTranslatef(0, 0, 0);
+    //TelAppProvider.GraphicsProvider.TranslateToOrigin();
 
     if not Assigned(Self.SDL_Surface) then
     begin
@@ -827,7 +534,7 @@ begin
     fDeltaTimer.Start();
 end;
 
-function TelWindow.SetVideoMode(_Width, _Height, _ColorBits: Integer; _Fullscreen: Boolean = False): Boolean; 
+function TelWindow.SetVideoMode(_Width, _Height, _ColorBits: Integer; _Fullscreen: Boolean = False): Boolean;
 begin
   Result := SetVideoMode(_Width, _Height, _ColorBits, _Fullscreen, FVideoFlag);
 end;
@@ -852,7 +559,7 @@ begin
   Result := makeV2i(FNativeResolution.X, FNativeResolution.Y);
 end;
 
-procedure TelWindow.ToggleFullscreen(); 
+procedure TelWindow.ToggleFullscreen();
 begin
   FFullscreen := not FFullscreen;
 
@@ -863,7 +570,7 @@ begin
   {$ENDIF}
 end;
 
-procedure TelWindow.BeginScene(); 
+procedure TelWindow.BeginScene();
 begin
   if (fDeltaTimer.getTicks > 0) then fDeltaTime := (fDeltaTimer.getTicks / 1000);
   fDeltaTimer.Start();
@@ -877,9 +584,13 @@ begin
 
   // Set resolution
   glScalef(ResScale.X, ResScale.Y, 0.0);
+
+  (*if FBackgroundChange then TelAppProvider.GraphicsProvider.SetBackgroundColor(fBackgroundColor);
+
+  TelAppProvider.GraphicsProvider.OnBeginScene;*)
 end;
 
-procedure TelWindow.SetProjection(ProjectionMode: TelProjectionMode); 
+procedure TelWindow.SetProjection(ProjectionMode: TelProjectionMode);
 begin
   fProjection := ProjectionMode;
 
@@ -893,11 +604,15 @@ begin
   end;
 
   glMatrixMode(GL_MODELVIEW);
+
+  //TelAppProvider.GraphicsProvider.SetProjection(makeSize(fResolution.X, fResolution.Y), fProjection, FFoVY, FZNear, FZFar);
 end;
 
-procedure TelWindow.EndScene; 
+procedure TelWindow.EndScene;
 begin
   glFlush();
+
+  //TelAppProvider.GraphicsProvider.OnEndScene;
 
   HandleEvents;
 
@@ -915,12 +630,12 @@ begin
 
 end;
 
-procedure TelWindow.SetFPS(Value: Single); 
+procedure TelWindow.SetFPS(Value: Single);
 begin
   if Value > 0 then fFrameCap := Value;
 end;
 
-function TelWindow.GetFPS: Single; 
+function TelWindow.GetFPS: Single;
 begin
   Result := fFrames * (1000 / fFPSTimer.GetTicks());
 
@@ -931,13 +646,13 @@ begin
   end;
 end;
 
-function TelWindow.GetDeltaTime: Double; 
+function TelWindow.GetDeltaTime: Double;
 begin
   if fDeltaTime > 0 then Result := fDeltaTime
     else Result := 0.0001; // < Be careful - Might not get expected results all the time
 end;
 
-function TelWindow.GetWidth: Integer; 
+function TelWindow.GetWidth: Integer;
 begin
   if (FNativeResolution.X = FResolution.X) then
     Result := FResolution.X
@@ -945,7 +660,7 @@ begin
     Result := FNativeResolution.X;
 end;
 
-function TelWindow.GetHeight: Integer; 
+function TelWindow.GetHeight: Integer;
 begin
   if (FNativeResolution.Y = FResolution.Y) then
     Result := FResolution.Y
@@ -953,7 +668,7 @@ begin
     Result := FNativeResolution.Y;
 end;
 
-function TelWindow.GetBitsPerPixel: Integer; 
+function TelWindow.GetBitsPerPixel: Integer;
 begin
   Result := FResolution.Z;
 end;
@@ -963,59 +678,29 @@ begin
   Result := (Width / Height);
 end;
 
-procedure TelWindow.SetBackgroundImage(Surface: PSDL_Surface); deprecated;
+procedure TelWindow.SetBackgroundColor(Color: TelColor);
 begin
-  if Surface <> nil then
+  if fBackgroundColor <> Color then
   begin
-    UseBackgroundImage := true;
-    fBackgroundImage := Surface;
     FBackgroundChange := true;
+    FBackgroundColor := Color;
   end;
 end;
 
-procedure TelWindow.SetBackgroundImage(const Filename: String);
-var Directory: String;
+function TelWindow.GetCaption: AnsiString;
 begin
-
-  if Filename <> '' then
-  begin
-    Directory := ExtractFilePath(ParamStr(0));
-    if FileExists(Directory+Content.RootDirectory+FileName) then
-    begin
-      UseBackgroundImage := true;
-
-      {$IFDEF USE_SDL_IMAGE}
-        fBackgroundImage := IMG_Load(PChar(Directory+Content.RootDirectory+FileName));
-      {$ENDIF}
-      {$IFDEF USE_VAMPYRE}
-        fBackgroundImage := LoadSDLSurfaceFromFile(Directory+Content.RootDirectory+FileName);
-      {$ENDIF}
-
-    end else TelLogger.GetInstance.WriteLog('File not found: '+Directory+Content.RootDirectory+FileName, ltError);
-  end else TelLogger.GetInstance.WriteLog('No filename specifies.', ltError);
+  Result := AnsiString(fCaption);
 end;
 
-procedure TelWindow.SetBackgroundColor(Color: TelColor); 
+procedure TelWindow.SetCaption(Caption: AnsiString);
 begin
-  UseBackgroundImage := false;
-  FBackgroundChange := true;
-  FBackgroundColor := Color;
-end;
-
-function TelWindow.GetCaption: String; 
-begin
-  Result := String(fCaption);
-end;
-
-procedure TelWindow.SetCaption(Caption: String); 
-begin
-  fCaption := PChar(Caption);
+  fCaption := PAnsiChar(Caption);
   SDL_WM_SetCaption(fCaption, fCaption);
 end;
 
-procedure TelWindow.SetIcon(Filename: String);
+procedure TelWindow.SetIcon(Filename: AnsiString);
 var TMP_Icon: PSDL_Surface;
-    Directory: String;
+    Directory: AnsiString;
 begin
   if Filename <> '' then
   begin
@@ -1024,23 +709,23 @@ begin
     if FileExists(Directory + Filename) then
     begin
       {$IFDEF USE_SDL_IMAGE}
-        TMP_Icon := IMG_Load(PChar(Directory + Filename));
+        TMP_Icon := IMG_Load(PAnsiChar(Directory + Filename));
       {$ENDIF}
       {$IFDEF USE_VAMPYRE}
-         TMP_Icon := LoadSDLSurfaceFromFile(Directory+Content.RootDirectory+FileName);
+         TMP_Icon := LoadSDLSurfaceFromFile(Directory + Content.Root + FileName);
       {$ENDIF}
-      FIcon := PChar(Filename);
+      FIcon := PAnsiChar(Filename);
       SDL_WM_SetIcon(TMP_Icon, 0);
     end
-      else TelLogger.GetInstance.WriteLog('File not found: ' + Directory + Content.RootDirectory + FileName, ltError);
+      else TelLogger.GetInstance.WriteLog('File not found: ' + Directory + Content.Root + FileName, ltError);
   end else TelLogger.GetInstance.WriteLog('No filename specified.', ltError);
 
   if TMP_Icon <> nil then SDL_FreeSurface(TMP_Icon);
 end;
 
-procedure TelWindow.SetIcon(Filename: String; Mask: TelColor);
+procedure TelWindow.SetIcon(Filename: AnsiString; Mask: TelColor);
 var TMP_Icon: PSDL_Surface;
-    Directory: String;
+    Directory: AnsiString;
 begin
   if Filename <> '' then
   begin
@@ -1049,41 +734,41 @@ begin
     if FileExists(Directory + Filename) then
     begin
       {$IFDEF USE_SDL_IMAGE}
-        TMP_Icon := IMG_Load(PChar(Directory + Content.RootDirectory + Filename));
+        TMP_Icon := IMG_Load(PAnsiChar(Directory + Content.Root + Filename));
       {$ENDIF}
       {$IFDEF USE_VAMPYRE}
-        TMP_Icon := LoadSDLSurfaceFromFile(Directory+Content.RootDirectory+FileName);
+        TMP_Icon := LoadSDLSurfaceFromFile(Directory + Content.Root + FileName);
       {$ENDIF}
       if TMP_Icon <> Nil then
         SDL_SetColorKey(TMP_Icon, SDL_SRCCOLORKEY or SDL_RLEACCEL or SDL_HWACCEL,
       SDL_MapRGB(TMP_Icon^.Format, Mask.R, Mask.G, Mask.B));
 
-      FIcon := PChar(Filename);
+      FIcon := PAnsiChar(Filename);
       SDL_WM_SetIcon(TMP_Icon, 0);
-    end else TelLogger.GetInstance.WriteLog('File not found: '+Directory+Content.RootDirectory+FileName, ltError);
-  end else TelLogger.GetInstance.WriteLog('No filename specified.', ltError);
+    end else TelLogger.GetInstance.WriteLog(rsFileNotFound, [Directory + Content.Root + FileName], ltError);
+  end else TelLogger.GetInstance.WriteLog(rsFileNotSpecified, ltError);
 
   if TMP_Icon <> nil then SDL_FreeSurface(TMP_Icon);
 end;
 
-procedure TelWindow.HideCursor; 
+procedure TelWindow.HideCursor;
 begin
   FHideCursor := true;
   SDL_ShowCursor(0);
 end;
 
-procedure TelWindow.ShowCursor; 
+procedure TelWindow.ShowCursor;
 begin
   FHideCursor := false;
   SDL_ShowCursor(1);
 end;
 
-procedure TelWindow.TakeScreenshot(aFilename: String);
+procedure TelWindow.TakeScreenshot(aFilename: AnsiString = '');
 var
   tmpSurface: PSDL_Surface;
   rmask, gmask, bmask, amask: Uint32;
   tmpScreenshotCount: Integer;
-  tmpFilename, formattedDateTime: String;
+  tmpFilename, formattedDateTime: AnsiString;
   searchResult: TSearchRec;
   ScreenRect: TSDL_Rect;
 begin
@@ -1134,7 +819,10 @@ begin
 
   SDL_LockSurface(tmpSurface);
 
+  //glReadPixels(0, 0, Self.Width, Self.Height, GL_BGR, GL_UNSIGNED_BYTE, tmpSurface^.pixels);
+
   // Saves OpenGL context into tmpSurface
+  //tmpSurface^.pixels := TelAppProvider.GraphicsProvider.ReadPixels(makeRect(0, 0, Self.Width, Self.Height));
   glReadPixels(0, 0, Self.Width, Self.Height, GL_RGB, GL_UNSIGNED_BYTE, tmpSurface^.pixels);
 
   ScreenRect.x := 0;
@@ -1151,9 +839,9 @@ begin
 
   // Saves image to file
   {$IFDEF USE_VAMPYRE}
-  ImagingSDL.SaveSDLSurfaceToFile(Environment.WorkingPath + tmpFilename, tmpSurface);
+  ImagingSDL.SaveSDLSurfaceToFile(tmpFilename, tmpSurface);
   {$ELSE}
-  SDL_SaveBMP(tmpSurface, PAnsiChar(Environment.WorkingPath + tmpFilename));
+  SDL_SaveBMP(tmpSurface, PAnsiChar(tmpFile));
   {$ENDIF}
 
   SDL_FreeSurface(tmpSurface);
@@ -1200,14 +888,9 @@ begin
   begin
 
     case FEvent.type_ of
-    SDL_ACTIVEEVENT:
-      begin
-        fFocused := (FEvent.active.gain = 1);
-      end;
-
     SDL_QUITEV:
        begin
-         if (Self.SDL_Surface <> nil) then Application.Quit;
+         if (Self.SDL_Surface <> nil) then Self.Quit;
        end;
 
     SDL_KEYUP:
@@ -1326,17 +1009,10 @@ begin
   end;
 end;
 
-function TelWindow.IsActive: Boolean; 
+procedure TelWindow.Quit;
 begin
-  if ((SDL_GetAppState = SDL_APPACTIVE) or
-      (SDL_GetAppState = SDL_APPMOUSEFOCUS) or
-      (SDL_GetAppState = SDL_APPINPUTFOCUS)) then Result := true
-                                             else Result := false;
-end;
-
-function TelWindow.IsFocused: Boolean;
-begin
-  Result := fFocused;
+  fActive := false;
+  //Result := ((SDL_GetAppState = SDL_APPACTIVE) or (SDL_GetAppState = SDL_APPMOUSEFOCUS) or (SDL_GetAppState = SDL_APPINPUTFOCUS));
 end;
 
 function TelWindow.GetTicks(): Cardinal;
@@ -1344,127 +1020,6 @@ begin
   Result := SDL_GetTicks();
 end;
 
-constructor TelWindowManager.Create;
-begin
-  inherited Create;
 
-  fWindowCount := 0;
-
-  fWindowList := TList.Create;
-end;
-
-destructor TelWindowManager.Destroy;
-begin
-  if fWindowList <> nil then DestroyAllWindows();
-
-  inherited Destroy;
-end;
-
-function TelWindowManager.GetCurrentWindow(): TelWindow; 
-begin
-  Result := TelWindow(fWindowList.Items[0]);
-end;
-
-function TelWindowManager.CreateWindow(const aName: String; Width, Height, Bits: Integer; Fullscreen: Boolean; VideoFlag: TelVideoFlag): TelWindow;
-var
-  tempWindow: TelWindow;
-  tempName: String;
-begin
-
-  tempName := aName;
-  if tempName = '' then tempName := 'Elysion Application';
-  tempWindow := TelWindow.Create;
-  tempWindow.ID := WindowCount;
-  tempWindow.Name := tempName;
-  tempWindow.SetVideoMode(Width, Height, Bits, Fullscreen, VideoFlag);
-
-  fWindowList.Add(tempWindow);
-  fWindowCount := fWindowCount + 1;
-
-  Result := tempWindow;
-end;
-
-function TelWindowManager.CreateWindow(const aName: String; Width, Height, Bits: Integer; Fullscreen: Boolean = false): TelWindow; 
-begin
-  Result := Self.CreateWindow(aName, Width, Height, Bits, Fullscreen, vfAuto);
-end;
-
-function TelWindowManager.DestroyWindow(aWindow: TelWindow): Boolean; 
-begin
-  aWindow.Destroy;
-
-  if aWindow = nil then Result := true
-     else Result := false;
-end;
-
-procedure TelWindowManager.DestroyAllWindows();
-begin
-  FreeAndNil(fWindowList);
-end;
-
-constructor TelEnvironment.Create;
-var
-  VideoInfo: PSDL_VideoInfo;
-begin
-  inherited;
-
-  if not Application.Initialized then Application.Initialize();
-
-
-  VideoInfo := SDL_GetVideoInfo;
-
-  if VideoInfo = nil then
-  begin
-    Destroy;
-    Exit;
-  end;
-
-  fWidth := VideoInfo^.current_w;
-  fHeight := VideoInfo^.current_h;
-  fColorDepth := VideoInfo^.vfmt^.BitsPerPixel;
-
-  fMobile := false;
-  {$IFDEF FPC}
-    {$IFDEF IPHONEOS}
-      fMobile := true;
-    {$ENDIF}
-    {$IFDEF ARM}
-      // In most cases mobile; TODO: add more precise conditions
-      fMobile := true;
-    {$ENDIF}
-  {$ENDIF}
-end;
-
-destructor TelEnvironment.Destroy;
-begin
-  inherited;
-end;
-
-function TelEnvironment.GetAspectRatio(): Single;
-begin
-  Result := (Self.Width / Self.Height);
-end;
-
-function TelEnvironment.GetBasename: AnsiString;
-begin
-  Result := ParamStr(0);
-end;
-
-function TelEnvironment.GetWorkingPath: AnsiString;
-begin
-  Result := ExtractFilePath(ParamStr(0));
-end;
-
-{$IFDEF AUTO_INIT}
-initialization
-  Application := TAppContainer.Create;
-  WindowManager := TelWindowManager.Create;
-  Environment := TelEnvironment.Create;
-
-finalization
-  Environment.Destroy;
-  WindowManager.Destroy;
-  Application.Destroy;
-{$ENDIF}
 
 end.

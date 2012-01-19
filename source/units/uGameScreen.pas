@@ -7,7 +7,7 @@ interface
 uses
   Classes,
   SysUtils,
-  ElysionApplication,
+  ElysionWindowManager,
   ElysionGraphicsProvider,
   ElysionTypes,
   ElysionColor,
@@ -63,7 +63,7 @@ implementation
 
 constructor TGameScreen.Create;
 begin
-  inherited;
+  inherited Create;
 
   Randomize;
 
@@ -124,7 +124,7 @@ begin
 
   Font.Destroy;
 
-  inherited;
+  inherited Destroy;
 end;
 
 (**
@@ -156,9 +156,9 @@ begin
   fGameOver := false;
 end;
 
-procedure TGameScreen.Render;
+procedure TGameScreen.Render(Graphics: IGraphicsProvider);
 begin
-  inherited;
+  inherited Render(Graphics);
 
   // Draw game paused overlay
   if Paused then
@@ -175,7 +175,7 @@ end;
 
 procedure TGameScreen.Update(dt: Double);
 begin
-  inherited;
+  inherited Update(dt);
 
   if not Paused and not GameOver then
   begin

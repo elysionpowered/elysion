@@ -138,7 +138,9 @@ end;
 implementation
 
 uses
-  ElysionApplication;
+  ElysionApplication,
+  ElysionEnvironment;
+
 
 procedure TelLogger.Dump();
 var
@@ -225,7 +227,7 @@ begin
 
   // Save file
   try
-    tmpStringList.SaveToFile(Environment.WorkingPath + fFilename + '.html');
+    tmpStringList.SaveToFile(TelEnvironment.WorkingPath + fFilename + '.html');
   finally
     // TODO: Proper error handling ;)
 

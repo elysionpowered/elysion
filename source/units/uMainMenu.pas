@@ -10,7 +10,7 @@ uses
   ElysionGraphics,
   ElysionAudio,
   ElysionApplication,
-  ElysionMenu,
+  //ElysionMenu,
   ElysionLabel,
   ElysionInput,
   ElysionAnimator,
@@ -26,7 +26,7 @@ uses
 type
   TMainMenu = class(TelScene)
   private
-    fMenu: TelMenu;
+    //fMenu: TelMenu;
     fLblCopyright: TelLabel;
     fBtnFacebook, fBtnTwitter: TelSprite;
 
@@ -39,7 +39,7 @@ type
     procedure Update(dt: Double); Override;
     procedure HandleEvents; Override;
   published
-    property Menu: TelMenu read fMenu write fMenu;
+    //property Menu: TelMenu read fMenu write fMenu;
 
     property BtnFacebook: TelSprite read fBtnFacebook write fBtnFacebook;
     property BtnTwitter: TelSprite read fBtnTwitter write fBtnTwitter;
@@ -54,10 +54,10 @@ var
   i: Integer;
   RoundRect: TelRoundedRectangle;
 begin
-  inherited;
+  inherited Create;
 
 
-  Menu := TelMenu.Create;
+  (*Menu := TelMenu.Create;
   Menu.setButtons(GetResImgPath + 'button.png', GetStdFont, 15, ['New game', 'Credits', 'Options', 'Quit']);
   Menu.Spacing := 16;
 
@@ -70,13 +70,13 @@ begin
   RoundRect := TelRoundedRectangle.Create(Menu.Width + 16, Menu.Height);
   RoundRect.Position := makeV3f(Menu.Position.X - 8, Menu.Position.Y - 8);
   RoundRect.Color := makeCol(0, 0, 0, 128);
-  RoundRect.RoundedRadius := 8;
+  RoundRect.RoundedRadius := 8; *)
   //Self.Add(RoundRect);
 
   //Self.Add(Menu);
 
 
-  LblCopyright := TelLabel.Create;
+  (*LblCopyright := TelLabel.Create;
   LblCopyright.LoadFromFile(GetStdFont);
   LblCopyright.Caption := '(C) Your Name Here';
   LblCopyright.Size := 14;
@@ -85,32 +85,32 @@ begin
   LblCopyright.Bottom := 8;
   LblCopyright.HyperLink := 'http://thatsmyawesomewebsite.com';
 
-  //Self.Add(LblCopyright);
+  //Self.Add(LblCopyright);      *)
 
 
   BtnTwitter := TelSprite.Create;
   BtnTwitter.LoadFromFile(GetResImgPath + 'twitter.png');
   BtnTwitter.Right := 8;
-  BtnTwitter.Bottom := 8;
+  //BtnTwitter.Bottom := 8;
   BtnTwitter.HyperLink := 'http://twitter.com';
   BtnTwitter.Color := makeCol(192, 192, 192);
-  //Self.Add(BtnTwitter);
+  Self.Add(BtnTwitter);
 
 
-  BtnFacebook := TelSprite.Create;
+  (*BtnFacebook := TelSprite.Create;
   BtnFacebook.LoadFromFile(GetResImgPath + 'facebook.png');
   BtnFacebook.Bottom := 8;
   BtnFacebook.Right := BtnTwitter.Right + BtnTwitter.Width + 8;
   BtnFacebook.HyperLink := 'http://facebook.com';
   BtnFacebook.Color := makeCol(192, 192, 192);
-  //Self.Add(BtnFacebook);
+  //Self.Add(BtnFacebook);  *)
 end;
 
 destructor TMainMenu.Destroy;
 begin
-  Menu.Destroy;
+  //Menu.Destroy;
 
-  inherited;
+  inherited Destroy;
 end;
 
 procedure TMainMenu.Render(Graphics: IGraphicsProvider);
@@ -123,7 +123,7 @@ procedure TMainMenu.Update(dt: Double);
 begin
   inherited Update(dt);
 
-  if BtnTwitter.MouseOver then
+  (*if BtnTwitter.MouseOver then
     BtnTwitter.Color := makeCol(255, 255, 255)
   else
     BtnTwitter.Color := makeCol(192, 192, 192);
@@ -131,12 +131,12 @@ begin
   if BtnFacebook.MouseOver then
     BtnFacebook.Color := makeCol(255, 255, 255)
   else
-    BtnFacebook.Color := makeCol(192, 192, 192);
+    BtnFacebook.Color := makeCol(192, 192, 192);*)
 end;
 
 procedure TMainMenu.HandleEvents;
 begin
-  if Menu.ButtonClick('New game') or Input.XBox360Controller.Start() then
+  (*if Menu.ButtonClick('New game') or Input.XBox360Controller.Start() then
   begin
     Self.Parent.SwitchTo('game');
   end;
@@ -153,7 +153,7 @@ begin
   end;
 
   if Menu.ButtonClick('Quit') or Input.XBox360Controller.B() then
-    Application.Quit;
+    Application.Quit;*)
 
 end;
 

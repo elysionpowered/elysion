@@ -254,6 +254,7 @@ begin
   end;
 end;
 
+// Wow, I seriously need to add some comments to this function
 function PathString(Paths: array of String; TrailingSlash: Boolean = true): String;
 var
   i: Integer;

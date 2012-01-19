@@ -5,7 +5,7 @@ program myapplication;
 
 {$IFDEF WINDOWS}
   {$IFNDEF DEBUG}  
-    {$APPTYPE GUI}
+    //{$APPTYPE GUI}
   {$ENDIF}
   
   // Adds icon
@@ -29,13 +29,18 @@ program myapplication;
 
 uses
   ElysionApplication in '../lib/ElysionApplication.pas',
+  ElysionWindowManager,
   uGame in 'units/uGame.pas';
 
 var
+  Application: TelApplication;
   Game: TGame;
 
 begin
   Randomize();
+
+  Application := TelApplication.Create;
+  Application.Debug := true;
 
   // Create game class
   Game := TGame.Create;
@@ -44,10 +49,10 @@ begin
   Game.Initialize();
   
   // Game Loop
-  while Game.Run do
+  while Application.Run do
   begin
     // Clears buffer
-    ActiveWindow.BeginScene;
+    TelWindowManager.CurrentWindow.BeginScene;
     
     // Render procedure
     Game.Render(nil);
@@ -59,7 +64,9 @@ begin
     Game.HandleEvents();
     
     // Flip surface
-    ActiveWindow.EndScene;
+    TelWindowManager.CurrentWindow.EndScene;
   end;
+
+  Application.Destroy;
   
 end.

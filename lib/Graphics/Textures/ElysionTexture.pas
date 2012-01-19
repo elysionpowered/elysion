@@ -1,9 +1,10 @@
-unit ElysionTexture;
+﻿unit ElysionTexture;
+
+{$I Elysion.inc}
 
 {$IFDEF FPC}
   {$mode delphi}
 {$ENDIF}
-{$I Elysion.inc}
 
 interface
 
@@ -20,7 +21,7 @@ uses
   {$IFDEF USE_DGL_HEADER}
   dglOpenGL,
   {$ELSE}
-  gl, glu, glext,
+  gl, glu,
   {$ENDIF}
   SDL,
   SDLUtilsLight,
@@ -91,7 +92,7 @@ type
       property Height: Integer read fHeight;
   end;
 
-  TelTextureList = TelList<TelTexture>;
+  TelTextureList = TelObjectList<TelTexture>;
 
   TelTextureListHelper = class helper for TelTextureList
   public
@@ -185,16 +186,6 @@ begin
   {$ENDIF}
 end;
 
-(*function TelTexture.GetPixel(X, Y: Integer): TelColor;
-begin
-
-end;
-
-procedure TelTexture.SetPixel(X, Y: Integer; AValue: TelColor);
-begin
-
-end;*)
-
 procedure TelTexture.SetColorKey(aColor: TelColor); 
 begin
   if TextureSurface <> nil then
@@ -239,7 +230,8 @@ end;
 
 function TelTexture.Reload(): Boolean;
 begin
-  if TextureSurface <> nil then Result := Self.LoadFromSDLSurface(Self.TextureSurface);
+  if TextureSurface <> nil then
+    Result := Self.LoadFromSDLSurface(Self.TextureSurface);
 end;
 
 
@@ -252,7 +244,6 @@ begin
     TelTexture(Items[i]).Reload();
   end;
 end;
-
 
 
 end.

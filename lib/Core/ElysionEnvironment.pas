@@ -5,10 +5,17 @@ unit ElysionEnvironment;
 interface
 
 uses
+  SDL,
+
+  SysUtils,
+
   ElysionTypes,
   ElysionObject;
 
 type
+
+  { TelEnvironment }
+
   TelEnvironment = class sealed(TelObject)
     private
       class var fWidth: Integer;
@@ -18,6 +25,9 @@ type
       class var fValidResolutions: TelSizeArray;
 
       class function GetAspectRatio(): Single; static; inline;
+
+      class function GetBasename: AnsiString; static; inline;
+      class function GetWorkingPath: AnsiString; static; inline;
     public
       class constructor Create;
       class destructor Destroy;
@@ -32,6 +42,9 @@ type
       class property Mobile: Boolean read fMobile;
 
       class property ValidResolutions: TelSizeArray read fValidResolutions;
+
+      class property Basename: AnsiString read GetBasename;
+      class property WorkingPath: AnsiString read GetWorkingPath;
   end;
 
 implementation
@@ -75,6 +88,16 @@ end;
 class function TelEnvironment.GetAspectRatio(): Single;
 begin
   Result := (Width / Height);
+end;
+
+class function TelEnvironment.GetBasename: AnsiString;
+begin
+  Result := ParamStr(0);
+end;
+
+class function TelEnvironment.GetWorkingPath: AnsiString;
+begin
+  Result := ExtractFilePath(ParamStr(0));
 end;
 
 end.

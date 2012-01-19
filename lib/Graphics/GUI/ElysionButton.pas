@@ -14,7 +14,7 @@ uses
   ElysionGraphicsProvider,
 
   ElysionTexture,
-  ElysionApplication,
+  ElysionWindowManager,
   ElysionInput,
   ElysionNode,
   ElysionSprite,

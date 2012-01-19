@@ -11,10 +11,11 @@ interface
 {$I Elysion.inc}
 
 uses
+  ElysionObject,
   ElysionTypes,
-  ElysionApplication,
   ElysionLogger,
   ElysionKeyCode,
+  ElysionWindowManager,
 
   SDL,
   SysUtils,
@@ -29,11 +30,7 @@ end;*)
 
 { TelAnalogStick }
 
-{$IFDEF FPC}
-TelAnalogStick = object
-{$ELSE}
 TelAnalogStick = record
-{$ENDIF}
   AxisH: Single; //< Horizontal axis
   AxisV: Single; //< Vertical axis
 
@@ -43,42 +40,25 @@ TelAnalogStick = record
   
   Left, Right, Up, Down: Boolean;
 
-  {$IFDEF CAN_METHODS}
+
   function ToVector2f(aMultiplicator: Single = 1.0): TelVector2f;
-  {$ENDIF}
-end;
-
-TelKeyboardHelper = class
-  private
-    fLastUsedKey: LongWord;
-  public
-    constructor Create;
-    destructor Destroy; Override;
-
-    function IsKeyDown(Key: Cardinal): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function IsKeyHit(Key: Cardinal): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function IsKeyUp(Key: Cardinal): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    function GetLastUsedKey: LongWord; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  published
-    property LastUsedKey: LongWord read GetLastUsedKey;
 end;
 
 // TODO: Add multiple joystick support
-TelJoystickHelper = class
+TelJoystick = class
   private
     fLastUsedButton: LongWord;
 
-    function GetBall(): TelVector2i; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetBall(): TelVector2i; inline;
   public
     constructor Create;
     destructor Destroy; Override;
 
-    function IsButtonDown(Button: Cardinal): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function IsButtonHit(Button: Cardinal): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function IsButtonUp(Button: Cardinal): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function IsButtonDown(Button: Cardinal): Boolean; inline;
+    function IsButtonHit(Button: Cardinal): Boolean; inline;
+    function IsButtonUp(Button: Cardinal): Boolean; inline;
 
-    function GetLastUsedButton(): LongWord; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetLastUsedButton(): LongWord; inline;
 
     property Ball: TelVector2i read GetBall;
   published
@@ -95,57 +75,83 @@ TelDPad = class
     constructor Create(UseJoyHat: Boolean = true);
     destructor Destroy; Override;
 
-    function Centered(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Up(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Right(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Down(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Left(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function RightUp(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function RightDown(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function LeftUp(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function LeftDown(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function Centered(): Boolean; inline;
+    function Up(): Boolean; inline;
+    function Right(): Boolean; inline;
+    function Down(): Boolean; inline;
+    function Left(): Boolean; inline;
+    function RightUp(): Boolean; inline;
+    function RightDown(): Boolean; inline;
+    function LeftUp(): Boolean; inline;
+    function LeftDown(): Boolean; inline;
   published
     property Sticky: Boolean read fSticky write fSticky;
 end;
 
+ISimpleController = interface
+  function IsConnected: Boolean;
+
+  function Start(): Boolean;
+  function Back(): Boolean;
+
+  function A(): Boolean;
+  function B(): Boolean;
+  function X(): Boolean;
+  function Y(): Boolean;
+
+  function RButton(): Boolean;
+  function LButton(): Boolean;
+end;
+
+IController = interface(ISimpleController)
+  function GetLStick(): TelAnalogStick;
+  function GetRStick(): TelAnalogStick;
+  function GetDPad(): TelDPad;
+
+  function LTrigger: Boolean;
+  function RTrigger: Boolean;
+end;
+
 { TelXBox360Controller }
 
-TelXBox360Controller = class
+TelXBox360Controller = class(TelObject, IController)
   private
     fControllerName: String;
-    //fDPad: TelDPad;
 
-    function GetConnected(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function GetLStick(): TelAnalogStick; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function GetRStick(): TelAnalogStick; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function GetTrigger(): TelAnalogStick; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetTrigger(): TelAnalogStick; inline;
   public
-    constructor Create;
+    constructor Create; Override;
     destructor Destroy; Override;
 
-    function A(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function B(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function X(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Y(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function A(): Boolean; inline;
+    function B(): Boolean; inline;
+    function X(): Boolean; inline;
+    function Y(): Boolean; inline;
 
-    function BigButton(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function BigButton(): Boolean; inline;
 
-    function Start(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Back(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function Start(): Boolean; inline;
+    function Back(): Boolean; inline;
 
-    function LButton(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function LTrigger(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function LButton(): Boolean; inline;
+    function LTrigger(): Boolean; inline;
 
-    function RButton(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function RTrigger(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function RButton(): Boolean; inline;
+    function RTrigger(): Boolean; inline;
 
+    function IsConnected: Boolean; inline;
+
+    function GetLStick(): TelAnalogStick; inline;
+    function GetRStick(): TelAnalogStick; inline;
+
+    function GetDPad(): TelDPad;
+  public
     property LStick: TelAnalogStick read GetLStick;
     property RStick: TelAnalogStick read GetRStick;
   published
-    // DPad currently not working - temporarily deactivated
-    //property DPad: TelDPad read fDPad write fDPad;
+    property DPad: TelDPad read GetDPad;
 
-    property IsConnected: Boolean read GetConnected;
+    property Connected: Boolean read IsConnected;
 end;
 
 (*TelPlaystationController = class
@@ -155,19 +161,19 @@ end;
     constructor Create;
     destructor Destroy; Override;
 
-    function Triangle(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Square(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Circle(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Cross(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function Triangle(): Boolean; inline;
+    function Square(): Boolean; inline;
+    function Circle(): Boolean; inline;
+    function Cross(): Boolean; inline;
 
-    function Select(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Start(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function Select(): Boolean; inline;
+    function Start(): Boolean; inline;
 
-    function LButton(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function LTrigger(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function LButton(): Boolean; inline;
+    function LTrigger(): Boolean; inline;
 
-    function RButton(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function RTrigger(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function RButton(): Boolean; inline;
+    function RTrigger(): Boolean; inline;
   published
     property DPad: TelDPad read fDPad write fDPad;
 end;
@@ -176,89 +182,106 @@ TelGP2XController = class
   private
     fDPad: TelDPad;
 
-    function GetConnected(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetConnected(): Boolean; inline;
   public
     constructor Create;
     destructor Destroy; Override;
 
-    function A(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function B(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function X(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Y(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function A(): Boolean; inline;
+    function B(): Boolean; inline;
+    function X(): Boolean; inline;
+    function Y(): Boolean; inline;
 
-    function Menu(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Select(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function Menu(): Boolean; inline;
+    function Select(): Boolean; inline;
 
-    function LButton(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function LButton(): Boolean; inline;
 
-    function RButton(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function RButton(): Boolean; inline;
   published
     property IsConnected: Boolean read GetConnected;
 
     property DPad: TelDPad read fDPad write fDPad;
 end;*)
 
-TelMouseHelper = class
+
+{ TelInput }
+
+TelInput = class sealed
+  strict private type
+    TelKeyboard = class sealed
+      private
+        fLastUsedKey: LongWord;
+      public
+        constructor Create;
+        destructor Destroy; Override;
+
+        function IsKeyDown(Key: Cardinal): Boolean; inline;
+        function IsKeyHit(Key: Cardinal): Boolean; inline;
+        function IsKeyUp(Key: Cardinal): Boolean; inline;
+
+        function GetLastUsedKey: LongWord; inline;
+      published
+        property LastUsedKey: LongWord read GetLastUsedKey;
+    end;
+
+    TelMouse = class sealed
+      private
+        fDblClickInterval: Integer;
+        fDblClicked: Boolean;
+
+        function GetCursor(): TelVector2i; inline;
+        function GetRelCursor(): TelVector2i; inline;
+      public
+        constructor Create;
+        destructor Destroy; Override;
+
+        function IsButtonDown(Button: LongWord): Boolean; inline;
+        function IsButtonHit(Button: LongWord): Boolean; inline;
+        function IsButtonUp(Button: LongWord): Boolean; inline;
+
+        function LeftClick(): Boolean; inline;
+        function RightClick(): Boolean; inline;
+
+        function Down(Button: LongWord = BUTTON_LEFT): Boolean; inline;
+        function Up(Button: LongWord = BUTTON_LEFT): Boolean; inline;
+
+        function DblClick(): Boolean; inline;
+
+        function WheelDown(): Boolean; inline;
+        function WheelUp(): Boolean; inline;
+
+        function Motion(): Boolean; Overload; inline;
+        function Motion(Rect: TelRect): Boolean; Overload; inline;
+
+
+        property Cursor: TelVector2i read GetCursor;
+        property RelCursor: TelVector2i read GetRelCursor;
+      published
+        property DblClickInterval: Integer read fDblClickInterval write fDblClickInterval;
+    end;
+
   private
-    fDblClickInterval: Integer;
-    fDblClicked: Boolean;
-
-    function GetCursor(): TelVector2i; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function GetRelCursor(): TelVector2i; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  public
-    constructor Create;
-    destructor Destroy; Override;
-
-    function IsButtonDown(Button: LongWord): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function IsButtonHit(Button: LongWord): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function IsButtonUp(Button: LongWord): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    function LeftClick(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function RightClick(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    function Down(Button: LongWord = BUTTON_LEFT): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Up(Button: LongWord = BUTTON_LEFT): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    function DblClick(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    function WheelDown(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function WheelUp(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    function Motion(): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Motion(Rect: TelRect): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-
-    property Cursor: TelVector2i read GetCursor;
-    property RelCursor: TelVector2i read GetRelCursor;
-  published
-    property DblClickInterval: Integer read fDblClickInterval write fDblClickInterval;
-end;
-
-
-{ TelInputHelper }
-
-TelInputHelper = class
-  private
-    fKeyboard: TelKeyboardHelper;
-    fJoystick: TelJoystickHelper;
-    fMouse: TelMouseHelper;
+    fKeyboard: TelKeyboard;
+    fJoystick: TelJoystick;
+    fMouse: TelMouse;
 
     fXBox360Controller: TelXBox360Controller;
 
-    function GetJoystickName(): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function GetJoystickCount(): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetJoystickName(): AnsiString; inline;
+    function GetJoystickCount(): Integer; inline;
   public
     constructor Create;
     destructor Destroy; Override;
 
     procedure DebugInfo();
   published
-    property Keyboard: TelKeyboardHelper read fKeyboard write fKeyboard;
-    property Joystick: TelJoystickHelper read fJoystick write fJoystick;
-    property Mouse: TelMouseHelper read fMouse write fMouse;
+    property Keyboard: TelKeyboard read fKeyboard write fKeyboard;
+    property Joystick: TelJoystick read fJoystick write fJoystick;
+    property Mouse: TelMouse read fMouse write fMouse;
     property XBox360Controller: TelXBox360Controller read fXBox360Controller write fXBox360Controller;
 
-    property JoystickName: String read GetJoystickName;
+    property JoystickName: AnsiString read GetJoystickName;
     property JoystickCount: Integer read GetJoystickCount;
 end;
 
@@ -269,138 +292,138 @@ TelKeyCode = class
     constructor Create;
     destructor Destroy; Override;
 
-    function BackSpace(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Tab(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Clear(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Return(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Enter(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Pause(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Escape(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Space(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Exclaim(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function QuoteDbl(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Hash(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Dollar(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Ampersand(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Quote(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function LeftParen(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function RightParen(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Asterisk(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Plus(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Comma(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Minus(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Period(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Slash(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Alpha0(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Alpha1(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Alpha2(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Alpha3(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Alpha4(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Alpha5(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Alpha6(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Alpha7(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Alpha8(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Alpha9(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Colon(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function SemiColon(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Less(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function BackSpace(): Cardinal; inline;
+    function Tab(): Cardinal; inline;
+    function Clear(): Cardinal; inline;
+    function Return(): Cardinal; inline;
+    function Enter(): Cardinal; inline;
+    function Pause(): Cardinal; inline;
+    function Escape(): Cardinal; inline;
+    function Space(): Cardinal; inline;
+    function Exclaim(): Cardinal; inline;
+    function QuoteDbl(): Cardinal; inline;
+    function Hash(): Cardinal; inline;
+    function Dollar(): Cardinal; inline;
+    function Ampersand(): Cardinal; inline;
+    function Quote(): Cardinal; inline;
+    function LeftParen(): Cardinal; inline;
+    function RightParen(): Cardinal; inline;
+    function Asterisk(): Cardinal; inline;
+    function Plus(): Cardinal; inline;
+    function Comma(): Cardinal; inline;
+    function Minus(): Cardinal; inline;
+    function Period(): Cardinal; inline;
+    function Slash(): Cardinal; inline;
+    function Alpha0(): Cardinal; inline;
+    function Alpha1(): Cardinal; inline;
+    function Alpha2(): Cardinal; inline;
+    function Alpha3(): Cardinal; inline;
+    function Alpha4(): Cardinal; inline;
+    function Alpha5(): Cardinal; inline;
+    function Alpha6(): Cardinal; inline;
+    function Alpha7(): Cardinal; inline;
+    function Alpha8(): Cardinal; inline;
+    function Alpha9(): Cardinal; inline;
+    function Colon(): Cardinal; inline;
+    function SemiColon(): Cardinal; inline;
+    function Less(): Cardinal; inline;
     function Equals(): Cardinal; Overload;
-    function Greater(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Question(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function At(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function LeftBracket(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function BackSlash(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function RightBracket(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Caret(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function UnderScore(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function BackQuote(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function A(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function B(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function C(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function D(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function E(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function F(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function G(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function H(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function I(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function J(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function K(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function L(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function M(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function N(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function O(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function P(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Q(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function R(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function S(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function T(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function U(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function V(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function W(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function X(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Y(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Z(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Delete(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function NumPad0(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function NumPad1(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function NumPad2(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function NumPad3(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function NumPad4(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function NumPad5(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function NumPad6(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function NumPad7(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function NumPad8(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function NumPad9(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function NumPad_Period(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function NumPad_Divide(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function NumPad_Multiply(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function NumPad_Minus(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function NumPad_Plus(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function NumPad_Enter(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function NumPad_Equals(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Up(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Down(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Right(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Left(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Insert(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function PageHome(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function PageEnd(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function PageUp(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function PageDown(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function F1(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function F2(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function F3(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function F4(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function F5(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function F6(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function F7(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function F8(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function F9(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function F10(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function F11(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function F12(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function NumLock(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function CapsLock(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function ScrolLock(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function RShift(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function LShift(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function RCtrl(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function LCtrl(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function RAlt(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function LAlt(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function RMeta(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function LMeta(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function LSuper(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function RSuper(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Mode(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF} // Alt Gr
-    function Help(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Print(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Break(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Menu(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Euro(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function Greater(): Cardinal; inline;
+    function Question(): Cardinal; inline;
+    function At(): Cardinal; inline;
+    function LeftBracket(): Cardinal; inline;
+    function BackSlash(): Cardinal; inline;
+    function RightBracket(): Cardinal; inline;
+    function Caret(): Cardinal; inline;
+    function UnderScore(): Cardinal; inline;
+    function BackQuote(): Cardinal; inline;
+    function A(): Cardinal; inline;
+    function B(): Cardinal; inline;
+    function C(): Cardinal; inline;
+    function D(): Cardinal; inline;
+    function E(): Cardinal; inline;
+    function F(): Cardinal; inline;
+    function G(): Cardinal; inline;
+    function H(): Cardinal; inline;
+    function I(): Cardinal; inline;
+    function J(): Cardinal; inline;
+    function K(): Cardinal; inline;
+    function L(): Cardinal; inline;
+    function M(): Cardinal; inline;
+    function N(): Cardinal; inline;
+    function O(): Cardinal; inline;
+    function P(): Cardinal; inline;
+    function Q(): Cardinal; inline;
+    function R(): Cardinal; inline;
+    function S(): Cardinal; inline;
+    function T(): Cardinal; inline;
+    function U(): Cardinal; inline;
+    function V(): Cardinal; inline;
+    function W(): Cardinal; inline;
+    function X(): Cardinal; inline;
+    function Y(): Cardinal; inline;
+    function Z(): Cardinal; inline;
+    function Delete(): Cardinal; inline;
+    function NumPad0(): Cardinal; inline;
+    function NumPad1(): Cardinal; inline;
+    function NumPad2(): Cardinal; inline;
+    function NumPad3(): Cardinal; inline;
+    function NumPad4(): Cardinal; inline;
+    function NumPad5(): Cardinal; inline;
+    function NumPad6(): Cardinal; inline;
+    function NumPad7(): Cardinal; inline;
+    function NumPad8(): Cardinal; inline;
+    function NumPad9(): Cardinal; inline;
+    function NumPad_Period(): Cardinal; inline;
+    function NumPad_Divide(): Cardinal; inline;
+    function NumPad_Multiply(): Cardinal; inline;
+    function NumPad_Minus(): Cardinal; inline;
+    function NumPad_Plus(): Cardinal; inline;
+    function NumPad_Enter(): Cardinal; inline;
+    function NumPad_Equals(): Cardinal; inline;
+    function Up(): Cardinal; inline;
+    function Down(): Cardinal; inline;
+    function Right(): Cardinal; inline;
+    function Left(): Cardinal; inline;
+    function Insert(): Cardinal; inline;
+    function PageHome(): Cardinal; inline;
+    function PageEnd(): Cardinal; inline;
+    function PageUp(): Cardinal; inline;
+    function PageDown(): Cardinal; inline;
+    function F1(): Cardinal; inline;
+    function F2(): Cardinal; inline;
+    function F3(): Cardinal; inline;
+    function F4(): Cardinal; inline;
+    function F5(): Cardinal; inline;
+    function F6(): Cardinal; inline;
+    function F7(): Cardinal; inline;
+    function F8(): Cardinal; inline;
+    function F9(): Cardinal; inline;
+    function F10(): Cardinal; inline;
+    function F11(): Cardinal; inline;
+    function F12(): Cardinal; inline;
+    function NumLock(): Cardinal; inline;
+    function CapsLock(): Cardinal; inline;
+    function ScrolLock(): Cardinal; inline;
+    function RShift(): Cardinal; inline;
+    function LShift(): Cardinal; inline;
+    function RCtrl(): Cardinal; inline;
+    function LCtrl(): Cardinal; inline;
+    function RAlt(): Cardinal; inline;
+    function LAlt(): Cardinal; inline;
+    function RMeta(): Cardinal; inline;
+    function LMeta(): Cardinal; inline;
+    function LSuper(): Cardinal; inline;
+    function RSuper(): Cardinal; inline;
+    function Mode(): Cardinal; inline; // Alt Gr
+    function Help(): Cardinal; inline;
+    function Print(): Cardinal; inline;
+    function Break(): Cardinal; inline;
+    function Menu(): Cardinal; inline;
+    function Euro(): Cardinal; inline;
 
-    //procedure SetCustomKeyCode(aKeyCode: String; KeyAscii: Cardinal);
-    //function GetCustomKeyCode(aKeyCode: String): Cardinal;
+    //procedure SetCustomKeyCode(aKeyCode: AnsiString; KeyAscii: Cardinal);
+    //function GetCustomKeyCode(aKeyCode: AnsiString): Cardinal;
 end;
 
 TelButtonCode = class
@@ -408,46 +431,47 @@ TelButtonCode = class
     constructor Create;
     destructor Destroy; Override;
 
-    function Left(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Right(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function Middle(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function WheelUp(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function WheelDown(): Cardinal; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function Left(): Cardinal; inline;
+    function Right(): Cardinal; inline;
+    function Middle(): Cardinal; inline;
+    function WheelUp(): Cardinal; inline;
+    function WheelDown(): Cardinal; inline;
 
     //procedure SetCustomButton
 end;
 
 {$IFDEF AUTO_INIT}
 var
-  Input: TelInputHelper;
+  Input: TelInput;
   Key: TelKeyCode;
   Button: TelButtonCode;
 {$ENDIF}
 
 implementation
 
+uses
+  ElysionWindow;
+
 { TelAnalogStick }
 
-{$IFDEF CAN_METHODS}
 function TelAnalogStick.ToVector2f(aMultiplicator: Single = 1.0): TelVector2f;
 begin
   Result := makeV2f(Self.AxisH * aMultiplicator, Self.AxisV * aMultiplicator);
 end;
-{$ENDIF}
 
-constructor TelKeyboardHelper.Create;
+constructor TelInput.TelKeyboard.Create;
 begin
   inherited Create;
 end;
 
-destructor TelKeyboardHelper.Destroy;
+destructor TelInput.TelKeyboard.Destroy;
 begin
   FLastUsedKey := 0;
 
   inherited Destroy;
 end;
 
-function TelKeyboardHelper.IsKeyDown(Key: Cardinal): Boolean; 
+function TelInput.TelKeyboard.IsKeyDown(Key: Cardinal): Boolean;
 begin
   fLastUsedKey := Key;
 
@@ -456,7 +480,7 @@ begin
 
 end;
 
-function TelKeyboardHelper.IsKeyHit(Key: Cardinal): Boolean; 
+function TelInput.TelKeyboard.IsKeyHit(Key: Cardinal): Boolean;
 begin
   fLastUsedKey := Key;
 
@@ -468,7 +492,7 @@ begin
   end else Result := false;
 end;
 
-function TelKeyboardHelper.IsKeyUp(Key: Cardinal): Boolean; 
+function TelInput.TelKeyboard.IsKeyUp(Key: Cardinal): Boolean;
 begin
   fLastUsedKey := Key;
 
@@ -477,39 +501,39 @@ begin
 
 end;
 
-function TelKeyboardHelper.GetLastUsedKey(): LongWord; 
+function TelInput.TelKeyboard.GetLastUsedKey(): LongWord;
 begin
   Result := fLastUsedKey;
 end;
 
-constructor TelJoystickHelper.Create;
+constructor TelJoystick.Create;
 begin
   inherited Create;
 end;
 
-destructor TelJoystickHelper.Destroy;
+destructor TelJoystick.Destroy;
 begin
   inherited Destroy;
 end;
 
-function TelJoystickHelper.GetLastUsedButton(): LongWord;
+function TelJoystick.GetLastUsedButton(): LongWord;
 begin
   Result := fLastUsedButton;
 end;
 
-function TelJoystickHelper.GetBall(): TelVector2i;
+function TelJoystick.GetBall(): TelVector2i;
 begin
   Result := ActiveWindow.JoyBall;
 end;
 
-function TelJoystickHelper.IsButtonDown(Button: Cardinal): Boolean;
+function TelJoystick.IsButtonDown(Button: Cardinal): Boolean;
 begin
   fLastUsedButton := Button;
 
   Result := ActiveWindow.JoyButtonDown[Button];
 end;
 
-function TelJoystickHelper.IsButtonHit(Button: Cardinal): Boolean;
+function TelJoystick.IsButtonHit(Button: Cardinal): Boolean;
 begin
   fLastUsedButton := Button;
 
@@ -520,7 +544,7 @@ begin
   end else Result := false;
 end;
 
-function TelJoystickHelper.IsButtonUp(Button: Cardinal): Boolean;
+function TelJoystick.IsButtonUp(Button: Cardinal): Boolean;
 begin
   fLastUsedButton := Button;
 
@@ -778,11 +802,6 @@ begin
   inherited;
 end;
 
-function TelXBox360Controller.GetConnected(): Boolean;
-begin
-  Result := (AnsiPos(fControllerName, UpperCase(Input.JoystickName)) > 0);
-end;
-
 function TelXBox360Controller.GetLStick(): TelAnalogStick;
 var
   tmpStick: TelAnalogStick;
@@ -850,6 +869,11 @@ begin
   {$ENDIF}
 
   Result := tmpStick;
+end;
+
+function TelXBox360Controller.GetDPad: TelDPad;
+begin
+
 end;
 
 function TelXBox360Controller.GetTrigger(): TelAnalogStick;
@@ -983,6 +1007,11 @@ begin
     else Result := false;
 end;
 
+function TelXBox360Controller.IsConnected: Boolean;
+begin
+  Result := (AnsiPos(fControllerName, UpperCase(Input.JoystickName)) > 0);
+end;
+
 (*constructor TelPlaystationController.Create;
 begin
   inherited;
@@ -1111,7 +1140,7 @@ end;*)
 
 
 
-constructor TelMouseHelper.Create;
+constructor TelInput.TelMouse.Create;
 begin
   inherited Create;
 
@@ -1119,27 +1148,27 @@ begin
   fDblClicked := false;
 end;
 
-destructor TelMouseHelper.Destroy;
+destructor TelInput.TelMouse.Destroy;
 begin
   inherited Destroy;
 end;
 
-function TelMouseHelper.GetCursor(): TelVector2i;
+function TelInput.TelMouse.GetCursor(): TelVector2i;
 begin
   Result := ActiveWindow.Cursor;
 end;
 
-function TelMouseHelper.GetRelCursor(): TelVector2i;
+function TelInput.TelMouse.GetRelCursor(): TelVector2i;
 begin
   Result := ActiveWindow.RelCursor;
 end;
 
-function TelMouseHelper.isButtonDown(Button: LongWord): Boolean; 
+function TelInput.TelMouse.isButtonDown(Button: LongWord): Boolean;
 begin
   Result := ActiveWindow.MouseButtonDown[Button];
 end;
 
-function TelMouseHelper.isButtonHit(Button: LongWord): Boolean; 
+function TelInput.TelMouse.isButtonHit(Button: LongWord): Boolean;
 begin
   if ActiveWindow.MouseButtonDown[Button] then
   begin
@@ -1148,34 +1177,34 @@ begin
   end else Result := false;
 end;
 
-function TelMouseHelper.isButtonUp(Button: LongWord): Boolean; 
+function TelInput.TelMouse.isButtonUp(Button: LongWord): Boolean;
 begin
   Result := ActiveWindow.MouseButtonUp[Button];
 end;
 
-function TelMouseHelper.LeftClick: Boolean; 
+function TelInput.TelMouse.LeftClick: Boolean;
 begin
   Result := Self.Up();
 end;
 
-function TelMouseHelper.RightClick: Boolean; 
+function TelInput.TelMouse.RightClick: Boolean;
 begin
   Result := Self.Up(BUTTON_RIGHT);
 end;
 
-function TelMouseHelper.Down(Button: LongWord = BUTTON_LEFT): Boolean;
+function TelInput.TelMouse.Down(Button: LongWord = BUTTON_LEFT): Boolean;
 begin
   Result := IsButtonDown(Button);
 end;
 
-function TelMouseHelper.Up(Button: LongWord = BUTTON_LEFT): Boolean;
+function TelInput.TelMouse.Up(Button: LongWord = BUTTON_LEFT): Boolean;
 begin
   Result := ActiveWindow.MouseButtonUp[Button];
   if (ActiveWindow.MouseButtonUp[Button]) then
     ActiveWindow.MouseButtonUp[Button] := false;
 end;
 
-function TelMouseHelper.DblClick: Boolean;
+function TelInput.TelMouse.DblClick: Boolean;
 var
   FirstClickEvent, SecondClickEvent: PelButtonEvent;
   FirstClick, SecondClick, Tolerance: Cardinal;
@@ -1206,31 +1235,33 @@ begin
 
 end;
 
-function TelMouseHelper.WheelDown(): Boolean; 
+function TelInput.TelMouse.WheelDown(): Boolean;
 begin
   Result := ActiveWindow.MouseButtonUp[BUTTON_WHEELDOWN];
 end;
 
-function TelMouseHelper.WheelUp(): Boolean; 
+function TelInput.TelMouse.WheelUp(): Boolean;
 begin
   Result := ActiveWindow.MouseButtonUp[BUTTON_WHEELUP];
 end;
 
-function TelMouseHelper.Motion(): Boolean; 
+function TelInput.TelMouse.Motion(): Boolean;
 begin
   Result := false;
 
   if ((Self.RelCursor.X <> 0) or (Self.RelCursor.Y <> 0)) then Result := true;
 end;
 
-function TelMouseHelper.Motion(Rect: TelRect): Boolean; 
+function TelInput.TelMouse.Motion(Rect: TelRect): Boolean;
 begin
-  Result := ((Self.Cursor in Rect) and Motion);
+  Result := false;
+
+  if ((Self.Cursor in Rect) and Motion) then Result := true;
 end;
 
 {
   #############################################################################
-  # TelInputHelper                                                            #
+  # TelInput                                                            #
   #############################################################################
 
   Description:
@@ -1240,31 +1271,31 @@ end;
 
 }
 
-constructor TelInputHelper.Create;
+constructor TelInput.Create;
 begin
-  Keyboard := TelKeyboardHelper.Create;
-  Joystick := TelJoystickHelper.Create;
-  Mouse := TelMouseHelper.Create;
+  Keyboard := TelKeyboard.Create;
+  Joystick := TelJoystick.Create;
+  Mouse := TelMouse.Create;
 end;
 
-destructor TelInputHelper.Destroy;
+destructor TelInput.Destroy;
 begin
   Keyboard.Destroy;
   Joystick.Destroy;
   Mouse.Destroy;
 end;
 
-function TelInputHelper.GetJoystickName(): String;
+function TelInput.GetJoystickName(): AnsiString;
 begin
   Result := SDL_JoystickName(0);
 end;
 
-function TelInputHelper.GetJoystickCount(): Integer;
+function TelInput.GetJoystickCount(): Integer;
 begin
   Result := ActiveWindow.JoystickCount;
 end;
 
-procedure TelInputHelper.DebugInfo();
+procedure TelInput.DebugInfo();
 begin
   TelLogger.GetInstance.WriteLog('Joystick Count: ' + IntToStr(GetJoystickCount()), ltNote);
   TelLogger.GetInstance.WriteLog('Joystick Name: ' + GetJoystickName(), ltNote);
@@ -1851,7 +1882,7 @@ end;
 
 function TelKeyCode.RShift(): Cardinal; 
 begin
-  Result := RSHIFT;
+  Result := K_RSHIFT;
 end;
 
 function TelKeyCode.LShift(): Cardinal; 
@@ -1966,7 +1997,7 @@ end;
 
 {$IFDEF AUTO_INIT}
 initialization
-  Input := TelInputHelper.Create;
+  Input := TelInput.Create;
   Key := TelKeyCode.Create;
   Button := TelButtonCode.Create;
 

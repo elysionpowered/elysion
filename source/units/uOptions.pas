@@ -3,7 +3,7 @@ unit uOptions;
 interface
 
 uses
-  ElysionApplication,
+  ElysionWindowManager,
   ElysionTypes,
   ElysionColor,
   ElysionScene,
@@ -38,7 +38,7 @@ constructor TOptions.Create;
 var
   i: Integer;
 begin
-  inherited;
+  inherited Create;
 
   Menu := TelMenu.Create;
   Menu.setButtons(GetResImgPath + 'button.png', GetStdFont, 14, ['Music: On', 'Sound: On', 'Back']);

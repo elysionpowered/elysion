@@ -14,7 +14,7 @@ uses
   ElysionBounds,
   ElysionShadow,
   ElysionAnimTypes,
-  ElysionWindow,
+  ElysionWindowManager,
   ElysionInterfaces,
   ElysionGraphicsProvider,
   ElysionTimer,
@@ -67,7 +67,7 @@ type
   end;
 
 
-  TelNodeList = TelList<TelNode>;
+  TelNodeList = TelObjectList<TelNode>;
 
   { TelNode }
 
@@ -237,7 +237,7 @@ type
     Scale: TelVector2f;
 
     Shadow: TelShadow;
-
+  public
     property AbsolutePosition: TelVector3f read GetAbsolutePosition;
     property ParentPosition: TelVector3f read GetParentPosition;
     property ParentSize: TelSize read GetParentSize;
@@ -770,8 +770,19 @@ end;
 
 function TelNode.GetParentSize(): TelSize;
 begin
-  if (Parent = nil) then Result := makeSize(WindowManager.CurrentWindow.Width, WindowManager.CurrentWindow.Height)
-  else Result := makeSize(Parent.Width, Parent.Height);
+  Result := TelSize.Create(1024, 600);
+
+  (*if (Parent = nil) then
+  begin
+    WriteLn('Yo dawg, you are nil.');
+    //Result := TelSize.Create(WindowManager.CurrentWindow.Width, WindowManager.CurrentWindow.Height);
+    Result := TelSize.Create(1024, 600);
+  end else
+  begin
+    WriteLn('Nah dawg, you are supposed to be nil.');
+    Result := makeSize(Parent.Width, Parent.Height);
+
+  end;*)
 end;
 
 function TelNode.GetLeft(): Single;
@@ -1148,22 +1159,18 @@ end;
 
 procedure TelNodeListHelper.Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
 var
-  i: Integer;
+  tmpNode: TelNode;
 begin
-  if Count > 0 then
-  begin
-    for i := 0 to Count - 1 do Items[i].Draw(Graphics, DrawChildren);
-  end;
+  for tmpNode in fItems do
+    if (tmpNode <> nil) then tmpNode.Draw(Graphics, DrawChildren);
 end;
 
 procedure TelNodeListHelper.Update(dt: Double = 0.0);
 var
-  i: Integer;
+  tmpNode: TelNode;
 begin
-  if Count > 0 then
-  begin
-    for i := 0 to Count - 1 do Items[i].Update(dt);
-  end;
+  for tmpNode in fItems do
+    if (tmpNode <> nil) then tmpNode.Update(dt);
 end;
 
 end.

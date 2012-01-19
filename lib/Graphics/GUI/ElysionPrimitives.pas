@@ -114,6 +114,10 @@ var
 
 implementation
 
+uses
+  ElysionWindowManager;
+
+
 { TelRoundedRectangle }
 
 procedure TelRoundedRectangle.Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);

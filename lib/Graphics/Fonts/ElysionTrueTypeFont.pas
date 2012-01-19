@@ -115,13 +115,17 @@ var
 
 implementation
 
+uses
+  ElysionWindowManager;
+
+
 constructor TSDLTTFFontContainer.Create;
 begin
   inherited;
 
   fDriverName := 'SDL_ttf';
 
-  if (not Application.Initialized) then Application.Initialize;
+  //if (not Application.Initialized) then Application.Initialize;
 end;
 
 destructor TSDLTTFFontContainer.Destroy;

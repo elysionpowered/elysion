@@ -48,6 +48,10 @@ end;
 
 implementation
 
+uses
+  ElysionWindowManager;
+
+
 { TelCamera }
 
 function TelCamera.GetWidth(): Single;
@@ -112,10 +116,8 @@ begin
 end;
 
 procedure TelCamera.Update(dt: Double = 0.0);
-var
-  i: Integer;
 begin
-  inherited;
+  inherited Update(dt);
 
   if ((Velocity.X <> 0.0) or (Velocity.Y <> 0.0)) then
   begin

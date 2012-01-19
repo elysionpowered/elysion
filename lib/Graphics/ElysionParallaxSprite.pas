@@ -41,6 +41,9 @@ type
 
 implementation
 
+uses
+  ElysionWindowManager;
+
 { TelParallaxSprite }
 
 constructor TelParallaxSprite.Create;

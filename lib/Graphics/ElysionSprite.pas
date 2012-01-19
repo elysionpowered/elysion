@@ -33,7 +33,7 @@ type
   // Forward declaration
   TelSprite = class;
 
-  TelSpriteList = TelList<TelSprite>;
+  TelSpriteList = TelObjectList<TelSprite>;
 
   { TelSprite }
 
@@ -130,9 +130,16 @@ type
       property Height: Single read GetHeight;
   end;
 
+  TelSpriteListHelper = class helper for TelSpriteList
+  public
+    procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
+    procedure Update(dt: Double = 0.0);
+  end;
+
 implementation
 
 uses
+  ElysionWindowManager,
   ElysionGraphics;
 
 constructor TelSprite.Create;
@@ -647,6 +654,23 @@ begin
   inherited;
 
   if (HyperLink <> '') and GetClick then OpenURL(HyperLink);
+end;
+
+
+procedure TelSpriteListHelper.Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
+var
+  tmpSprite: TelSprite;
+begin
+  for tmpSprite in fItems do
+    if (tmpSprite <> nil) then tmpSprite.Draw(Graphics, DrawChildren);
+end;
+
+procedure TelSpriteListHelper.Update(dt: Double = 0.0);
+var
+  tmpSprite: TelSprite;
+begin
+  for tmpSprite in fItems do
+    if (tmpSprite <> nil) then tmpSprite.Update(dt);
 end;
 
 
