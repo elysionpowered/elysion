@@ -1,0 +1,1 @@
+GoRC /r logo.rc

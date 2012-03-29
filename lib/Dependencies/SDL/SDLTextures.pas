@@ -1,0 +1,319 @@
+//----------------------------------------------------------------------------
+//
+// Author        : Johannes Stein
+// Email         : johannesstein@freeze-dev.de
+// Website       : http://www.freeze-dev.de
+// Version 	     : 1.5
+// Last modified : 11-12-04
+// 
+// Description   : Inspired by Jan Horn's Textures.pas I wrote a little
+//				   texture loader for SDL + OpenGL to load images or 
+//                 SDL surfaces and bind them to an OpenGL object
+//
+// License       : MIT license
+//			       For more information see 
+//				     http://www.opensource.org/licenses/mit-license.php
+//
+// What is needed before using SDLTextures.pas?
+//   dglOpenGL (OpenGL header): http://www.delphigl.com
+//     You can also use the old OpenGL headers from Delphi or similar
+//     OpenGL headers. Just modify the uses clause.
+//   SDL headers: http://jedi-sdl.pascalgamedevelopment.com
+//     You only need these if you're using Delphi or FreePascal < 2.2.2
+//
+// Usage         : Load your texture
+//				   from file: LoadTexture(Filename, Texture)
+//					     e.g. LoadTexture('mytexture.png', MyTexture)
+//				   from surface: LoadTexture(Surface, Texture)
+//					  	    e.g. LoadTexture(MySurface, MyTexture)
+//
+//				   After your texture has been loaded you can
+//				   bind it on your object with either Bind(Texture)
+//				   or glBindTexture(GL_TEXTURE_2D, Texture)
+//
+//				   Sine qua non: You need the line
+//                 glEnable(GL_TEXTURE_2D)
+//                 somewhere in your code or the textures won't be displayed
+//                 (Fun fact: Sine qua non is also the name of a Battlestar Galactica episode.
+//                  Watch it if you haven't already....)
+//
+//----------------------------------------------------------------------------
+
+unit SDLTextures;
+
+{$I Elysion.inc}
+
+interface
+
+uses 
+  SDL,
+  {$IFDEF USE_SDL_IMAGE}
+  SDL_Image,
+  {$ENDIF}
+  {$IFDEF USE_VAMPYRE}
+  ImagingSDL,
+  ImagingOpenGL,
+  {$ENDIF}
+  {$IFDEF USE_DGL_HEADER}
+  dglOpenGL,
+  {$ELSE}
+  gl, glu, glext,
+  {$ENDIF}
+  SysUtils;
+
+type
+  TTGAHEADER = packed record
+    tfType  : Byte;
+    tfColorMapType : Byte;
+    tfImageType    : Byte;
+    tfColorMapSpec : Array[0..4] of Byte;
+    tfOrigX    : Word;
+    tfOrigY    : Word;
+    tfWidth    : Word;
+    tfHeight   : Word;
+    tfBpp      : Byte;
+    tfImageDes : Byte;
+  end;
+
+
+// Returns the next power of 2
+function PowerOfTwo(Input: Integer): Integer; inline;
+
+function SupportsNonPowerOfTwo: Boolean; inline;
+
+function SupportsARB_RectangleTexture(): Boolean; inline;
+function SupportsEXT_RectangleTexture(): Boolean; inline;
+function SupportsRectangleTexture(): Boolean; inline;
+
+function SupportsFramebufferObject(): Boolean; inline;
+	
+function LoadTexture(aFilename: String; var Texture: GLuint; var Width: Longint; var Height: Longint): Boolean; Overload;
+function LoadTexture(Surface: PSDL_Surface; var Texture: GLuint; var Width: Longint; var Height: Longint): Boolean; Overload;
+
+procedure Bind(var Texture: GLuint); inline;
+
+var
+  ErrorString: String;
+
+implementation
+
+function SupportsNonPowerOfTwo: Boolean;
+begin
+  Result := (AnsiPos('GL_ARB_texture_non_power_of_two', glGetString(GL_EXTENSIONS)) <> 0);
+end;
+
+function SupportsARB_RectangleTexture(): Boolean;
+begin
+  Result := (AnsiPos('GL_ARB_texture_rectangle', glGetString(GL_EXTENSIONS)) <> 0);
+end;
+
+function SupportsEXT_RectangleTexture(): Boolean;
+begin
+  Result := (AnsiPos('GL_EXT_texture_rectangle', glGetString(GL_EXTENSIONS)) <> 0);
+end;
+
+function SupportsRectangleTexture(): Boolean;
+begin
+  Result := (SupportsARB_RectangleTexture or SupportsEXT_RectangleTexture);
+end;
+
+function SupportsFramebufferObject(): Boolean;
+begin
+  Result := (AnsiPos('GL_EXT_framebuffer_object', glGetString(GL_EXTENSIONS)) <> 0);
+end;
+
+(*
+ * See for more information: http://www.gamedev.net/community/forums/topic.asp?topic_id=284259
+ *)
+function PowerOfTwo(Input: Longint): Longint;
+var
+  Value: Longint;
+begin
+  Value := 1;
+
+  while ( Value < Input ) do Value := Value shl 1;
+  Result := Value;
+end;
+
+// http://osdl.sourceforge.net/main/documentation/rendering/SDL-openGL-examples.html
+function CreateTexture(SDL_Surface: PSDL_Surface; BGR_Order: Boolean = false; var Width: Longint = 0; var Height: Longint = 0): GLuInt;
+var
+  NewSurface: PSDL_Surface;
+  Texture: GLuInt;
+  area: TSDL_Rect;
+  rmask, gmask, bmask, amask: UInt32;
+  saved_flags: UInt32;
+  saved_alpha: UInt8;
+
+  BuildMipMap: Boolean;
+begin
+  Result := 0;
+
+  if SupportsNonPowerOfTwo then BuildMipMap := false
+     else BuildMipMap := true;
+
+  //raise Exception.Create(glGetString(GL_VENDOR));
+
+  if Assigned(SDL_Surface) then
+  begin
+
+    // Set up Power-of-two width and height for mipmaps
+    //SrfWidth := PowerOfTwo(SDL_Surface^.w);
+    //SrfHeight := PowerOfTwo(SDL_Surface^.h);
+
+    // Set up mask for new surface
+    if SDL_BYTEORDER = SDL_LIL_ENDIAN then
+    begin
+      rmask := $000000FF;
+      gmask := $0000FF00;
+      bmask := $00FF0000;
+      amask := $FF000000;
+    end else
+    begin
+      rmask := $FF000000;
+      gmask := $00FF0000;
+      bmask := $0000FF00;
+      amask := $000000FF;
+    end;
+
+    // Create new surface, quit and show error if it fails
+    NewSurface := SDL_CreateRGBSurface(SDL_SWSURFACE, SDL_Surface^.w, SDL_Surface^.h, 32, rmask, gmask, bmask, amask);
+    Width := NewSurface^.w;
+    Height := NewSurface^.h;
+
+    if (NewSurface = nil) then
+    begin
+      ErrorString := 'SDLTextures.CreateTexture: Could not create RGB Surface';
+      Exit;
+    end;
+
+    // Alpha stuff, see: http://twomix.devolution.com/pipermail/sdl/2002-September/049078.html
+    saved_flags := SDL_Surface^.flags and (SDL_SRCALPHA or SDL_RLEACCELOK);
+    saved_alpha := SDL_Surface^.format^.alpha;
+
+    if ((saved_flags and SDL_SRCALPHA) = SDL_SRCALPHA) then SDL_SetAlpha(SDL_Surface, 0, 0);
+
+    // Set are to be blitted
+    area.x := 0;
+    area.y := 0;
+    area.w := SDL_Surface^.w;
+    area.h := SDL_Surface^.h;
+
+    // Blit old surface to new texture surface
+    SDL_BlitSurface( SDL_Surface, @area, NewSurface, @area ) ;
+
+    // Apply saved alpha
+    if((saved_flags and SDL_SRCALPHA) = SDL_SRCALPHA) then SDL_SetAlpha(SDL_Surface, saved_flags, saved_alpha);
+
+    // Create OpenGL texture
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+
+    glGenTextures(1, @Texture);
+    glBindTexture(GL_TEXTURE_2D, Texture);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+    // Mipmap Building deluxe
+    {$IFDEF USE_DGL_HEADER}
+    if (GL_VERSION_1_4) then
+    {$ELSE}
+    if (Load_GL_version_1_4) then
+    {$ENDIF}
+    begin
+      if BuildMipMap then
+      begin
+        if SupportsFramebufferObject then
+        begin
+          glEnable(GL_TEXTURE_2D); // Counters ATI driver bug
+          glGenerateMipmapEXT(GL_TEXTURE_2D);
+        end else glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, 1);
+      end;
+    end else
+    begin
+      if NewSurface^.format^.BytesPerPixel > 3 then
+      begin
+        if BGR_Order then
+          gluBuild2DMipmaps(GL_TEXTURE_2D, GL_BGRA, NewSurface^.w, NewSurface^.h, GL_BGRA, GL_UNSIGNED_BYTE, NewSurface^.pixels)
+        else
+          gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, NewSurface^.w, NewSurface^.h, GL_RGBA, GL_UNSIGNED_BYTE, NewSurface^.pixels);
+      end else
+      begin
+        if BGR_Order then
+          gluBuild2DMipmaps(GL_TEXTURE_2D, GL_BGR, NewSurface^.w, NewSurface^.h, GL_BGR, GL_UNSIGNED_BYTE, NewSurface^.pixels)
+        else
+          gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, NewSurface^.w, NewSurface^.h, GL_RGB, GL_UNSIGNED_BYTE, NewSurface^.pixels);
+      end;
+    end;
+
+    if NewSurface^.format^.BytesPerPixel > 3 then
+    begin
+      if BGR_Order then
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_BGRA, NewSurface^.w, NewSurface^.h, 0, GL_BGRA, GL_UNSIGNED_BYTE, NewSurface^.pixels)
+      else
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, NewSurface^.w, NewSurface^.h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NewSurface^.pixels);
+    end else
+    begin
+      if BGR_Order then
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_BGR, NewSurface^.w, NewSurface^.h, 0, GL_BGR, GL_UNSIGNED_BYTE, NewSurface^.pixels)
+      else
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, NewSurface^.w, NewSurface^.h, 0, GL_RGB, GL_UNSIGNED_BYTE, NewSurface^.pixels);
+    end;
+
+    // Free no longer needed surfaces
+    SDL_FreeSurface(NewSurface);
+    SDL_FreeSurface(SDL_Surface);
+    Result := Texture;
+  end else ErrorString := 'SDLTextures.CreateTexture: Input surface not assigned';
+end;
+
+function LoadTexture(aFilename: String; var Texture: GLuint; var Width: Longint; var Height: Longint): Boolean;
+var
+  TargaFile: Boolean;
+  tmpWidth, tmpHeight: Longint;
+begin
+  Result := false;
+  if FileExists(aFilename) then
+  begin
+    if UpperCase(ExtractFileExt(aFilename)) = '.TGA' then TargaFile := true
+       else TargaFile := false;
+
+    {$IFDEF USE_SDL_IMAGE}
+    Texture := CreateTexture(IMG_Load(PChar(aFilename)), TargaFile, tmpWidth, tmpHeight);
+    {$ENDIF}
+    {$IFDEF USE_VAMPYRE}
+    Texture := CreateTexture(LoadSDLSurfaceFromFile(aFilename), TargaFile, tmpWidth, tmpHeight);
+    if (Texture = 0) then Texture := LoadGLTextureFromFile(aFilename, @tmpWidth, @tmpHeight);
+    {$ENDIF}
+
+    Width := tmpWidth;
+    Height := tmpHeight;
+
+    Result := true;
+  end;
+end;
+
+function LoadTexture(Surface: PSDL_Surface; var Texture: GLuint; var Width: Longint; var Height: Longint): Boolean;
+var
+  tmpWidth, tmpHeight: Longint;
+begin
+  Result := false;
+  if Surface <> nil then
+  begin
+    Texture := CreateTexture(Surface, false, tmpWidth, tmpHeight);
+    Width := tmpWidth;
+    Height := tmpHeight;
+
+    Result := true;
+  end;
+end;
+
+procedure Bind(var Texture: GLuint);
+begin
+  glBindTexture(GL_TEXTURE_2D, Texture);
+end;
+
+end.

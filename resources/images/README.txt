@@ -1,0 +1,1 @@
+This is the place for the images used in your application.

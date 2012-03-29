@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+<meta name="GENERATOR" content="PasDoc 0.12.1">
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<title>ElysionGraphicsProvider: Interface IGraphicsProvider</title>
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body bgcolor="#ffffff" text="#000000" link="#0000ff" vlink="#800080" alink="#FF0000">
+<a name="IGraphicsProvider"></a><h1 class="cio">Interface IGraphicsProvider</h1>
+<table class="sections wide_list">
+<tr>
+<td><a class="section"  href="#%40Description">Description</a></td><td><a class="section"  href="#%40Hierarchy">Hierarchy</a></td><td>Fields</td><td><a class="section"  href="#%40Methods">Methods</a></td><td>Properties</td></tr></table>
+<a name="%40Description"></a><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a   href="ElysionGraphicsProvider.html">ElysionGraphicsProvider</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type IGraphicsProvider = interface(IInterface)</code></p>
+<h2 class="description">Description</h2>
+<a name="%40Hierarchy"></a><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">IInterface</li>
+<li class="thisitem">IGraphicsProvider</li></ul><h2 class="overview">Overview</h2>
+<a name="%40Methods"></a><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionGraphicsProvider.IGraphicsProvider.html#DrawPoint">DrawPoint</a></b>(aPoint: <a   href="ElysionTypes.TelVector3f.html">TelVector3f</a>; aColor: <a   href="ElysionTypes.TelColor.html">TelColor</a>; Options: <a   href="ElysionTypes.html#PelRenderOptions">PelRenderOptions</a> = nil);</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionGraphicsProvider.IGraphicsProvider.html#DrawLine">DrawLine</a></b>(Src, Dst: <a   href="ElysionTypes.TelVector3f.html">TelVector3f</a>; Color: <a   href="ElysionTypes.TelColor.html">TelColor</a>; LineWidth: Single = 1.0; Options: <a   href="ElysionTypes.html#PelRenderOptions">PelRenderOptions</a> = nil); Overload;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionGraphicsProvider.IGraphicsProvider.html#DrawLine">DrawLine</a></b>(Points: array of <a   href="ElysionTypes.TelVector3f.html">TelVector3f</a>; Colors: array of <a   href="ElysionTypes.TelColor.html">TelColor</a>; LineWidth: Single = 1.0; Options: <a   href="ElysionTypes.html#PelRenderOptions">PelRenderOptions</a> = nil); Overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionGraphicsProvider.IGraphicsProvider.html#DrawPolygon">DrawPolygon</a></b>(Vertices: array of <a   href="ElysionTypes.TelVector3f.html">TelVector3f</a>; aColor: <a   href="ElysionTypes.TelColor.html">TelColor</a>; Options: <a   href="ElysionTypes.html#PelRenderOptions">PelRenderOptions</a> = nil); Overload;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionGraphicsProvider.IGraphicsProvider.html#DrawPolygon">DrawPolygon</a></b>(Vertices: array of <a   href="ElysionTypes.TelVector3f.html">TelVector3f</a>; Colors: array of <a   href="ElysionTypes.TelColor.html">TelColor</a>; Options: <a   href="ElysionTypes.html#PelRenderOptions">PelRenderOptions</a> = nil); Overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionGraphicsProvider.IGraphicsProvider.html#DrawQuad">DrawQuad</a></b>(aRect: <a   href="ElysionTypes.TelRect.html">TelRect</a>; aColor: <a   href="ElysionTypes.TelColor.html">TelColor</a>; anOutline: Boolean = false; Options: <a   href="ElysionTypes.html#PelRenderOptions">PelRenderOptions</a> = nil); Overload;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionGraphicsProvider.IGraphicsProvider.html#DrawQuad">DrawQuad</a></b>(aRect: <a   href="ElysionTypes.TelRect.html">TelRect</a>; aColor: <a   href="ElysionTypes.html#TelColorVertices">TelColorVertices</a>; anOutline: Boolean = false; Options: <a   href="ElysionTypes.html#PelRenderOptions">PelRenderOptions</a> = nil); Overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionGraphicsProvider.IGraphicsProvider.html#DrawRoundedRect">DrawRoundedRect</a></b>(aRect: <a   href="ElysionTypes.TelRect.html">TelRect</a>; aColor: <a   href="ElysionTypes.TelColor.html">TelColor</a>; aRoundedRadius: Single; Options: <a   href="ElysionTypes.html#PelRenderOptions">PelRenderOptions</a> = nil);</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionGraphicsProvider.IGraphicsProvider.html#DrawTexture">DrawTexture</a></b>(aRect: <a   href="ElysionTypes.TelRect.html">TelRect</a>; aColor: <a   href="ElysionTypes.TelColor.html">TelColor</a>; Options: <a   href="ElysionTypes.html#PelRenderOptions">PelRenderOptions</a> = nil); Overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionGraphicsProvider.IGraphicsProvider.html#DrawTexture">DrawTexture</a></b>(aRect: <a   href="ElysionTypes.TelRect.html">TelRect</a>; aColor: <a   href="ElysionTypes.html#TelColorVertices">TelColorVertices</a>; aTexture: Pointer; aTexCoords: <a   href="ElysionTypes.TelRect.html">TelRect</a>; Options: <a   href="ElysionTypes.html#PelRenderOptions">PelRenderOptions</a> = nil); Overload;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="DrawPoint"></a><code>procedure <b>DrawPoint</b>(aPoint: <a   href="ElysionTypes.TelVector3f.html">TelVector3f</a>; aColor: <a   href="ElysionTypes.TelColor.html">TelColor</a>; Options: <a   href="ElysionTypes.html#PelRenderOptions">PelRenderOptions</a> = nil);</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="DrawLine"></a><code>procedure <b>DrawLine</b>(Src, Dst: <a   href="ElysionTypes.TelVector3f.html">TelVector3f</a>; Color: <a   href="ElysionTypes.TelColor.html">TelColor</a>; LineWidth: Single = 1.0; Options: <a   href="ElysionTypes.html#PelRenderOptions">PelRenderOptions</a> = nil); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="DrawLine"></a><code>procedure <b>DrawLine</b>(Points: array of <a   href="ElysionTypes.TelVector3f.html">TelVector3f</a>; Colors: array of <a   href="ElysionTypes.TelColor.html">TelColor</a>; LineWidth: Single = 1.0; Options: <a   href="ElysionTypes.html#PelRenderOptions">PelRenderOptions</a> = nil); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="DrawPolygon"></a><code>procedure <b>DrawPolygon</b>(Vertices: array of <a   href="ElysionTypes.TelVector3f.html">TelVector3f</a>; aColor: <a   href="ElysionTypes.TelColor.html">TelColor</a>; Options: <a   href="ElysionTypes.html#PelRenderOptions">PelRenderOptions</a> = nil); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="DrawPolygon"></a><code>procedure <b>DrawPolygon</b>(Vertices: array of <a   href="ElysionTypes.TelVector3f.html">TelVector3f</a>; Colors: array of <a   href="ElysionTypes.TelColor.html">TelColor</a>; Options: <a   href="ElysionTypes.html#PelRenderOptions">PelRenderOptions</a> = nil); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="DrawQuad"></a><code>procedure <b>DrawQuad</b>(aRect: <a   href="ElysionTypes.TelRect.html">TelRect</a>; aColor: <a   href="ElysionTypes.TelColor.html">TelColor</a>; anOutline: Boolean = false; Options: <a   href="ElysionTypes.html#PelRenderOptions">PelRenderOptions</a> = nil); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="DrawQuad"></a><code>procedure <b>DrawQuad</b>(aRect: <a   href="ElysionTypes.TelRect.html">TelRect</a>; aColor: <a   href="ElysionTypes.html#TelColorVertices">TelColorVertices</a>; anOutline: Boolean = false; Options: <a   href="ElysionTypes.html#PelRenderOptions">PelRenderOptions</a> = nil); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="DrawRoundedRect"></a><code>procedure <b>DrawRoundedRect</b>(aRect: <a   href="ElysionTypes.TelRect.html">TelRect</a>; aColor: <a   href="ElysionTypes.TelColor.html">TelColor</a>; aRoundedRadius: Single; Options: <a   href="ElysionTypes.html#PelRenderOptions">PelRenderOptions</a> = nil);</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="DrawTexture"></a><code>procedure <b>DrawTexture</b>(aRect: <a   href="ElysionTypes.TelRect.html">TelRect</a>; aColor: <a   href="ElysionTypes.TelColor.html">TelColor</a>; Options: <a   href="ElysionTypes.html#PelRenderOptions">PelRenderOptions</a> = nil); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="DrawTexture"></a><code>procedure <b>DrawTexture</b>(aRect: <a   href="ElysionTypes.TelRect.html">TelRect</a>; aColor: <a   href="ElysionTypes.html#TelColorVertices">TelColorVertices</a>; aTexture: Pointer; aTexCoords: <a   href="ElysionTypes.TelRect.html">TelRect</a>; Options: <a   href="ElysionTypes.html#PelRenderOptions">PelRenderOptions</a> = nil); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2012-01-05 23:33:39</em>
+</span>
+</body></html>

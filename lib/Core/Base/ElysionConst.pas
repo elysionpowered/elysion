@@ -1,0 +1,47 @@
+unit ElysionConst;
+
+interface
+
+const
+  // Version information
+  VER_MAJOR = 1;
+  VER_MINOR = 1;
+  VER_REVISION = '';
+
+  VER_CODENAME = 'Boomer'; //< Codename
+  VER_STABLE = true;
+
+  {$IFDEF FPC}
+	  // Usage of FreePascal is recommanded
+	  {$IFDEF UNIX}
+	    {$IFDEF DARWIN}
+              {$IFDEF IPHONE}
+                      SYS_NAME = 'iPhone-MacOS';
+              {$ELSE}
+                      SYS_NAME = 'Mac OS X';
+              {$ENDIF}
+	        {$ELSE}
+		      {$IFDEF GP2X}
+		        SYS_NAME = 'GP2X-Linux';
+		      {$ELSE}
+		        SYS_NAME = 'Linux';
+		      {$ENDIF}
+	        {$ENDIF}
+	      {$ELSE}
+	        SYS_NAME = 'Windows';
+	      {$ENDIF}
+
+	      {$IFDEF CPU64}
+	        SYS_BITS = 64;
+	      {$ELSE}
+	        SYS_BITS = 32;
+	      {$ENDIF}
+          {$ELSE}
+// Assume Delphi
+	  SYS_NAME = 'Windows';
+	  SYS_BITS = 32;
+  {$ENDIF}
+
+implementation
+
+end.

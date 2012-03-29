@@ -1,0 +1,542 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+<meta name="GENERATOR" content="PasDoc 0.12.1">
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<title>ElysionSpriteSheet: Class TelSpriteSheet</title>
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body bgcolor="#ffffff" text="#000000" link="#0000ff" vlink="#800080" alink="#FF0000">
+<a name="TelSpriteSheet"></a><h1 class="cio">Class TelSpriteSheet</h1>
+<table class="sections wide_list">
+<tr>
+<td><a class="section"  href="#%40Description">Description</a></td><td><a class="section"  href="#%40Hierarchy">Hierarchy</a></td><td><a class="section"  href="#%40Fields">Fields</a></td><td><a class="section"  href="#%40Methods">Methods</a></td><td><a class="section"  href="#%40Properties">Properties</a></td></tr></table>
+<a name="%40Description"></a><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a   href="ElysionSpriteSheet.html">ElysionSpriteSheet</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TelSpriteSheet = class(<a class="normal"  href="ElysionSprite.TelSprite.html">TelSprite</a>)</code></p>
+<h2 class="description">Description</h2>
+<p>
+TelSpriteSheet</p>
+<a name="%40Hierarchy"></a><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TInterfacedObject</li>
+<li class="ancestor"><a class="normal"  href="ElysionObject.TelObject.html">TelObject</a></li>
+<li class="ancestor"><a class="normal"  href="ElysionNode.TelNode.html">TelNode</a></li>
+<li class="ancestor"><a class="normal"  href="ElysionSprite.TelSprite.html">TelSprite</a></li>
+<li class="thisitem">TelSpriteSheet</li></ul><h2 class="overview">Overview</h2>
+<a name="%40Fields"></a><h3 class="summary">Fields</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#fTimer">fTimer</a></b>: <a   href="ElysionTimer.TelTimer.html">TelTimer</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#fFrameSize">fFrameSize</a></b>: <a   href="ElysionTypes.TelSize.html">TelSize</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#fFinished">fFinished</a></b>: Boolean;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#fLoop">fLoop</a></b>: Boolean;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#fWaitUntilFinished">fWaitUntilFinished</a></b>: Boolean;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#fFrameArray">fFrameArray</a></b>: array of Integer;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#fFrame">fFrame</a></b>: Integer;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#fFrameIndex">fFrameIndex</a></b>: Integer;</code></td>
+</tr>
+</table>
+<a name="%40Methods"></a><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#GetColumns">GetColumns</a></b>: Integer;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#GetMaxFrames">GetMaxFrames</a></b>: Integer;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#GetRows">GetRows</a></b>: Integer;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#SetColumns">SetColumns</a></b>(AValue: Integer);</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#SetFrame">SetFrame</a></b>(AValue: Integer);</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#SetRows">SetRows</a></b>(AValue: Integer);</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#UpdateSpritesheet">UpdateSpritesheet</a></b>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#StartFrameAnimation">StartFrameAnimation</a></b>(aLength: Integer);</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#Create">Create</a></b>; Override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#Destroy">Destroy</a></b>; Override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#LoadFromFile">LoadFromFile</a></b>(aFilename: String): Boolean; Overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#LoadFromFile">LoadFromFile</a></b>(aFilename: String; aClipRect: <a   href="ElysionTypes.TelRect.html">TelRect</a>): Boolean; Overload;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#Play">Play</a></b>(aLength: Integer = 1000);</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#PlayFrames">PlayFrames</a></b>(aFrameArray: array of Integer; aLength: Integer = 1000); Overload;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#PlayFrames">PlayFrames</a></b>(aStartFrame, anEndFrame: Integer; aLength: Integer = 1000); Overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#PlayColumn">PlayColumn</a></b>(aColumn: Integer; aLength: Integer = 1000);</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#PlayRow">PlayRow</a></b>(aRow: Integer; aLength: Integer = 1000);</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#Stop">Stop</a></b>();</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#Pause">Pause</a></b>();</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#UnPause">UnPause</a></b>();</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#Draw">Draw</a></b>(Graphics: <a   href="ElysionGraphicsProvider.IGraphicsProvider.html">IGraphicsProvider</a>; DrawChildren: Boolean = true); Override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#Update">Update</a></b>(dt: Double = 0.0); Override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#RandomFrame">RandomFrame</a></b>(); Overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#RandomFrame">RandomFrame</a></b>(aStartFrame, anEndFrame: Integer); Overload;</code></td>
+</tr>
+</table>
+<a name="%40Properties"></a><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#FrameSize">FrameSize</a></b>: <a   href="ElysionTypes.TelSize.html">TelSize</a> read <a   href="ElysionSpriteSheet.TelSpriteSheet.html#fFrameSize">fFrameSize</a> write <a   href="ElysionSpriteSheet.TelSpriteSheet.html#fFrameSize">fFrameSize</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#Finished">Finished</a></b>: Boolean read <a   href="ElysionSpriteSheet.TelSpriteSheet.html#fFinished">fFinished</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#Frame">Frame</a></b>: Integer read <a   href="ElysionSpriteSheet.TelSpriteSheet.html#fFrame">fFrame</a> write <a   href="ElysionSpriteSheet.TelSpriteSheet.html#SetFrame">SetFrame</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#MaxFrames">MaxFrames</a></b>: Integer read <a   href="ElysionSpriteSheet.TelSpriteSheet.html#GetMaxFrames">GetMaxFrames</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#Columns">Columns</a></b>: Integer read <a   href="ElysionSpriteSheet.TelSpriteSheet.html#GetColumns">GetColumns</a> write <a   href="ElysionSpriteSheet.TelSpriteSheet.html#SetColumns">SetColumns</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#Rows">Rows</a></b>: Integer read <a   href="ElysionSpriteSheet.TelSpriteSheet.html#GetRows">GetRows</a> write <a   href="ElysionSpriteSheet.TelSpriteSheet.html#SetRows">SetRows</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#Loop">Loop</a></b>: Boolean read <a   href="ElysionSpriteSheet.TelSpriteSheet.html#fLoop">fLoop</a> write <a   href="ElysionSpriteSheet.TelSpriteSheet.html#fLoop">fLoop</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionSpriteSheet.TelSpriteSheet.html#WaitUntilFinished">WaitUntilFinished</a></b>: Boolean read <a   href="ElysionSpriteSheet.TelSpriteSheet.html#fWaitUntilFinished">fWaitUntilFinished</a> write <a   href="ElysionSpriteSheet.TelSpriteSheet.html#fWaitUntilFinished">fWaitUntilFinished</a>;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Fields</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="fTimer"></a><code><b>fTimer</b>: <a   href="ElysionTimer.TelTimer.html">TelTimer</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="fFrameSize"></a><code><b>fFrameSize</b>: <a   href="ElysionTypes.TelSize.html">TelSize</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="fFinished"></a><code><b>fFinished</b>: Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="fLoop"></a><code><b>fLoop</b>: Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="fWaitUntilFinished"></a><code><b>fWaitUntilFinished</b>: Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="fFrameArray"></a><code><b>fFrameArray</b>: array of Integer;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="fFrame"></a><code><b>fFrame</b>: Integer;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="fFrameIndex"></a><code><b>fFrameIndex</b>: Integer;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="GetColumns"></a><code>function <b>GetColumns</b>: Integer;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="GetMaxFrames"></a><code>function <b>GetMaxFrames</b>: Integer;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="GetRows"></a><code>function <b>GetRows</b>: Integer;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="SetColumns"></a><code>procedure <b>SetColumns</b>(AValue: Integer);</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="SetFrame"></a><code>procedure <b>SetFrame</b>(AValue: Integer);</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="SetRows"></a><code>procedure <b>SetRows</b>(AValue: Integer);</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="UpdateSpritesheet"></a><code>procedure <b>UpdateSpritesheet</b>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="StartFrameAnimation"></a><code>procedure <b>StartFrameAnimation</b>(aLength: Integer);</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Create"></a><code>constructor <b>Create</b>; Override;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Destroy"></a><code>destructor <b>Destroy</b>; Override;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="LoadFromFile"></a><code>function <b>LoadFromFile</b>(aFilename: String): Boolean; Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="LoadFromFile"></a><code>function <b>LoadFromFile</b>(aFilename: String; aClipRect: <a   href="ElysionTypes.TelRect.html">TelRect</a>): Boolean; Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Play"></a><code>procedure <b>Play</b>(aLength: Integer = 1000);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Plays complete sprite sheet</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="PlayFrames"></a><code>procedure <b>PlayFrames</b>(aFrameArray: array of Integer; aLength: Integer = 1000); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Plays specific frames in a spritesheet</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="PlayFrames"></a><code>procedure <b>PlayFrames</b>(aStartFrame, anEndFrame: Integer; aLength: Integer = 1000); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="PlayColumn"></a><code>procedure <b>PlayColumn</b>(aColumn: Integer; aLength: Integer = 1000);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Plays specific column of a spritesheet (Stats at 0)</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="PlayRow"></a><code>procedure <b>PlayRow</b>(aRow: Integer; aLength: Integer = 1000);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Plays specific row of a spritesheet (Starts at 0)</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Stop"></a><code>procedure <b>Stop</b>();</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Stops spritesheet animation</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Pause"></a><code>procedure <b>Pause</b>();</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Pauses spritesheet animation</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="UnPause"></a><code>procedure <b>UnPause</b>();</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Resumses spritesheet animation if paused</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Draw"></a><code>procedure <b>Draw</b>(Graphics: <a   href="ElysionGraphicsProvider.IGraphicsProvider.html">IGraphicsProvider</a>; DrawChildren: Boolean = true); Override;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Update"></a><code>procedure <b>Update</b>(dt: Double = 0.0); Override;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="RandomFrame"></a><code>procedure <b>RandomFrame</b>(); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Sets a random frame of the spritesheet</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="RandomFrame"></a><code>procedure <b>RandomFrame</b>(aStartFrame, anEndFrame: Integer); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="FrameSize"></a><code>property <b>FrameSize</b>: <a   href="ElysionTypes.TelSize.html">TelSize</a> read <a   href="ElysionSpriteSheet.TelSpriteSheet.html#fFrameSize">fFrameSize</a> write <a   href="ElysionSpriteSheet.TelSpriteSheet.html#fFrameSize">fFrameSize</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Finished"></a><code>property <b>Finished</b>: Boolean read <a   href="ElysionSpriteSheet.TelSpriteSheet.html#fFinished">fFinished</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Frame"></a><code>property <b>Frame</b>: Integer read <a   href="ElysionSpriteSheet.TelSpriteSheet.html#fFrame">fFrame</a> write <a   href="ElysionSpriteSheet.TelSpriteSheet.html#SetFrame">SetFrame</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="MaxFrames"></a><code>property <b>MaxFrames</b>: Integer read <a   href="ElysionSpriteSheet.TelSpriteSheet.html#GetMaxFrames">GetMaxFrames</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Columns"></a><code>property <b>Columns</b>: Integer read <a   href="ElysionSpriteSheet.TelSpriteSheet.html#GetColumns">GetColumns</a> write <a   href="ElysionSpriteSheet.TelSpriteSheet.html#SetColumns">SetColumns</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Rows"></a><code>property <b>Rows</b>: Integer read <a   href="ElysionSpriteSheet.TelSpriteSheet.html#GetRows">GetRows</a> write <a   href="ElysionSpriteSheet.TelSpriteSheet.html#SetRows">SetRows</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Loop"></a><code>property <b>Loop</b>: Boolean read <a   href="ElysionSpriteSheet.TelSpriteSheet.html#fLoop">fLoop</a> write <a   href="ElysionSpriteSheet.TelSpriteSheet.html#fLoop">fLoop</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="WaitUntilFinished"></a><code>property <b>WaitUntilFinished</b>: Boolean read <a   href="ElysionSpriteSheet.TelSpriteSheet.html#fWaitUntilFinished">fWaitUntilFinished</a> write <a   href="ElysionSpriteSheet.TelSpriteSheet.html#fWaitUntilFinished">fWaitUntilFinished</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Bit verbose</p>
+</td></tr>
+</table>
+<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2012-01-05 23:33:41</em>
+</span>
+</body></html>

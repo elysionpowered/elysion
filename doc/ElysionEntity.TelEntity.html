@@ -1,0 +1,210 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+<meta name="GENERATOR" content="PasDoc 0.12.1">
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<title>ElysionEntity: Class TelEntity</title>
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body bgcolor="#ffffff" text="#000000" link="#0000ff" vlink="#800080" alink="#FF0000">
+<a name="TelEntity"></a><h1 class="cio">Class TelEntity</h1>
+<table class="sections wide_list">
+<tr>
+<td><a class="section"  href="#%40Description">Description</a></td><td><a class="section"  href="#%40Hierarchy">Hierarchy</a></td><td><a class="section"  href="#%40Fields">Fields</a></td><td><a class="section"  href="#%40Methods">Methods</a></td><td><a class="section"  href="#%40Properties">Properties</a></td></tr></table>
+<a name="%40Description"></a><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a   href="ElysionEntity.html">ElysionEntity</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TelEntity = class(<a class="normal"  href="ElysionObject.TelObject.html">TelObject</a>, <a class="normal"  href="ElysionInterfaces.IEntity.html">IEntity</a>)</code></p>
+<h2 class="description">Description</h2>
+<p>
+TODO: Reflect if an entity should inherit from TelNode instead</p>
+<a name="%40Hierarchy"></a><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TInterfacedObject</li>
+<li class="ancestor"><a class="normal"  href="ElysionObject.TelObject.html">TelObject</a></li>
+<li class="thisitem">TelEntity</li></ul><h2 class="overview">Overview</h2>
+<a name="%40Fields"></a><h3 class="summary">Fields</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionEntity.TelEntity.html#fNode">fNode</a></b>: <a   href="ElysionNode.TelNode.html">TelNode</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionEntity.TelEntity.html#fReceivedMessages">fReceivedMessages</a></b>: TStringList;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a   href="ElysionEntity.TelEntity.html#fComponents">fComponents</a></b>: <a   href="ElysionEntity.TelComponentList.html">TelComponentList</a>;</code></td>
+</tr>
+</table>
+<a name="%40Methods"></a><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a   href="ElysionEntity.TelEntity.html#Create">Create</a></b>; Override; Overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a   href="ElysionEntity.TelEntity.html#Create">Create</a></b>(aNode: <a   href="ElysionNode.TelNode.html">TelNode</a>); Overload;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionEntity.TelEntity.html#Draw">Draw</a></b>(Graphics: <a   href="ElysionGraphicsProvider.IGraphicsProvider.html">IGraphicsProvider</a>; DrawChildren: Boolean = true);</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionEntity.TelEntity.html#Update">Update</a></b>(dt: Double = 0.0);</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionEntity.TelEntity.html#SendMessage">SendMessage</a></b>(Message: AnsiString); Overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionEntity.TelEntity.html#SendMessage">SendMessage</a></b>(Message: AnsiString; Receiver: <a   href="ElysionEntity.TelComponent.html">TelComponent</a>); Overload;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a   href="ElysionEntity.TelEntity.html#SendMessage">SendMessage</a></b>(Message: AnsiString; ComponentName: AnsiString); Overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a   href="ElysionEntity.TelEntity.html#DidReceiveMessage">DidReceiveMessage</a></b>(Message: AnsiString): Boolean;</code></td>
+</tr>
+</table>
+<a name="%40Properties"></a><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionEntity.TelEntity.html#Components">Components</a></b>: <a   href="ElysionEntity.TelComponentList.html">TelComponentList</a> read <a   href="ElysionEntity.TelEntity.html#fComponents">fComponents</a> write <a   href="ElysionEntity.TelEntity.html#fComponents">fComponents</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionEntity.TelEntity.html#ReceivedMessages">ReceivedMessages</a></b>: TStringList read <a   href="ElysionEntity.TelEntity.html#fReceivedMessages">fReceivedMessages</a> write <a   href="ElysionEntity.TelEntity.html#fReceivedMessages">fReceivedMessages</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a   href="ElysionEntity.TelEntity.html#Node">Node</a></b>: <a   href="ElysionNode.TelNode.html">TelNode</a> read <a   href="ElysionEntity.TelEntity.html#fNode">fNode</a> write <a   href="ElysionEntity.TelEntity.html#fNode">fNode</a>;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Fields</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="fNode"></a><code><b>fNode</b>: <a   href="ElysionNode.TelNode.html">TelNode</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="fReceivedMessages"></a><code><b>fReceivedMessages</b>: TStringList;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><a name="fComponents"></a><code><b>fComponents</b>: <a   href="ElysionEntity.TelComponentList.html">TelComponentList</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Create"></a><code>constructor <b>Create</b>; Override; Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Create"></a><code>constructor <b>Create</b>(aNode: <a   href="ElysionNode.TelNode.html">TelNode</a>); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Draw"></a><code>procedure <b>Draw</b>(Graphics: <a   href="ElysionGraphicsProvider.IGraphicsProvider.html">IGraphicsProvider</a>; DrawChildren: Boolean = true);</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Update"></a><code>procedure <b>Update</b>(dt: Double = 0.0);</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="SendMessage"></a><code>procedure <b>SendMessage</b>(Message: AnsiString); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="SendMessage"></a><code>procedure <b>SendMessage</b>(Message: AnsiString; Receiver: <a   href="ElysionEntity.TelComponent.html">TelComponent</a>); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="SendMessage"></a><code>procedure <b>SendMessage</b>(Message: AnsiString; ComponentName: AnsiString); Overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="DidReceiveMessage"></a><code>function <b>DidReceiveMessage</b>(Message: AnsiString): Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Components"></a><code>property <b>Components</b>: <a   href="ElysionEntity.TelComponentList.html">TelComponentList</a> read <a   href="ElysionEntity.TelEntity.html#fComponents">fComponents</a> write <a   href="ElysionEntity.TelEntity.html#fComponents">fComponents</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="ReceivedMessages"></a><code>property <b>ReceivedMessages</b>: TStringList read <a   href="ElysionEntity.TelEntity.html#fReceivedMessages">fReceivedMessages</a> write <a   href="ElysionEntity.TelEntity.html#fReceivedMessages">fReceivedMessages</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a   href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="Node"></a><code>property <b>Node</b>: <a   href="ElysionNode.TelNode.html">TelNode</a> read <a   href="ElysionEntity.TelEntity.html#fNode">fNode</a> write <a   href="ElysionEntity.TelEntity.html#fNode">fNode</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<hr noshade size="1"><span class="appinfo"><em>Generated by <a  target="_parent" href="http://pasdoc.sourceforge.net/">PasDoc 0.12.1</a> on 2012-01-05 23:33:39</em>
+</span>
+</body></html>

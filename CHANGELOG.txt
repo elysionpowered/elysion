@@ -1,0 +1,61 @@
+V1.1:
+(Primarily bug fix release, still supports FreePascal 2.4.x and Delphi 7 / Turbo Delphi)
+* Marked intermediate GUI as deprecated (Please use TelNode descendants and add them to other nodes, layers or scenes)
++ Added support for sprite sheets (TelSpriteSheet)
+* Fixed an issue where animators don't have their end value when the animation finishes
++ Added WaitUntilFinished property to TelAnimator and TelSpriteSheet (If set to true, the animation cannot be played again until it has been finished)
+* Small performance optimizations (#59)
+* Saves screenshots and log at working path (#58)
+* Fixed an issue where pixel collisions leads to a crash on 64-bit systems (#63)
+* Fixed an issue where rounded rectangles are not being drawn (#64)
+* Removed X11 linking dependency on Mac OS X
+* Updated Vampyre dependency to latest Mercurial version (11-Dec-20)
+* TelSize has now Single values instead of Integer
++ Added first draft of pluggable provider system (for graphics, audio, etc.)
+* Improved texture loader: Pixel data (for pixel collision) will only be loaded if needed -> Faster loading times
+- Removed ResourceMap unit (as it will be renamed and restructured)
+- Removed SFont unit due to it being GPL licensed
+
+V1.0a:
+(This the last version that supports FreePascal 2.4.x officially and Delphi 7 / Turbo Delphi unofficially. All future versions require at least FreePascal 2.6.0 or Delphi 2010)
+* Back to standard versioning, no more YY-MM versions (1.0 series will be FPC 2.4 compatible, 1.5 and up is FPC 2.6 compatible)
++ Added: ElysionTypes.Border, ElysionTypes.BorderRadius, ElysionTypes.ExtValues (Data types for CSS-like styling)
+* Replaced: TelNode.Offset is now TelNode.Origin (for rotation offset) and TelNode.Margin (for position offset)
++ Added: TelNode.Border and TelNode.Padding
++ Added: ElysionTypes.TelGaugeFloat (= ElysionTypes.TelGauge) and ElysionTypes.TelGaugeInt (Non-visual gauge data type that can be used for health bars, progress, etc.)
++ Added: Custom bounding box rectangle support for TelSprite (TelSprite.CustomBBox)
++ Added: Better handling bounding boxes in TelSprite using TelSprite.BoundingBox (also includes better support for per-pixel collision in TelSprite.MouseOver and TelSprite.Click)
++ Added: Additional collision detection such as a sprite colliding with a sprite list
+* Fixed: TelNode events are no longer abstract by default
++ Added: function ElysionTypes.IsInRange (checks if a value in between a min and max value), was previously a part of the default template in uBasic.pas
+* Fixed (#43): Origin for TelSprite is now its center, not 0px 0px (top left corner)
+* Fixed: DrawLine functions now have TelVector2f as parameters instead of TelVector2i
+* Fixed: Nodes (TelNode and its derivates, such as TelSprite) can be added to scenes (In which case the scene handles the draw and update calls of the added node; as seen in Cocos2D or Adobe Flash)
++ Added (#46): ElysionScene.TelSceneList and ElysionScene.TelSceneDirector
++ Added (#46): Integrated ElysionScene.TelSceneDirector into ElysionScene.TelGame
++ Added (#46): TelGroupedScene: A scene which can have sub-scenes (usage is very similar to TelSceneDirector)
++ Added (#46): Parent property for scenes (Parent is either a TelGroupedScene or TelSceneDirector)
++ Added (#45): Out-of-the-box support Lazarus on Mac OS X (including debugging), requires at least Lazarus 0.9.30
+* Fixed: Z-Sorting (previously any Z values other the standard value would result in the node not showing up at all)
+* Fixed (#54): Alpha value would not show up correctly
+* Fixed (#55): Some animators would not work correctly (like the color animator for example)
+* Fixed (#19): The issue of an access violation showing when the application closes is now fixed correctly (no work-around any more)
+* Fixed (#41): Mac OS X building uses InstantFPC now
++ Added (#39): Shader support
++ Added (#20): Component-/entity-system similar to Unity3D
++ Added (#13): Camera management (See TelCamera in ElysionCamera.pas)
+
+V11-05a:
+* Fixed (#31): Fixes a bug in which the screenshot was saved inverted (Screenshot saving is a lot smoother now, it saves the screenshot with a timestamp)
+* Fixed (#19): Added a workaround for a rare bug in a which an access violation occurred when closing the game window
+* Fixes math calculations in both TelVector3i and TelVector3f
+* Some minor bugfixes
++ Added new data type: ElysionTypes.TelSize (will replace TelVector2i in some portions of the code)
++ Added dot product calculation for both TelVector3f and TelVector3i
++ Shell script is more customizable now (only on Mac OS X)
++ Better support for Mac OS X 10.4 Tiger (Shell scripts automatically detects installed SDKs and compiles against the earliest possible SDK)
++ Added a key management system
++ Added a storage system similar to HTML5 LocalStorage (based on the key management system)
+
+V11-04 and older:
+Sorry guys, didn't really keep track of the changelogs.
