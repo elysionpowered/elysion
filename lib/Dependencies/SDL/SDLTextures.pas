@@ -77,6 +77,7 @@ type
 
 
 // Returns the next power of 2
+<<<<<<< HEAD
 function PowerOfTwo(Input: Integer): Integer; inline;
 
 function SupportsNonPowerOfTwo: Boolean; inline;
@@ -86,11 +87,26 @@ function SupportsEXT_RectangleTexture(): Boolean; inline;
 function SupportsRectangleTexture(): Boolean; inline;
 
 function SupportsFramebufferObject(): Boolean; inline;
+=======
+function PowerOfTwo(Input: Integer): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+function SupportsNonPowerOfTwo: Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+function SupportsARB_RectangleTexture(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function SupportsEXT_RectangleTexture(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function SupportsRectangleTexture(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+function SupportsFramebufferObject(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 	
 function LoadTexture(aFilename: String; var Texture: GLuint; var Width: Longint; var Height: Longint): Boolean; Overload;
 function LoadTexture(Surface: PSDL_Surface; var Texture: GLuint; var Width: Longint; var Height: Longint): Boolean; Overload;
 
+<<<<<<< HEAD
 procedure Bind(var Texture: GLuint); inline;
+=======
+procedure Bind(var Texture: GLuint); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
 var
   ErrorString: String;

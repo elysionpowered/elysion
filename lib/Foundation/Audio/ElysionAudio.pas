@@ -5,7 +5,10 @@ interface
 {$I Elysion.inc}
 
 uses
+<<<<<<< HEAD
   ElysionTypes,
+=======
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   ElysionObject,
   ElysionContainer,
   ElysionApplication,
@@ -25,17 +28,30 @@ private
   fPaused, fIsPlaying: Boolean;
 
   FVolume: ShortInt;
+<<<<<<< HEAD
   procedure SetVolume(Value: ShortInt); inline;
+=======
+  procedure SetVolume(Value: ShortInt); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 public
   constructor Create; Override;
   destructor Destroy(); Override;
 
+<<<<<<< HEAD
   procedure SetPosition(Position: Double); inline;
 
   procedure LoadFromFile(Filename: String);
   procedure Play(Loop: Integer = 0); inline;
   procedure Pause(); inline;
   procedure Stop(); inline;
+=======
+  procedure SetPosition(Position: Double); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+  procedure LoadFromFile(Filename: String);
+  procedure Play(Loop: Integer = 0); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  procedure Pause(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  procedure Stop(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 published
   property IsPlaying: Boolean read fIsPlaying;
   property Paused: Boolean read fPaused;
@@ -50,8 +66,13 @@ public
   destructor Destroy; Override;
 
   procedure LoadFromFile(Filename: String);
+<<<<<<< HEAD
   procedure Play; inline;
   procedure Stop; inline;
+=======
+  procedure Play; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+  procedure Stop; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 end;
 
 
@@ -191,7 +212,11 @@ begin
 
   fDriverName := 'SDL_mixer';
 
+<<<<<<< HEAD
   if (not Application.Initialized) then Application.Initialize;
+=======
+  //if (not Application.Initialized) then Application.Initialize;
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
   FAudio_rate := 22050;
   FAudio_rate_Mac := 44100;

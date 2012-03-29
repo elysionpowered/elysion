@@ -38,7 +38,11 @@ TelTimer = class(TelObject, ITimer)
     FStartTicks, FStoredTicks, FOldTicks: Integer;
     fOnEvent: TelEvent;
 
+<<<<<<< HEAD
     function GetEvent(): Boolean; inline;
+=======
+    function GetEvent(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   public
 
     // Constructor
@@ -51,6 +55,7 @@ TelTimer = class(TelObject, ITimer)
     destructor Destroy; Override;
 
     // Start timer -> you need to call that manually after creation
+<<<<<<< HEAD
     procedure Start(); inline;
 
     // Stop timer
@@ -63,6 +68,20 @@ TelTimer = class(TelObject, ITimer)
     function GetTicks(): Integer; inline;
 
     procedure Update(dt: Double = 0.0); inline;
+=======
+    procedure Start(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    // Stop timer
+    procedure Stop(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    // Pause & unpause
+    procedure Pause(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure UnPause(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    function GetTicks(): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    procedure Update(dt: Double = 0.0); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   published
     property Active: Boolean read FActive;
 

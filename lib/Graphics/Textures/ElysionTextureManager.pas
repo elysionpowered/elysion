@@ -77,10 +77,15 @@ begin
     end;
   end;
 
+<<<<<<< HEAD
 
   // If not, add it
   tmpTexture.LoadFromFile(aFilename);
 
+=======
+  // If not, add it
+  tmpTexture.LoadFromFile(aFilename);
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   fTextureList.Add(tmpTexture);
   Result := tmpTexture;
 

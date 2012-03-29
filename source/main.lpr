@@ -5,7 +5,11 @@ program myapplication;
 
 {$IFDEF WINDOWS}
   {$IFNDEF DEBUG}  
+<<<<<<< HEAD
     {$APPTYPE GUI}
+=======
+    //{$APPTYPE GUI}
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   {$ENDIF}
   
   // Adds icon
@@ -29,14 +33,28 @@ program myapplication;
 
 uses
   ElysionApplication in '../lib/ElysionApplication.pas',
+<<<<<<< HEAD
   uGame in 'units/uGame.pas';
 
 var
+=======
+  ElysionWindowManager,
+  uGame in 'units/uGame.pas';
+
+var
+  Application: TelApplication;
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   Game: TGame;
 
 begin
   Randomize();
 
+<<<<<<< HEAD
+=======
+  Application := TelApplication.Create;
+  Application.Debug := true;
+
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   // Create game class
   Game := TGame.Create;
 
@@ -44,10 +62,17 @@ begin
   Game.Initialize();
   
   // Game Loop
+<<<<<<< HEAD
   while Game.Run do
   begin
     // Clears buffer
     ActiveWindow.BeginScene;
+=======
+  while Application.Run do
+  begin
+    // Clears buffer
+    TelWindowManager.CurrentWindow.BeginScene;
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
     
     // Render procedure
     Game.Render(nil);
@@ -59,7 +84,14 @@ begin
     Game.HandleEvents();
     
     // Flip surface
+<<<<<<< HEAD
     ActiveWindow.EndScene;
   end;
+=======
+    TelWindowManager.CurrentWindow.EndScene;
+  end;
+
+  Application.Destroy;
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   
 end.

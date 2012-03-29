@@ -19,11 +19,19 @@ TelLayer = class(TelNode)
   protected
     fNodeList: TelNodeList;
 
+<<<<<<< HEAD
     function Get(Index: Integer): TelNode; inline;
     function GetCount: Integer; inline;
     function GetS(Index: String): TelNode; inline;
     procedure Put(Index: Integer; AValue: TelNode); inline;
     procedure PutS(Index: String; AValue: TelNode); inline;
+=======
+    function Get(Index: Integer): TelNode; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetCount: Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetS(Index: String): TelNode; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure Put(Index: Integer; AValue: TelNode); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure PutS(Index: String; AValue: TelNode); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
     function GetMouseDown(): Boolean; Override;
     function GetMouseUp(): Boolean; Override;
@@ -40,8 +48,13 @@ TelLayer = class(TelNode)
     constructor Create; Override;
     destructor Destroy; Override;
 
+<<<<<<< HEAD
     function Add(aNode: TelNode): Integer; inline;
     procedure Delete(Index: Integer); inline;
+=======
+    function Add(aNode: TelNode): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure Delete(Index: Integer); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
     procedure Draw(ctx: IGraphicsProvider; DrawChildren: Boolean = true); Override;
     procedure Update(dt: Double = 0.0); Override;

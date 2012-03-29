@@ -43,6 +43,7 @@ type
 
       fWidth, fHeight: Integer;
 
+<<<<<<< HEAD
       procedure SetAutoColorKey(Value: Boolean); inline;
       // Seperate function because of Delphi 7
       procedure SetColorKeyProperty(aColor: TelColor); inline;
@@ -51,6 +52,16 @@ type
       function GetAspectRatio(): Single; inline;
 
       function IsEmpty(): Boolean; inline;
+=======
+      procedure SetAutoColorKey(Value: Boolean); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      // Seperate function because of Delphi 7
+      procedure SetColorKeyProperty(aColor: TelColor); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function GetColorKey: TelColor; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+      function GetAspectRatio(): Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+      function IsEmpty(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
       //function GetPixel(X, Y: Integer): TelColor;
       //procedure SetPixel(X, Y: Integer; AValue: TelColor);
@@ -64,6 +75,7 @@ type
 
       destructor Destroy; Override;
 
+<<<<<<< HEAD
       function LoadFromFile(const aFilename: String): Boolean; inline;
       function LoadFromSDLSurface(aSurface: PSDL_Surface): Boolean; inline;
       function LoadFromStream(aStream: TStream): Boolean; inline;
@@ -73,6 +85,17 @@ type
       procedure SetColorKey(aPoint: TelVector2i); Overload; inline;
 
       function Reload(): Boolean; inline;
+=======
+      function LoadFromFile(const aFilename: String): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function LoadFromSDLSurface(aSurface: PSDL_Surface): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function LoadFromStream(aStream: TStream): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure SaveToStream(aStream: TStream); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+      procedure SetColorKey(aColor: TelColor); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure SetColorKey(aPoint: TelVector2i); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+      function Reload(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
     public
       property ColorKey: TelColor read GetColorKey write SetColorKeyProperty;
 

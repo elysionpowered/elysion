@@ -13,6 +13,7 @@ unit ElysionApplication;
 interface
 
 uses
+<<<<<<< HEAD
   ElysionTypes,
   ElysionEnums,
   ElysionObject,
@@ -39,11 +40,23 @@ uses
   {$ELSE}
   gl, glu, glext,
   {$ENDIF}
+=======
+  ElysionStrings,
+  ElysionTypes,
+  ElysionEnums,
+  ElysionObject,
+  ElysionContent,
+  ElysionLogger,
+
+  SDL,
+
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   SysUtils,
   Classes;
 
 type
 
+<<<<<<< HEAD
 // TelVideoFlags
 TelVideoFlag =
   (vfNull,      //< vfNull: Use for console applications, no video surface will be created
@@ -53,18 +66,28 @@ TelVideoFlag =
 
 TelProjectionMode = (pmFrustum, pmOrtho);
 
+=======
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 {
     @classname @br
     Description: @br
     Provides an application container
 
 }
+<<<<<<< HEAD
 TAppContainer = class(TelContainer)
   private
     FInitialized: Boolean;
 
     FRun: Boolean;
 
+=======
+
+{ TelApplication }
+
+TelApplication = class(TelObject)
+  protected
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
     {
         Application.GetUnicodeSupport @br
         Unicode support
@@ -78,6 +101,11 @@ TAppContainer = class(TelContainer)
 
     }
     procedure SetUnicodeSupport(Value: Boolean); inline;
+<<<<<<< HEAD
+=======
+
+    function IsRun: Boolean;
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   public
     {
       Application.Create
@@ -95,6 +123,7 @@ TAppContainer = class(TelContainer)
     destructor Destroy; Override;
 
     {
+<<<<<<< HEAD
       Application.Initialize
 
       Returns:
@@ -113,18 +142,27 @@ TAppContainer = class(TelContainer)
     {
       Application.CreateWindow
       @param Name: String
+=======
+      Application.CreateWindow
+      @param Name: AnsiString
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
              Width, Height, Bits: Integer
              Fullscreen: Boolean
              VideoFlag: TelVideoFlags
 
     }
+<<<<<<< HEAD
     function CreateWindow(aName: String; Width, Height, Bits: Integer; Fullscreen: Boolean; VideoFlag: TelVideoFlag): Boolean; Overload; inline;
+=======
+    function CreateWindow(aName: AnsiString; Width, Height, Bits: Integer; Fullscreen: Boolean; VideoFlag: TelVideoFlag): Boolean; Overload; inline;
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
     {
       Application.CreateWindow
 
       @seealso
     }
+<<<<<<< HEAD
     function CreateWindow(aName: String; Width, Height, Bits: Integer; Fullscreen: Boolean = false): Boolean; Overload; inline;
 
     {
@@ -138,6 +176,13 @@ TAppContainer = class(TelContainer)
 
     // Use Application.Run for the main loop
     property Run: Boolean read FRun;
+=======
+    function CreateWindow(aName: AnsiString; Width, Height, Bits: Integer; Fullscreen: Boolean = false): Boolean; Overload; inline;
+
+  published
+    // Use Application.Run for the main loop
+    property Run: Boolean read IsRun;
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
     {
       If UnicodeSupport is active, all keydown events are switched to unicode
@@ -146,6 +191,7 @@ TAppContainer = class(TelContainer)
     property UnicodeSupport: Boolean read GetUnicodeSupport write SetUnicodeSupport;
 end;
 
+<<<<<<< HEAD
 { TelWindow }
 
 TelWindow = class(TelObject)
@@ -434,10 +480,17 @@ var
 
   function ActiveWindow: TelWindow; inline;
   function TicksNow(): Cardinal; inline;
+=======
+
+var
+  // Application
+  Application: TelApplication;
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
 implementation
 
 uses
+<<<<<<< HEAD
   ElysionTextureManager;
 
 function ActiveWindow: TelWindow; inline;
@@ -453,6 +506,14 @@ end;
 {
   #############################################################################
   # TAppContainer                                                             #
+=======
+  ElysionWindowManager,
+  ElysionTexture;
+
+{
+  #############################################################################
+  # TelApplication                                                             #
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   #############################################################################
 
   Description:
@@ -462,6 +523,7 @@ end;
 
 }
 
+<<<<<<< HEAD
 constructor TAppContainer.Create;
 begin
   inherited Create;
@@ -522,11 +584,47 @@ end;
 procedure TAppContainer.Finalize(); 
 begin
   WindowManager.DestroyAllWindows();
+=======
+constructor TelApplication.Create;
+begin
+  inherited Create;
+
+  UnicodeSupport := true;
+end;
+
+destructor TelApplication.Destroy;
+begin
+  //Finalize();
+
+  inherited Destroy;
+
+  if Self.Debug then TelLogger.GetInstance.Dump();
+
+  Halt(0);
+end;
+
+(*function TelApplication.Initialize: Boolean;
+begin
+  if SDL_Init(SDL_INIT_EVERYTHING) <> 0 then
+  begin
+    Result := false;
+    Self.Log(rsFailedInitWindowProvider);
+    Exit;
+  end else FInitialized := true;
+
+  SDL_JoystickEventState(SDL_ENABLE);
+end;
+
+procedure TelApplication.Finalize();
+begin
+  TelWindowManager.DestroyAllWindows();
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
   if FInitialized then
   begin
     SDL_Quit;
   end;
+<<<<<<< HEAD
 end;
 
 function TAppContainer.CreateWindow(aName: String; Width, Height, Bits: Integer; Fullscreen: Boolean; VideoFlag: TelVideoFlag): Boolean; 
@@ -546,27 +644,46 @@ begin
 end;
 
 function TAppContainer.CreateWindow(aName: String; Width, Height, Bits: Integer; Fullscreen: Boolean = false): Boolean; 
+=======
+end; *)
+
+function TelApplication.CreateWindow(aName: AnsiString; Width, Height, Bits: Integer; Fullscreen: Boolean; VideoFlag: TelVideoFlag): Boolean;
+begin
+  Result := (TelWindowManager.CreateWindow(aName, Width, Height, Bits, Fullscreen, VideoFlag) <> nil);
+end;
+
+function TelApplication.CreateWindow(aName: AnsiString; Width, Height, Bits: Integer; Fullscreen: Boolean = false): Boolean;
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 begin
   Result := Self.CreateWindow(aName, Width, Height, Bits, Fullscreen, vfAuto);
 end;
 
+<<<<<<< HEAD
 procedure TAppContainer.Quit; 
 begin
   FRun := false;
 end;
 
 function TAppContainer.GetUnicodeSupport: Boolean; 
+=======
+function TelApplication.GetUnicodeSupport: Boolean;
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 begin
   if SDL_EnableUNICODE(-1) = 0 then Result := false
                                else Result := true;
 end;
 
+<<<<<<< HEAD
 procedure TAppContainer.SetUnicodeSupport(Value: Boolean); 
+=======
+procedure TelApplication.SetUnicodeSupport(Value: Boolean);
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 begin
   if Value then SDL_EnableUNICODE(1)
            else SDL_EnableUNICODE(0);
 end;
 
+<<<<<<< HEAD
 {
   #############################################################################
   # TelWindow                                                                #
@@ -1471,4 +1588,11 @@ finalization
   Application.Destroy;
 {$ENDIF}
 
+=======
+function TelApplication.IsRun: Boolean;
+begin
+
+end;
+
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 end.

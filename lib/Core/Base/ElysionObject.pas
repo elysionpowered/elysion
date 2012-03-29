@@ -13,6 +13,10 @@ unit ElysionObject;
 interface
 
 {$I Elysion.inc}
+<<<<<<< HEAD
+=======
+{$M+}
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
 uses
   ElysionStrings,
@@ -37,7 +41,11 @@ type
 
 { TelObject }
 
+<<<<<<< HEAD
 TelObject = class abstract(TInterfacedPersistent, IObject)
+=======
+TelObject = class abstract(TInterfacedObject, IObject)
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 strict private
   class var ObjectCount: Integer;
 private

@@ -21,6 +21,7 @@ type
   private
     fDirList: TStringList;
 
+<<<<<<< HEAD
     function Get(Index: Integer): String; inline;
     function GetAudioPath: String; inline;
     function GetDataPath: String; inline;
@@ -39,11 +40,35 @@ type
     procedure SetRoot(Value: String); inline;
 
     function GetCount(): Integer; inline;
+=======
+    function Get(Index: Integer): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetAudioPath: String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetDataPath: String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetFontPath: String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetImagePath: String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    function GetS(Index: String): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure Put(Index: Integer; Value: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    function GetRoot(): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure PutS(Index: String; AValue: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure SetAudioPath(AValue: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure SetDataPath(AValue: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure SetFontPath(AValue: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+    procedure SetImagePath(AValue: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    procedure SetRoot(Value: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+    function GetCount(): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   public
     constructor Create; Override;
     destructor Destroy; Override;
 
+<<<<<<< HEAD
     function AddPath(const aDirectory: String; const aName: String = ''): Integer; inline;
+=======
+    function AddPath(const aDirectory: String; const aName: String = ''): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
   published
     property RootDirectory: String read GetRoot write SetRoot; //deprecated

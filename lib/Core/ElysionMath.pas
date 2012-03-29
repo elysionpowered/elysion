@@ -11,6 +11,7 @@ unit ElysionMath;
 interface
 
 
+<<<<<<< HEAD
 function Clamp(Value, Min, Max: Integer): Integer; Overload; inline;
 function Clamp(Value, Min, Max: Single): Single; Overload; inline;
 
@@ -28,6 +29,25 @@ function Slerp(Min, Max: Integer; Amt: Single = 0.5): Single; Overload; inline;
 
 function InverseSlerp(Min, Max: Single; Amt: Single = 0.5): Single; Overload; inline;
 function Inverseslerp(Min, Max: Integer; Amt: Single = 0.5): Single; Overload; inline;
+=======
+function Clamp(Value, Min, Max: Integer): Integer; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function Clamp(Value, Min, Max: Single): Single; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+function ClampToByte(Value: Single): Single; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function ClampToByte(Value: Integer): Integer; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+function Lerp(Min, Max: Single; Amt: Single = 0.5): Single; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function Lerp(Min, Max: Integer; Amt: Single = 0.5): Single; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+function InverseLerp(Min, Max: Single; Amt: Single = 0.5): Single; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function InverseLerp(Min, Max: Integer; Amt: Single = 0.5): Single; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+function Slerp(Min, Max: Single; Amt: Single = 0.5): Single; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function Slerp(Min, Max: Integer; Amt: Single = 0.5): Single; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+
+function InverseSlerp(Min, Max: Single; Amt: Single = 0.5): Single; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function Inverseslerp(Min, Max: Integer; Amt: Single = 0.5): Single; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
 function CubicHermite(Min, Max: Single; StartTangent, EndTangent: Single; Amt: Single = 0.5): Single;
 

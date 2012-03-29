@@ -1,4 +1,4 @@
-unit ElysionTrueTypeFont;
+unit ElysionFontManager;
 
 interface
 
@@ -6,9 +6,7 @@ interface
 
 uses
   ElysionTypes,
-  ElysionColor,
   ElysionObject,
-  ElysionContainer,
   ElysionApplication,
   ElysionGraphics,
   ElysionLogger,
@@ -55,21 +53,6 @@ TelTrueTypeFont = class(TelFontContainer)
 
     function RenderFont(Text: String; FontRender: TFontRender; TextStyle: TTextStyle): PSDL_Surface;
 
-<<<<<<< HEAD
-    procedure SetColor(aColor: TelColor); inline;
-    function GetColor: TelColor; inline;
-
-    procedure SetRenderType(aFontRender: TFontRender); inline;
-    function GetRenderType: TFontRender; inline;
-
-    procedure SetFontStyle(aFontStyles: TFontStyles); inline;
-    function GetFontStyle: TFontStyles; inline;
-
-    procedure SetTextStyle(aTextStyle: TTextStyle); inline;
-    function GetTextStyle: TTextStyle; inline;
-
-    function GetFontPointer: PTTF_Font; inline;
-=======
     procedure SetColor(aColor: TelColor); {$IFDEF CAN_INLINE} inline; {$ENDIF}
     function GetColor: TelColor; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
@@ -83,7 +66,6 @@ TelTrueTypeFont = class(TelFontContainer)
     function GetTextStyle: TTextStyle; {$IFDEF CAN_INLINE} inline; {$ENDIF}
 
     function GetFontPointer: PTTF_Font; {$IFDEF CAN_INLINE} inline; {$ENDIF}
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   protected
     function GetSize(): Integer; Override;
     procedure SetSize(Value: Integer); Override;
@@ -115,7 +97,7 @@ TelTrueTypeFont = class(TelFontContainer)
     property RenderStyle: TFontRender read GetRenderType write SetRenderType;
 end;
 
-TSDLTTFFontContainer = class(TelContainer)
+TSDLTTFFontContainer = class(TelModuleContainer)
 public
   constructor Create; Override;
   destructor Destroy; Override;
@@ -131,24 +113,13 @@ var
 
 implementation
 
-<<<<<<< HEAD
-=======
-uses
-  ElysionWindowManager;
-
-
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 constructor TSDLTTFFontContainer.Create;
 begin
   inherited;
 
   fDriverName := 'SDL_ttf';
 
-<<<<<<< HEAD
   if (not Application.Initialized) then Application.Initialize;
-=======
-  //if (not Application.Initialized) then Application.Initialize;
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 end;
 
 destructor TSDLTTFFontContainer.Destroy;
@@ -315,11 +286,7 @@ end;
 
 procedure TelTrueTypeFont.SetColor(aColor: TelColor);
 begin
-<<<<<<< HEAD
-  if (fColor <> aColor) then
-=======
-  if not (fColor = aColor) then
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
+  if not fColor.Equals(aColor) then
     fColor := aColor;
 end;
 

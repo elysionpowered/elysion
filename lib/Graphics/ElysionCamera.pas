@@ -48,6 +48,12 @@ end;
 
 implementation
 
+<<<<<<< HEAD
+=======
+uses
+  ElysionWindowManager;
+
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
 { TelCamera }
 

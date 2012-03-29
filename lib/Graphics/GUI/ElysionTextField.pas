@@ -1,4 +1,4 @@
-unit ElysionLabel;
+unit ElysionTextField;
 
 interface
 
@@ -37,26 +37,16 @@ type
     function GetMouseOver(): Boolean; Override;
     function GetClick(): Boolean; Override;
 
-<<<<<<< HEAD
-    function GetSize(): Integer; inline;
-    procedure SetSize(Value: Integer); inline;
-=======
     function GetSize(): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
     procedure SetSize(Value: Integer); {$IFDEF CAN_INLINE} inline; {$ENDIF}
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
     procedure SetCaption(Value: String);
   public
     constructor Create; Override;
     destructor Destroy(); Override;
 
-<<<<<<< HEAD
-    procedure LoadFromFile(const aFilename: String); inline;
-    procedure LoadFromFontContainer(aFontContainer: TelTrueTypeFont); inline;
-=======
     procedure LoadFromFile(const aFilename: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
     procedure LoadFromFontContainer(aFontContainer: TelTrueTypeFont); {$IFDEF CAN_INLINE} inline; {$ENDIF}
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
     procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); Override;
     procedure Update(dt: Double = 0.0); Override;
@@ -71,12 +61,6 @@ type
 
 implementation
 
-<<<<<<< HEAD
-=======
-uses
-  ElysionWindowManager;
-
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 //
 // TelLabel
 //
@@ -113,11 +97,11 @@ begin
 
   fRect := makeRect(Position.X, Position.Y, GetWidth(), GetHeight());
 
-<<<<<<< HEAD
-  Result := ActiveWindow.Cursor in fRect;
-=======
-  Result := (ActiveWindow.Cursor in fRect);
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
+  {$IFDEF CAN_METHODS}
+    Result := fRect.ContainsVector(ActiveWindow.Cursor);
+  {$ELSE}
+    Result := RectContainsVector(fRect, ActiveWindow.Cursor);
+  {$ENDIF}
 end;
 
 function TelLabel.GetClick(): Boolean;

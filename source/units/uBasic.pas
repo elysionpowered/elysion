@@ -5,8 +5,14 @@ unit uBasic;
 interface
 
 uses
+<<<<<<< HEAD
   SysUtils,
   ElysionUtils;
+=======
+  ElysionUtils,
+
+  SysUtils;
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
 {$I Elysion.inc}
 
@@ -32,12 +38,21 @@ type
   //TGameState = (gsMainMenu, gsGame, gsInstructions, gsIntro, gsOptions, gsCredits);
   TLanguage = (laGerman, laEnglish);
 
+<<<<<<< HEAD
 function GetResPath(aCustomResName: String = ''): String; inline;
 function GetResDataPath: String; inline;
 function GetResImgPath: String; inline;
 function GetResSndPath: String; inline;
 function GetResFontPath: String; inline;
 function GetStdFont: String; inline;
+=======
+function GetResPath(aCustomResName: String = ''): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function GetResDataPath: String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function GetResImgPath: String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function GetResSndPath: String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function GetResFontPath: String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+function GetStdFont: String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
 implementation
 

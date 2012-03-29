@@ -7,6 +7,7 @@ interface
 uses
   Classes,
   SysUtils,
+<<<<<<< HEAD
   ElysionApplication,
   ElysionGraphicsProvider,
   ElysionTypes,
@@ -17,6 +18,18 @@ uses
   ElysionTimer,
   ElysionScene,
   ElysionColor,
+=======
+  ElysionWindowManager,
+  ElysionGraphicsProvider,
+  ElysionTypes,
+  ElysionColor,
+  ElysionInput,
+  ElysionNode,
+  ElysionSprite,
+  ElysionPrimitives,
+  ElysionTimer,
+  ElysionScene,
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   ElysionTrueTypeFont,
   ElysionAnimator,
   ElysionStorage,
@@ -41,7 +54,11 @@ type
     fAnimator: TelAnimator;
 
 
+<<<<<<< HEAD
     procedure DrawDialog(Title, Text: String); inline;
+=======
+    procedure DrawDialog(Title, Text: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   public
     constructor Create; Override;
     destructor Destroy; Override;
@@ -63,7 +80,11 @@ implementation
 
 constructor TGameScreen.Create;
 begin
+<<<<<<< HEAD
   inherited;
+=======
+  inherited Create;
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
   Randomize;
 
@@ -90,7 +111,11 @@ begin
   Sprite.BoundingBox := bbPixel;
 
   // Set position to
+<<<<<<< HEAD
   Sprite.Position := TelVector3f.Create(64, 64);
+=======
+  Sprite.Position := makeV3f(64, 64);
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
   Sprite.Position.Z := -10;
 
@@ -124,7 +149,11 @@ begin
 
   Font.Destroy;
 
+<<<<<<< HEAD
   inherited;
+=======
+  inherited Destroy;
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 end;
 
 (**
@@ -139,6 +168,7 @@ begin
   DialogWidth := ActiveWindow.Width div 2;
   DialogHeight := ActiveWindow.Height div 2;
 
+<<<<<<< HEAD
   GUI.RoundedBox(TelRect.Create((ActiveWindow.Width - DialogWidth) / 2,
                    (ActiveWindow.Height - DialogHeight) / 2,
                    DialogWidth, DialogHeight), TelColor.Create(0, 0, 0, 192), 20);
@@ -147,6 +177,16 @@ begin
                          (ActiveWindow.Height - DialogHeight) / 2 + 30), Title);
 
   fFont.TextOut(TelVector3f.Create((ActiveWindow.Width - DialogWidth) / 2 + 20,
+=======
+  GUI.RoundedBox(makeRect((ActiveWindow.Width - DialogWidth) / 2,
+                   (ActiveWindow.Height - DialogHeight) / 2,
+                   DialogWidth, DialogHeight), makeCol(0, 0, 0, 192), 20);
+
+  fFont.TextOut(makeV3f((ActiveWindow.Width - fFont.getWidth_Text(Title)) / 2,
+                         (ActiveWindow.Height - DialogHeight) / 2 + 30), Title);
+
+  fFont.TextOut(makeV3f((ActiveWindow.Width - DialogWidth) / 2 + 20,
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
                         (ActiveWindow.Height - DialogHeight) / 2 + 60), Text);
 end;
 
@@ -156,9 +196,15 @@ begin
   fGameOver := false;
 end;
 
+<<<<<<< HEAD
 procedure TGameScreen.Render;
 begin
   inherited;
+=======
+procedure TGameScreen.Render(Graphics: IGraphicsProvider);
+begin
+  inherited Render(Graphics);
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
   // Draw game paused overlay
   if Paused then
@@ -175,7 +221,11 @@ end;
 
 procedure TGameScreen.Update(dt: Double);
 begin
+<<<<<<< HEAD
   inherited;
+=======
+  inherited Update(dt);
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
   if not Paused and not GameOver then
   begin
@@ -187,16 +237,26 @@ begin
       Sprite.Alpha := 128
     else Sprite.Alpha := 255;
     
+<<<<<<< HEAD
     if Sprite.Click then Sprite.Color := TelColor.Create(Random(255), Random(255), Random(255));
+=======
+    if Sprite.Click then Sprite.Color := makeCol(Random(255), Random(255), Random(255));
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
     if Input.Keyboard.IsKeyHit(Key.Space) then
     begin
       // Look, some example animator effects for you to play with
 
       fAnimator.RotationEffect(0, 360);
+<<<<<<< HEAD
       //fAnimator.ColorEffect(TelColor.Create(0, 0, 0), TelColor.Create(255, 255, 255));
       //fAnimator.ScaleEffect(TelVector2f.Create(0.1, 0.1), TelVector2f.Create(3.0, 3.0));
       //fAnimator.MoveEffect(TelVector3f.Create(64, 64), TelVector3f.Create(600, 256));
+=======
+      //fAnimator.ColorEffect(makeCol(0, 0, 0), makeCol(255, 255, 255));
+      //fAnimator.ScaleEffect(makeV2f(0.1, 0.1), makeV2f(3.0, 3.0));
+      //fAnimator.MoveEffect(makeV3f(64, 64), makeV3f(600, 256));
+>>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
       // You need to call TelAnimator.Start for the animation to begin
       fAnimator.Start;
