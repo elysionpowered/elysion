@@ -14,11 +14,7 @@ uses
   ElysionGraphicsProvider,
 
   ElysionTexture,
-<<<<<<< HEAD
   ElysionApplication,
-=======
-  ElysionWindowManager,
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   ElysionInput,
   ElysionNode,
   ElysionSprite,
@@ -36,19 +32,11 @@ type
 
     fStyle: TelButtonStyle;
 
-<<<<<<< HEAD
     function GetCaption(): String; inline;
     procedure SetCaption(Value: String); inline;
 
     function GetHyperLink(): String; inline;
     procedure SetHyperLink(Value: String); inline;
-=======
-    function GetCaption(): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure SetCaption(Value: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    function GetHyperLink(): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure SetHyperLink(Value: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
     function GetWidth(): Single; Override;
     function GetHeight(): Single; Override;
@@ -59,7 +47,6 @@ type
     constructor Create; Override;
     destructor Destroy(); Override;
 
-<<<<<<< HEAD
     procedure LoadFromFile(const ButtonFilename: String; const LabelFilename: String); inline;
     procedure LoadImageFromFile(const Filename: String); Overload; inline;
     procedure LoadImageFromFile(const Filename: String; aRect: TelRect); Overload; inline;
@@ -67,24 +54,11 @@ type
     procedure LoadLabelFromFile(const Filename: String); inline;
 
     procedure ClipImage(Rect: TelRect); inline;
-=======
-    procedure LoadFromFile(const ButtonFilename: String; const LabelFilename: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure LoadImageFromFile(const Filename: String); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure LoadImageFromFile(const Filename: String; aRect: TelRect); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure LoadImageFromTexture(Texture: TelTexture); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure LoadLabelFromFile(const Filename: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    procedure ClipImage(Rect: TelRect); {$IFDEF CAN_INLINE} inline; {$ENDIF}
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
     procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); Override;
     procedure Update(dt: Double = 0.0); Override;
 
-<<<<<<< HEAD
     function OnRightClick(): Boolean; inline;
-=======
-    function OnRightClick(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   published
     property Caption: String read GetCaption write SetCaption;
 
@@ -249,11 +223,7 @@ begin
 
     if ((fSprite <> nil) and (fTextLabel <> nil)) then
     begin
-<<<<<<< HEAD
       if (fSprite.Color <> Self.Color) then
-=======
-      if not (fSprite.Color = Self.Color) then
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
         fSprite.Color := Self.Color;
 
       // Update positions

@@ -9,12 +9,8 @@ uses
   ElysionTexture,
   ElysionSprite,
   ElysionParallaxSprite,
-<<<<<<< HEAD
   ElysionSpriteSheet,
   ElysionGUI;
-=======
-  ElysionSpriteSheet;
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
 type
 
@@ -28,21 +24,12 @@ type
       destructor Destroy; Override;
 
       function LoadTexture(Filename: String): TelTexture;
-<<<<<<< HEAD
       function LoadSprite(Filename: String): TelSprite; Overload; inline;
       function LoadSprite(Texture: TelTexture): TelSprite; Overload; inline;
       function LoadParallaxSprite(Filename: String): TelParallaxSprite; Overload; inline;
       function LoadParallaxSprite(Texture: TelTexture): TelParallaxSprite; Overload; inline;
       function LoadSpriteSheet(Filename: String): TelSpriteSheet; Overload; inline;
       function LoadSpriteSheet(Texture: TelTexture): TelSpriteSheet; Overload; inline;
-=======
-      function LoadSprite(Filename: String): TelSprite; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      function LoadSprite(Texture: TelTexture): TelSprite; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      function LoadParallaxSprite(Filename: String): TelParallaxSprite; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      function LoadParallaxSprite(Texture: TelTexture): TelParallaxSprite; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      function LoadSpriteSheet(Filename: String): TelSpriteSheet; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      function LoadSpriteSheet(Texture: TelTexture): TelSpriteSheet; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
     published
       property Count: Integer read fCount;
   end;

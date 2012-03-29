@@ -9,7 +9,6 @@ uses
   SysUtils,
 
   ElysionTypes,
-<<<<<<< HEAD
   ElysionBorder,
   ElysionBounds,
   ElysionShadow,
@@ -23,24 +22,6 @@ uses
   ElysionUtils;
 
 type
-=======
-  ElysionColor,
-  ElysionBorder,
-  ElysionBounds,
-  ElysionShadow,
-  ElysionAnimTypes,
-  ElysionWindowManager,
-  ElysionInterfaces,
-  ElysionGraphicsProvider,
-  ElysionTimer,
-  ElysionObject,
-  ElysionList,
-  ElysionUtils;
-
-type
-
-
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   TelNode = class; //< forward declaration
   TelNodeArray = array of TelNode;
 
@@ -83,11 +64,7 @@ type
   end;
 
 
-<<<<<<< HEAD
   TelNodeList = class;
-=======
-  TelNodeList = TelObjectList<TelNode>;
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
   { TelNode }
 
@@ -276,10 +253,7 @@ type
     property Color: TelColor read GetColor write SetColor;
   published
     property Alpha: Byte read GetAlpha write SetAlpha default 255;
-<<<<<<< HEAD
     property Opacity: Byte read GetAlpha write SetAlpha default 255;
-=======
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
     property CursorType: TelCursorType read fCursorType write fCursorType;
 
@@ -348,7 +322,6 @@ type
     property Style: TStringList read fStyle write SetStyle;
   end;
 
-<<<<<<< HEAD
   // Node with CSS styling
 
   { TelNodeStyle }
@@ -494,17 +467,6 @@ begin
   Result := makeV2f(aNode.Width / 2, aNode.Height / 2);
 end;
 
-=======
-
-  TelNodeListHelper = class helper for TelNodeList
-  public
-    procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
-    procedure Update(dt: Double = 0.0);
-  end;
-
-implementation
-
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 { TelNodeEventListener }
 
 constructor TelNodeEventListener.Create;
@@ -581,11 +543,7 @@ begin
   DisableEvent(FindPos(Index));
 end;
 
-<<<<<<< HEAD
 procedure TelNodeEventListener.Execute(Sender: TelNode; EventArgs: TelObject);
-=======
-procedure TelNodeEventListener.Execute(Sender: TelNode; EventArgs: TelObject = nil);
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 var
   i: Integer;
 begin
@@ -595,7 +553,6 @@ begin
   end;
 end;
 
-<<<<<<< HEAD
 { TelNodeStyle }
 
 constructor TelNodeStyle.Create;
@@ -684,8 +641,6 @@ begin
   //if S = 'left' then Self.Left := AttrValue;
 end;
 
-=======
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 { TelNode }
 
 constructor TelNode.Create;
@@ -1322,13 +1277,8 @@ procedure TelNode.Animate(AnimProperty: String; TargetValue: Single;
   Duration: Integer; Delay: Integer; Transition: TelAnimationTransition);
 begin
   if IsAnimated then Exit; //< Already animated? Exit here...
-<<<<<<< HEAD
 
 
-=======
-  
-  
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 end;
 
 procedure TelNode.Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
@@ -1428,7 +1378,6 @@ begin
   Children.Update(dt);
 end;
 
-<<<<<<< HEAD
 constructor TelNodeList.Create;
 begin
   inherited;
@@ -1565,23 +1514,6 @@ begin
   begin
     for i := 0 to Count - 1 do Items[i].Update(dt);
   end;
-=======
-
-procedure TelNodeListHelper.Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true);
-var
-  tmpNode: TelNode;
-begin
-  for tmpNode in fItems do
-    if (tmpNode <> nil) then tmpNode.Draw(Graphics, DrawChildren);
-end;
-
-procedure TelNodeListHelper.Update(dt: Double = 0.0);
-var
-  tmpNode: TelNode;
-begin
-  for tmpNode in fItems do
-    if (tmpNode <> nil) then tmpNode.Update(dt);
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 end;
 
 end.

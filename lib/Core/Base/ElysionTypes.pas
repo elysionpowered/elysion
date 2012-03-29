@@ -235,11 +235,8 @@ type
   TelRectArray = array of TelRect;
 
 
-<<<<<<< HEAD
   { TelVector2iHelper }
 
-=======
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   TelVector2iHelper = record helper for TelVector2i
   private
     function GetLength: Single; inline;
@@ -266,11 +263,8 @@ type
     property Length: Single read GetLength;
   end;
 
-<<<<<<< HEAD
   { TelVector2fHelper }
 
-=======
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   TelVector2fHelper = record helper for TelVector2f
   private
     function GetLength: Single; inline;
@@ -297,11 +291,8 @@ type
     property Length: Single read GetLength;
   end;
 
-<<<<<<< HEAD
   { TelVector3iHelper }
 
-=======
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   TelVector3iHelper = record helper for TelVector3i
   private
     function GetLength: Single; inline;
@@ -335,11 +326,8 @@ type
     property Length: Single read GetLength;
   end;
 
-<<<<<<< HEAD
   { TelVector3fHelper }
 
-=======
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   TelVector3fHelper = record helper for TelVector3f
   private
     function GetLength: Single; inline;

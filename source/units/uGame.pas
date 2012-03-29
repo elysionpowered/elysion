@@ -4,12 +4,7 @@ interface
 
 uses
   ElysionTypes,
-<<<<<<< HEAD
   ElysionApplication,
-=======
-  ElysionWindowManager,
-  ElysionEnvironment,
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   ElysionGame,
   ElysionScene,
   ElysionLogger,
@@ -37,17 +32,9 @@ type
     fGameScreen: TGameScreen;
     fCredits: TCredits;    
     fOptions: TOptions;
-<<<<<<< HEAD
     
     fLoadScreen: TelSprite;
 
-=======
-
-    fSpriteList: TelSpriteList;
-    fLoadScreen: TelSprite;
-
-
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
     fFont: TelTrueTypeFont;
     fShowFPS, fDebug: Boolean;
     fForceFullscreen, fForceWindow: Boolean;
@@ -104,11 +91,7 @@ begin
 
   // Change application container debug flag
   // (only if debug is set to true, the logger will be written to file)
-<<<<<<< HEAD
   Application.Debug := Self.Debug;
-=======
-  //Application.Debug := Self.Debug;
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
   if Debug then
     TelLogger.getInstance.Priorities := [ltNote, ltWarning, ltError]
@@ -118,31 +101,15 @@ begin
     else tmpFullscreen := true;
 
   // Super
-<<<<<<< HEAD
   if ((Environment.Width = 1024) and (Environment.Height = 600)) then
     inherited Create(Environment.Width, Environment.Height, AppConfig.Bits, true)
-=======
-  if ((TelEnvironment.Width = 1024) and (TelEnvironment.Height = 600)) then
-    inherited Create(TelEnvironment.Width, TelEnvironment.Height, AppConfig.Bits, true)
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   else
     inherited Create(AppConfig.Width, AppConfig.Height, AppConfig.Bits, false);
 
 
   fLoadScreen := TelSprite.Create;
   fLoadScreen.LoadFromFile(GetResImgPath + 'loadscreen.jpg');
-<<<<<<< HEAD
 
-=======
-  WriteLn(fLoadScreen.Name);
-
-  fSpriteList := TelSpriteList.Create;
-  WriteLn('SpriteList.Count: ' + IntToStr(fSpriteList.Count));
-  fSpriteList.Add(fLoadScreen);
-  WriteLn('SpriteList.Count: ' + IntToStr(fSpriteList.Count));
-
-  WriteLn(fSpriteList.Name);
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 end;
 
 destructor TGame.Destroy;
@@ -160,12 +127,7 @@ begin
 
 
   ActiveWindow.BeginScene;
-<<<<<<< HEAD
   fLoadScreen.Draw(nil);
-=======
-  fSpriteList.Draw(nil);
-  //fLoadScreen.Draw(nil);
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   ActiveWindow.EndScene;
 
   ActiveWindow.Caption := 'My Application';
@@ -184,11 +146,6 @@ begin
 
   // Create scenes
   MainMenu := TMainMenu.Create;
-<<<<<<< HEAD
-=======
-  WriteLn(MainMenu.Name);
-
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   Options := TOptions.Create;
   Credits := TCredits.Create;
   GameScreen := TGameScreen.Create;
@@ -216,11 +173,7 @@ begin
 
   // Shows FPS and debug information
   if ShowFPS then
-<<<<<<< HEAD
     fFont.TextOut(TelVector3f.Create(8, 8, 0), Format('FPS: %.2f Delta: %.5f \n Mouse Abs: %d %d Rel: %d %d',
-=======
-    fFont.TextOut(makeV3f(8, 8, 0), Format('FPS: %.2f Delta: %.5f \n Mouse Abs: %d %d Rel: %d %d',
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
       [ActiveWindow.FPS, ActiveWindow.DeltaTime,
        Input.Mouse.Cursor.X, Input.Mouse.Cursor.Y,
        Input.Mouse.RelCursor.X, Input.Mouse.RelCursor.Y]));
@@ -238,11 +191,7 @@ begin
     if Input.Keyboard.isKeyHit(Key.Escape) or Input.XBox360Controller.Back then SceneDirector.SwitchTo('MainMenu');
   end else
   begin
-<<<<<<< HEAD
     if Input.Keyboard.isKeyHit(Key.Escape) or Input.XBox360Controller.Back then Application.Quit();
-=======
-    if Input.Keyboard.isKeyHit(Key.Escape) or Input.XBox360Controller.Back then TelWindowManager.CurrentWindow.Quit();
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   end;
 
 

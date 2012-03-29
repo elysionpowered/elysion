@@ -23,10 +23,6 @@ uses
   ElysionUtils,
   ElysionNode,
   ElysionTexture,
-<<<<<<< HEAD
-=======
-  ElysionTextureManager,
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   ElysionGraphicsProvider,
   ElysionTypes,
   ElysionInput,
@@ -52,7 +48,6 @@ type
       fBoundingBox: TelBoundingBox;
       fCustomBBox: TelRect;
 
-<<<<<<< HEAD
       function GetFilename(): String; inline;
 
       function GetTransparent(): Boolean; inline;
@@ -63,18 +58,6 @@ type
 
       function GetAspectRatio(): Single; inline;
       procedure SetFilename(AValue: String); inline;
-=======
-      function GetFilename(): String; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-      function GetTransparent(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure SetTransparent(Value: Boolean); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-      function GetTextureWidth(): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      function GetTextureHeight(): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-      function GetAspectRatio(): Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure SetFilename(AValue: String); {$IFDEF CAN_INLINE} inline; {$ENDIF}
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
     protected
       function GetWidth(): Single; Override;
       function GetHeight(): Single; Override;
@@ -94,7 +77,6 @@ type
       constructor Create; Override;
       destructor Destroy; Override;
 
-<<<<<<< HEAD
       function LoadFromFile(const aFilename: String): Boolean; Overload; inline;
       function LoadFromFile(const aFilename: String; aClipRect: TelRect): Boolean; Overload;
 
@@ -118,31 +100,6 @@ type
       function Collides(Other: TelSprite; AllowInvisibleObjects: Boolean = false): Boolean; Overload;
       function Collides(Others: array of TelSprite; AllowInvisibleObjects: Boolean = false): Integer; Overload;
       function Collides(Others: TelSpriteList; AllowInvisibleObjects: Boolean = false): Integer; Overload; inline;
-=======
-      function LoadFromFile(const aFilename: String): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      function LoadFromFile(const aFilename: String; aClipRect: TelRect): Boolean; Overload;
-
-      procedure LoadFromTexture(aTexture: TelTexture); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure LoadFromTexture(aTexture: TelTexture; aClipRect: TelRect); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-      procedure LoadFromStream(aStream: TStream); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure SaveToStream(aStream: TStream); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-      procedure ClipImage(aRect: TelRect);
-
-      procedure SetColorKey(aColor: TelColor); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure SetColorKey(aPoint: TelVector2i); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-      function OnPoint(Coord: TelVector2f): Boolean;
-
-      procedure Move(aPoint: TelVector2f); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure Move(aPoint: TelVector2i); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure Move(aPoint: TelVector3f); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-      function Collides(Other: TelSprite; AllowInvisibleObjects: Boolean = false): Boolean; Overload;
-      function Collides(Others: array of TelSprite; AllowInvisibleObjects: Boolean = false): Integer; Overload;
-      function Collides(Others: TelSpriteList; AllowInvisibleObjects: Boolean = false): Integer; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
       procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); Override;
       procedure Update(dt: Double = 0.0); Override;
@@ -181,11 +138,7 @@ type
 implementation
 
 uses
-<<<<<<< HEAD
   ElysionTextureManager,
-=======
-  ElysionWindowManager,
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   ElysionGraphics;
 
 constructor TelSprite.Create;
@@ -433,15 +386,10 @@ begin
       end;
     end;
 
-<<<<<<< HEAD
 
     if FileExists(Directory + Content.RootDirectory + aFilename + OptExtension) then
     begin
       //Self.Texture := TelTextureManager.CreateNewTexture(Directory + Content.RootDirectory + aFilename + OptExtension);
-=======
-    if FileExists(Directory + Content.RootDirectory + aFilename + OptExtension) then
-    begin
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
       Self.Texture := TelTextureManager.CreateNewTexture(Directory + Content.RootDirectory + aFilename + OptExtension);
 
       if aClipRect.X < 0 then aClipRect.X := 0;

@@ -7,10 +7,7 @@ interface
 uses
   ElysionNode,
   ElysionTypes,
-<<<<<<< HEAD
   ElysionColor,
-=======
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   ElysionGraphicsProvider,
   ElysionApplication,
   ElysionTexture,
@@ -47,11 +44,7 @@ protected
   function GetWidth(): Single; Override;
   function GetHeight(): Single; Override;
 
-<<<<<<< HEAD
   procedure SetColor(AValue: TelColor);
-=======
-  procedure SetColor(AValue: TelColor); Override;
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
 
   function GetMouseOver(): Boolean; Override;
@@ -100,23 +93,14 @@ TelGUI = class
     constructor Create;
     destructor Destroy; Override;
 
-<<<<<<< HEAD
     procedure Box(Rect: TelRect; Color: TelColor); Overload; inline; deprecated;
     procedure Box(Rect: TelRect; Color: TelGradient); Overload; inline; deprecated;
-=======
-    procedure Box(Rect: TelRect; Color: TelColor); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF} deprecated;
-    procedure Box(Rect: TelRect; Color: TelGradient); Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF} deprecated;
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
     procedure Box(Rect: TelRect; Vertices: TelColorVertices); Overload; deprecated;
 
     procedure RoundedBox(Rect: TelRect; Color: TelColor; RoundedRadius: Integer = 5); Overload; deprecated;
     //procedure RoundedBox(Rect: TelRect; Color: TelGradient; RoundedRadius: Integer = 5); Overload;
 
-<<<<<<< HEAD
     procedure Circle(Rect: TelRect; Color: TelColor); inline; deprecated;
-=======
-    procedure Circle(Rect: TelRect; Color: TelColor); {$IFDEF CAN_INLINE} inline; {$ENDIF} deprecated;
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
     procedure Polygon(Vertices: array of TelVertex); Overload; deprecated;
     procedure Polygon(Rect: TelRect; Color: TelColor; Polygons: Integer = 5; Rotation: Single = 0.0); Overload; deprecated;
 
@@ -174,11 +158,7 @@ procedure TelGradientRectangle.SetGradient(AValue: TelGradient);
 begin
   fGradient := AValue;
 
-<<<<<<< HEAD
   case fGradient.Style of
-=======
-  case fGradient.GradientStyle of
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
     gsVertical:
       begin
         Vertices[0] := fGradient.StartColor;
@@ -229,15 +209,7 @@ begin
   tempRect.W := fWidth * ActiveWindow.ResScale.X;
   tempRect.H := fHeight * ActiveWindow.ResScale.Y;
 
-<<<<<<< HEAD
   Result := (ActiveWindow.Cursor in tempRect);
-=======
-  {$IFDEF CAN_METHODS}
-    Result := tempRect.ContainsVector(ActiveWindow.Cursor);
-  {$ELSE}
-    Result := RectContainsVector(fClipRect, ActiveWindow.Cursor);
-  {$ENDIF}
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 end;
 
 function TelRectangle.GetMouseOut: Boolean;
@@ -266,11 +238,7 @@ begin
   fWidth := aWidth;
   fHeight := aHeight;
 
-<<<<<<< HEAD
   Origin := Self.Center;
-=======
-  Origin := Center(Self);
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 end;
 
 constructor TelRectangle.Create(aSize: TelSize);
@@ -312,11 +280,7 @@ begin
             glColor4f(Shadow.Color.R / 255, Shadow.Color.G / 255, Shadow.Color.B / 255, (Abs(i - (Shadow.Blur div 2)) / Shadow.Blur) * (Shadow.Color.A / 255));
   	    glScalef(Scale.X * ActiveWindow.ResScale.X, Scale.Y * ActiveWindow.ResScale.Y, 1);
 
-<<<<<<< HEAD
             DrawQuad(-Origin.X + Shadow.Bounds.Left - i, -Origin.Y + Shadow.Bounds.Top - i, fWidth + 2 * i, fHeight + 2 * i, Position.Z);
-=======
-            DrawQuad(-Origin.X + Shadow.Position.X - i, -Origin.Y + Shadow.Position.Y - i, fWidth + 2 * i, fHeight + 2 * i, Position.Z);
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
           end;
         end;
 
@@ -379,11 +343,7 @@ procedure TelGUI.Box(Rect: TelRect; Color: TelGradient);
 var
   Vertices: TelColorVertices;
 begin
-<<<<<<< HEAD
   case Color.Style of
-=======
-  case Color.GradientStyle of
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
     gsVertical:
       begin
         Vertices[0] := Color.StartColor;

@@ -50,18 +50,13 @@ type
     function LoadFromFile(aFilename: String; aClipRect: TelRect): Boolean; Overload;
 
     // Plays complete sprite sheet
-<<<<<<< HEAD
     procedure Play(aLength: Integer = 1000); inline;
-=======
-    procedure Play(aLength: Integer = 1000); {$IFDEF CAN_INLINE} inline; {$ENDIF}
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
     // Plays specific frames in a spritesheet
     procedure PlayFrames(aFrameArray: array of Integer; aLength: Integer = 1000); Overload;
     procedure PlayFrames(aStartFrame, anEndFrame: Integer; aLength: Integer = 1000); Overload;
 
     // Plays specific column of a spritesheet (Stats at 0)
-<<<<<<< HEAD
     procedure PlayColumn(aColumn: Integer; aLength: Integer = 1000); inline;
 
     // Plays specific row of a spritesheet (Starts at 0)
@@ -75,21 +70,6 @@ type
 
     // Resumses spritesheet animation if paused
     procedure UnPause(); inline;
-=======
-    procedure PlayColumn(aColumn: Integer; aLength: Integer = 1000); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    // Plays specific row of a spritesheet (Starts at 0)
-    procedure PlayRow(aRow: Integer; aLength: Integer = 1000); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    // Stops spritesheet animation
-    procedure Stop(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    // Pauses spritesheet animation
-    procedure Pause(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    // Resumses spritesheet animation if paused
-    procedure UnPause(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
     procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); Override;
     procedure Update(dt: Double = 0.0); Override;

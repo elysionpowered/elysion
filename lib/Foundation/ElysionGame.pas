@@ -20,12 +20,7 @@ uses
     ElysionUtils,
     ElysionScene,
     ElysionGraphicsProvider,
-<<<<<<< HEAD
     ElysionApplication;
-=======
-    ElysionWindowManager,
-    ElysionEnvironment;
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
 
 type
@@ -34,11 +29,7 @@ type
 
   TelGame = class(TelObject)
   private
-<<<<<<< HEAD
     function GetRun: Boolean;
-=======
-    //function GetRun: Boolean;
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   protected
     fResolutions: TelSizeArray;
     fSceneDirector: TelSceneDirector;
@@ -67,11 +58,7 @@ type
   public
     property Resolutions: TelSizeArray read fResolutions write fResolutions;
   published
-<<<<<<< HEAD
     property Run: Boolean read GetRun;
-=======
-    //property Run: Boolean read GetRun;
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
     property SceneDirector: TelSceneDirector read fSceneDirector write fSceneDirector;
 
@@ -85,22 +72,14 @@ constructor TelGame.Create;
 begin
   inherited;
 
-<<<<<<< HEAD
   if Length(fResolutions) = 0 then fResolutions := PopulateArray([makeSize(1024, 600)]);
-=======
-  if Length(fResolutions) = 0 then fResolutions := PopulateArray([TelSize.Create(1024, 600)]);
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 end;
 
 constructor TelGame.Create(Width, Height, BPP: Integer; Fullscreen: Boolean);
 begin
   inherited Create;
 
-<<<<<<< HEAD
   WindowManager.CreateWindow('', Width, Height, BPP, Fullscreen);
-=======
-  TelWindowManager.CreateWindow('', Width, Height, BPP, Fullscreen);
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   
   fSceneDirector := TelSceneDirector.Create;
 end;
@@ -109,11 +88,7 @@ destructor TelGame.Destroy();
 begin
   fSceneDirector.Destroy;
 
-<<<<<<< HEAD
   inherited;
-=======
-  inherited Destroy;
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 end;
 
 procedure TelGame.Render(Graphics: IGraphicsProvider);
@@ -150,7 +125,6 @@ begin
   end;
 end;
 
-<<<<<<< HEAD
 function TelGame.GetRun: Boolean;
 begin
   Result := Application.Run;
@@ -160,28 +134,12 @@ function TelGame.GetWidth: Integer;
 begin
   if WindowManager.CurrentWindow <> nil then
     Result := WindowManager.CurrentWindow.Width;
-=======
-(*function TelGame.GetRun: Boolean;
-begin
-  Result := Application.Run;
-end;*)
-
-function TelGame.GetWidth: Integer;
-begin
-  if TelWindowManager.CurrentWindow <> nil then
-    Result := TelWindowManager.CurrentWindow.Width;
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 end;
 
 function TelGame.GetHeight: Integer;
 begin
-<<<<<<< HEAD
   if WindowManager.CurrentWindow <> nil then
     Result := WindowManager.CurrentWindow.Height;
-=======
-  if TelWindowManager.CurrentWindow <> nil then
-    Result := TelWindowManager.CurrentWindow.Height;
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 end;
 
 procedure TelGame.GetOptiomalResolution(out Size: TelSize; out
@@ -198,11 +156,7 @@ begin
   // Use the native desktop resolution if possible
   for i := 0 to Length(fResolutions) do
   begin
-<<<<<<< HEAD
     if ((fResolutions[i].Width = Environment.Width) and (fResolutions[i].Height = Environment.Height)) then
-=======
-    if ((fResolutions[i].Width = TelEnvironment.Width) and (fResolutions[i].Height = TelEnvironment.Height)) then
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
     begin
       prevWidth := fResolutions[i].Width;
       prevHeight := fResolutions[i].Height;
@@ -212,11 +166,7 @@ begin
       Break;
     end else
     begin
-<<<<<<< HEAD
       if Environment.AspectRatio = fResolutions[i].AspectRatio then
-=======
-      if TelEnvironment.AspectRatio = fResolutions[i].AspectRatio then
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
       begin
         if ((prevWidth < fResolutions[i].Width) and (prevHeight < fResolutions[i].Height)) then
         begin

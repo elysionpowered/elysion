@@ -15,10 +15,6 @@ uses
   ElysionTypes,
   ElysionLogger,
   ElysionKeyCode,
-<<<<<<< HEAD
-=======
-  ElysionWindowManager,
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
   SDL,
   SysUtils,
@@ -453,11 +449,7 @@ var
 implementation
 
 uses
-<<<<<<< HEAD
   ElysionApplication;
-=======
-  ElysionWindow;
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
 { TelAnalogStick }
 

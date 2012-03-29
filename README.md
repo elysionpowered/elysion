@@ -25,10 +25,6 @@ framework would not exist in its current form without those people:
 - Sam Lantinga (The creator of SDL)  
 And of course thanks to everyone else who used this framework or gave it a shot.
 
-<<<<<<< HEAD
-=======
-
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 Also thanks to these pieces of software which inspired me:  
 - [Irrlicht 3D Engine](http://irrlicht.sourceforge.net)  
 - [Horde 3D](http://horde3d.org) / Horde 3D GameEngine  
@@ -62,7 +58,6 @@ changes its color with each click.
 	end;
 
 	
-<<<<<<< HEAD
 That of course is just a small example of what Elysion can do. It is a full-fledged game framework and aims to be so: It allows you to play sound and music via ElysionAudio (which is based upon SDL_mixer), a texture manager which takes care of all your textures without you needing to worry about it, Elysion has a storage system similar to HTML5 Localstorage, integrated support for Cascading Stylesheets (CSS), as well as game-specific classes and helpers (such as scene management or adding nodes to scenes).
 
 Features
@@ -89,9 +84,6 @@ Advanced features:
 - Method chaining  
 - CSS support  
 - Storage system (HTML5 LocalStorage inspired)
-=======
-That of course is just a small example of what Elysion can do. It is a full-fledged game framework and aims to be so: It allows you to play sound and music via ElysionAudio (which is based upon SDL_mixer), a texture manager which takes care of all your textures without you needing to worry about it, Elysion has a storage system similar to HTML5 Localstorage, integrated support for Cascading Stylesheets (CSS), as well as game-specific class and helpers (such as adding nodes to scenes).
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
 
 Getting Started
@@ -105,13 +97,10 @@ Need some help?
 
 If you have some questions or hit road block during development, check out the official forums: http://www.pascalgamedevelopment.com/forumdisplay.php?67-Elysion-Game-Framework
 
-<<<<<<< HEAD
 Why greek mythology?
 --------------------
 
 I (Johannes Stein) have always had a thing for greek mythology. I called this Elysion as Elysion in greek mythology is the place for fallen loved heroes or those who have been granted immortality. At the time when I started the engine, 3D was the big thing everyone wanted to do and 2D was considered something outdated. While I don't believed in that and still don't, I think having Elysion as a name for a 2D engine is fitting name.
-=======
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
 License
 -------

@@ -5,20 +5,13 @@ interface
 {$I Elysion.inc}
 
 uses
-<<<<<<< HEAD
   ElysionApplication,
-=======
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   ElysionTypes,
   ElysionColor,
   ElysionInput,
   ElysionTexture,
   ElysionContent,
   ElysionSprite,
-<<<<<<< HEAD
-=======
-  ElysionWindow,
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
   {$IFDEF USE_VAMPYRE}
   ImagingSDL,
@@ -40,19 +33,11 @@ uses
 
 
 
-<<<<<<< HEAD
   function convCol(S: TelWindow; Color: TelColor): Cardinal; Overload; inline;
   function convCol(S: TelWindow; R, G, B: Byte): Cardinal; Overload; inline;
   function convCol(Color: TelColor): TSDL_Color; Overload; inline;
   //function convCol(Color: TelColor): Cardinal; Overload;
   function convCol(R, G, B: Byte): Cardinal; Overload; inline;
-=======
-  function convCol(S: TelWindow; Color: TelColor): Cardinal; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  function convCol(S: TelWindow; R, G, B: Byte): Cardinal; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  function convCol(Color: TelColor): TSDL_Color; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-  //function convCol(Color: TelColor): Cardinal; Overload;
-  function convCol(R, G, B: Byte): Cardinal; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
   procedure DrawQuad(pX, pY, pW, pH, pZ: Single); Overload;
   procedure DrawQuad(pX, pY, pW, pH, pZ: Single; Vertices: TelColorVertices); Overload;
@@ -76,12 +61,6 @@ uses
 
 implementation
 
-<<<<<<< HEAD
-=======
-uses
-  ElysionWindowManager;
-
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 // deprecated, please use function convCol(Color: TelColor): Cardinal; instead
 function convCol(S: TelWindow; Color: TelColor): Cardinal; Overload;
 begin

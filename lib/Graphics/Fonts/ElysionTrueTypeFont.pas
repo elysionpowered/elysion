@@ -55,7 +55,6 @@ TelTrueTypeFont = class(TelFontContainer)
 
     function RenderFont(Text: String; FontRender: TFontRender; TextStyle: TTextStyle): PSDL_Surface;
 
-<<<<<<< HEAD
     procedure SetColor(aColor: TelColor); inline;
     function GetColor: TelColor; inline;
 
@@ -69,21 +68,6 @@ TelTrueTypeFont = class(TelFontContainer)
     function GetTextStyle: TTextStyle; inline;
 
     function GetFontPointer: PTTF_Font; inline;
-=======
-    procedure SetColor(aColor: TelColor); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function GetColor: TelColor; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    procedure SetRenderType(aFontRender: TFontRender); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function GetRenderType: TFontRender; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    procedure SetFontStyle(aFontStyles: TFontStyles); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function GetFontStyle: TFontStyles; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    procedure SetTextStyle(aTextStyle: TTextStyle); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    function GetTextStyle: TTextStyle; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-
-    function GetFontPointer: PTTF_Font; {$IFDEF CAN_INLINE} inline; {$ENDIF}
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   protected
     function GetSize(): Integer; Override;
     procedure SetSize(Value: Integer); Override;
@@ -131,24 +115,13 @@ var
 
 implementation
 
-<<<<<<< HEAD
-=======
-uses
-  ElysionWindowManager;
-
-
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 constructor TSDLTTFFontContainer.Create;
 begin
   inherited;
 
   fDriverName := 'SDL_ttf';
 
-<<<<<<< HEAD
   if (not Application.Initialized) then Application.Initialize;
-=======
-  //if (not Application.Initialized) then Application.Initialize;
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 end;
 
 destructor TSDLTTFFontContainer.Destroy;
@@ -315,11 +288,7 @@ end;
 
 procedure TelTrueTypeFont.SetColor(aColor: TelColor);
 begin
-<<<<<<< HEAD
   if (fColor <> aColor) then
-=======
-  if not (fColor = aColor) then
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
     fColor := aColor;
 end;
 

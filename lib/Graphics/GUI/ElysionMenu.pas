@@ -35,22 +35,13 @@ type
 
    fSpacing: Integer;
 
-<<<<<<< HEAD
    function GetCount: Integer; inline;
-=======
-   function GetCount: Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
    function GetHeight: Single; Override;
    function GetWidth: Single; Override;
    //procedure AnimateButton(dt: Double; aID: Integer);
 
-<<<<<<< HEAD
    function GetButton(aID: Integer): TelButton; Overload; inline;
    function GetButtonS(Caption: String): TelButton; Overload; inline; // Maybe improve => Runtime: O(n)
-=======
-   function GetButton(aID: Integer): TelButton; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-   function GetButtonS(Caption: String): TelButton; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF} // Maybe improve => Runtime: O(n)
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
    function GetMouseOver(): Boolean; Override;
    function GetClick(): Boolean; Override;
@@ -60,19 +51,11 @@ type
 
    procedure setButtons(const ButtonImage, ButtonFont: String; FontSize: Integer; Buttons: array of String);
 
-<<<<<<< HEAD
    function ButtonClick(aID: Integer): Boolean; Overload; inline;
    function ButtonClick(Caption: String): Boolean; Overload; inline;  // Maybe improve => Runtime: O(n)
 
    function ButtonMouseOver(aID: Integer): Boolean; Overload; inline;
    function ButtonMouseOver(Caption: String): Boolean; Overload; inline; // Maybe improve => Runtime: O(n)
-=======
-   function ButtonClick(aID: Integer): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-   function ButtonClick(Caption: String): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}  // Maybe improve => Runtime: O(n)
-
-   function ButtonMouseOver(aID: Integer): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-   function ButtonMouseOver(Caption: String): Boolean; Overload; {$IFDEF CAN_INLINE} inline; {$ENDIF} // Maybe improve => Runtime: O(n)
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
    procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); Override;
    procedure Update(dt: Double = 0.0); Override;
@@ -107,11 +90,7 @@ begin
   Animator := TelAnimator.Create;
 
   // Default animator, can be replaced though, but only if you really want it
-<<<<<<< HEAD
   Animator.ColorEffect(makeCol(180, 180, 180), makeCol(255, 255, 255));
-=======
-  Animator.ColorEffect(TelColor.Create(180, 180, 180), TelColor.Create(255, 255, 255));
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
   Animator.Duration := 1500;
 
   Position.Clear;

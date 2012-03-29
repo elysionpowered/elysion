@@ -24,15 +24,9 @@ TelParticle = class(TelSprite)
     procedure Draw; Override;
     procedure Update(dt: Double = 0.0); Override;
 
-<<<<<<< HEAD
     procedure Start(); inline;
     procedure Pause(); inline;
     procedure Stop(); inline;
-=======
-    procedure Start(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure Pause(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-    procedure Stop(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
->>>>>>> b3f438658ffe9c95146f9fbe4504ce33a0f939d1
 
     property StartPoint: TelVector3f read fStartPoint write fStartPoint;
     property EndPoint: TelVector3f read fEndPoint write fEndPoint;
