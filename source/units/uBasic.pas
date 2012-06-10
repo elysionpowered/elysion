@@ -6,6 +6,7 @@ interface
 
 uses
   SysUtils,
+  ElysionConst,
   ElysionUtils;
 
 {$I Elysion.inc}
@@ -17,15 +18,6 @@ const
   WIDTH = 1024;
   HEIGHT = 600;
   BITS = 32;
-
-  {$IFNDEF FPC}
-    // Assume Delphi
-    {$IFDEF WINDOWS}
-      const DirectorySeparator = '\';
-    {$ELSE}
-      const DirectorySeparator = '/';
-    {$ENDIF}
-  {$ENDIF}
 
 
 type
@@ -47,11 +39,12 @@ var
 function GetResPath(aCustomResName: String = ''): String;
 begin
   if aCustomResName <> '' then ResName := aCustomResName
-  else ResName := 'resources';
+  else ResName := 'assets';
 
   // Resources folder can either be a parent sub-folder or a direct sub-folder
   // relative to the executable
   if DirectoryExists(ExtractFilePath(ParamStr(0)) + '..' + DirectorySeparator + ResName) then PreDir := '..' + DirectorySeparator
+  else if DirectoryExists(ExtractFilePath(ParamStr(0)) + '..' + DirectorySeparator + '..' + DirectorySeparator + ResName) then PreDir := '..' + DirectorySeparator + '..' + DirectorySeparator
   else PreDir := '';
 
   {$IFDEF DARWIN}

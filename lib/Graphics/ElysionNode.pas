@@ -88,6 +88,15 @@ type
       Horizontal: TAlignHorizontal;
     end;
 
+    TStyleUnitType = (
+      // Relative length units
+      suPixel, suPercent, suViewportWidth, suViewportHeight, suViewportMin,
+      // Time units
+      suMilliSeconds, suSeconds,
+      // Angle units
+      suRadians, suDegress
+    );
+
     TelCursorType = (ctDefault, ctCrosshair, ctPointer, ctMove, ctText, ctWait, ctHelp, ctCustom);
   public
     class procedure CopyNodeValues(aNode, bNode: TelNode);
@@ -203,8 +212,12 @@ type
 
     procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); virtual;
 
+    function GlobalToLocal(): TelVector3f;
+    function LocalToGlobal(): TelVector3f;
+
     procedure Apply(); Overload;
     procedure Apply(const S: AnsiString); Overload;
+    procedure Apply(const Key: AnsiString; const Value: Single; UnitType: TStyleUnitType = suPixel); Overload;
 
     function LoadFromPlain(aData: TStringList): Boolean;
     function LoadFromXML(aData: TStringList): Boolean;
@@ -322,55 +335,6 @@ type
     property Style: TStringList read fStyle write SetStyle;
   end;
 
-  // Node with CSS styling
-
-  { TelNodeStyle }
-
-  TelNodeStyle = class(TelObject)
-  protected
-    fStyleList: TStringList;
-
-    function GetItem(Index: Integer): String;
-    procedure SetItem(Index: Integer; const AValue: String);
-
-    function GetCount(): Integer; inline;
-  public
-    constructor Create; Override;
-    destructor Destroy; Override;
-
-    procedure Add(const S: String); inline;
-    procedure Insert(Index: Integer; const S: String); inline;
-    procedure Delete(Index: Integer); inline;
-
-    procedure LoadFromFile(const aFilename: String); inline;
-    procedure SaveToFile(const aFilename: String); inline;
-  published
-    property Count: Integer read GetCount;
-
-    property Item[Index: Integer]: String read GetItem write SetItem; default;
-  end;
-
-  { TelStyledNode }
-
-  TelStyledNode = class(TelNode)
-  protected
-    fSelectorID, fSelectorClass: String;
-
-    fStyle: TelNodeStyle;
-  public
-    constructor Create; Override;
-    destructor Destroy; Override;
-
-    procedure Apply(); Overload;
-    procedure Apply(const S: String); Overload;
-  published
-    // CSS-like selectors
-    property SelectorID: String read fSelectorID write fSelectorID;
-    property SelectorClass: String read fSelectorClass write fSelectorClass;
-
-    property Style: TelNodeStyle read fStyle write fStyle;
-  end;
-
   TelNodeList = class(TelObject)
      private
       fNodeList: TList;
@@ -403,69 +367,7 @@ type
       property Count: Integer read GetCount;
   end;
 
-  procedure CopyNodeValues(aNode, bNode: TelNode);
-  procedure ForceNodeCopy(aNode, bNode: TelNode);
-  function Center(aNode: TelNode): TelVector2f; inline;
-
 implementation
-
-procedure CopyNodeValues(aNode, bNode: TelNode);
-begin
-  aNode.Position := bNode.Position;
-  aNode.Origin := bNode.Origin;
-
-  aNode.Margin := bNode.Margin;
-  aNode.Padding := bNode.Padding;
-  aNode.Border := bNode.Border;
-  aNode.Shadow := bNode.Shadow;
-
-  aNode.Rotation := bNode.Rotation;
-  aNode.Color := bNode.Color;
-  aNode.Scale := bNode.Scale;
-
-  aNode.Align := bNode.Align;
-
-  aNode.Alpha := bNode.Alpha;
-
-  aNode.Visible := bNode.Visible;
-end;
-
-procedure ForceNodeCopy(aNode, bNode: TelNode);
-begin
-  aNode.Position := bNode.Position;
-  aNode.Origin := bNode.Origin;
-
-  aNode.Margin := bNode.Margin;
-  aNode.Padding := bNode.Padding;
-  aNode.Border := bNode.Border;
-  aNode.Shadow := bNode.Shadow;
-
-  aNode.Rotation := bNode.Rotation;
-  aNode.Color := bNode.Color;
-  aNode.Scale := bNode.Scale;
-
-  aNode.Align := bNode.Align;
-
-  aNode.Alpha := bNode.Alpha;
-
-  aNode.OnMouseDown := bNode.OnMouseDown;
-  aNode.OnMouseUp := bNode.OnMouseUp;
-  aNode.OnMouseMove := bNode.OnMouseMove;
-  aNode.OnMouseOver := bNode.OnMouseOver;
-  aNode.OnMouseOut := bNode.OnMouseOut;
-  aNode.OnDragStart := bNode.OnDragStart;
-  aNode.OnDragging := bNode.OnDragging;
-  aNode.OnDragEnd := bNode.OnDragEnd;
-  aNode.OnClick := bNode.OnClick;
-  aNode.OnDblClick := bNode.OnDblClick;
-
-  aNode.Visible := bNode.Visible;
-end;
-
-function Center(aNode: TelNode): TelVector2f;
-begin
-  Result := makeV2f(aNode.Width / 2, aNode.Height / 2);
-end;
 
 { TelNodeEventListener }
 
@@ -551,94 +453,6 @@ begin
   begin
     if (fEventArray[i].Enabled) then fEventArray[i].Event(Sender, EventArgs);
   end;
-end;
-
-{ TelNodeStyle }
-
-constructor TelNodeStyle.Create;
-begin
-  inherited Create;
-
-  fStyleList := TStringList.Create;
-end;
-
-destructor TelNodeStyle.Destroy;
-begin
-  fStyleList.Free;
-
-  inherited Destroy;
-end;
-
-function TelNodeStyle.GetItem(Index: Integer): String;
-begin
-  Result := fStyleList.Strings[Index];
-end;
-
-procedure TelNodeStyle.SetItem(Index: Integer; const AValue: String);
-begin
-  fStyleList.Strings[Index] := AValue;
-end;
-
-function TelNodeStyle.GetCount(): Integer;
-begin
-  Result := fStyleList.Count;
-end;
-
-procedure TelNodeStyle.Add(const S: String);
-begin
-  fStyleList.Add(S);
-end;
-
-procedure TelNodeStyle.Insert(Index: Integer; const S: String);
-begin
-  fStyleList.Insert(Index, S);
-end;
-
-procedure TelNodeStyle.Delete(Index: Integer);
-begin
-  fStyleList.Delete(Index);
-end;
-
-procedure TelNodeStyle.LoadFromFile(const aFilename: String);
-begin
-  fStyleList.LoadFromFile(aFilename);
-end;
-
-procedure TelNodeStyle.SaveToFile(const aFilename: String);
-begin
-  fStyleList.SaveToFile(aFilename);
-end;
-
-{ TelStyleNode }
-
-constructor TelStyledNode.Create;
-begin
-  inherited;
-
-  fStyle := TelNodeStyle.Create;
-end;
-
-destructor TelStyledNode.Destroy;
-begin
-  fStyle.Destroy;
-
-  inherited;
-end;
-
-procedure TelStyledNode.Apply();
-var
-  i: Integer;
-begin
-  for i := 0 to Style.Count do Apply(Style.Item[i]);
-end;
-
-procedure TelStyledNode.Apply(const S: String);
-var
-  AttrName, AttrValue: String;
-begin
-
-  // Parse
-  //if S = 'left' then Self.Left := AttrValue;
 end;
 
 { TelNode }
@@ -1290,6 +1104,16 @@ begin
     Children.Draw(Graphics, DrawChildren);
 end;
 
+function TelNode.GlobalToLocal: TelVector3f;
+begin
+
+end;
+
+function TelNode.LocalToGlobal: TelVector3f;
+begin
+
+end;
+
 procedure TelNode.Apply;
 begin
 
@@ -1351,6 +1175,49 @@ begin
       end;
     end;
   end;
+end;
+
+procedure TelNode.Apply(const Key: AnsiString; const Value: Single; UnitType: TStyleUnitType = suPixel);
+begin
+  case UnitType of
+    suPercent:
+    begin
+
+    end;
+    suViewportWidth:
+    begin
+
+    end;
+    suViewportHeight:
+    begin
+
+    end;
+    suViewportMin:
+    begin
+
+    end;
+    suMilliSeconds:
+    begin
+
+    end;
+    suSeconds:
+    begin
+
+    end;
+    suRadians:
+    begin
+
+    end;
+    suDegress:
+    begin
+
+    end;
+    else begin
+
+    end;
+  end;
+
+
 end;
 
 function TelNode.LoadFromPlain(aData: TStringList): Boolean;

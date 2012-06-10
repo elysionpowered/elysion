@@ -1,6 +1,6 @@
 BIN_FOLDER = '../bin';
 LIB_FOLDER = '../lib';
-RES_FOLDER = '../resources';
+RES_FOLDER = '../assets';
 SRC_FOLDER = '../source';
 
 // Info.plist constants

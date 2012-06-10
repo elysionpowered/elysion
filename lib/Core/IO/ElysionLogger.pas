@@ -203,8 +203,8 @@ begin
   end;
 
   tmpStringList.Add('<span id="title"><a href="https://github.com/freezedev/elysion">Elysion Library</a> Log</span> <br />');
-  tmpStringList.Add('<strong>CPU:</strong> ' + IntToStr(SYS_BITS) + '-bit <br /> <b>Operating system:</b> ' + SYS_NAME + '<br />');
-  tmpStringList.Add('<strong>Version:</strong> ' + IntToStr(VER_MAJOR) + '-' + IntToStr(VER_MINOR) + VER_REVISION + ' "' + VER_CODENAME + '"<br /> <strong>Stable:</strong> '+BoolToString(VER_STABLE)+'<br />');
+  tmpStringList.Add('<strong>CPU:</strong> ' + SYSTEM_CPU + ' <br /> <b>Operating system:</b> ' + SYSTEM_OS + '<br />');
+  tmpStringList.Add('<strong>Version:</strong> ' + GetElysionVersion() + '<br /><strong>Language:</strong> ' + GetLanguage() + '<br />');
   tmpStringList.Add('<strong>Filename:</strong> ' + fFilename + '<br />');
   tmpStringList.Add('</header>');
   tmpStringList.Add('<br /></br />');

@@ -65,3 +65,4 @@ __history
 ##################
 !lib/MacOSX/libSDLMain.a
 !source/main.res
+!build/*.dll

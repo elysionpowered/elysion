@@ -15,6 +15,7 @@ uses
   Classes,
   Math,
 
+  ElysionConst,
   ElysionColor,
   ElysionTypes;
 
@@ -77,24 +78,51 @@ function ValuesEnclosedStrings(anOrgString: AnsiString; aBeginSymbol, anEndSymbo
 function ValueEnclosedSymbols(anOrgString: AnsiString; aBeginSymbol, anEndSymbol: Char): AnsiString; inline;
 function ValueEnclosedStrings(anOrgString: AnsiString; aBeginSymbol, anEndSymbol: AnsiString): AnsiString; inline;
 
+function GetElysionVersion(): AnsiString; inline;
 
-{$IFDEF WINDOWS}
-  const CSIDL_PERSONAL = $0005; //< My Documents (Win 95+)
-  const CSIDL_LOCAL_APPDATA = $001c; //< Local Appdata (Windows 2000+)
-  const CSIDL_APPDATA = $001a; //< Win 95+ with IE4.0 Shell installed
-{$ENDIF}
-
-{$IFNDEF FPC}
-  // Assume Delphi
-  {$IFDEF WINDOWS}
-  const DirectorySeparator = '\';
-  {$ELSE}
-  const DirectorySeparator = '/';
-  {$ENDIF}
-{$ENDIF}
+function GetLanguage(): AnsiString; inline;
+function JoinStrings(Strings: array of AnsiString; Separator: AnsiString): AnsiString; inline;
 
 
 implementation
+
+function GetElysionVersion(): AnsiString;
+begin
+  Result := Format('%d.%d.%d.%d "%s"', [ELYSION_VER_MAJOR, ELYSION_VER_MINOR, ELYSION_VER_BUILD, ELYSION_VER_REVISION, ELYSION_VER_CODENAME]);
+end;
+
+function GetLanguage(): AnsiString;
+  {$IFDEF WINDOWS}
+  function GetLocaleInformation(Flag: integer): string;
+  var
+    pcLCA: array[0..20] of char;
+  begin
+    if (GetLocaleInfo(LOCALE_SYSTEM_DEFAULT, Flag, pcLCA, 19) <= 0) then
+    begin
+      pcLCA[0] := #0;
+    end;
+    Result := pcLCA;
+  end;
+  {$ENDIF}
+begin
+  {$IFDEF WINDOWS}
+   Result := GetLocaleInformation(LOCALE_SENGLANGUAGE);
+  {$ELSE}
+   Result := SysUtils.GetEnvironmentVariable('LANG');
+  {$ENDIF}
+end;
+
+function JoinStrings(Strings: array of AnsiString; Separator: AnsiString
+  ): AnsiString;
+var
+  i: Integer;
+begin
+  Result := '';
+  for i := 0 to Length(Strings) - 1 do
+  begin
+    Result := Result + Strings[i] + Separator;
+  end;
+end;
 
 function IntToString(aValue: Integer; LeadingZero: Boolean; Digits: Integer): AnsiString;
 var
