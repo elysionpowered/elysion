@@ -22,6 +22,7 @@ interface
 uses
   ElysionEnums,
 
+  ElysionHash,
   ElysionMath,
   ElysionColor,
 
@@ -35,6 +36,8 @@ type
   TelVector2<T> = record
   private
     fX, fY: T;
+
+    fHash: TelHash;
   public
     procedure Make(aX, aY: T);
   public
@@ -62,6 +65,8 @@ type
   TelVector3<T> = record
   private
     fX, fY, fZ: T;
+
+    fHash: TelHash;
   public
     procedure Make(aX, aY, aZ: T);
   public
@@ -99,9 +104,11 @@ type
   TelSize = record
   private
     fWidth, fHeight: Single;
+    fHash: TelHash;
 
     function GetAspectRatio: Single; inline;
     function GetOrientation: TRectOrientation; inline;
+    function GetHash(): TelHash; inline;
 
     function IsWide: Boolean; inline;
     function IsEmpty: Boolean; inline;
@@ -118,12 +125,14 @@ type
     function ToVector3i: TelVector3i; inline;
     function ToVector3f: TelVector3f; inline;
 
-    function Center: TelVector2f;
+    function Center: TelVector2f; inline;
   public
     class function Create: TelSize; static; inline; Overload;
     class function Create(aWidth, aHeight: Single): TelSize; static; inline; Overload;
 
     class function Copy(aSource: TelSize): TelSize; static; inline;
+
+    class function Lerp(A, B: TelSize; Amt: Single = 0.5): TelSize; static; inline;
   public
     class operator Add(A, B: TelSize): TelSize; inline;
     class operator Subtract(A, B: TelSize): TelSize; inline;
@@ -148,6 +157,8 @@ type
     property Wide: Boolean read IsWide;
     property Empty: Boolean read IsEmpty;
 
+    property Hash: TelHash read GetHash;
+
     property Orientation: TRectOrientation read GetOrientation;
   end;
 
@@ -163,12 +174,17 @@ type
     // Width & Height
     fW, FH: Single;
 
+    fHash: TelHash;
+
+
     function GetAspectRatio(): Single; inline;
     function GetOrientation: TRectOrientation; inline;
 
     function IsWide(): Boolean; inline;
 
     function IsEmpty(): Boolean; inline;
+
+    function GetHash(): TelHash; inline;
   public
     procedure Clear(); inline;
 
@@ -202,6 +218,8 @@ type
     class function Create(aPosition: TelVector3i; aSize: TelSize): TelRect; static; inline; Overload;
 
     class function Copy(aSource: TelRect): TelRect; static; inline;
+
+    class function Lerp(A, B: TelRect; Amt: Single = 0.5): TelRect; static; inline;
   public
     class operator Add(A, B: TelRect): TelRect; inline;
     class operator Subtract(A, B: TelRect): TelRect; inline;
@@ -229,6 +247,8 @@ type
     property Wide: Boolean read IsWide;
     property Empty: Boolean read IsEmpty;
 
+    property Hash: TelHash read GetHash;
+
     property Orientation: TRectOrientation read GetOrientation;
   end;
 
@@ -240,6 +260,8 @@ type
   TelVector2iHelper = record helper for TelVector2i
   private
     function GetLength: Single; inline;
+
+    function GetHash(): TelHash; inline;
   public
     procedure Normalize; inline; Overload;
 
@@ -259,8 +281,12 @@ type
     class function Normalize(aVector: TelVector2i): TelVector2i; static; inline; Overload;
 
     class function DotProduct(A, B: TelVector2i): Single; static; inline;
+
+    class function Lerp(A, B: TelVector2i; Amt: Single = 0.5): TelVector2i; static; inline;
   public
     property Length: Single read GetLength;
+
+    property Hash: TelHash read GetHash;
   end;
 
   { TelVector2fHelper }
@@ -268,6 +294,8 @@ type
   TelVector2fHelper = record helper for TelVector2f
   private
     function GetLength: Single; inline;
+
+    function GetHash(): TelHash; inline;
   public
     procedure Normalize; inline; Overload;
 
@@ -287,8 +315,12 @@ type
     class function Normalize(aVector: TelVector2f): TelVector2f; static; inline; Overload;
 
     class function DotProduct(A, B: TelVector2f): Single; static; inline;
+
+    class function Lerp(A, B: TelVector2f; Amt: Single = 0.5): TelVector2f; static; inline;
   public
     property Length: Single read GetLength;
+
+    property Hash: TelHash read GetHash;
   end;
 
   { TelVector3iHelper }
@@ -296,6 +328,8 @@ type
   TelVector3iHelper = record helper for TelVector3i
   private
     function GetLength: Single; inline;
+
+    function GetHash(): TelHash; inline;
   public
     procedure Clear; inline;
 
@@ -317,6 +351,8 @@ type
     class function DotProduct(A, B: TelVector3i): Single; static; inline;
     class function CrossProduct(A, B: TelVector3i): TelVector3i; static; inline;
 
+    class function Lerp(A, B: TelVector3i; Amt: Single = 0.5): TelVector3i; static; inline;
+
     class function Zero(): TelVector3i; static; inline;
     class function One(): TelVector3i; static; inline;
     class function Forward(): TelVector3i; static; inline;
@@ -324,6 +360,8 @@ type
     class function Right(): TelVector3i; static; inline;
   public
     property Length: Single read GetLength;
+
+    property Hash: TelHash read GetHash;
   end;
 
   { TelVector3fHelper }
@@ -331,6 +369,8 @@ type
   TelVector3fHelper = record helper for TelVector3f
   private
     function GetLength: Single; inline;
+
+    function GetHash(): TelHash; inline;
   public
     procedure Clear; inline;
 
@@ -352,6 +392,8 @@ type
     class function DotProduct(A, B: TelVector3f): Single; static; inline;
     class function CrossProduct(A, B: TelVector3f): TelVector3f; static; inline;
 
+    class function Lerp(A, B: TelVector3f; Amt: Single = 0.5): TelVector3f; static; inline;
+
     class function Zero(): TelVector3f; static; inline;
     class function One(): TelVector3f; static; inline;
     class function Forward(): TelVector3f; static; inline;
@@ -359,6 +401,8 @@ type
     class function Right(): TelVector3f; static; inline;
   public
     property Length: Single read GetLength;
+
+    property Hash: TelHash read GetHash;
   end;
 
 
@@ -632,6 +676,12 @@ begin
   Result.Height := aSource.Height;
 end;
 
+class function TelSize.Lerp(A, B: TelSize; Amt: Single): TelSize;
+begin
+  Result := TelSize.Create(ElysionMath.Lerp(A.Width, B.Width, Amt),
+                           ElysionMath.Lerp(A.Height, B.Height, Amt));
+end;
+
 class operator TelSize.Add(A, B: TelSize): TelSize;
 begin
   Result.Width := A.Width + B.Width;
@@ -713,6 +763,13 @@ function TelSize.GetOrientation: TRectOrientation;
 begin
   if Width > Height then Result := roLandscape
     else Result := roPortrait;
+end;
+
+function TelSize.GetHash: TelHash;
+begin
+  fHash.Generate(Self.ToString());
+
+  Result := fHash;
 end;
 
 function TelSize.IsWide(): Boolean;
@@ -934,6 +991,15 @@ begin
   Result.H := aSource.H;
 end;
 
+class function TelRect.Lerp(A, B: TelRect; Amt: Single): TelRect;
+begin
+  Result := TelRect.Create(ElysionMath.Lerp(A.X, B.X, Amt),
+                           ElysionMath.Lerp(A.Y, B.Y, Amt),
+                           ElysionMath.Lerp(A.Z, B.Z, Amt),
+                           ElysionMath.Lerp(A.W, B.W, Amt),
+                           ElysionMath.Lerp(A.H, B.H, Amt));
+end;
+
 class operator TelRect.Add(A, B: TelRect): TelRect;
 begin
   Result.X := A.X + B.X;
@@ -1038,6 +1104,13 @@ begin
   Result := ((X = 0) and (Y = 0) and (W = 0) and (H = 0));
 end;
 
+function TelRect.GetHash: TelHash;
+begin
+  fHash.Generate(Self.ToString());
+
+  Result := fHash;
+end;
+
 { TelVector2iHelper }
 
 procedure TelVector2iHelper.Clear;
@@ -1063,9 +1136,22 @@ begin
   Result := (A.X * B.X) + (A.Y * B.Y);
 end;
 
+class function TelVector2iHelper.Lerp(A, B: TelVector2i; Amt: Single): TelVector2i;
+begin
+  Result := TelVector2i.Create(Trunc(ElysionMath.Lerp(A.X, B.X, Amt)),
+                               Trunc(ElysionMath.Lerp(A.Y, B.Y, Amt)));
+end;
+
 function TelVector2iHelper.GetLength: Single;
 begin
   Result := sqrt(X * X + Y * Y);
+end;
+
+function TelVector2iHelper.GetHash: TelHash;
+begin
+  fHash.Generate(Self.ToString());
+
+  Result := fHash;
 end;
 
 procedure TelVector2iHelper.Normalize;
@@ -1087,7 +1173,7 @@ end;
 
 function TelVector2iHelper.ToString: AnsiString;
 begin
-  Result := Format('%d %d', [X, Y]);
+  Result := Format('vec2i(%d, %d)', [X, Y]);
 end;
 
 function TelVector2iHelper.ToVector2f: TelVector2f;
@@ -1130,9 +1216,22 @@ begin
   Result := (A.X * B.X) + (A.Y * B.Y);
 end;
 
+class function TelVector2fHelper.Lerp(A, B: TelVector2f; Amt: Single): TelVector2f;
+begin
+  Result := TelVector2f.Create(ElysionMath.Lerp(A.X, B.X, Amt),
+                               ElysionMath.Lerp(A.Y, B.Y, Amt));
+end;
+
 function TelVector2fHelper.GetLength: Single;
 begin
   Result := sqrt(X * X + Y * Y);
+end;
+
+function TelVector2fHelper.GetHash: TelHash;
+begin
+  fHash.Generate(Self.ToString());
+
+  Result := fHash;
 end;
 
 procedure TelVector2fHelper.Normalize;
@@ -1154,7 +1253,7 @@ end;
 
 function TelVector2fHelper.ToString: AnsiString;
 begin
-  Result := Format('%f %f', [X, Y]);
+  Result := Format('vec2f(%f, %f)', [X, Y]);
 end;
 
 function TelVector2fHelper.ToVector2i: TelVector2i;
@@ -1200,6 +1299,14 @@ begin
   Result := TelVector3i.Create(A.Y * B.Z - B.Y * A.Z, A.Z * B.X - B.Z * A.X, A.X * B.Y - B.X * A.Y);
 end;
 
+class function TelVector3iHelper.Lerp(A, B: TelVector3i; Amt: Single
+  ): TelVector3i;
+begin
+  Result := TelVector3i.Create(Trunc(ElysionMath.Lerp(A.X, B.X, Amt)),
+                               Trunc(ElysionMath.Lerp(A.Y, B.Y, Amt)),
+                               Trunc(ElysionMath.Lerp(A.Z, B.Z, Amt)));
+end;
+
 class function TelVector3iHelper.DotProduct(A, B: TelVector3i): Single;
 begin
   Result := (A.X * B.X) + (A.Y * B.Y) + (A.Z * B.Z);
@@ -1215,6 +1322,13 @@ end;
 function TelVector3iHelper.GetLength: Single;
 begin
   Result := sqrt(X * X + Y * Y + Z * Z);
+end;
+
+function TelVector3iHelper.GetHash: TelHash;
+begin
+  fHash.Generate(Self.ToString());
+
+  Result := fHash;
 end;
 
 class function TelVector3iHelper.Normalize(aVector: TelVector3i): TelVector3i;
@@ -1252,7 +1366,7 @@ end;
 
 function TelVector3iHelper.ToString: AnsiString;
 begin
-  Result := Format('%d %d %d', [X, Y, Z]);
+  Result := Format('vec3i(%d, %d, %d)', [X, Y, Z]);
 end;
 
 function TelVector3iHelper.ToVector2f: TelVector2f;
@@ -1312,6 +1426,13 @@ begin
   Result := TelVector3f.Create(A.Y * B.Z - B.Y * A.Z, A.Z * B.X - B.Z * A.X, A.X * B.Y - B.X * A.Y);
 end;
 
+class function TelVector3fHelper.Lerp(A, B: TelVector3f; Amt: Single): TelVector3f;
+begin
+  Result := TelVector3f.Create(ElysionMath.Lerp(A.X, B.X, Amt),
+                            ElysionMath.Lerp(A.Y, B.Y, Amt),
+                            ElysionMath.Lerp(A.Z, B.Z, Amt));
+end;
+
 class function TelVector3fHelper.DotProduct(A, B: TelVector3f): Single;
 begin
   Result := (A.X * B.X) + (A.Y * B.Y) + (A.Z * B.Z);
@@ -1334,6 +1455,13 @@ end;
 function TelVector3fHelper.GetLength: Single;
 begin
   Result := sqrt(X * X + Y * Y + Z * Z);
+end;
+
+function TelVector3fHelper.GetHash: TelHash;
+begin
+  fHash.Generate(Self.ToString());
+
+  Result := fHash;
 end;
 
 class function TelVector3fHelper.Normalize(aVector: TelVector3f): TelVector3f;
@@ -1364,7 +1492,7 @@ end;
 
 function TelVector3fHelper.ToString: AnsiString;
 begin
-  Result := Format('%f %f %f', [X, Y, Z]);
+  Result := Format('vec3f(%f, %f, %f)', [X, Y, Z]);
 end;
 
 function TelVector3fHelper.ToVector2f: TelVector2f;

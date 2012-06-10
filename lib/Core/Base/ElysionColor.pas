@@ -7,7 +7,7 @@ interface
 uses
   SysUtils,
 
-  ElysionEnums,
+  ElysionHash,
   ElysionMath;
 
 type
@@ -31,6 +31,8 @@ type
    fR, fG, fB, fA: Byte;
    fH, fS, fL: Single;
 
+   fHash: TelHash;
+
    function GetH: Single;
    function GetS: Single;
    function GetL: Single;
@@ -41,6 +43,8 @@ type
 
    procedure ConvertRGBToHSL;
    procedure ConvertHSLToRGB;
+
+   function GetHash: TelHash;
  public
    procedure Clear(anAlpha: Byte = 255); inline;
    procedure Make(aR, aG, aB: Byte; anA: Byte = 255); inline;
@@ -48,7 +52,10 @@ type
    procedure Lighten(AValue: Single; IgnoreAlpha: Boolean = true);
    procedure Darken(AValue: Single; IgnoreAlpha: Boolean = true);
 
-   function ToString(): AnsiString;
+   procedure FadeOut(AValue: Single); inline;
+   procedure FadeIn(AValue: Single); inline;
+
+   function ToString(): AnsiString; inline;
 
    procedure ToFloat(out floatR: Single; out floatG: Single; out floatB: Single; out floatA: Single);
  public
@@ -62,7 +69,7 @@ type
 
    class function Min(A, B: TelColor): TelColor; static;
    class function Max(A, B: TelColor): TelColor; static;
-   class function Lerp(A, B: TelColor; Amt: Single = 0.5): TelColor; static;
+   class function Lerp(A, B: TelColor; Amt: Single = 0.5): TelColor; static; inline;
  public
    // Basic colors
    class function clAqua: TelColor; static; inline;	            //< R: 0   G: 255 B: 255
@@ -244,6 +251,8 @@ type
    property H: Single read GetH write SetH;
    property S: Single read GetS write SetS;
    property L: Single read GetL write SetL;
+
+   property Hash: TelHash read GetHash;
  end;
 
  TelColorArray = array of TelColor;
@@ -402,6 +411,13 @@ begin
 
 end;
 
+function TelColor.GetHash: TelHash;
+begin
+  fHash.Generate(Self.ToString());
+
+  Result := fHash;
+end;
+
 procedure TelColor.Clear(anAlpha: Byte = 255);
 begin
   R := 0;
@@ -422,24 +438,38 @@ procedure TelColor.Lighten(AValue: Single; IgnoreAlpha: Boolean = true);
 begin
   AValue := Clamp(AValue, 0.0, 1.0);
 
-  Self.R := Self.R + Trunc(AValue * 255);
-  Self.G := Self.G + Trunc(AValue * 255);
-  Self.B := Self.B + Trunc(AValue * 255);
+  Self.R := ClampToByte(Integer(Self.R + Trunc(AValue * 255)));
+  Self.G := ClampToByte(Integer(Self.G + Trunc(AValue * 255)));
+  Self.B := ClampToByte(Integer(Self.B + Trunc(AValue * 255)));
 
   if not IgnoreAlpha then
-    Self.A := Self.A + Trunc(AValue * 255);
+    FadeIn(AValue);
 end;
 
 procedure TelColor.Darken(AValue: Single; IgnoreAlpha: Boolean = true);
 begin
   AValue := Clamp(AValue, 0.0, 1.0);
 
-  Self.R := Self.R - Trunc(AValue * 255);
-  Self.G := Self.G - Trunc(AValue * 255);
-  Self.B := Self.B - Trunc(AValue * 255);
+  Self.R := ClampToByte(Integer(Self.R - Trunc(AValue * 255)));
+  Self.G := ClampToByte(Integer(Self.G - Trunc(AValue * 255)));
+  Self.B := ClampToByte(Integer(Self.B - Trunc(AValue * 255)));
 
   if not IgnoreAlpha then
-    Self.A := Self.A - Trunc(AValue * 255);
+    FadeOut(AValue);
+end;
+
+procedure TelColor.FadeOut(AValue: Single);
+begin
+  AValue := Clamp(AValue, 0.0, 1.0);
+
+  Self.A := Clamp(Self.A - Trunc(AValue * 255), 0, 255);
+end;
+
+procedure TelColor.FadeIn(AValue: Single);
+begin
+  AValue := Clamp(AValue, 0.0, 1.0);
+
+  Self.A := Clamp(Self.A + Trunc(AValue * 255), 0, 255);
 end;
 
 function TelColor.ToString(): AnsiString;
@@ -518,7 +548,12 @@ end;
 
 class function TelColor.Lerp(A, B: TelColor; Amt: Single = 0.5): TelColor;
 begin
-
+  // TODO: Evaluate if you convert TelColor properties from byte to single for less
+  // converting and better precision
+  Result := TelColor.Create(Trunc(ClampToByte(ElysionMath.Lerp(A.R * 1.0, B.R * 1.0, Amt))),
+                            Trunc(ClampToByte(ElysionMath.Lerp(A.G * 1.0, B.G * 1.0, Amt))),
+                            Trunc(ClampToByte(ElysionMath.Lerp(A.B * 1.0, B.B * 1.0, Amt))),
+                            Trunc(ClampToByte(ElysionMath.Lerp(A.A * 1.0, B.A * 1.0, Amt))));
 end;
 
 class function TelColor.clAqua: TelColor;

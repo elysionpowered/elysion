@@ -5,7 +5,10 @@ unit ElysionShadow;
 interface
 
 uses
+  SysUtils,
+
   ElysionTypes,
+  ElysionHash,
   ElysionColor,
   ElysionBounds;
 
@@ -19,10 +22,15 @@ type
     fColor: TelColor;
     fBounds: TelBounds;
     fVisible: Boolean;
+    fHash: TelHash;
+
+    function GetHash(): TelHash; inline;
   public
     procedure Clear(); inline;
+
+    function ToString(): AnsiString; inline;
   public
-    class function Create: TelShadow; static; inline; Overload;
+    class function Create(): TelShadow; static; inline; Overload;
     class function Create(aPosition: TelVector2f): TelShadow; static; inline; Overload;
     class function Create(aPosition: TelVector2f; aBlur: Integer; aColor: TelColor): TelShadow; static; inline; Overload;
     class function Create(aBounds: TelBounds; aBlur: Integer; aColor: TelColor): TelShadow; static; inline; Overload;
@@ -33,11 +41,20 @@ type
     property Color: TelColor read fColor write fColor;
     property Bounds: TelBounds read fBounds write fBounds;
     property Visible: Boolean read fVisible write fVisible;
+
+    property Hash: TelHash read GetHash;
   end;
 
 implementation
 
 { TelShadow }
+
+function TelShadow.GetHash: TelHash;
+begin
+  fHash.Generate(Self.ToString());
+
+  Result := fHash;
+end;
 
 procedure TelShadow.Clear();
 begin
@@ -45,6 +62,11 @@ begin
   Self.Color := TelColor.Create;
   Self.Bounds := TelBounds.Create;
   Self.Visible := false;
+end;
+
+function TelShadow.ToString: AnsiString;
+begin
+  Result := Format('shadow(blur: %d, color: %s, bounds: %s)', [Self.Blur, Self.Color.ToString(), Self.Bounds.ToString()]);
 end;
 
 class function TelShadow.Create: TelShadow;

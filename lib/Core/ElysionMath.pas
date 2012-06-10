@@ -63,7 +63,10 @@ begin
   tmpAmt := Clamp(Amt, 0.0, 1.0);
   Diff := Abs(Max - Min);
 
-  Result := Min + (Diff * tmpAmt);
+  if (Diff = 0) then
+    Result := Min
+  else
+    Result := Min + (Diff * tmpAmt);
 end;
 
 function Lerp(Min, Max: Integer; Amt: Single = 0.5): Single;

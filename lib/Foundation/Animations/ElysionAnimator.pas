@@ -45,7 +45,7 @@ type
   { TelAnimator }
 
   TelAnimator = class(TelObject)
-      function Step(): Single; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function Step(): Single; inline;
     protected
       fTimer: TelTimer;
       fTarget: TelNode;
@@ -58,17 +58,17 @@ type
       fTolerance: Single;
       fLoopMode: TelLoopMode;
 
-      function GetActive(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function GetActive(): Boolean; inline;
 
-      function GetDuration(): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure SetDuration(aValue: Integer); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function GetDuration(): Integer; inline;
+      procedure SetDuration(aValue: Integer); inline;
 
-      function GetDelay(): Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure SetDelay(aValue: Integer); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function GetDelay(): Integer; inline;
+      procedure SetDelay(aValue: Integer); inline;
 
-      procedure StopEvent(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure StopEvent(); inline;
 
-      function GetPaused(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function GetPaused(): Boolean; inline;
     public
       AnimProperty: TelAnimationProperty;
 
@@ -85,16 +85,16 @@ type
       procedure ColorEffect(aStartValue, anEndValue: TelColor; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear);
       procedure ScaleEffect(aStartValue, anEndValue: TelVector2f; aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear);
 
-      procedure FadeInEffect(aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure FadeOutEffect(aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure FadeInEffect(aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear); inline;
+      procedure FadeOutEffect(aDuration: Integer = 1000; aTransition: TelAnimationTransition = atLinear); inline;
 
       procedure Start();
-      procedure Pause(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure UnPause(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure Stop(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure Pause(); inline;
+      procedure UnPause(); inline;
+      procedure Stop(); inline;
 
-      procedure Reset(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure Resume(); {$IFDEF CAN_INLINE} inline; {$ENDIF} //< Maybe find a better name for this
+      procedure Reset(); inline;
+      procedure Resume(); inline; //< Maybe find a better name for this
 
       procedure Update(dt: Double = 0.0);
     published
@@ -142,12 +142,12 @@ type
       procedure PutS(Index: String; const Item: TelAnimator);
       function GetS(Index: String): TelAnimator;
 
-      function GetCount: Integer; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function GetCount: Integer; inline;
       procedure SetSequential(Value: Boolean);
 
-      function GetFinished(): Boolean; {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      function GetFinished(): Boolean; inline;
 
-      procedure SetLoopCount(Value: Integer); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure SetLoopCount(Value: Integer); inline;
     public
       constructor Create; Override;
       destructor Destroy; Override;
@@ -156,11 +156,11 @@ type
       function Add(Action: TelAnimator): Integer;
       procedure Delete(Index: Integer);
 
-      procedure Start(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure Pause(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
-      procedure Stop(); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure Start(); inline;
+      procedure Pause(); inline;
+      procedure Stop(); inline;
 
-      procedure Update(dt: Double = 0.0); {$IFDEF CAN_INLINE} inline; {$ENDIF}
+      procedure Update(dt: Double = 0.0); inline;
 
       property Items[Index: Integer]: TelAnimator read Get write Put; default;
       property Find[Index: String]: TelAnimator read GetS write PutS;

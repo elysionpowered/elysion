@@ -9,6 +9,8 @@ interface
 uses
   SysUtils,
 
+  ElysionHash,
+  ElysionMath,
   ElysionTypes;
 
 type
@@ -18,6 +20,7 @@ type
   TelBounds = record
   private
     fLeft, fTop, fRight, fBottom: Single;
+    fHash: TelHash;
 
     function GetValue: Single; inline;
     procedure SetValue(const AValue: Single); inline;
@@ -26,11 +29,13 @@ type
     function GetWidth: Single; inline;
 
     function IsEmpty: Boolean; inline;
-  public
-    procedure Clear;
 
-    function ToString: AnsiString;
-    function ToRect: TelRect;
+    function GetHash: TelHash; inline;
+  public
+    procedure Clear; inline;
+
+    function ToString: AnsiString; inline;
+    function ToRect: TelRect; inline;
   public
     class operator Implicit(AValue: Single): TelBounds; inline;
   public
@@ -39,6 +44,8 @@ type
     class function Create(aRect: TelRect): TelBounds; static; inline; Overload;
 
     class function Copy(aSource: TelBounds): TelBounds; static; inline;
+
+    class function Lerp(A, B: TelBounds; Amt: Single = 0.5): TelBounds; static; inline;
   public
     property Empty: Boolean read IsEmpty;
 
@@ -51,6 +58,8 @@ type
 
     property Width: Single read GetWidth;
     property Height: Single read GetHeight;
+
+    property Hash: TelHash read GetHash;
   end;
 
 implementation
@@ -85,6 +94,13 @@ begin
   Result := (Value = 0);
 end;
 
+function TelBounds.GetHash: TelHash;
+begin
+  fHash.Generate(Self.ToString());
+
+  Result := fHash;
+end;
+
 procedure TelBounds.Clear;
 begin
   fLeft := 0;
@@ -100,7 +116,7 @@ end;
 
 function TelBounds.ToRect: TelRect;
 begin
-  Result := makeRect(Left, Top, Width, Height);
+  Result := TelRect.Create(Left, Top, Width, Height);
 end;
 
 class operator TelBounds.Implicit(AValue: Single): TelBounds;
@@ -136,6 +152,14 @@ begin
   Result.Top := aSource.Top;
   Result.Right := aSource.Right;
   Result.Bottom := aSource.Bottom;
+end;
+
+class function TelBounds.Lerp(A, B: TelBounds; Amt: Single): TelBounds;
+begin
+  Result := TelBounds.Create(ElysionMath.Lerp(A.Left, B.Left, Amt),
+                             ElysionMath.Lerp(A.Top, B.Top, Amt),
+                             ElysionMath.Lerp(A.Right, B.Right, Amt),
+                             ElysionMath.Lerp(A.Bottom, B.Bottom, Amt));
 end;
 
 end.

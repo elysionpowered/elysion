@@ -67,7 +67,7 @@ begin
 
   fEnablePixelCheck := true;
 
-  Viewport := makeRect(0, 0, ActiveWindow.Width, ActiveWindow.Height);
+  Viewport := TelRect.Create(0, 0, ActiveWindow.Width, ActiveWindow.Height);
 
   FixedSize.Width := -1;
   FixedSize.Height := -1;

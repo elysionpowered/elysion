@@ -401,7 +401,7 @@ begin
       ClipImage(aClipRect);
 
       // Sets origin to center
-      //Origin := Center(Self);
+      Origin := Self.Center;
 
       //FAnim.W := GetSurfaceWidth div Trunc(FClipRect.W);
       //FAnim.H := GetSurfaceHeight div Trunc(FClipRect.H);

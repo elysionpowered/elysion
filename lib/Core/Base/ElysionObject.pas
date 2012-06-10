@@ -18,6 +18,7 @@ uses
   ElysionStrings,
   ElysionInterfaces,
 
+  ElysionHash,
   ElysionUtils,
   ElysionTypes,
   ElysionLogger,
@@ -39,9 +40,8 @@ type
 
 TelObject = class abstract(TInterfacedPersistent, IObject)
 strict private
-  class var ObjectCount: Integer;
+  class var ObjectCount: Integer; //< Private stored: Object creation id -> Part of Unique ID
 private
-  fObjectCount: Integer; //< Private stored: Object creation id -> Part of Unique ID
   fNumProperties: Integer;
 
   fTypeData: PTypeData;
@@ -53,16 +53,24 @@ private
     * @return Unique ID of a TelObject class or an ancestor of an TelObject class
     *
     *)
-  function GetHash: AnsiString;
   function GetUniqueID: AnsiString; inline;
+
+  (**
+    * Access (read-only) through published property (TelObject.MD5Hash)
+    * @param None
+    * @return Hash for this object
+    *)
+    function GetHash: TelHash; inline;
 protected
   class var fContentPath: AnsiString;
+  class var fContentType: AnsiString;
 protected
   fName: AnsiString;          //< Privileged: Name of an object -> Access (read/write) through published properties (TelObject.Name)
   fNote: AnsiString;          //< Privileged: Note of an object -> Access (read/write) through published properties (TelObject.Note)
   fID: Integer;           //< Privileged: ID of an object -> Access (read/write) through published properties (TelObject.ID)
   fTag: Cardinal;         //< Privileged: Tag of an object -> Access (read/write) through published properties (TelObject.Tag)
   fDebug: Boolean;        //< Privileged: Debug flag -> Access (read/write) though published properties (TelObject.Debug)
+  fHash: TelHash;
 
   // Standard property setters
   procedure SetPropertyStr(const aName: String; aValue: AnsiString); inline;
@@ -145,12 +153,13 @@ public
 public
   property Properties[Index: Integer]: AnsiString read GetPropertyInt write SetPropertyInt;
   property Properties[Index: String]: AnsiString read GetPropertyStr write SetPropertyStr;
+
+  property Hash: TelHash read GetHash;
 public
   class property ContentPath: AnsiString read fContentPath write fContentPath;
+  class property ContentType: AnsiString read fContentType write fContentType;
 published
   property Debug: Boolean read fDebug write fDebug default false; //< Debug flag
-
-  property Hash: AnsiString read GetHash;
 
   property Name: AnsiString read fName write fName;      //< Name of an object
   property ID: Integer read fID write fID default 0;     //< ID of an object
@@ -233,7 +242,7 @@ begin
   if ltNote in TelLogger.GetInstance.Priorities then
     TelLogger.GetInstance.WriteLog('<i>' + rsObjectCreated + ':</i> ' + Self.UniqueID, 'Initialization', ltNote, true);
 
-  fObjectCount := fObjectCount + 1;
+  TelObject.ObjectCount := TelObject.ObjectCount + 1;
   fContentPath := '';
 
 
@@ -268,12 +277,14 @@ end;
 
 function TelObject.GetUniqueID: AnsiString;
 begin
-  Result := Self.ClassName + IntToString(fObjectCount, true, 4);
+  Result := Self.ClassName + IntToString(TelObject.ObjectCount, true, 4);
 end;
 
-function TelObject.GetHash: AnsiString;
+function TelObject.GetHash: TelHash;
 begin
+  fHash.Generate(Self.ToString());
 
+  Result := fHash;
 end;
 
 procedure TelObject.SetPropertyStr(const aName: String; aValue: AnsiString);
