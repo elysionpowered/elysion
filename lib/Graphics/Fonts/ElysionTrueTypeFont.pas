@@ -189,7 +189,7 @@ end;
 constructor TelTrueTypeFont.Create();
 begin
   inherited Create;
-  fColor := makeCol(0, 0, 0, 255);
+  fColor := TelColor.Create(0, 0, 0, 255);
 
   fChange := true;
   fFont := nil;
@@ -301,9 +301,10 @@ function TelTrueTypeFont.GetHeight: Integer;
 var
   tmp: Integer;
 begin
-  inherited;
+  //inherited;
 
   tmp := 0;
+  Result := 0;
 
   case fTextStyle of
     tsNormal: TTF_SizeText(fFont, PChar(fText), tmp, Result);
@@ -347,6 +348,7 @@ begin
   //inherited;
 
   tmp := 0;
+  Result := 0;
 
   case fTextStyle of
     tsNormal: TTF_SizeText(fFont, PChar(Text), Result, tmp);

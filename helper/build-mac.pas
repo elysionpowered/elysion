@@ -210,7 +210,7 @@ begin
     Exit;
   end;
 
-  if not DirectoryExists('/Developer/SDKs') then
+  if ((not DirectoryExists('/Developer/SDKs')) or (not DirectoryExists('/Applications/Xcode.app'))) then
   begin
     WriteLn('/Developer dirctory not found. Please install Xcode');
   end;

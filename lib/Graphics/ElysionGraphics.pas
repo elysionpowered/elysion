@@ -250,14 +250,14 @@ function CollisionTest(RectOne, RectTwo: TelRect): Boolean;
 
 begin
   Result := False;
-  if OnPoint(RectOne, makeV2f(RectTwo.X, RectTwo.Y)) Or
-     OnPoint(RectTwo, makeV2f(RectOne.X, RectOne.Y)) Or
-     OnPoint(RectOne, makeV2f(RectTwo.X + RectTwo.W, RectTwo.Y)) Or
-     OnPoint(RectTwo, makeV2f(RectOne.X + RectOne.W, RectOne.Y)) Or
-     OnPoint(RectOne, makeV2f(RectTwo.X, RectTwo.Y + RectTwo.H)) Or
-     OnPoint(RectTwo, makeV2f(RectOne.X, RectOne.Y + RectOne.H)) Or
-     OnPoint(RectOne, makeV2f(RectTwo.X + RectTwo.W, RectTwo.Y + RectTwo.H)) Or
-     OnPoint(RectTwo, makeV2f(RectOne.X + RectOne.W, RectOne.Y + RectOne.H)) Then Result := True;
+  if OnPoint(RectOne, TelVector2f.Create(RectTwo.X, RectTwo.Y)) Or
+     OnPoint(RectTwo, TelVector2f.Create(RectOne.X, RectOne.Y)) Or
+     OnPoint(RectOne, TelVector2f.Create(RectTwo.X + RectTwo.W, RectTwo.Y)) Or
+     OnPoint(RectTwo, TelVector2f.Create(RectOne.X + RectOne.W, RectOne.Y)) Or
+     OnPoint(RectOne, TelVector2f.Create(RectTwo.X, RectTwo.Y + RectTwo.H)) Or
+     OnPoint(RectTwo, TelVector2f.Create(RectOne.X, RectOne.Y + RectOne.H)) Or
+     OnPoint(RectOne, TelVector2f.Create(RectTwo.X + RectTwo.W, RectTwo.Y + RectTwo.H)) Or
+     OnPoint(RectTwo, TelVector2f.Create(RectOne.X + RectOne.W, RectOne.Y + RectOne.H)) Then Result := True;
 end;
 
 function CollisionTest(SpriteOne, SpriteTwo: TelSprite; AllowInvisibleObjects: Boolean = false): Boolean;
@@ -266,14 +266,14 @@ function CollisionTest(SpriteOne, SpriteTwo: TelSprite; AllowInvisibleObjects: B
   begin
     Result := false;
 
-    if SpriteOne.OnPoint(makeV2f(SpriteTwo.AbsolutePosition.X, SpriteTwo.AbsolutePosition.Y)) Or
-       SpriteTwo.OnPoint(makeV2f(SpriteOne.AbsolutePosition.X, SpriteOne.AbsolutePosition.Y)) Or
-       SpriteOne.OnPoint(makeV2f(SpriteTwo.AbsolutePosition.X + SpriteTwo.Width, SpriteTwo.AbsolutePosition.Y)) Or
-       SpriteTwo.OnPoint(makeV2f(SpriteOne.AbsolutePosition.X + SpriteOne.Width, SpriteOne.AbsolutePosition.Y)) Or
-       SpriteOne.OnPoint(makeV2f(SpriteTwo.AbsolutePosition.X,                   SpriteTwo.AbsolutePosition.Y + SpriteTwo.Height)) Or
-       SpriteTwo.OnPoint(makeV2f(SpriteOne.AbsolutePosition.X,                   SpriteOne.AbsolutePosition.Y + SpriteOne.Height)) Or
-       SpriteOne.OnPoint(makeV2f(SpriteTwo.AbsolutePosition.X + SpriteTwo.Width, SpriteTwo.AbsolutePosition.Y + SpriteTwo.Height)) Or
-       SpriteTwo.OnPoint(makeV2f(SpriteOne.AbsolutePosition.X + SpriteOne.Width, SpriteOne.AbsolutePosition.Y + SpriteOne.Height)) Then Result := true;
+    if SpriteOne.OnPoint(TelVector2f.Create(SpriteTwo.AbsolutePosition.X, SpriteTwo.AbsolutePosition.Y)) Or
+       SpriteTwo.OnPoint(TelVector2f.Create(SpriteOne.AbsolutePosition.X, SpriteOne.AbsolutePosition.Y)) Or
+       SpriteOne.OnPoint(TelVector2f.Create(SpriteTwo.AbsolutePosition.X + SpriteTwo.Width, SpriteTwo.AbsolutePosition.Y)) Or
+       SpriteTwo.OnPoint(TelVector2f.Create(SpriteOne.AbsolutePosition.X + SpriteOne.Width, SpriteOne.AbsolutePosition.Y)) Or
+       SpriteOne.OnPoint(TelVector2f.Create(SpriteTwo.AbsolutePosition.X,                   SpriteTwo.AbsolutePosition.Y + SpriteTwo.Height)) Or
+       SpriteTwo.OnPoint(TelVector2f.Create(SpriteOne.AbsolutePosition.X,                   SpriteOne.AbsolutePosition.Y + SpriteOne.Height)) Or
+       SpriteOne.OnPoint(TelVector2f.Create(SpriteTwo.AbsolutePosition.X + SpriteTwo.Width, SpriteTwo.AbsolutePosition.Y + SpriteTwo.Height)) Or
+       SpriteTwo.OnPoint(TelVector2f.Create(SpriteOne.AbsolutePosition.X + SpriteOne.Width, SpriteOne.AbsolutePosition.Y + SpriteOne.Height)) Then Result := true;
   end;
 
 begin

@@ -7,6 +7,7 @@ interface
 uses
   SysUtils,
   ElysionConst,
+  ElysionLogger,
   ElysionUtils;
 
 {$I Elysion.inc}
@@ -48,7 +49,8 @@ begin
   else PreDir := '';
 
   {$IFDEF DARWIN}
-    if IsApplicationBundle(true) then Result := '../../../' + PreDir + ResName + DirectorySeparator
+    TelLogger.GetInstance.WriteLog(PreDir);
+    if IsApplicationBundle(true) then Result := '../../../../../' + PreDir + ResName + DirectorySeparator
     else begin
       if IsApplicationBundle(false) then Result := '../Resources/'
       else Result := PreDir + ResName + DirectorySeparator;

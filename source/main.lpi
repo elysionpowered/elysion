@@ -87,14 +87,14 @@ if TargetOS = 'darwin' then
         <LaunchingApplication PathPlusParams="\usr\X11R6\bin\xterm -T 'Lazarus Run Output' -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <Units Count="118">
+    <Units Count="119">
       <Unit0>
         <Filename Value="main.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="25"/>
-        <CursorPos X="41" Y="27"/>
+        <TopLine Value="28"/>
+        <CursorPos X="8" Y="63"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -102,11 +102,12 @@ if TargetOS = 'darwin' then
       <Unit1>
         <Filename Value="units\uBasic.pas"/>
         <UnitName Value="uBasic"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="191" Y="47"/>
-        <UsageCount Value="95"/>
+        <TopLine Value="41"/>
+        <CursorPos X="65" Y="53"/>
+        <UsageCount Value="96"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit1>
@@ -115,7 +116,7 @@ if TargetOS = 'darwin' then
         <UnitName Value="uGame"/>
         <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="3"/>
+        <TopLine Value="15"/>
         <CursorPos X="3" Y="196"/>
         <UsageCount Value="101"/>
         <Loaded Value="True"/>
@@ -126,7 +127,7 @@ if TargetOS = 'darwin' then
         <UnitName Value="uMainMenu"/>
         <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="28"/>
+        <TopLine Value="50"/>
         <CursorPos X="23" Y="61"/>
         <UsageCount Value="101"/>
         <Loaded Value="True"/>
@@ -137,8 +138,8 @@ if TargetOS = 'darwin' then
         <UnitName Value="uGameScreen"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="50"/>
-        <CursorPos X="7" Y="196"/>
+        <TopLine Value="1"/>
+        <CursorPos X="8" Y="5"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -397,11 +398,11 @@ if TargetOS = 'darwin' then
       </Unit32>
       <Unit33>
         <Filename Value="..\lib\Elysion.inc"/>
-        <EditorIndex Value="23"/>
+        <EditorIndex Value="22"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="99"/>
+        <UsageCount Value="100"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit33>
@@ -653,10 +654,12 @@ if TargetOS = 'darwin' then
       <Unit61>
         <Filename Value="..\lib\Graphics\ElysionGraphics.pas"/>
         <UnitName Value="ElysionGraphics"/>
+        <EditorIndex Value="26"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="153"/>
-        <CursorPos X="63" Y="192"/>
-        <UsageCount Value="58"/>
+        <TopLine Value="246"/>
+        <CursorPos X="44" Y="276"/>
+        <UsageCount Value="59"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit61>
       <Unit62>
@@ -664,21 +667,20 @@ if TargetOS = 'darwin' then
         <UnitName Value="ElysionNode"/>
         <EditorIndex Value="16"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="726"/>
+        <TopLine Value="12"/>
         <CursorPos X="27" Y="758"/>
-        <UsageCount Value="50"/>
+        <UsageCount Value="51"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit62>
       <Unit63>
         <Filename Value="..\lib\Graphics\ElysionSprite.pas"/>
         <UnitName Value="ElysionSprite"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="27"/>
+        <EditorIndex Value="28"/>
         <WindowIndex Value="0"/>
         <TopLine Value="377"/>
         <CursorPos X="28" Y="404"/>
-        <UsageCount Value="78"/>
+        <UsageCount Value="79"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit63>
@@ -696,9 +698,9 @@ if TargetOS = 'darwin' then
         <UnitName Value="ElysionMenu"/>
         <EditorIndex Value="33"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="31"/>
-        <CursorPos X="16" Y="11"/>
-        <UsageCount Value="29"/>
+        <TopLine Value="1"/>
+        <CursorPos X="71" Y="11"/>
+        <UsageCount Value="30"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit65>
@@ -707,9 +709,9 @@ if TargetOS = 'darwin' then
         <UnitName Value="ElysionButton"/>
         <EditorIndex Value="32"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="211"/>
-        <CursorPos X="11" Y="226"/>
-        <UsageCount Value="29"/>
+        <TopLine Value="1"/>
+        <CursorPos X="62" Y="2"/>
+        <UsageCount Value="30"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit66>
@@ -720,18 +722,18 @@ if TargetOS = 'darwin' then
         <WindowIndex Value="0"/>
         <TopLine Value="87"/>
         <CursorPos X="1" Y="99"/>
-        <UsageCount Value="29"/>
+        <UsageCount Value="30"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit67>
       <Unit68>
         <Filename Value="..\lib\Graphics\ElysionCamera.pas"/>
         <UnitName Value="ElysionCamera"/>
-        <EditorIndex Value="28"/>
+        <EditorIndex Value="29"/>
         <WindowIndex Value="0"/>
         <TopLine Value="51"/>
         <CursorPos X="29" Y="70"/>
-        <UsageCount Value="33"/>
+        <UsageCount Value="34"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit68>
@@ -742,18 +744,18 @@ if TargetOS = 'darwin' then
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="36" Y="6"/>
-        <UsageCount Value="65"/>
+        <UsageCount Value="66"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit69>
       <Unit70>
         <Filename Value="..\lib\Core\IO\ElysionLogger.pas"/>
         <UnitName Value="ElysionLogger"/>
-        <EditorIndex Value="24"/>
+        <EditorIndex Value="23"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="32" Y="158"/>
-        <UsageCount Value="25"/>
+        <TopLine Value="70"/>
+        <CursorPos X="1" Y="1"/>
+        <UsageCount Value="26"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit70>
@@ -764,7 +766,7 @@ if TargetOS = 'darwin' then
         <WindowIndex Value="0"/>
         <TopLine Value="459"/>
         <CursorPos X="44" Y="475"/>
-        <UsageCount Value="32"/>
+        <UsageCount Value="33"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit71>
@@ -775,18 +777,18 @@ if TargetOS = 'darwin' then
         <WindowIndex Value="0"/>
         <TopLine Value="438"/>
         <CursorPos X="21" Y="452"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="22"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit72>
       <Unit73>
         <Filename Value="..\lib\Graphics\Fonts\ElysionTrueTypeFont.pas"/>
         <UnitName Value="ElysionTrueTypeFont"/>
-        <EditorIndex Value="29"/>
+        <EditorIndex Value="25"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="277"/>
-        <CursorPos X="16" Y="291"/>
-        <UsageCount Value="25"/>
+        <TopLine Value="335"/>
+        <CursorPos X="52" Y="359"/>
+        <UsageCount Value="26"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit73>
@@ -797,7 +799,7 @@ if TargetOS = 'darwin' then
         <WindowIndex Value="0"/>
         <TopLine Value="70"/>
         <CursorPos X="20" Y="10"/>
-        <UsageCount Value="25"/>
+        <UsageCount Value="26"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit74>
@@ -808,19 +810,17 @@ if TargetOS = 'darwin' then
         <WindowIndex Value="0"/>
         <TopLine Value="20"/>
         <CursorPos X="6" Y="102"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="22"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit75>
       <Unit76>
         <Filename Value="..\lib\Core\Base\ElysionTypes.pas"/>
         <UnitName Value="ElysionTypes"/>
-        <EditorIndex Value="22"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="368"/>
-        <CursorPos X="38" Y="385"/>
+        <TopLine Value="26"/>
+        <CursorPos X="44" Y="34"/>
         <UsageCount Value="67"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit76>
       <Unit77>
@@ -830,7 +830,7 @@ if TargetOS = 'darwin' then
         <WindowIndex Value="0"/>
         <TopLine Value="70"/>
         <CursorPos X="10" Y="17"/>
-        <UsageCount Value="35"/>
+        <UsageCount Value="36"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit77>
@@ -855,22 +855,22 @@ if TargetOS = 'darwin' then
       <Unit80>
         <Filename Value="..\lib\Foundation\ElysionGame.pas"/>
         <UnitName Value="ElysionGame"/>
-        <EditorIndex Value="26"/>
+        <EditorIndex Value="27"/>
         <WindowIndex Value="0"/>
         <TopLine Value="25"/>
         <CursorPos X="15" Y="169"/>
-        <UsageCount Value="34"/>
+        <UsageCount Value="35"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit80>
       <Unit81>
         <Filename Value="..\lib\Core\ElysionUtils.pas"/>
         <UnitName Value="ElysionUtils"/>
-        <EditorIndex Value="25"/>
+        <EditorIndex Value="24"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="40"/>
-        <CursorPos X="97" Y="91"/>
-        <UsageCount Value="24"/>
+        <TopLine Value="37"/>
+        <CursorPos X="10" Y="55"/>
+        <UsageCount Value="25"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit81>
@@ -881,7 +881,7 @@ if TargetOS = 'darwin' then
         <WindowIndex Value="0"/>
         <TopLine Value="433"/>
         <CursorPos X="50" Y="163"/>
-        <UsageCount Value="22"/>
+        <UsageCount Value="23"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit82>
@@ -892,7 +892,7 @@ if TargetOS = 'darwin' then
         <WindowIndex Value="0"/>
         <TopLine Value="15"/>
         <CursorPos X="30" Y="130"/>
-        <UsageCount Value="29"/>
+        <UsageCount Value="30"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit83>
@@ -913,7 +913,7 @@ if TargetOS = 'darwin' then
         <WindowIndex Value="0"/>
         <TopLine Value="10"/>
         <CursorPos X="64" Y="22"/>
-        <UsageCount Value="142"/>
+        <UsageCount Value="143"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit85>
@@ -942,7 +942,7 @@ if TargetOS = 'darwin' then
         <WindowIndex Value="0"/>
         <TopLine Value="332"/>
         <CursorPos X="14" Y="346"/>
-        <UsageCount Value="58"/>
+        <UsageCount Value="59"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit88>
@@ -1112,7 +1112,7 @@ if TargetOS = 'darwin' then
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="25" Y="12"/>
-        <UsageCount Value="15"/>
+        <UsageCount Value="16"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit107>
@@ -1123,7 +1123,7 @@ if TargetOS = 'darwin' then
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="17" Y="54"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="22"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit108>
@@ -1152,7 +1152,7 @@ if TargetOS = 'darwin' then
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="15"/>
+        <UsageCount Value="16"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit111>
@@ -1163,7 +1163,7 @@ if TargetOS = 'darwin' then
         <WindowIndex Value="0"/>
         <TopLine Value="128"/>
         <CursorPos X="42" Y="162"/>
-        <UsageCount Value="13"/>
+        <UsageCount Value="14"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit112>
@@ -1174,7 +1174,7 @@ if TargetOS = 'darwin' then
         <WindowIndex Value="0"/>
         <TopLine Value="17"/>
         <CursorPos X="9" Y="48"/>
-        <UsageCount Value="13"/>
+        <UsageCount Value="14"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit113>
@@ -1191,9 +1191,9 @@ if TargetOS = 'darwin' then
         <UnitName Value="ElysionColor"/>
         <EditorIndex Value="13"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="480"/>
-        <CursorPos X="25" Y="499"/>
-        <UsageCount Value="12"/>
+        <TopLine Value="49"/>
+        <CursorPos X="24" Y="67"/>
+        <UsageCount Value="13"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit115>
@@ -1213,131 +1213,139 @@ if TargetOS = 'darwin' then
         <WindowIndex Value="0"/>
         <TopLine Value="14"/>
         <CursorPos X="27" Y="37"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="13"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit117>
+      <Unit118>
+        <Filename Value="C:\lazarus\ide\dialogprocs.pas"/>
+        <UnitName Value="DialogProcs"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="277"/>
+        <CursorPos X="28" Y="296"/>
+        <UsageCount Value="10"/>
+      </Unit118>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="..\lib\Core\Base\ElysionTypes.pas"/>
-        <Caret Line="47" Column="32" TopLine="28"/>
-      </Position1>
-      <Position2>
-        <Filename Value="..\lib\Core\Base\ElysionColor.pas"/>
-        <Caret Line="551" Column="12" TopLine="534"/>
-      </Position2>
-      <Position3>
-        <Filename Value="..\lib\Core\Base\ElysionTypes.pas"/>
-        <Caret Line="49" Column="29" TopLine="30"/>
-      </Position3>
-      <Position4>
-        <Filename Value="..\lib\Core\Base\ElysionTypes.pas"/>
-        <Caret Line="1437" Column="24" TopLine="1300"/>
-      </Position4>
-      <Position5>
-        <Filename Value="..\lib\Core\Base\ElysionTypes.pas"/>
-        <Caret Line="128" Column="42" TopLine="111"/>
-      </Position5>
-      <Position6>
-        <Filename Value="..\lib\Core\Base\ElysionTypes.pas"/>
-        <Caret Line="310" Column="38" TopLine="293"/>
-      </Position6>
-      <Position7>
-        <Filename Value="..\lib\Core\Base\ElysionBounds.pas"/>
-        <Caret Line="150" Column="63" TopLine="111"/>
-      </Position7>
-      <Position8>
-        <Filename Value="..\lib\Core\Base\ElysionBounds.pas"/>
-        <Caret Line="99" Column="17" TopLine="80"/>
-      </Position8>
-      <Position9>
-        <Filename Value="..\lib\Core\Base\ElysionBounds.pas"/>
-        <Caret Line="119" Column="27" TopLine="100"/>
-      </Position9>
-      <Position10>
-        <Filename Value="..\lib\Core\Base\ElysionShadow.pas"/>
-        <Caret Line="69" Column="120" TopLine="46"/>
-      </Position10>
-      <Position11>
-        <Filename Value="..\lib\Core\Base\ElysionObject.pas"/>
-        <Caret Line="63" Column="15" TopLine="50"/>
-      </Position11>
-      <Position12>
-        <Filename Value="..\lib\Core\Base\ElysionObject.pas"/>
-        <Caret Line="67" Column="13" TopLine="48"/>
-      </Position12>
-      <Position13>
-        <Filename Value="..\lib\Core\Base\ElysionObject.pas"/>
-        <Caret Line="44" Column="8" TopLine="33"/>
-      </Position13>
-      <Position14>
-        <Filename Value="..\lib\Core\Base\ElysionObject.pas"/>
-        <Caret Line="285" Column="17" TopLine="266"/>
-      </Position14>
-      <Position15>
-        <Filename Value="..\lib\Graphics\ElysionCamera.pas"/>
-        <Caret Line="49" Column="15" TopLine="72"/>
-      </Position15>
-      <Position16>
-        <Filename Value="units\uGame.pas"/>
-        <Caret Line="196" Column="3" TopLine="3"/>
-      </Position16>
-      <Position17>
-        <Filename Value="units\uGameScreen.pas"/>
-        <Caret Line="197" Column="7" TopLine="160"/>
-      </Position17>
-      <Position18>
-        <Filename Value="units\uGameScreen.pas"/>
-        <Caret Line="41" Column="5" TopLine="14"/>
-      </Position18>
-      <Position19>
-        <Filename Value="..\lib\Foundation\Animations\ElysionAnimator.pas"/>
-        <Caret Line="14" Column="57" TopLine="1"/>
-      </Position19>
-      <Position20>
-        <Filename Value="units\uGame.pas"/>
-        <Caret Line="196" Column="3" TopLine="3"/>
-      </Position20>
-      <Position21>
-        <Filename Value="units\uGameScreen.pas"/>
-        <Caret Line="196" Column="7" TopLine="50"/>
-      </Position21>
-      <Position22>
-        <Filename Value="..\lib\Graphics\ElysionSprite.pas"/>
-        <Caret Line="80" Column="28" TopLine="53"/>
-      </Position22>
-      <Position23>
-        <Filename Value="..\lib\Graphics\ElysionSprite.pas"/>
-        <Caret Line="81" Column="28" TopLine="53"/>
-      </Position23>
-      <Position24>
-        <Filename Value="..\lib\Graphics\ElysionSprite.pas"/>
-        <Caret Line="325" Column="20" TopLine="281"/>
-      </Position24>
-      <Position25>
-        <Filename Value="..\lib\Graphics\ElysionSprite.pas"/>
-        <Caret Line="404" Column="26" TopLine="369"/>
-      </Position25>
-      <Position26>
         <Filename Value="..\lib\Graphics\ElysionNode.pas"/>
         <Caret Line="259" Column="14" TopLine="229"/>
-      </Position26>
-      <Position27>
+      </Position1>
+      <Position2>
         <Filename Value="..\lib\Graphics\ElysionNode.pas"/>
         <Caret Line="105" Column="23" TopLine="72"/>
-      </Position27>
-      <Position28>
+      </Position2>
+      <Position3>
         <Filename Value="..\lib\Graphics\ElysionSprite.pas"/>
         <Caret Line="404" Column="34" TopLine="377"/>
-      </Position28>
-      <Position29>
+      </Position3>
+      <Position4>
         <Filename Value="..\lib\Graphics\ElysionNode.pas"/>
         <Caret Line="259" Column="48" TopLine="235"/>
-      </Position29>
-      <Position30>
+      </Position4>
+      <Position5>
         <Filename Value="..\lib\Graphics\ElysionSprite.pas"/>
         <Caret Line="404" Column="34" TopLine="377"/>
+      </Position5>
+      <Position6>
+        <Filename Value="units\uGameScreen.pas"/>
+        <Caret Line="5" Column="8" TopLine="1"/>
+      </Position6>
+      <Position7>
+        <Filename Value="..\lib\Core\Base\ElysionColor.pas"/>
+        <Caret Line="499" Column="25" TopLine="480"/>
+      </Position7>
+      <Position8>
+        <Filename Value="..\lib\Graphics\Fonts\ElysionTrueTypeFont.pas"/>
+        <Caret Line="293" Column="69" TopLine="281"/>
+      </Position8>
+      <Position9>
+        <Filename Value="..\lib\Graphics\Fonts\ElysionTrueTypeFont.pas"/>
+        <Caret Line="308" Column="18" TopLine="297"/>
+      </Position9>
+      <Position10>
+        <Filename Value="..\lib\Graphics\Fonts\ElysionTrueTypeFont.pas"/>
+        <Caret Line="351" Column="18" TopLine="322"/>
+      </Position10>
+      <Position11>
+        <Filename Value="..\lib\Graphics\Fonts\ElysionTrueTypeFont.pas"/>
+        <Caret Line="4" Column="41" TopLine="1"/>
+      </Position11>
+      <Position12>
+        <Filename Value="..\lib\Graphics\Fonts\ElysionTrueTypeFont.pas"/>
+        <Caret Line="43" Column="15" TopLine="14"/>
+      </Position12>
+      <Position13>
+        <Filename Value="..\lib\Graphics\Fonts\ElysionTrueTypeFont.pas"/>
+        <Caret Line="234" Column="17" TopLine="213"/>
+      </Position13>
+      <Position14>
+        <Filename Value="..\lib\Graphics\Fonts\ElysionTrueTypeFont.pas"/>
+        <Caret Line="269" Column="30" TopLine="240"/>
+      </Position14>
+      <Position15>
+        <Filename Value="..\lib\Graphics\Fonts\ElysionTrueTypeFont.pas"/>
+        <Caret Line="270" Column="15" TopLine="241"/>
+      </Position15>
+      <Position16>
+        <Filename Value="..\lib\Graphics\Fonts\ElysionTrueTypeFont.pas"/>
+        <Caret Line="275" Column="23" TopLine="246"/>
+      </Position16>
+      <Position17>
+        <Filename Value="..\lib\Graphics\Fonts\ElysionTrueTypeFont.pas"/>
+        <Caret Line="308" Column="18" TopLine="279"/>
+      </Position17>
+      <Position18>
+        <Filename Value="..\lib\Graphics\Fonts\ElysionTrueTypeFont.pas"/>
+        <Caret Line="351" Column="18" TopLine="322"/>
+      </Position18>
+      <Position19>
+        <Filename Value="..\lib\Graphics\Fonts\ElysionTrueTypeFont.pas"/>
+        <Caret Line="35" Column="24" TopLine="14"/>
+      </Position19>
+      <Position20>
+        <Filename Value="..\lib\Graphics\Fonts\ElysionTrueTypeFont.pas"/>
+        <Caret Line="361" Column="131" TopLine="345"/>
+      </Position20>
+      <Position21>
+        <Filename Value="..\lib\Graphics\ElysionGraphics.pas"/>
+        <Caret Line="192" Column="63" TopLine="153"/>
+      </Position21>
+      <Position22>
+        <Filename Value="..\lib\Graphics\ElysionGraphics.pas"/>
+        <Caret Line="10" Column="26" TopLine="1"/>
+      </Position22>
+      <Position23>
+        <Filename Value="..\lib\Graphics\Fonts\ElysionTrueTypeFont.pas"/>
+        <Caret Line="311" Column="51" TopLine="293"/>
+      </Position23>
+      <Position24>
+        <Filename Value="..\lib\Graphics\Fonts\ElysionTrueTypeFont.pas"/>
+        <Caret Line="81" Column="15" TopLine="29"/>
+      </Position24>
+      <Position25>
+        <Filename Value="..\lib\Graphics\Fonts\ElysionTrueTypeFont.pas"/>
+        <Caret Line="192" Column="28" TopLine="174"/>
+      </Position25>
+      <Position26>
+        <Filename Value="..\lib\Graphics\Fonts\ElysionTrueTypeFont.pas"/>
+        <Caret Line="354" Column="20" TopLine="348"/>
+      </Position26>
+      <Position27>
+        <Filename Value="..\lib\Graphics\Fonts\ElysionTrueTypeFont.pas"/>
+        <Caret Line="312" Column="16" TopLine="309"/>
+      </Position27>
+      <Position28>
+        <Filename Value="units\uBasic.pas"/>
+        <Caret Line="53" Column="22" TopLine="31"/>
+      </Position28>
+      <Position29>
+        <Filename Value="units\uBasic.pas"/>
+        <Caret Line="51" Column="12" TopLine="29"/>
+      </Position29>
+      <Position30>
+        <Filename Value="units\uBasic.pas"/>
+        <Caret Line="10" Column="15" TopLine="1"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>

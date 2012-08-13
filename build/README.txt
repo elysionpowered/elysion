@@ -1,0 +1,1 @@
+This is the build folder. When compiling with Lazarus, sub-folders like i386-darwin or x86_64-win64 will be created depending on the target.

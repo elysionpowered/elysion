@@ -1,4 +1,4 @@
-BIN_FOLDER = '../bin';
+BIN_FOLDER = '../build';
 LIB_FOLDER = '../lib';
 RES_FOLDER = '../assets';
 SRC_FOLDER = '../source';

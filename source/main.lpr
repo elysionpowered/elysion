@@ -21,7 +21,6 @@ program myapplication;
     {$linkframework OpenGL}
 
     // Additional SDL frameworks
-    {$linkframework SDL_image}
     {$linkframework SDL_ttf}
     {$linkframework SDL_mixer}
   {$ENDIF}
