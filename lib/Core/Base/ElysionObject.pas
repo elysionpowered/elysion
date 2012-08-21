@@ -151,8 +151,8 @@ public
   function PropertyExists(const aName: String; LogError: Boolean = true): Boolean; inline;
   function GetPropertyType(const aName: String): AnsiString; inline;
 public
-  property Properties[Index: Integer]: AnsiString read GetPropertyInt write SetPropertyInt;
-  property Properties[Index: String]: AnsiString read GetPropertyStr write SetPropertyStr;
+  property PropertyInt[Index: Integer]: AnsiString read GetPropertyInt write SetPropertyInt;
+  property PropertyStr[Index: String]: AnsiString read GetPropertyStr write SetPropertyStr;
 
   property Hash: TelHash read GetHash;
 public

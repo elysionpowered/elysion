@@ -42,8 +42,7 @@ type
 
     procedure Clear;
 
-    function Add(AValue: T): Integer; Overload;
-    procedure Add(anArray: array of T); Overload;
+    function Add(AValue: T): Integer;
 
     function Remove(AValue: T): Integer;
     function IndexOf(AValue: T): Integer;
@@ -177,14 +176,6 @@ begin
   fCount := fCount + 1;
 end;
 
-procedure TelList<T>.Add(anArray: array of T);
-var
-  tmpItem: T;
-begin
-  for tmpItem in anArray do
-    Add(tmpItem);
-end;
-
 function TelList<T>.Remove(AValue: T): Integer;
 begin
   Result := IndexOf(AValue);
@@ -296,4 +287,4 @@ begin
     if TelObject(tmpObject).Name = Index then tmpObject := AValue;
 end;
 
-end.
+end.

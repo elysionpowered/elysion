@@ -39,8 +39,6 @@ end;}
 
 TelRectangle = class(TelNode)
 protected
-  fVertices: TelColorVertices;
-
   function GetWidth(): Single; Override;
   function GetHeight(): Single; Override;
 
@@ -59,7 +57,7 @@ public
 
   procedure Draw(Graphics: IGraphicsProvider; DrawChildren: Boolean = true); Override;
 public
-  property Vertices: TelColorVertices read fVertices write fVertices;
+  Vertices: TelColorVertices;
 end;
 
 { TelGradientRectangle }

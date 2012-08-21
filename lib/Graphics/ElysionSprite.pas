@@ -203,11 +203,7 @@ var
 begin
   inherited;
 
-  {$IFDEF CAN_METHODS}
-    if ((Self.BoundingBox = bbCustom) and (Self.CustomBBox.Empty)) then Self.BoundingBox := bbDefault;
-  {$ELSE}
-    if ((Self.BoundingBox = bbCustom) and (IsRectEmpty(Self.CustomBBox)) then Self.BoundingBox := bbDefault;
-  {$ENDIF}
+  if ((Self.BoundingBox = bbCustom) and (Self.CustomBBox.Empty)) then Self.BoundingBox := bbDefault;
 
   case Self.BoundingBox of
     bbDefault:

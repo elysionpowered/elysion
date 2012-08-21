@@ -5,8 +5,8 @@
   *	Declares all types and enums needed in the Elysion Frameworks
   *
   * All position coordinates are floats as well as the color values
-  * 
-  *	
+  *
+  *
   *)
 {%endregion}
 
@@ -37,17 +37,19 @@ type
   private
     fX, fY: T;
 
+    //{$IFNDEF FPC_GEN_FIX}
     fHash: TelHash;
+    //{$ENDIF}
   public
     procedure Make(aX, aY: T);
   public
-    class function Copy(aSource: TelVector2{$IFNDEF FPC}<T>{$ENDIF}): TelVector2{$IFNDEF FPC}<T>{$ENDIF}; static; inline;
+    class function Copy(aSource: TelVector2{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}): TelVector2{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}; static; inline;
   public
-    class operator Add(A, B: TelVector2{$IFNDEF FPC}<T>{$ENDIF}): TelVector2{$IFNDEF FPC}<T>{$ENDIF}; inline;
-    class operator Subtract(A, B: TelVector2{$IFNDEF FPC}<T>{$ENDIF}): TelVector2{$IFNDEF FPC}<T>{$ENDIF}; inline;
+    class operator Add(A, B: TelVector2{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}): TelVector2{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}; inline;
+    class operator Subtract(A, B: TelVector2{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}): TelVector2{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}; inline;
 
-    class operator Equal(A, B: TelVector2{$IFNDEF FPC}<T>{$ENDIF}): Boolean; inline;
-    class operator NotEqual(A, B: TelVector2{$IFNDEF FPC}<T>{$ENDIF}): Boolean; inline;
+    class operator Equal(A, B: TelVector2{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}): Boolean; inline;
+    class operator NotEqual(A, B: TelVector2{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}): Boolean; inline;
   public
     property X: T read fX write fX;
     property Y: T read fY write fY;
@@ -66,17 +68,19 @@ type
   private
     fX, fY, fZ: T;
 
+    //{$IFNDEF FPC_GEN_FIX}
     fHash: TelHash;
+    //{$ENDIF}
   public
     procedure Make(aX, aY, aZ: T);
   public
-    class function Copy(aSource: TelVector3{$IFNDEF FPC}<T>{$ENDIF}): TelVector3{$IFNDEF FPC}<T>{$ENDIF}; static; inline;
+    class function Copy(aSource: TelVector3{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}): TelVector3{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}; static; inline;
   public
-    class operator Add(A, B: TelVector3{$IFNDEF FPC}<T>{$ENDIF}): TelVector3{$IFNDEF FPC}<T>{$ENDIF}; inline;
-    class operator Subtract(A, B: TelVector3{$IFNDEF FPC}<T>{$ENDIF}): TelVector3{$IFNDEF FPC}<T>{$ENDIF}; inline;
+    class operator Add(A, B: TelVector3{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}): TelVector3{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}; inline;
+    class operator Subtract(A, B: TelVector3{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}): TelVector3{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}; inline;
 
-    class operator Equal(A, B: TelVector3{$IFNDEF FPC}<T>{$ENDIF}): Boolean; inline;
-    class operator NotEqual(A, B: TelVector3{$IFNDEF FPC}<T>{$ENDIF}): Boolean; inline;
+    class operator Equal(A, B: TelVector3{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}): Boolean; inline;
+    class operator NotEqual(A, B: TelVector3{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}): Boolean; inline;
   public
     property X: T read fX write fX;
     property Y: T read fY write fY;
@@ -539,30 +543,30 @@ begin
   fY := aY;
 end;
 
-class function TelVector2<T>.Copy(aSource: TelVector2): TelVector2;
+class function TelVector2<T>.Copy(aSource: TelVector2{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}): TelVector2{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF};
 begin
   Result.X := aSource.X;
   Result.Y := aSource.Y;
 end;
 
-class operator TelVector2<T>.Add(A, B: TelVector2): TelVector2;
+class operator TelVector2<T>.Add(A, B: TelVector2{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}): TelVector2{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF};
 begin
   Result.X := A.X + B.X;
   Result.Y := A.Y + B.Y;
 end;
 
-class operator TelVector2<T>.Subtract(A, B: TelVector2): TelVector2;
+class operator TelVector2<T>.Subtract(A, B: TelVector2{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}): TelVector2{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF};
 begin
   Result.X := A.X - B.X;
   Result.Y := A.Y - B.Y;
 end;
 
-class operator TelVector2<T>.Equal(A, B: TelVector2): Boolean;
+class operator TelVector2<T>.Equal(A, B: TelVector2{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}): Boolean;
 begin
   Result := ((A.X = B.X) and (A.Y = B.Y));
 end;
 
-class operator TelVector2<T>.NotEqual(A, B: TelVector2): Boolean;
+class operator TelVector2<T>.NotEqual(A, B: TelVector2{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}): Boolean;
 begin
   Result := not ((A.X = B.X) and (A.Y = B.Y));
 end;
@@ -576,33 +580,33 @@ begin
   fZ := aZ;
 end;
 
-class function TelVector3<T>.Copy(aSource: TelVector3): TelVector3;
+class function TelVector3<T>.Copy(aSource: TelVector3{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}): TelVector3{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF};
 begin
   Result.X := aSource.X;
   Result.Y := aSource.Y;
   Result.Z := aSource.Z;
 end;
 
-class operator TelVector3<T>.Add(A, B: TelVector3): TelVector3;
+class operator TelVector3<T>.Add(A, B: TelVector3{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}): TelVector3{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF};
 begin
   Result.X := A.X + B.X;
   Result.Y := A.Y + B.Y;
   Result.Z := A.Z + B.Z;
 end;
 
-class operator TelVector3<T>.Subtract(A, B: TelVector3): TelVector3;
+class operator TelVector3<T>.Subtract(A, B: TelVector3{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}): TelVector3{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF};
 begin
   Result.X := A.X - B.X;
   Result.Y := A.Y - B.Y;
   Result.Z := A.Z - B.Z;
 end;
 
-class operator TelVector3<T>.Equal(A, B: TelVector3): Boolean;
+class operator TelVector3<T>.Equal(A, B: TelVector3{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}): Boolean;
 begin
   Result := ((A.X = B.X) and (A.Y = B.Y) and (A.Z = B.Z));
 end;
 
-class operator TelVector3<T>.NotEqual(A, B: TelVector3): Boolean;
+class operator TelVector3<T>.NotEqual(A, B: TelVector3{$IFNDEF FPC_GEN_FIX}<T>{$ENDIF}): Boolean;
 begin
   Result := not ((A.X = B.X) and (A.Y = B.Y) and (A.Z = B.Z));
 end;

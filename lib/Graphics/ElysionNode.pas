@@ -1165,7 +1165,7 @@ begin
           if CamelCase(tmpStringList.Names[i]) = 'Top' then tmpValue := PercentToValue(tmpValue, ActiveWindow.Height);
         end;
 
-        Self.Properties[tmpStringList.Names[i]] := tmpValue;
+        Self.PropertyStr[tmpStringList.Names[i]] := tmpValue;
       end else
       begin
         // Check for special properties

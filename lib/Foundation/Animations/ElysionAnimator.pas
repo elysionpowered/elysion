@@ -373,7 +373,7 @@ begin
     AnimType := atPosition;
 
     StartPosition := aStartValue;
-    EndPosition := makeV3f(aStartValue.X + aDistance * cos(anAngle),
+    EndPosition := TelVector3f.Create(aStartValue.X + aDistance * cos(anAngle),
                            aStartValue.Y + aDistance * sin(anAngle), aStartValue.Z);
   end;
 end;
