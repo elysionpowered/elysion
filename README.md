@@ -16,6 +16,7 @@ Elysion is designed to be high-level with its API to be very simple and intuitiv
 Here is a chunk of code which loads a sprite, displays the sprite and randomly  
 changes its color with each click.  
 
+```pascal
 
 	var mySprite: TelSprite;
 
@@ -32,6 +33,7 @@ changes its color with each click.
 	  mySprite.Color.B := Random(255);
 	  // Alternative you could also write: mySprite.Color := TelColor.Create(Random(255), Random(255), Random(255));
 	end;
+```
 
 	
 That of course is just a small example of what Elysion can do. It is a full-fledged game framework and aims to be so: It allows you to play sound and music via ElysionAudio (which is based upon SDL_mixer), a texture manager which takes care of all your textures without you needing to worry about it, Elysion has a storage system similar to HTML5 Localstorage, integrated support for Cascading Stylesheets (CSS), as well as game-specific classes and helpers (such as scene management or adding nodes to scenes).
